@@ -1,17 +1,22 @@
-import React, { useState } from 'react'; 
-
+import React from 'react'
+import { useState } from 'react';
+import { Link } from 'react-router-dom'
+import './navbar.css'
+import { sidebardata } from './sidebardata';
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-        <div>
+    const [sidebar, setSidebar] = useState(false);
 
-            <nav class="bg-white border-gray-200 dark:bg-gray-900 mr-5 ml-5">
+    const showSidebar = () => setSidebar(!sidebar);
+    return (
+        <>
+            <div class="bg-white border-gray-200 dark:bg-gray-900 mr-5 ml-5 md:mr-32 md:ml-32">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <button className='flex md:hidden'>
+                <Link to="#" className="menu-bars md:hidden">
+                    <button className="" onClick={showSidebar}>
                         <img src="/images/assets/menu-icon.png" alt="" />
                     </button>
-
+                </Link>
                     <a href="#" class="flex items-center">
                         <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
 
@@ -44,10 +49,38 @@ const Navbar = () => {
                         <img src="/images/assets/notification-icon.png" alt="" />
                     </div>
                 </div>
-            </nav>
+            </div>
 
-        </div>
-    )
+            <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+                <ul className="nav-menu-items" onClick={showSidebar}>
+                    <li className="navbar-toggle flex justify-end justify-items-end">
+                        <div>
+                        <Link to="#" className="menu-bars ">
+                            <img src="/images/icons/cancel-icon.png" alt="" />
+                        </Link>
+                        </div>
+                    </li>
+                    <div className='flex flex-col space-y-8'>
+                        <Link to='#' >
+                        <span className='font-bold hover:border'>Home</span>
+                        </Link>
+
+                        <Link to='#' >
+                        <span className='font-bold hover:border'>Where To? </span>
+                        </Link>
+
+                        <Link to='#' >
+                        <span className='font-bold hover:border'>About</span>
+                        </Link>
+
+                        <Link to='#' >
+                        <span className='font-bold hover:border'>Contact</span>
+                        </Link>
+                    </div>
+                </ul>
+            </nav>
+        </>
+    );
 }
 
 export default Navbar
