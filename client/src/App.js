@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Demo from './pages/Demo'
 
 // pages
 import Home from './pages/Home/Home';
@@ -9,6 +10,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Contactus from './pages/Contactus/Contactus';
+import Profile from './pages/Profile/Profile';
 // components
 
 
@@ -22,6 +24,8 @@ function App() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/aboutus" element={<AboutUs />} />
                     <Route path="/contactus" element={<Contactus />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>
         </div>
