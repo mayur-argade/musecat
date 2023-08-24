@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <div>
 
-            <footer class="mr-32 ml-32 mt-10">
+            <footer class="ml-12 md:ml-0">
                 <div class="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
                     <div className='flex flex-col mb-8'>
                         <span className='text-xl font-bold'>
@@ -22,7 +22,7 @@ const Footer = () => {
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <div className='w-1/2 relative '>
+                                <div className='w-3/4 md:w-1/2 relative '>
                                     <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                                     <button type="submit" class="absolute text-white absolute right-2.5 bottom-2.5 bg-[#C0A04C] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                 </div>
@@ -76,7 +76,7 @@ const Footer = () => {
                                 <p class="font-medium">
                                     Popular Navigation
                                 </p>
-                                <nav class="flex flex-col mt-4 space-y-2 text-sm text-gray-500">
+                                <nav class="hidden md:block flex flex-col mt-4 space-y-2 text-sm text-gray-500">
                                     <a class="hover:opacity-75" href> Events </a>
                                     <a class="hover:opacity-75" href> Weekly Offers </a>
                                     <a class="hover:opacity-75" href> Kids corner </a>
@@ -86,7 +86,7 @@ const Footer = () => {
                                 <p class="font-medium">
                                     Information
                                 </p>
-                                <nav class="flex flex-col mt-4 space-y-2 text-sm text-gray-500">
+                                <nav class="hidden md:block flex flex-col mt-4 space-y-2 text-sm text-gray-500">
                                     <a class="hover:opacity-75" href> About </a>
                                     <a class="hover:opacity-75" href> Contact Us </a>
                                     <a class="hover:opacity-75" href> Home </a>
@@ -96,7 +96,7 @@ const Footer = () => {
                                 <p class="font-medium">
                                     The legal Corner
                                 </p>
-                                <nav class="flex flex-col mt-4 space-y-2 text-sm text-gray-500">
+                                <nav class="hidden md:block flex flex-col mt-4 space-y-2 text-sm text-gray-500">
                                     <a class="hover:opacity-75" href> Privacy policy </a>
                                     <a class="hover:opacity-75" href> Terms and conditions </a>
                                     <a class="hover:opacity-75" href> Cookies </a>
