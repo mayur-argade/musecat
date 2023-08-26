@@ -3,7 +3,7 @@ import React from 'react'
 const EditorsPick = () => {
   return (
     <div>
-        <section className='mr-32 ml-32 mt-10'>
+        <section className='md:mr-32 md:ml-32  mt-10'>
     <div className='flex justify-between mt-10'>
         <div className="left"><span className='text-xl font-medium'>Editors Pick</span></div>
         <div className="right"></div>

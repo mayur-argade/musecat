@@ -2,7 +2,7 @@ import React from 'react'
 
 const UpcomingEvents = () => {
     return (
-        <div><section className='mr-32 ml-32 mt-10'>
+        <div><section className='md:mr-32 md:ml-32 mt-10'>
             <div className='flex justify-between'>
                 <div className="left"><span className='text-xl font-medium'>Upcoming Events</span></div>
                 <div className="flex md:flex flex-wrap space-x-2 align-middle ">

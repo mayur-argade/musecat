@@ -2,25 +2,67 @@ import React from 'react'
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import './navbar.css'
-import { sidebardata } from './sidebardata';
-
+import { useParams } from 'react-router-dom';
 const Navbar = () => {
+    let { category } = useParams();
     const [sidebar, setSidebar] = useState(false);
-
     const showSidebar = () => setSidebar(!sidebar);
+    let categoryName = category
+    if (category === 'event') {
+        categoryName = 'Events'
+    }
+    else if (category === 'eat') {
+        categoryName = 'Eat'
+    }
+    else if (category === 'ladiesnight') {
+        categoryName = 'Ladies Night'
+    }
+    else if (category === 'weeklyoffers') {
+        categoryName = 'Weekly Offers'
+    }
+    else if (category === 'thingstodo') {
+        categoryName = 'Things To Do'
+    }
+    else if (category === 'staycation') {
+        categoryName = 'Staycation'
+    }
+    else if (category === 'poolnbeach') {
+        categoryName = 'Pool & Beach'
+    }
+    else if (category === 'spaoffers') {
+        categoryName = 'Spa Offers'
+    }
+    else if (category === 'kidscorner') {
+        categoryName = 'Kids Corner'
+    }
     return (
         <>
             <div class="bg-white border-gray-200 dark:bg-gray-900 mr-5 ml-5 md:mr-32 md:ml-32">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <Link to="#" className="menu-bars md:hidden">
-                    <button className="" onClick={showSidebar}>
-                        <img src="/images/assets/menu-icon.png" alt="" />
-                    </button>
-                </Link>
-                    <a href="#" class="flex items-center">
-                        <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' ? (
+                        <div className='flex align-middle'>
+                            <button className="menu-bars md:hidden" >
+                                <img src="/images/icons/back-arrow.svg" alt="" />
+                            </button>
+                            <span className='capitalize md:hidden text-xl font-bold'>
+                                {categoryName}
+                            </span>
+                            <a href="#" class="hidden md:block flex items-center">
+                                <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                            </a>
+                        </div>
+                    ) : (
+                        <div>
+                            <button className="menu-bars md:hidden" onClick={showSidebar}>
+                                <img src="/images/assets/menu-icon.png" alt="" />
+                            </button>
 
-                    </a>
+                            <a href="#" class="hidden md:flex items-center">
+                                <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                            </a>
+                        </div>
+                    )}
+
 
                     <div class="hidden md:flex md:order-2 space-x-2">
                         <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign in</button>
@@ -45,7 +87,11 @@ const Navbar = () => {
                     </div>
 
                     <div className="flex md:hidden space-x-2">
-                        <img src="/images/assets/search-icon.png" alt="" />
+                        {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' ? (
+                            <img className="hidden" src="/images/assets/search-icon.png" alt="" />
+                        ) : (
+                            <img className="" src="/images/assets/search-icon.png" alt="" />
+                        )}
                         <img src="/images/assets/notification-icon.png" alt="" />
                     </div>
                 </div>
@@ -55,26 +101,26 @@ const Navbar = () => {
                 <ul className="nav-menu-items" onClick={showSidebar}>
                     <li className="navbar-toggle flex justify-end justify-items-end">
                         <div>
-                        <Link to="#" className="menu-bars ">
-                            <img src="/images/icons/cancel-icon.png" alt="" />
-                        </Link>
+                            <Link to="#" className="menu-bars ">
+                                <img src="/images/icons/cancel-icon.png" alt="" />
+                            </Link>
                         </div>
                     </li>
                     <div className='flex flex-col space-y-8'>
                         <Link to='#' >
-                        <span className='font-bold hover:border'>Home</span>
+                            <span className='font-bold hover:border'>Home</span>
                         </Link>
 
                         <Link to='#' >
-                        <span className='font-bold hover:border'>Where To? </span>
+                            <span className='font-bold hover:border'>Where To? </span>
                         </Link>
 
                         <Link to='#' >
-                        <span className='font-bold hover:border'>About</span>
+                            <span className='font-bold hover:border'>About</span>
                         </Link>
 
                         <Link to='#' >
-                        <span className='font-bold hover:border'>Contact</span>
+                            <span className='font-bold hover:border'>Contact</span>
                         </Link>
                     </div>
                 </ul>

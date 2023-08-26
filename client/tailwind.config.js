@@ -7,6 +7,9 @@ module.exports = {
     important: "#root",
     theme: {
       extend: {
+        margin: {
+            '175px': '175px',
+          }
       },
     },
     plugins: [

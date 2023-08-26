@@ -3,7 +3,7 @@ import React from 'react'
 const WhereTo = () => {
     return (
         <div>
-            <section className='mr-32 ml-32 mt-10'>
+            <section className='md:mr-32 md:ml-32 mt-10'>
             <span className='text-xl font-medium  '>
                 Where to ?
             </span>

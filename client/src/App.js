@@ -11,6 +11,9 @@ import Signup from './pages/Signup/Signup';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Contactus from './pages/Contactus/Contactus';
 import Profile from './pages/Profile/Profile';
+import WhereToMap from './pages/WhereToMap/WhereToMap';
+import Events from './pages/Events/Events';
+import CategoryEvent from './pages/EventCategory/CategoryEvent';
 // components
 
 
@@ -25,6 +28,9 @@ function App() {
                     <Route path="/aboutus" element={<AboutUs />} />
                     <Route path="/contactus" element={<Contactus />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/whereto" element={<WhereToMap />} />
+                    <Route path="/category/:category" element={<Events />} />
+                    {/* <Route path="/events" element={<Events />} /> */}
                     <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>

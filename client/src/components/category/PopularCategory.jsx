@@ -2,7 +2,8 @@ import React from 'react'
 
 const PopularCategory = () => {
     return (
-        <div><section className='mr-32 ml-32 mt-10'>
+        <div>
+            <section className='md:mr-32 md:ml-32 mt-10'>
             <div className='flex justify-between'>
                 <div className="left"><span className='text-xl font-medium'>Popular Category</span></div>
                 <div className="right md:flex flex-wrap space-x-2">
@@ -28,7 +29,7 @@ const PopularCategory = () => {
             </div>
 
             <div>
-                <div className='flex flex-wrap mt-3 justify-around '>
+                <div className='carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hideflex flex-wrap mt-3 justify-around '>
                     <div className="mb-2 rounded-lg bg-center bg-no-repeat w-56 relative h-80 max-h-80 bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692690811/1.1_pumpaw.png')] bg-gray-400 bg-blend-multiply">
                         <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                             <span className='text-xl text-white font-medium'>Staycation</span>
