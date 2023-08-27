@@ -1,8 +1,4 @@
 import React from 'react'
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
-import { Icon } from '@iconify/react'
-import locationIcon from '@iconify/icons-mdi/map-marker'
-
 
 
 const GoogleMap = () => {
