@@ -1,12 +1,12 @@
 import React from 'react'
 
 
-const GoogleMap = () => {
+const GoogleMap = ({className}) => {
     return (
         <>
             <div className="rounded-sm">
                 <iframe
-                    className="rounded-xl ml-12 md:ml-0 h-44 md:h-96 md:w-72"
+                    className={`rounded-xl md:ml-12 md:ml-0 h-44 ${className}` }
                     frameborder="0"
                     scrolling="no"
                     marginheight="0"

@@ -72,16 +72,25 @@ const Navbar = () => {
                     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
                         <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                             <li>
-                                <a href="#" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+                                <Link to='/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
+                                    <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page">Home</a>
+                                </Link>
+
                             </li>
                             <li>
-                                <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Where To ?</a>
+                                <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'text-blue-500' : ''}`}>
+                                    <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Where To ?</a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                                <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'text-blue-500' : ''}`}>
+                                    <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                                <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'text-blue-500' : ''}`}>
+                                    <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -107,19 +116,19 @@ const Navbar = () => {
                         </div>
                     </li>
                     <div className='flex flex-col space-y-8'>
-                        <Link to='#' >
+                        <Link to='/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
                             <span className='font-bold hover:border'>Home</span>
                         </Link>
 
-                        <Link to='#' >
+                        <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'text-blue-500' : ''}`}>
                             <span className='font-bold hover:border'>Where To? </span>
                         </Link>
 
-                        <Link to='#' >
+                        <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'text-blue-500' : ''}`}>
                             <span className='font-bold hover:border'>About</span>
                         </Link>
 
-                        <Link to='#' >
+                        <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'text-blue-500' : ''}`}>
                             <span className='font-bold hover:border'>Contact</span>
                         </Link>
                     </div>

@@ -14,6 +14,7 @@ import Profile from './pages/Profile/Profile';
 import WhereToMap from './pages/WhereToMap/WhereToMap';
 import Events from './pages/Events/Events';
 import CategoryEvent from './pages/EventCategory/CategoryEvent';
+import EventDescription from './pages/EventDescription/EventDescription';
 // components
 
 
@@ -30,7 +31,7 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/whereto" element={<WhereToMap />} />
                     <Route path="/category/:category" element={<Events />} />
-                    {/* <Route path="/events" element={<Events />} /> */}
+                    <Route path="/events/eventid" element={<EventDescription />} />
                     <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>

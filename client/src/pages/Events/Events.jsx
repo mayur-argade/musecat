@@ -218,8 +218,8 @@ const Events = () => {
                     </div>
 
                     <div className='md:mr-40 mt-3'>
-                        <div className="">
-                            <GoogleMap />
+                        <div>
+                            <GoogleMap className={"md:h-96 md:w-72"} />
                         </div>
                         <div className="mt-3 mx-auto">
                             <span className="text-xl ml-8 font-bold mt-3">

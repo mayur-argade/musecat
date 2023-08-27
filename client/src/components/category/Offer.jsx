@@ -3,14 +3,14 @@ import React from 'react'
 const Offer = () => {
   return (
     <div>
-        <section className='md:mr-32 md:ml-32  mt-10'>
+        <section className='md:mr-32 md:ml-32 mt-10'>
     <div className='flex justify-between mt-10'>
         <div className="left"><span className='text-xl font-medium'>Offers</span></div>
         <div className="right"></div>
         <div className="right underline"><span>view all</span></div>
     </div>
 
-    <div className='flex flex-wrap justify-around'>
+    <div className='md:flex md:justify-around carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-5'>
         <img className='h-64 w-52' src="/images/assets/offer1.jpg" alt="" />
         <img className='h-64 w-52' src="/images/assets/offer2.jpg" alt="" />
         <img className='h-64 w-52' src="/images/assets/offer3.jpg" alt="" />
