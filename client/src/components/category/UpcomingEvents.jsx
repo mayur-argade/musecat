@@ -94,7 +94,8 @@ const UpcomingEvents = () => {
             </div>
 
             <div>
-                <div className='flex flex-wrap justify-between mr-6 ml-6 mt-2'>
+                <div className='carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-5 md:flex md:flex-wrap md:justify-between mr-6 ml-6 mt-2'>
+                    <div>
                     <div className="mt-10 mb-2 rounded-lg w-60 relative h-80 max-h-80 bg-teal-50">
                         <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                             <img src="/images/assets/1.png" alt="" />
@@ -105,7 +106,8 @@ const UpcomingEvents = () => {
                             </div>
                         </div>
                     </div>
-
+                    </div>
+                    <div>
                     <div className="mt-10 mb-2 rounded-lg w-60 relative h-80 max-h-80 bg-teal-50">
                         <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                             <img src="/images/assets/2.png" alt="" />
@@ -116,7 +118,8 @@ const UpcomingEvents = () => {
                             </div>
                         </div>
                     </div>
-
+                    </div>
+                    <div>
                     <div className="mt-10  mb-2 rounded-lg w-60 relative h-80 max-h-80 bg-teal-50">
                         <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                             <img src="/images/assets/3.png" alt="" />
@@ -127,7 +130,8 @@ const UpcomingEvents = () => {
                             </div>
                         </div>
                     </div>
-
+                    </div>
+                    <div>
                     <div className="mt-10  mb-2 rounded-lg w-60 relative h-80 max-h-80 bg-teal-50">
                         <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                             <img src="/images/assets/1.png" alt="" />
@@ -137,6 +141,7 @@ const UpcomingEvents = () => {
                                 <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
 
