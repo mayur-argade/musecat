@@ -60,10 +60,15 @@ const Profile = () => {
 
                 <div className="savedCards mt-10 ">
                     <div className="text-2xl ml-7 md:ml-44">Saved Cards</div>
-                    <div className="flex md:flex-row ml-8 space-y-5 flex-col justify-center md:space-x-8">
-                        <DebitCard />
-                        <DebitCard />
+                    <div className="flex md:flex-row ml-8 space-y-5 flex-col items-center justify-center align-middle md:space-x-8">
+                        <div className='mt-5'>
+                            <DebitCard />
+                        </div>
+                        <div>
+                            <DebitCard />
+                        </div>
                     </div>
+
                 </div>
             </section>
 

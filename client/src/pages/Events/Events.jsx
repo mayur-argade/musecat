@@ -217,16 +217,18 @@ const Events = () => {
                         <Carousel />
                     </div>
 
-                    <div className='md:mr-40 mt-3'>
+                    <div className='md:mr-40 mt-3 flex flex-col justify-center align-middle items-center'>
                         <div>
-                            <GoogleMap className={"md:h-96 md:w-72"} />
+                            <GoogleMap className={"md:h-96 md:w-80"} />
                         </div>
-                        <div className="mt-3 mx-auto">
-                            <span className="text-xl ml-8 font-bold mt-3">
-                                Trending in Muscat
-                            </span>
-                        </div>
-                        <div className="flex flex-col justify-center items-center mx-auto">
+
+
+                        <div className="flex flex-col justify-center items-center ">
+                            <div className="mt-3 mx-auto">
+                                <span className="text-xl ml-8 font-bold mt-3">
+                                    Trending in Muscat
+                                </span>
+                            </div>
                             <SubEventCard />
                             <SubEventCard />
                             <SubEventCard />

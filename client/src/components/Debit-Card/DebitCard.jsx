@@ -4,7 +4,7 @@ import React from 'react'
 const DebitCard = () => {
     return (
       <>
-      <div class="h-52 w-80 md:w-96 md:h-56  bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110">
+      <div class="h-52 w-80 md:w-96 md:h-56 bg-red-100 rounded-xl relative text-white shadow-2xl">
             
             <img class="relative object-cover w-full h-full rounded-xl" src="/images/assets/cardback.jpg" />
             

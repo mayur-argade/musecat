@@ -13,7 +13,6 @@ import Contactus from './pages/Contactus/Contactus';
 import Profile from './pages/Profile/Profile';
 import WhereToMap from './pages/WhereToMap/WhereToMap';
 import Events from './pages/Events/Events';
-import CategoryEvent from './pages/EventCategory/CategoryEvent';
 import EventDescription from './pages/EventDescription/EventDescription';
 // components
 

@@ -5,6 +5,7 @@ import './navbar.css'
 import { useParams } from 'react-router-dom';
 const Navbar = () => {
     let { category } = useParams();
+    console.log(category);
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
     let categoryName = category
@@ -35,11 +36,14 @@ const Navbar = () => {
     else if (category === 'kidscorner') {
         categoryName = 'Kids Corner'
     }
+    else if( window.location.pathname =='/events/eventid'){
+        categoryName = "Event Description"
+    }
     return (
         <>
             <div class="bg-white border-gray-200 dark:bg-gray-900 mr-5 ml-5 md:mr-32 md:ml-32">
-                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' ? (
+                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4">
+                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' ? (
                         <div className='flex align-middle'>
                             <button className="menu-bars md:hidden" >
                                 <img src="/images/icons/back-arrow.svg" alt="" />
@@ -52,9 +56,9 @@ const Navbar = () => {
                             </a>
                         </div>
                     ) : (
-                        <div>
+                        <div className='flex align-middle'>
                             <button className="menu-bars md:hidden" onClick={showSidebar}>
-                                <img src="/images/assets/menu-icon.png" alt="" />
+                                <img src="/images/icons/menu.svg" alt="" />
                             </button>
 
                             <a href="#" class="hidden md:flex items-center">
@@ -97,15 +101,16 @@ const Navbar = () => {
 
                     <div className="flex md:hidden space-x-2">
                         {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' ? (
-                            <img className="hidden" src="/images/assets/search-icon.png" alt="" />
+                            <img className="hidden" src="/images/assets/search.svg" alt="" />
                         ) : (
-                            <img className="" src="/images/assets/search-icon.png" alt="" />
+                            <img className="" src="/images/icons/search.svg" alt="" />
                         )}
-                        <img src="/images/assets/notification-icon.png" alt="" />
+                        <img src="/images/icons/notification.svg" alt="" />
                     </div>
                 </div>
             </div>
 
+{/* sidebar for mobile view */}
             <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
                 <ul className="nav-menu-items" onClick={showSidebar}>
                     <li className="navbar-toggle flex justify-end justify-items-end">
@@ -115,6 +120,7 @@ const Navbar = () => {
                             </Link>
                         </div>
                     </li>
+
                     <div className='flex flex-col space-y-8'>
                         <Link to='/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
                             <span className='font-bold hover:border'>Home</span>
@@ -132,6 +138,7 @@ const Navbar = () => {
                             <span className='font-bold hover:border'>Contact</span>
                         </Link>
                     </div>
+
                 </ul>
             </nav>
         </>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Tabbar = () => {
     return (
         <>
-            <nav className='flex justify-center space-x-4'>
+            <nav className='shadow-md hidden md:flex justify-center py-3 space-x-4'>
                 <Link to='/Category/events'>
                     <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Events</span>
                 </Link>
