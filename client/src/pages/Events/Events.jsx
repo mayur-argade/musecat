@@ -205,7 +205,7 @@ const Events = () => {
                 </div>
 
                 <div className='max-w-screen flex flex-col md:flex-row'>
-                    <div className='hidden md:flex w-11/12 md:ml-32 flex-wrap justify-center md:justify-start -gap-y-1'>
+                    <div className='hidden md:flex w-11/12 md:ml-32 md:flex-wrap justify-center md:justify-start leading-3'>
                         <EventCard />
                         <EventCard />
                         <EventCard />

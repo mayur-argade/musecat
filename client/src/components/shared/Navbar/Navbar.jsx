@@ -36,14 +36,27 @@ const Navbar = () => {
     else if (category === 'kidscorner') {
         categoryName = 'Kids Corner'
     }
-    else if( window.location.pathname =='/events/eventid'){
+    else if (window.location.pathname == '/events/eventid') {
         categoryName = "Event Description"
     }
+    else if (window.location.pathname == '/venue/venueid') {
+        categoryName = "Venue Description"
+    }
+    else if (window.location.pathname == '/favorites') {
+        categoryName = "Favorites"
+    }
+    else if (window.location.pathname == '/pastpurchase') {
+        categoryName = "Past Purchases"
+    }
+    else if (window.location.pathname == '/faq') {
+        categoryName = "FAQs"
+    }
+
     return (
         <>
-            <div class="bg-white border-gray-200 dark:bg-gray-900 mr-5 ml-5 md:mr-32 md:ml-32">
-                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4">
-                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' ? (
+            <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 md:mr-32 md:ml-32">
+                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4 pb-2 shadow-md md:shadow-none">
+                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' ? (
                         <div className='flex align-middle'>
                             <button className="menu-bars md:hidden" >
                                 <img src="/images/icons/back-arrow.svg" alt="" />
@@ -110,7 +123,7 @@ const Navbar = () => {
                 </div>
             </div>
 
-{/* sidebar for mobile view */}
+            {/* sidebar for mobile view */}
             <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
                 <ul className="nav-menu-items" onClick={showSidebar}>
                     <li className="navbar-toggle flex justify-end justify-items-end">

@@ -1,13 +1,13 @@
 import React from 'react'
 import { useState, useRef } from 'react'
 
-const Accordian = ({ title, content, isOpened, onClick }) => {
+const Accordian = ({ title, content, isOpened, onClick, color, textcol }) => {
 
     return (
         <div className='mb-4'>
-            <div onClick={onClick} className=" cursor-pointer">
-                <div className="flex justify-between">
-                    <p className="font-semibold">{title}</p>
+            <div onClick={onClick} className={`cursor-pointer ${color}`}>
+                <div className="flex justify-between align-middle">
+                    <p className={` ${textcol}`}>{title}</p>
                     {isOpened ? (
                         <img src="/images/icons/minus.svg" alt="Minus Icon" />
                     ) : (
@@ -16,8 +16,8 @@ const Accordian = ({ title, content, isOpened, onClick }) => {
                 </div>
             </div>
             {isOpened && (
-                <div className="overflow-hidden transition-all duration-200">
-                    <p className="font-light leading-relaxed">{content}</p>
+                <div className={`overflow-hidden transition-all duration-200 pl-3`}>
+                    <p className="font-light leading-relaxed ">{content}</p>
                 </div>
             )}
         <hr className='border-slate-300'/>

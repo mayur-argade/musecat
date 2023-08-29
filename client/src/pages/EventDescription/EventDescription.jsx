@@ -112,6 +112,7 @@ const EventDescription = () => {
                         {accordions.map((accordion, index) => (
                             <Accordian
                                 className='mx-auto'
+                                textcol={'font-semibold'}
                                 key={index}
                                 title={accordion.title}
                                 content={accordion.content}

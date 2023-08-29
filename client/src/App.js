@@ -14,6 +14,11 @@ import Profile from './pages/Profile/Profile';
 import WhereToMap from './pages/WhereToMap/WhereToMap';
 import Events from './pages/Events/Events';
 import EventDescription from './pages/EventDescription/EventDescription';
+import VenueDescription from './pages/VenueDescription/VenueDescription';
+import Favorites from './pages/Favorites/Favorites';
+import PastPurchase from './pages/PastPurchase/PastPurchase';
+import FAQ from './pages/FAQ/FAQ';
+import BookTicket from './pages/BookTicket/BookTicket';
 // components
 
 
@@ -31,6 +36,11 @@ function App() {
                     <Route path="/whereto" element={<WhereToMap />} />
                     <Route path="/category/:category" element={<Events />} />
                     <Route path="/events/eventid" element={<EventDescription />} />
+                    <Route path="/venue/venueid" element={<VenueDescription />} />
+                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/pastpurchase" element={<PastPurchase />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/bookticket" element={<BookTicket />} />
                     <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>

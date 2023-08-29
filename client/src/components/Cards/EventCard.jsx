@@ -3,7 +3,7 @@ import React from 'react'
 const EventCard = () => {
     return (
         <>
-            <div class=" m-3 h-80 w-52 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class=" md:m-3 h-80 w-52 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
                     <img class="h-48 rounded-t-lg" src="/images/assets/about.png" alt="" />
                 </a>
