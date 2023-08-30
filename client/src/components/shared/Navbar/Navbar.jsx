@@ -51,12 +51,15 @@ const Navbar = () => {
     else if (window.location.pathname == '/faq') {
         categoryName = "FAQs"
     }
+    else if (window.location.pathname == '/bookticket') {
+        categoryName = "Book Your Seat"
+    }
 
     return (
         <>
             <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 md:mr-32 md:ml-32">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4 pb-2 shadow-md md:shadow-none">
-                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' ? (
+                    {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' ? (
                         <div className='flex align-middle'>
                             <button className="menu-bars md:hidden" >
                                 <img src="/images/icons/back-arrow.svg" alt="" />
