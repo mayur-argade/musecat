@@ -5,7 +5,7 @@
 
 /* Customize the scrollbar for WebKit browsers */
 ::-webkit-scrollbar {
-    width: 1px;
+    width: 0px;
     /* Decrease the width */
     height: 0px;
 }

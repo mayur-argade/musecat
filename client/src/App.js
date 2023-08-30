@@ -19,6 +19,11 @@ import Favorites from './pages/Favorites/Favorites';
 import PastPurchase from './pages/PastPurchase/PastPurchase';
 import FAQ from './pages/FAQ/FAQ';
 import BookTicket from './pages/BookTicket/BookTicket';
+import TicketStatus from './pages/TicketStatus/TicketStatus';
+import VendorLogin from './pages/Login/VendorLogin';
+import VendorSignup from './pages/Signup/VendorSignup';
+import VendorNotification from './pages/VendorNotification/VendorNotification';
+import VendorActivation from './pages/VendorActivation/VendorActivation';
 // components
 
 
@@ -28,7 +33,9 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<Login />} />
+                    <Route path="/vendor/login" element={<VendorLogin />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path="/vendor/signup" element={<VendorSignup />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/aboutus" element={<AboutUs />} />
                     <Route path="/contactus" element={<Contactus />} />
@@ -41,6 +48,10 @@ function App() {
                     <Route path="/pastpurchase" element={<PastPurchase />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/bookticket" element={<BookTicket />} />
+                    <Route path="/ticketstatus/ticketid" element={<TicketStatus />} />
+
+                    <Route path="/vendor/activation" element={<VendorActivation />} />
+                    <Route path="/vendor/notification" element={<VendorNotification />} />
                     <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>
