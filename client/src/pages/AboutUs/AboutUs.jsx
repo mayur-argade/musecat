@@ -11,7 +11,7 @@ const AboutUs = () => {
                     <section className="flex md:grid md:grid-cols-6 h-11/12 items-center md:mt-16 relative">
                         <div className="col-start-1 col-end-3 md:col-start-2 md:col-end-4 justify-items-start relative z-20">
                             <div className="ml-3 -mt-2 ">
-                                <span className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</span>
+                                <p className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</p>
                                 <p className="text-3xl font-extrabold md:text-5xl md:font-bold">Muscat Where <br /> To ?</p>
                             </div>
                         </div>

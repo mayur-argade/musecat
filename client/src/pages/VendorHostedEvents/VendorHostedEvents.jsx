@@ -32,7 +32,7 @@ const VendorHostedEvents = () => {
             <Navbar />
 
             <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
-                <div className='flex justify-between align-middle items-center'>
+                <div className='flex justify-end md:justify-between align-middle items-center'>
                     <div className="ml-3 hidden md:flex align-middle items-center">
                         <button className=' mt-1'>
                             <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
@@ -40,7 +40,7 @@ const VendorHostedEvents = () => {
                         <p className='text-xl font-bold'>Hosted Events</p>
                     </div>
 
-                    <div class="filterbyfeature">
+                    <div class="filterbyfeature mb-3">
                         <div className="relative inline-block text-left">
                             <button
                                 onClick={toggleDropdown}
@@ -51,7 +51,7 @@ const VendorHostedEvents = () => {
                             </button>
                             {isOpen && (
                                 <div
-                                    className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52"
+                                    className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
                                     ref={dropdownRef}
                                 >
                                     <div className="p-5">

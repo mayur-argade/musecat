@@ -90,7 +90,7 @@ const Navbar = () => {
                             {
                                 window.location.pathname == "/vendor/hostedevents"
                                     ?
-                                    <div className="search">
+                                    <div className="hidden md:block search">
                                         <div class="pl-2">
                                             <div class="relative mt-1">
                                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">

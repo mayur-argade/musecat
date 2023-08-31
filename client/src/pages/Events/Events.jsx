@@ -107,7 +107,7 @@ const Events = () => {
                                 </button>
                                 {isOpen && (
                                     <div
-                                        className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52"
+                                        className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
                                         ref={dropdownRef}
                                     >
                                         <div className="p-5">
