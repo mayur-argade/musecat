@@ -2,6 +2,7 @@ import React from 'react'
 
 const VendorOfferCard = ({ status }) => {
     return (
+        <>
         <div className="relative">
             <img
                 className="h-64 w-52 snap-start"
@@ -12,6 +13,7 @@ const VendorOfferCard = ({ status }) => {
                 <p className={`text-sm font-semibold ${status == 'Inactive' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
             </div>
         </div>
+        </>
     )
 }
 
