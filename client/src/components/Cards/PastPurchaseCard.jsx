@@ -5,8 +5,8 @@ const PastPurchaseCard = ({ status }) => {
         <>
             <div class="relative md:m-3 h-auto w-44 md:w-44 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
-                <button class="absolute top-2 right-2 bg-white rounded-sm w-24 h-5 flex items-center justify-center align-middle text-white">
-                    <p className={`text-sm font-semibold ${status == 'Expired' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
+                <button class="absolute top-2 right-2 pt-2 pb-2 bg-white rounded-md w-24 h-5 flex items-center justify-center align-middle text-white">
+                    <p className={`text-sm font-semibold ${status == 'Expired' || status == 'Archived' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
                 </button>
 
                 <a href="#">
@@ -26,7 +26,7 @@ const PastPurchaseCard = ({ status }) => {
                 </div>
             </div>
 
-
+        
         </>
     )
 }

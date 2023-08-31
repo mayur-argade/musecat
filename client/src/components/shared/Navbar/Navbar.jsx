@@ -5,10 +5,12 @@ import './navbar.css'
 import { useParams } from 'react-router-dom';
 const Navbar = () => {
     let { category } = useParams();
-    console.log(category);
+
     const [sidebar, setSidebar] = useState(false);
+
     const showSidebar = () => setSidebar(!sidebar);
     let categoryName = category
+
     if (category === 'event') {
         categoryName = 'Events'
     }
@@ -58,9 +60,10 @@ const Navbar = () => {
         categoryName = "Ticket Status"
     }
 
+
     return (
         <>
-            <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 md:mr-32 md:ml-32">
+            <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 md:mr-48 md:ml-48">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4 pb-2 shadow-md md:shadow-none">
                     {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
                         <div className='flex align-middle'>
@@ -83,6 +86,30 @@ const Navbar = () => {
                             <a href="#" class="hidden md:flex items-center">
                                 <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
                             </a>
+
+                            {
+                                window.location.pathname == "/vendor/hostedevents"
+                                    ?
+                                    <div className="search">
+                                        <div class="pl-2">
+                                            <div class="relative mt-1">
+                                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                </div>
+
+                                                <input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52 pl-5 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    :
+                                    <></>
+                            }
                         </div>
                     )}
 
@@ -92,31 +119,57 @@ const Navbar = () => {
                         <button type="button" class="border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
                     </div>
 
-                    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
-                        <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                            <li>
-                                <Link to='/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
-                                    <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page">Home</a>
-                                </Link>
+                    {
+                        window.location.pathname == "/vendor/notification"  ?
+                            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
+                                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                    <li>
+                                        <Link to='/vendor/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page">Home</a>
+                                        </Link>
 
-                            </li>
-                            <li>
-                                <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'text-blue-500' : ''}`}>
-                                    <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Where To ?</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'text-blue-500' : ''}`}>
-                                    <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'text-blue-500' : ''}`}>
-                                    <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                                    </li>
+                                    <li>
+                                        <Link to='/vendor/notification' className={`${window.location.pathname == '/vendor/notification' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Notifications</a>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to='/vendor/helpcenter' className={`${window.location.pathname == '/helpcenter' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Help Center</a>
+                                        </Link>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            :
+                            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
+                                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                    <li>
+                                        <Link to='/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page">Home</a>
+                                        </Link>
+
+                                    </li>
+                                    <li>
+                                        <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Where To ?</a>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'text-blue-500' : ''}`}>
+                                            <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                    }
+
 
                     <div className="flex md:hidden space-x-2">
                         {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' ? (

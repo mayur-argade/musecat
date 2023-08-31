@@ -24,6 +24,7 @@ import VendorLogin from './pages/Login/VendorLogin';
 import VendorSignup from './pages/Signup/VendorSignup';
 import VendorNotification from './pages/VendorNotification/VendorNotification';
 import VendorActivation from './pages/VendorActivation/VendorActivation';
+import VendorHostedEvents from './pages/VendorHostedEvents/VendorHostedEvents';
 // components
 
 
@@ -49,7 +50,7 @@ function App() {
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/bookticket" element={<BookTicket />} />
                     <Route path="/ticketstatus/ticketid" element={<TicketStatus />} />
-
+                    <Route path="/vendor/hostedevents" element={<VendorHostedEvents />} />
                     <Route path="/vendor/activation" element={<VendorActivation />} />
                     <Route path="/vendor/notification" element={<VendorNotification />} />
                     <Route path="/demo" element={<Demo />} />
