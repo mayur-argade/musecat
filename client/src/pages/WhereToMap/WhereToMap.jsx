@@ -12,7 +12,7 @@ const WhereToMap = () => {
             <Navbar />
             <section className='md:mr-32 md:ml-32 '>
                 <div className="flex  align-middle items-center">
-                    <img className='h-16' src="/images/icons/backarrow.svg" alt="" />
+                    <img className='h-16' src="/images/icons/back-button.png" alt="" />
                     <span className='text-2xl font-bold'> Where To Map</span>
                 </div>
                 <div className="flex justify-center items-center md:flex-row flex-col w-11/12">
