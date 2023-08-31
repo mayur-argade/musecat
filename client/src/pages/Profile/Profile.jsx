@@ -136,7 +136,7 @@ const Profile = () => {
                 </div>
             </section> */}
 
-            <div className=" md:mr-28 md:ml-28 md:mt-8">
+            <div className="">
                 <Footer />
             </div>
         </>

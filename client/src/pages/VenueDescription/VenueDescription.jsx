@@ -129,7 +129,7 @@ const VenueDescription = () => {
 
             </section>
 
-            <div className='md:mr-28 md:ml-28 '>
+            <div className=''>
                 < Footer />
             </div>
         </>
