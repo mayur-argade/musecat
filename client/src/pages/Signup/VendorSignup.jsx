@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const VendorSignup = () => {
     return (
         <section class="h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
@@ -97,7 +97,9 @@ const VendorSignup = () => {
                     </div>
 
                     <div>
-                        <button class="w-full py-2 bg-[#C0A04C] hover:bg-blue-700 rounded-md text-sm font-bold text-gray-50 transition duration-200">Signup</button>
+                        <Link to="/vendor/home">
+                        <button class="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">Signup</button>
+                        </Link>
                     </div>
                     <div class="flex items-center justify-between">
 

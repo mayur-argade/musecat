@@ -2,13 +2,10 @@ import React, { useState } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import GoogleMap from '../../components/GoogleMap/GoogleMap'
-import EventCard from '../../components/Cards/EventCard'
-import Offer from '../../components/category/Offer'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
-const EventDescription = () => {
 
+const VendorEventDescripton = () => {
     const [accordions, setAccordions] = useState([
         {
             title: 'Event Information',
@@ -27,22 +24,20 @@ const EventDescription = () => {
         }));
         setAccordions(updatedAccordions);
     };
-
     return (
         <>
             <Navbar />
-            <Tabbar />
-            <section className='md:mr-32 md:ml-32 mt-5 ml-4 mr-4'>
+            <section className='md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
 
                 <div className="hidden md:flex align-middle items-center">
                     <button className="backlogo rounded-full shadow-md shadow-gray-500">
-                        <img src="/images/icons/backarrow.svg" alt="" />
+                        <img className="" src="/images/icons/backarrow.svg" alt="" />
                     </button>
                     <span className='text-lg font-bold'>Event Description</span>
                 </div>
 
-                <div className='text-center'>
-                    <p className='text-xl md:text-2xl font-bold'>Breakfast and Pool Pass at Crowne Plaza OCEC</p>
+                <div className='mt-3 text-center'>
+                    <p className='text-xl md:text-3xl font-bold'>Breakfast and Pool Pass at Crowne Plaza OCEC</p>
                     <p className='text-sm md:text-md font-light'>Turn your breakfast into a day out by the pool at
                         <Link to="/venue/venueid" className='text-[#C0A04C]'>
                             <span>
@@ -57,12 +52,41 @@ const EventDescription = () => {
                 </div>
 
                 <div className="mt-8 grid grid-cols-4">
-                    <div className="col-span-4 md:col-span-2  flex flex-col items-center justify-center">
-                        <div>
-                            <img className='h-80' src="/images/assets/eventdescription.png" alt="" />
+                    <div className="col-span-4 md:col-span-2  flex flex-col items-stretch justify-center">
+                        <div className="w-full max-w-6xl rounded-lg relative">
+                            {/* Image */}
+                            <img className="h-80 w-full rounded-lg" src="/images/assets/eventdescription.png" alt="" />
+
+                            {/* Top-right Edit and View Sales */}
+                            <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
+
+                                <button className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
+                                    View Sales
+                                </button>
+
+                                <button className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
+                                    <img className="text-white " src="/images/icons/edit.svg" alt="" />
+                                </button>
+                            </div>
+
+                            {/* Bottom Rectangle */}
+                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-75 p-2">
+                                <div className="flex items-center justify-between text-white">
+                                    {/* Like Button */}
+                                    <button className="text-white rounded-md px-3 py-1 hover:bg-red-700">
+                                        <img className='h-7' src="/images/icons/like.svg" alt="" />
+                                    </button>
+
+                                    {/* Like Count */}
+                                    <div className="flex items-center">
+                                        <span>1,531 People liked this event</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className='flex mt-3 w-10/12  align-middle items-center space-x-2'>
+
+                        <div className='flex mt-3 w-full  align-middle items-strech space-x-2'>
                             <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
                                 <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
                             </div>
@@ -80,7 +104,7 @@ const EventDescription = () => {
 
                         </div>
 
-                        <div className='w-10/12 pl-4 pr-4 py-4 flex flex-col rounded-lg shadow-xl shadow-gray-300'>
+                        <div className='mt-3 w-full pl-4 pr-4 py-4 flex flex-col rounded-lg shadow-xl shadow-gray-300'>
 
                             <div className='p-3 flex items-center align-middle space-x-2'>
                                 <img className='h-5' src="/images/icons/map-1.svg" alt="" />
@@ -103,7 +127,7 @@ const EventDescription = () => {
 
                         </div>
 
-                        <div className="mt-3 space-x-5 w-10/12  justify-center flex align-middle items-center">
+                        <div className="mt-3 space-x-5 w-full  justify-center flex align-middle items-center">
                             <button className='w-full flex items-center justify-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm py-2 pl-1 pr-4 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
                                 <img className='h-4' src="/images/icons/heart.svg" alt="" />
                                 <span>Add to Favorite</span>
@@ -133,11 +157,9 @@ const EventDescription = () => {
                                 <button type="button" class="w-full border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Contact Us</button>
 
                             </div>
-                            <Link to="/bookticket">
-                                <div className="booknow">
-                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
-                                </div>
-                            </Link>
+                            <div className="booknow">
+                                <button type="button" class="w-full text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,36 +190,7 @@ const EventDescription = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-col justify-center items-center mt-5'>
-                    <span className='text-xl font-bold'>
-                        Upcoming Events
-                    </span>
 
-                </div>
-                <div className='ml-2 mr-2'>
-                    <div className="md:flex md:justify-around snap-x carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-1 md:space-x-5">
-                        <div className='snap-start'>
-                            < EventCard />
-                        </div>
-                        <div>
-                            < EventCard />
-                        </div>
-                        <div>
-                            < EventCard />
-                        </div>
-                        <div>
-                            < EventCard />
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <Offer />
-
-                <div className="mt-8 ">
-                    <img src="/images/assets/download.png" alt="" />
-                </div>
             </section>
 
             <div className=''>
@@ -207,4 +200,4 @@ const EventDescription = () => {
     )
 }
 
-export default EventDescription
+export default VendorEventDescripton

@@ -4,7 +4,7 @@ import FavoriteCard from '../../components/Cards/FavoriteCard';
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard';
 import VendorOfferCard from '../../components/Cards/VendorOfferCard';
 import Footer from '../../components/shared/Footer/Footer';
-
+import { Link } from 'react-router-dom';
 const VendorHostedEvents = () => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -139,19 +139,30 @@ const VendorHostedEvents = () => {
                     </div>
                 </div>
 
-                <div className='grid  xs:grid-cols-2  justify-items-center md:flex-wrap gap-y-4 md:justify-center md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4'>
-                    <PastPurchaseCard status={'Upcoming'} />
-                    <PastPurchaseCard status={'Archived'} />
-                    <PastPurchaseCard status={'Archived'} />
-                    <PastPurchaseCard status={'Upcoming'} />
-                    <PastPurchaseCard status={'Upcoming'} />
-                    <PastPurchaseCard status={'Upcoming'} />
-
-
-                </div>
+                <div className='mb-7 grid  xs:grid-cols-2  justify-items-center md:flex-wrap gap-y-4 md:justify-center md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4'>
+                    <Link to="/vendor/event/eventid">
+                        <PastPurchaseCard status={'Upcoming'} />
+                    </Link>
+                    <Link to="/vendor/event/eventid">
+                        <PastPurchaseCard status={'Upcoming'} />
+                    </Link>
+                    <Link to="/vendor/event/eventid">
+                        <PastPurchaseCard status={'Upcoming'} />
+                    </Link>
+                    <Link to="/vendor/event/eventid">
+                        <PastPurchaseCard status={'Upcoming'} />
+                    </Link>
+                    <Link to="/vendor/event/eventid">
+                        <PastPurchaseCard status={'Upcoming'} />
+                    </Link>
+                    <Link to="/vendor/event/eventid">
+                        <PastPurchaseCard status={'Upcoming'} />
+                    </Link>
+                 </div>
 
                 <div>
-                    <div className='md:flex md:justify-around carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-5'>
+                <span className='text-2xl font-bold '>Offers</span>
+                    <div className=' md:flex md:justify-around carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-5'>
                         <VendorOfferCard status={"Active"} />
                         <VendorOfferCard status={"Inactive"} />
                         <VendorOfferCard status={"Active"} />

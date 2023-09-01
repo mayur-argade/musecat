@@ -9,6 +9,8 @@ import SubEventCard from '../../components/Cards/SubEventCard'
 import Carousel from '../../components/Carousel/Carousel'
 import SubCarousel from '../../components/Carousel/SubCarousel'
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+
 const Events = () => {
     document.title = 'muscat ~ Events'
     let { category } = useParams();
@@ -206,11 +208,18 @@ const Events = () => {
 
                 <div className='max-w-screen flex flex-col md:flex-row'>
                     <div className='hidden md:flex w-11/12 md:ml-32 md:flex-wrap justify-center md:justify-start leading-3'>
+                        <Link to="/events/eventid" > 
                         <EventCard />
+                        </Link>
+                        <Link to="/events/eventid" > 
                         <EventCard />
+                        </Link>
+                        <Link to="/events/eventid" > 
                         <EventCard />
+                        </Link>
+                        <Link to="/events/eventid" > 
                         <EventCard />
-                        <EventCard />
+                        </Link>
                     </div>
 
                     <div>

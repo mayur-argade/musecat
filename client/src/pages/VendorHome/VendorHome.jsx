@@ -3,6 +3,7 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard'
 import VendorOfferCard from '../../components/Cards/VendorOfferCard'
 import Footer from '../../components/shared/Footer/Footer'
+import { Link } from 'react-router-dom'
 const VendorHome = () => {
     return (
         <div>
@@ -34,7 +35,7 @@ const VendorHome = () => {
 
                 <div className='mt-5 flex flex-col'>
                     <span className='font-bold text-2xl'>Ongoing Events</span>
-                    <div className="carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide md:space-x-14 space-x-5 justify-between">
+                    <div className="carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide   justify-between">
                         <div className=' flex-shrink-0'>
                             <PastPurchaseCard status={"Upcoming"} />
                         </div>
@@ -45,7 +46,9 @@ const VendorHome = () => {
                             <PastPurchaseCard status={"Upcoming"} />
                         </div>
                     </div>
+                    <Link className='flex justify-end text-right' to="/vendor/hostedevents">
                     <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span>
+                    </Link>
                 </div>
 
                 <div className='mt-5 flex flex-col'>

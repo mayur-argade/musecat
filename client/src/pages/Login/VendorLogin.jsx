@@ -24,7 +24,7 @@ const VendorLogin = () => {
                 <a class="justify-self-end text-sm text-white md:text-black hover:underline" href="#">Forgot password?</a>
             </div>
             <div>
-                <Link to='/home'>
+                <Link to='/vendor/home'>
                 <button class="w-full p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">Login</button>
                 </Link>
             </div>

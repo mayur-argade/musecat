@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 const PopularCategory = () => {
 
@@ -115,13 +116,14 @@ const PopularCategory = () => {
                     </div>
 
                     <div className='flex justify-end space-x-2 '>
-                    <div className='flex justify-end align-middle'>
-                        <img className='h-6' src="/images/icons/map.svg" alt="" />
-                        <p className='text-sm'>View on map</p>
-                    </div>
+                        <div className='flex justify-end align-middle'>
+                            <img className='h-6' src="/images/icons/map.svg" alt="" />
+                            <p className='text-sm'>View on map</p>
+                        </div>
+                        <Link to="/category/events">
+                            <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                        </Link>
 
-                    <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
-                    
                     </div>
                 </div>
             </section>
