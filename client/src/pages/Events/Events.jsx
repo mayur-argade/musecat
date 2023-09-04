@@ -5,7 +5,7 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import EventCard from '../../components/Cards/EventCard'
 import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import Footer from '../../components/shared/Footer/Footer'
-import SubEventCard from '../../components/Cards/SubEventCard'
+import TrendingCard from '../../components/Cards/TrendingCard'
 import Carousel from '../../components/Carousel/Carousel'
 import SubCarousel from '../../components/Carousel/SubCarousel'
 import { useParams } from 'react-router-dom';
@@ -228,31 +228,31 @@ const Events = () => {
                 <div className="md:ml-36 md:mr-36 max-w-screen flex flex-col md:flex-row">
                     <div className="left w-full ">
                         <div className="md:flex md:justify-start md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
-                            <div className='snap-start'>
+                            <Link to="/events/eventid" >
                                 < EventCard />
-                            </div>
-                            <div>
+                            </Link>
+                            <Link to="/events/eventid" >
                                 < EventCard />
-                            </div>
-                            <div>
+                            </Link>
+                            <Link to="/events/eventid" >
                                 < EventCard />
-                            </div>
-                            <div>
+                            </Link>
+                            <Link to="/events/eventid" >
                                 < EventCard />
-                            </div>
-                            <div>
+                            </Link>
+                            <Link to="/events/eventid" >
                                 < EventCard />
-                            </div>
-                            <div>
+                            </Link>
+                            <Link to="/events/eventid" >
                                 < EventCard />
-                            </div>
+                            </Link>
                         </div>
                     </div>
 
                     <div className="relative right flex flex-col justify-center items-center md:w-2/4">
                         <div>
                             <div className='flex'>
-                                <GoogleMap className={'md:h-80 md:w-72 mt-6 md:mr-5'} />
+                                <GoogleMap className={'md:h-80 md:w-72 md:ml-10 mt-6 md:mr-5'} />
                             </div>
                         </div>
 
@@ -263,9 +263,9 @@ const Events = () => {
                                 </p>
                             </div>
                             <div className='flex flex-col justify-center items-center md:ml-8'>
-                                <SubEventCard />
-                                <SubEventCard />
-                                <SubEventCard />
+                                <TrendingCard />
+                                <TrendingCard />
+                                <TrendingCard />
                             </div>
 
                             <div className='hidden md:flex justify-end flex-col absolute -right-32 bottom-0'>

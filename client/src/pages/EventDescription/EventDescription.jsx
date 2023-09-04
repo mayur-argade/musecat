@@ -41,17 +41,16 @@ const EventDescription = () => {
                     <span className='text-lg font-bold'>Event Description</span>
                 </div>
 
-                <div className='text-center'>
-                    <p className='text-xl md:text-2xl font-bold'>Breakfast and Pool Pass at Crowne Plaza OCEC</p>
+                <div className='text-center mt-5'>
+                    <p className='text-xl md:text-3xl font-bold'>Breakfast and Pool Pass at Crowne Plaza OCEC</p>
                     <p className='text-sm md:text-md font-light'>Turn your breakfast into a day out by the pool at
                         <Link to="/venue/venueid" className='text-[#C0A04C]'>
-                            <span>
-
+                            <span className='font-medium'>
                                 Crowne Plaza OCEC
                             </span>
                         </Link></p>
-                    <div className='mt-4 flex justify-center text-center'>
-                        <img src=".images/icons/calender.svg" alt="" />
+                    <div className='mt-4 flex justify-center space-x-2 text-center'>
+                        <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
                         <p className='text-sm font-semibold'>Saturday, September 9, 2023 | 19:30</p>
                     </div>
                 </div>
@@ -59,7 +58,7 @@ const EventDescription = () => {
                 <div className="mt-8 grid grid-cols-4">
 
                     <div className="col-span-4 md:col-span-2  flex flex-col items-center justify-center">
-                    <div className="w-full max-w-6xl rounded-lg relative">
+                        <div className="w-full max-w-6xl rounded-lg relative">
                             {/* Image */}
                             <img className="h-80 w-full rounded-lg" src="/images/assets/eventdescription.png" alt="" />
 
@@ -72,7 +71,7 @@ const EventDescription = () => {
                             </div>
 
                             {/* Bottom Rectangle */}
-                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-75 p-2">
+                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-75 p-2 rounded-lg">
                                 <div className="flex items-center justify-between text-white">
                                     {/* Like Button */}
                                     <button className="text-white rounded-md px-3 py-1 hover:bg-red-700">
@@ -87,7 +86,7 @@ const EventDescription = () => {
                             </div>
                         </div>
 
-                        <div className='flex mt-3 w-full align-middle items-center space-x-2'>
+                        <div className='flex mt-3 w-full align-middle justify-between items-center space-x-2'>
                             <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
                                 <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
                             </div>
@@ -97,9 +96,8 @@ const EventDescription = () => {
                             </div>
 
                             <div>
-                                <button className='flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm py-2 pl-1 pr-4 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
-                                    <img className='h-4' src="/images/icons/share.svg" alt="" />
-                                    <span>Share</span>
+                                <button className='flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                                    <img className='md:h-5 h-8' src="/images/icons/share.svg" alt="" />
                                 </button>
 
                             </div>
@@ -110,21 +108,21 @@ const EventDescription = () => {
 
                     </div>
 
-                    <div className="mt-6 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
-                        <div className='w-full pl-4 pr-4 py-4 flex flex-col rounded-lg shadow-2xl shadow-[#F3F3F3] rounded-lg '>
+                    <div className="mt-3 md:mt-0 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
+                        <div className='card w-full h- pl-4 pr-4 py-4 flex flex-col rounded-xl  border shadow-2xl shadow-[#F3F3F3] rounded-lg '>
 
-                            <div className='p-3 flex items-center align-middle space-x-2'>
+                            <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
                                 <img className='h-5' src="/images/icons/map-1.svg" alt="" />
                                 <p className='text-md'>Theatre of Arts</p>
-                                <span className='text-xs underline underline-offset-1 '>View on maps</span>
+                                <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                             </div>
 
                             <hr />
 
                             <div className='p-2 pb-0 flex justify-between '>
                                 <div className='flex flex-col'>
-                                    <span className='text-xs'>Ticket price starting from</span>
-                                    <span className='font-semibold text-xl'>OMR 390</span>
+                                    <p className='text-xs'>Ticket price starting from</p>
+                                    <p className='font-semibold text-xl'>OMR 390</p>
                                 </div>
                                 <div className='flex flex-col text-right'>
                                     <p className='text-xs'>Available Tickets</p>
@@ -136,10 +134,10 @@ const EventDescription = () => {
 
                         <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
                             <Link to='/favorites' className='w-full'>
-                            <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                <img className='h-4' src="/images/icons/heart.svg" alt="" />
-                                <span>Add to Favorite</span>
-                            </button>
+                                <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                    <img className='h-4' src="/images/icons/heart.svg" alt="" />
+                                    <span>Add to Favorite</span>
+                                </button>
                             </Link>
                             <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                 <img className='h-4' src="/images/icons/heart.svg" alt="" />
@@ -150,13 +148,13 @@ const EventDescription = () => {
                         <div className="">
                             <div className="contactus mb-5 mt-5">
                                 <Link to='/contactus'>
-                                <button type="button" class="w-full border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Contact Us</button>
+                                    <button type="button" class="border border-[#C0A04C] w-full border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Contact Us</button>
                                 </Link>
 
                             </div>
                             <Link to="/bookticket">
                                 <div className="booknow">
-                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
+                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
                                 </div>
                             </Link>
                         </div>
@@ -169,6 +167,7 @@ const EventDescription = () => {
                         <Accordian
                             className='mx-auto'
                             textcol={'font-semibold'}
+                            contentfont={'font-medium text-gray-500'}
                             key={index}
                             title={accordion.title}
                             content={accordion.content}
@@ -182,23 +181,13 @@ const EventDescription = () => {
                         Location
                     </span>
                     <div>
-                        <div className="right rounded-sm">
-                            <iframe
-                                className="rounded-xl max-w-xs md:max-w-6xl"
-                                width="920"
-                                height="386"
-                                frameborder="0"
-                                scrolling="no"
-                                marginheight="0"
-                                marginwidth="0"
-                                id="gmap_canvas"
-                                src="https://maps.google.com/maps?width=520&amp;height=386&amp;hl=en&amp;q=pimplegaon%20pune+(pimpalgaon)&amp;t=k&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                            ></iframe>{" "}
-                            <a href="https://add-map.com/"></a>{" "}
-                            <script
-                                type="text/javascript"
-                                src="https://embedmaps.com/google-maps-authorization/script.js?id=0be1ddff42e0997de165b8ff4033d38efb3890f2"
-                            ></script>
+                        <div class="mapouter">
+                            <div class="gmap_canvas">
+                                <iframe
+                                    className={`rounded-xl h-48 w-80 md:h-[386px] md:w-[980px] md:max-h-fit md:w-full`}
+                                    id="gmap_canvas" src="https://maps.google.com/maps?q=Muscat&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                                </iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -229,29 +218,41 @@ const EventDescription = () => {
 
 
                 <section>
-                <section className='mt-3 ml-3 mr-3'>
-                    <div className='flex justify-between '>
-                        <div className="left"><span className='text-xl font-bold'>Offers</span></div>
-                        <div className="right"></div>
+                    <section className='mt-3 ml-3 mr-3'>
+                        <div className='flex justify-between '>
+                            <div className="left"><span className='text-xl font-bold'>Offers</span></div>
+                            <div className="right"></div>
 
-                    </div>
+                        </div>
 
-                    <div className="ml-1 mr-1">
-                        <div className='md:flex md:justify-around carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-5'>
-                            <img className='h-64 w-52 snap-start' src="/images/assets/offer1.jpg" alt="" />
-                            <img className='h-64 w-52' src="/images/assets/offer2.jpg" alt="" />
-                            <img className='h-64 w-52' src="/images/assets/offer3.jpg" alt="" />
-                            <img className='h-64 w-52' src="/images/assets/offer4.jpg" alt="" />
+                        <div className="ml-1 mr-1">
+                            <div className='md:flex md:justify-around carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-5'>
+                                <img className='h-64 w-52 snap-start' src="/images/assets/offer1.jpg" alt="" />
+                                <img className='h-64 w-52' src="/images/assets/offer2.jpg" alt="" />
+                                <img className='h-64 w-52' src="/images/assets/offer3.jpg" alt="" />
+                                <img className='h-64 w-52' src="/images/assets/offer4.jpg" alt="" />
+                            </div>
+                            <div className='flex justify-end space-x-2 '>
+                                <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                            </div>
                         </div>
-                        <div className='flex justify-end space-x-2 '>
-                            <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
-                        </div>
-                    </div>
+                    </section>
                 </section>
-            </section>
 
-                <div className="mt-8 ">
-                    <img src="/images/assets/download.png" alt="" />
+                <div className="standalone:hidden relative mt-8 ml-6 mr-6">
+                    <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />
+
+                    <div className='hidden md:flex justify-end flex-col absolute -right-48 bottom-0'>
+                        <div className='flex justify-between mb-2'>
+                            <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                        </button>
+                            <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
+                            <button>
+                            </button>
+                        </div>
+                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                    </div>
                 </div>
             </section>
 

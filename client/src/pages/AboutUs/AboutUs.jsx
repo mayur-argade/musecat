@@ -38,13 +38,20 @@ const AboutUs = () => {
                 <hr className='h-px my-8 bg-blue-500 border-0 dark:bg-gray-700' />
 
                 <div className="relative space-y-10 md:mr-36 md:ml-36 ">
-                    <div className='flex justify-center items-center align-middle space-x-14'>
-                        <div className="font-bold text-5xl">Find Your <br /> Next Event</div>
-                        <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose"><p>Choose a venue according to cuisine type, day of the week or other filters. Check offers including Friday Brunch, Happy Hour, Ladies Night, Live Music, Pool & beach passes and more.Save your favorite offer or event into your favorite list and rate the places you visited.</p></div>
+
+                    <div className='flex mr-5 md:mr-24 md:ml-24 justify-between md:flex-row flex-col align-items items-start ml-5 md:ml-0 md:items-center'>
+
+                        <div className="font-bold text-left text-5xl">Find Your <br /> Next Event</div>
+
+                        <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose">
+                            <p className=''>Choose a venue according to cuisine type, day of the week or other filters. Check offers including Friday Brunch, Happy Hour, Ladies Night, Live Music, Pool & beach passes and more.Save your favorite offer or event into your favorite list and rate the places you visited.</p>
+                        </div>
                     </div>
 
                     <div className='flex mr-5 md:mr-24 md:ml-24 justify-around md:flex-row flex-col-reverse align-items items-center'>
+                        
                         <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose"><p>If you wish to have your offer displayed on Muscat Where To platform, kindly <Link to='/contactus'><span className='ml-0 text-[#C0A04C]'>contact us</span></Link> at info@muscatwhereto.com. (if you don’t hear from us, check your spam folder)</p></div>
+
                         <div className="">
                             <img className='ml-3 h-52 md:h-64' src="images/assets/about3.png" alt="" />
                         </div>

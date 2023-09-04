@@ -198,20 +198,20 @@ const Navbar = () => {
                     </li>
 
                     <div className='flex flex-col space-y-8'>
-                        <Link to='/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
-                            <span className='font-bold hover:border'>Home</span>
+                        <Link to='/home' className={`${window.location.pathname == '/home' ? 'font-bold' : 'font-medium'}`}>
+                            <span className=' hover:border'>Home</span>
                         </Link>
 
-                        <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'text-blue-500' : ''}`}>
-                            <span className='font-bold hover:border'>Where To? </span>
+                        <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'font-bold' : 'font-medium'}`}>
+                            <span className=' hover:border'>Where To? </span>
                         </Link>
 
-                        <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'text-blue-500' : ''}`}>
-                            <span className='font-bold hover:border'>About</span>
+                        <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold' : 'font-medium '}`}>
+                            <span className='hover:border'>About</span>
                         </Link>
 
-                        <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'text-blue-500' : ''}`}>
-                            <span className='font-bold hover:border'>Contact</span>
+                        <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                            <span className='hover:border'>Contact</span>
                         </Link>
                     </div>
 

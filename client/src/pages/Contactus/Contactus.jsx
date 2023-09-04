@@ -13,7 +13,7 @@ const Contactus = () => {
 
                 <div className="flex justify-center mt-5">
 
-                    <div className="space-y-4  bg-[#D0D0D0] border border-b-4 border-b-[#C0A04C] p-5 rounded-lg ">
+                    <div className="m-4 space-y-4 bg-[#D0D0D0] border border-b-4 border-b-[#C0A04C] p-5 rounded-lg ">
 
                         <div className="space-y-5 ">
                             <div className="flex flex-col text-center justify-center items-center space-y-2">
@@ -39,7 +39,7 @@ const Contactus = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="md:w-1/2">
+                                    <div className="md:w-1/2 mt-5">
                                         <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
                                             <label className='text-xs mt-1' htmlFor="first name">last name</label>
                                             <input

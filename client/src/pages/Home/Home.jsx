@@ -18,7 +18,7 @@ const Home = () => {
 
         <div className=''>
             <Navbar />
-            <div class="bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">
+            <div class="standalone:hidden bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">
                 <header className='p-5 md:p-10 '>
 
                     <div className='flex justify-center md: pt-0 md:p-10'>
@@ -27,9 +27,9 @@ const Home = () => {
                             <br className='' />
                             <br />
 
-<div className='md:hidden absolute top-16 right-3'>
-    <img className='h-12' src="/images/assets/download-banner.png" alt="" />
-</div>
+                            <div className='md:hidden absolute top-16 right-3'>
+                                <img className='h-12' src="/images/assets/download-banner.png" alt="" />
+                            </div>
 
                             <div className='hidden md:block absolute top-96 right-0'>
                                 <button className='text-white bg-[#C0A04C] text-sm font-semibold py-2 pl-7 pr-6 rounded-l-full'>
@@ -48,9 +48,7 @@ const Home = () => {
                                             <div class="z-10 relative ">
                                                 <input type="search" id="location-search" class="bg-[#E7E7E7] block p-2.5 w-72 z-20 text-xs text-gray-500 font-normal rounded-r-lg rounded-l-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search for anything on muscat" required />
                                                 <button type="submit" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-[#C0A04C] rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                                    </svg>
+                                                    <img className='h-5' src="/images/icons/home-search.svg" alt="" />
                                                     <span class="sr-only">Search</span>
                                                 </button>
                                             </div>
@@ -330,7 +328,7 @@ const Home = () => {
                             </div>
 
                             <div className='block md:hidden'>
-                            <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
+                                <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
                                     <div className='flex flex-col'>
                                         <p>
                                             SUN
@@ -566,13 +564,39 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                             <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                         </button>
-                            <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
+                        <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
                         <button>
                         </button>
                     </div>
                     <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                 </div>
             </section>
+
+
+            <div class="hidden standalone:block fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+                <div class="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
+                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                        <img src="/images/icons/pwa-home.svg" alt="" />
+                        <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Home</p>
+                    </button>
+                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                        <img src="/images/icons/pwa-events.svg" alt="" />
+                        <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Events</p>
+                    </button>
+                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                        <img src="/images/icons/pwa-search.svg" alt="" />
+                        <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Search</p>
+                    </button>
+                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                        <img src="/images/icons/pwa-favorites.svg" alt="" />
+                        <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Favorites</p>
+                    </button>
+                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                        <img src="/images/icons/pwa-profile.svg" alt="" />
+                        <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Profile</p>
+                    </button>
+                </div>
+            </div>
 
 
 

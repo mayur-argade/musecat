@@ -31,7 +31,7 @@ const BookTicket = () => {
         <>
             <Navbar />
             <Tabbar />
-            <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
+            <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                 <div className="ml-3 hidden md:flex align-middle items-center">
                     <button className=' mt-1'>
                         <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
@@ -91,11 +91,11 @@ const BookTicket = () => {
 
                             <form action="" className=' md:w-full mt-4'>
                                 <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
-                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                         <input
                                             type="text"
-                                            className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            className='font-medium border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                             placeholder='John'
                                         />
                                     </div>
@@ -103,34 +103,47 @@ const BookTicket = () => {
                                         <label className='text-xs mt-1' htmlFor="first name">Last name</label>
                                         <input
                                             type="text"
-                                            className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            className='font-medium  border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                             placeholder='Doe'
                                         />
                                     </div>
                                 </div>
 
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg mb-4'>
                                     <label className='text-xs mt-1' htmlFor="first name">Email</label>
                                     <input
                                         type="text"
-                                        className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
+                                        className='font-medium  w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                         placeholder='John@email.com'
                                     />
                                 </div>
 
+                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-xs mt-1' htmlFor="first name">Select class</label>
+                                        <select
+                                            className='w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            placeholder='Doe'
+                                        >
+                                            <option selected value="US">Platinum</option>
+                                            <option value="CA">Gold</option>
+                                            <option value="FR">Silver</option>
+                                        </select>
+
+                                    </div>
+
                                 <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
-                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
                                         <input
                                             type="number"
-                                            className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                             placeholder='5'
                                         />
                                     </div>
-                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">Select Row</label>
                                         <select
-                                            className='w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                             placeholder='Doe'
                                         >
                                             <option selected>Select ROW</option>
@@ -173,11 +186,23 @@ const BookTicket = () => {
                                 )}
 
                                 <div onClick={handleBookNowClick} className="flex justify-center w-full mt-3">
-                                    <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
+                                    <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Seat</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                </div>
+
+                <div className='hidden md:flex justify-end flex-col absolute -right-4 bottom-5'>
+                    <div className='flex justify-between mb-2'>
+                        {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                        </button> */}
+                        <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
+                        <button>
+                        </button>
+                    </div>
+                    <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                 </div>
             </section>
 

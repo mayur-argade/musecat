@@ -43,6 +43,8 @@ module.exports = {
         },
     },
     plugins: [
-        require('flowbite/plugin')
+        require('flowbite/plugin'),
+        require('tailwindcss-displaymodes'),
+        require('tailwindcss-box-shadow'),
     ],
 }

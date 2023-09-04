@@ -61,8 +61,8 @@ const FAQ = () => {
         <>
             <Navbar />
             <Tabbar />
-            <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
-                <div className="ml-3 hidden md:flex align-middle items-center">
+            <section className='relative md:mr-52 md:ml-52 mt-5 ml-6 mr-6'>
+                <div className="hidden md:flex align-middle items-center">
                     <button className=' mt-1'>
                         <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                     </button>
@@ -72,9 +72,9 @@ const FAQ = () => {
                 <div>
                     {accordions.map((accordion, index) => (
                         <Accordian
-                            color={'bg-[#DDDDDD] pt-2 px-2 rounded-md'}
+                            color={'bg-[#DDDDDD] py-2.5 px-4 rounded-md'}
                             className='mx-auto'
-                            textcol={'font-normal'}
+                            textcol={'font-normal text-sm'}
                             key={index}
                             title={accordion.question}
                             content={accordion.answer}
@@ -86,11 +86,23 @@ const FAQ = () => {
 
                 <div className='flex justify-center'>
                     <div className="booknow">
-                        <button type="button" class="w-44 md:w-96 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Chat with us</button>
+                        <button type="button" class="w-44 md:w-96 text-white bg-[#A48533] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Chat with us</button>
                     </div>
                 </div>
+
+                <div className='hidden md:flex justify-end flex-col absolute -right-44 bottom-0'>
+                        <div className='flex justify-between mb-2'>
+                            {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                        </button> */}
+                            <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
+                            <button>
+                            </button>
+                        </div>
+                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                    </div>
             </section>
-            <div className=''>
+            <div className='standalone:hidden'>
                 < Footer />
             </div>
 
