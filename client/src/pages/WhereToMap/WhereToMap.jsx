@@ -17,7 +17,7 @@ const WhereToMap = () => {
                 </div>
                 <div className="flex justify-around items-center align-middle md:flex-row flex-col ml-5 mr-5 ">
                     <div className="drop-shadow-2xl map w-9/12">
-                        <GoogleMap className={" w-80 md:w-11/12 h-128 max-h-128"}/>
+                        <GoogleMap className={" w-80 md:w-11/12 md:h-128 md:max-h-128"}/>
                     </div>
 
                     <div className=" flex flex-col justify-center items-center align-middle ml-10 items-center h-128 snap-start overflow-y-auto events ml-2 mr-2 pl-2 pr-2">

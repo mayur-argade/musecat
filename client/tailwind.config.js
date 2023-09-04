@@ -11,7 +11,7 @@ module.exports = {
                 xm: '0.5rem',
                 xss: '0.6rem'
             },
-            spacing: {
+            height: {
                 '128': '32rem',
               },
             maxWidth: {
