@@ -64,9 +64,9 @@ const Footer = () => {
                                             Popular Navigation
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a class="hover:opacity-75 font-normal" href> Events </a>
-                                            <a class="hover:opacity-75 font-normal" href> Weekly Offers </a>
-                                            <a class="hover:opacity-75 font-normal" href> Kids corner </a>
+                                            <a class="hover:opacity-75 font-medium" href> Events </a>
+                                            <a class="hover:opacity-75 font-medium" href> Weekly Offers </a>
+                                            <a class="hover:opacity-75 font-medium" href> Kids corner </a>
                                         </nav>
                                     </div>
                                 </div>
@@ -77,9 +77,9 @@ const Footer = () => {
                                             Information
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a class="hover:opacity-75 font-normal" href> About </a>
-                                            <a class="hover:opacity-75 font-normal" href> Contact Us </a>
-                                            <a class="hover:opacity-75 font-normal" href> Home </a>
+                                            <a class="hover:opacity-75 font-medium" href> About </a>
+                                            <a class="hover:opacity-75 font-medium" href> Contact Us </a>
+                                            <a class="hover:opacity-75 font-medium" href> Home </a>
                                         </nav>
                                     </div>
                                 </div>
@@ -90,9 +90,9 @@ const Footer = () => {
                                             The Legal Corner
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a class="hover:opacity-75 font-normal" href> Privacy policy </a>
-                                            <a class="hover:opacity-75 font-normal" href> Terms and conditions </a>
-                                            <a class="hover:opacity-75 font-normal" href> Cookies </a>
+                                            <a class="hover:opacity-75 font-medium" href> Privacy policy </a>
+                                            <a class="hover:opacity-75 font-medium" href> Terms and conditions </a>
+                                            <a class="hover:opacity-75 font-medium" href> Cookies </a>
                                         </nav>
                                     </div>
                                 </div>

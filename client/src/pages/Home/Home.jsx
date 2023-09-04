@@ -1,9 +1,4 @@
 import React from 'react'
-import PopularCategory from '../../components/category/PopularCategory'
-import UpcomingEvents from '../../components/category/UpcomingEvents'
-import EditorsPick from '../../components/category/EditorsPick'
-import Offer from '../../components/category/Offer'
-import WhereTo from '../../components/category/WhereTo'
 import Footer from '../../components/shared/Footer/Footer'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import { Link } from 'react-router-dom'
@@ -28,8 +23,19 @@ const Home = () => {
 
                     <div className='flex justify-center md: pt-0 md:p-10'>
                         <p className='pb-5 leading-loose text-5xl md:text-4xl text-center text-white font-bold'>
-                            Find the perfect experience
+                            Find the perfect experience in
+                            <br className='' />
                             <br />
+
+<div className='md:hidden absolute top-16 right-3'>
+    <img className='h-12' src="/images/assets/download-banner.png" alt="" />
+</div>
+
+                            <div className='hidden md:block absolute top-96 right-0'>
+                                <button className='text-white bg-[#C0A04C] text-sm font-semibold py-2 pl-7 pr-6 rounded-l-full'>
+                                    Follow Us
+                                </button>
+                            </div>
 
                             <div className=' flex md:hidden items-center justify-center '>
                                 <div className='bg-white-600 backdrop-blur-md backdrop-greyscale-2 backdrop-opacity-80 border border-t-white border-l-white rounded-md w-11/12 md:w-2/3 flex items-center justify-center flex-col p-3 rounded-lg'>
@@ -55,7 +61,7 @@ const Home = () => {
                                 </div>
                             </div>
 
-                            in any destination
+                            any destination
                         </p>
                     </div>
 
@@ -103,7 +109,7 @@ const Home = () => {
                                     </div>
                                 </div>
 
-                                <button type="button" class="align-middle h-14 w-28 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
+                                <button type="button" class="shadow-lg shadow-cyan-500/25 align-middle h-14 w-28 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
 
                             </div>
 
@@ -114,19 +120,19 @@ const Home = () => {
             </div>
 
             <section>
-                <section className='md:mr-48 md:ml-48 mt-5'>
+                <section className='md:mr-48 md:ml-48 mt-10'>
                     <div className='flex justify-between align-middle '>
 
                         <div className="left flex items-center align-middle ">
-                            <span className='text-xl font-bold'>Popular Category</span></div>
+                            <span className='text-2xl font-[700]'>Popular Category</span></div>
 
                         <div className="right md:flex flex-wrap space-x-2">
-                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-4 pr-4 text-xs border'>Sunday</button>
-                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-4 pr-4 text-xs border'>Monday</button>
-                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-4 pr-4 text-xs border'>Tuesday</button>
-                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-4 pr-4 text-xs border'>Thursday</button>
-                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-4 pr-4 text-xs border'>Friday</button>
-                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-4 pr-4 text-xs border'>Saturday</button>
+                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Sunday</button>
+                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Monday</button>
+                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Tuesday</button>
+                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Thursday</button>
+                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Friday</button>
+                            <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Saturday</button>
 
                             <div className='pr-2'>
                                 <select id="countries" class="md:hidden bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -324,15 +330,16 @@ const Home = () => {
                             </div>
 
                             <div className='block md:hidden'>
-                                <select id="countries" class="bg-black border active:bg-white active:text-black border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected>Select Day</option>
-                                    <option value="US">Sunday</option>
-                                    <option value="CA">Monday</option>
-                                    <option value="FR">Tuesday</option>
-                                    <option value="DE">Thursday</option>
-                                    <option value="DE">Friday</option>
-                                    <option value="DE">Saturday</option>
-                                </select>
+                            <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
+                                    <div className='flex flex-col'>
+                                        <p>
+                                            SUN
+                                        </p>
+                                        <p>
+                                            6 AUG
+                                        </p>
+                                    </div>
+                                </button>
                             </div>
 
                         </div>
@@ -340,7 +347,7 @@ const Home = () => {
                     </div>
 
                     <div>
-                        <div className='md:flex md:justify-between carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5'>
+                        <div className='md:flex md:justify-between carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-0'>
 
                             <Link to='/events/eventid'>
                                 <div >
@@ -355,7 +362,11 @@ const Home = () => {
                                                 <p className='text-sm mt-2 font-medium'>WEMA Weekend at The Vault,</p>
                                                 <p className='text-sm mt-2 font-medium'> Radisson Call</p>
                                                 <p className="mt-1 mb-1 text-xs font-light">Events</p>
-                                                <button type="button" className="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
+                                                <div className='flex items-center justify-between space-x-2'>
+                                                    <button type="button" className="text-white hover:bg-[#A48533]
+bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Book Now</button>
+                                                    <button type="button" className="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Contact us</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -374,7 +385,11 @@ const Home = () => {
                                                 <p className='text-sm mt-2 font-medium'>WEMA Weekend at The Vault,</p>
                                                 <p className='text-sm mt-2 font-medium'> Radisson Call</p>
                                                 <p className="mt-1 mb-1 text-xs font-light">Events</p>
-                                                <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
+                                                <div className='flex items-center justify-between space-x-2'>
+                                                    <button type="button" className="text-white hover:bg-[#A48533]
+bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Book Now</button>
+                                                    <button type="button" className="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Contact us</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -393,7 +408,11 @@ const Home = () => {
                                                 <p className='text-sm mt-2 font-medium'>WEMA Weekend at The Vault,</p>
                                                 <p className='text-sm mt-2 font-medium'> Radisson Call</p>
                                                 <p className="mt-1 mb-1 text-xs font-light">Events</p>
-                                                <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Now</button>
+                                                <div className='flex items-center justify-between space-x-2'>
+                                                    <button type="button" className="text-white hover:bg-[#A48533]
+bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Book Now</button>
+                                                    <button type="button" className="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Contact us</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -405,8 +424,6 @@ const Home = () => {
 
                     <div className='flex justify-end space-x-2 '>
                         <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
-
-
                     </div>
                 </section>
             </section>
@@ -487,9 +504,9 @@ const Home = () => {
                 </section>
             </section>
 
-            <section>
+            <section className=' relative '>
                 <section className='md:mr-56 md:ml-56 mt-3'>
-                    <p className='text-xl font-bold  '>
+                    <p className='ml-6 md:ml-0 text-xl font-bold  '>
                         Where to ?
                     </p>
 
@@ -544,7 +561,20 @@ const Home = () => {
                         </div>
                     </Link>
                 </section>
+                <div className='hidden md:flex justify-end flex-col absolute right-16 bottom-10'>
+                    <div className='flex justify-between mb-2'>
+                        <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                        </button>
+                            <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
+                        <button>
+                        </button>
+                    </div>
+                    <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                </div>
             </section>
+
+
 
             <Footer />
         </div>
