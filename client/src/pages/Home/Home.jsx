@@ -133,9 +133,8 @@ const Home = () => {
                             <button className='hidden md:block hover:bg-black hover:text-white rounded-full border-black pl-5 pr-5 text-xs border'>Saturday</button>
 
                             <div className='pr-2'>
-                                <select id="countries" class="md:hidden bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected>Select Day</option>
-                                    <option value="US">Sunday</option>
+                                <select id="countries" class="md:hidden bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected value="US">Sunday</option>
                                     <option value="CA">Monday</option>
                                     <option value="FR">Tuesday</option>
                                     <option value="DE">Thursday</option>

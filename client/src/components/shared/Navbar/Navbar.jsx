@@ -1,10 +1,14 @@
 import React from 'react'
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './navbar.css'
 import { useParams } from 'react-router-dom';
 const Navbar = () => {
     let { category } = useParams();
+    const navigate = useNavigate();
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
 
     const [sidebar, setSidebar] = useState(false);
 
@@ -65,10 +69,10 @@ const Navbar = () => {
         <>
             <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 md:mr-48 md:ml-48">
                 <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4 pb-4 shadow-md md:shadow-none">
-                    
+
                     {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
                         <div className='flex align-middle'>
-                            <button className="menu-bars md:hidden" >
+                            <button className="menu-bars md:hidden " onClick={handleBack} >
                                 <img src="/images/icons/back-arrow.svg" alt="" />
                             </button>
                             <span className='capitalize md:hidden text-xl font-bold'>
