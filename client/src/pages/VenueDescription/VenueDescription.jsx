@@ -10,7 +10,7 @@ const VenueDescription = () => {
             <Navbar />
             <Tabbar />
 
-            <section className='md:mr-32 md:ml-32 mt-5 ml-6 mr-6'>
+            <section className='md:mr-36 md:ml-36 mt-5 ml-6 mr-6'>
                 <div className="hidden md:flex align-middle items-center">
                     <button className="backlogo rounded-full shadow-md shadow-gray-500">
                         <img className='h-6' src="/images/icons/backarrow.svg" alt="" />
@@ -82,7 +82,7 @@ const VenueDescription = () => {
 
                         <div className="md:flex md:justify-center w-full">
                             <div>
-                            <button type="button" class="w-full text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Show more</button>
+                                <button type="button" class="w-full text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Show more</button>
                             </div>
                         </div>
                     </div>

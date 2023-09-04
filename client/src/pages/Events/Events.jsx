@@ -72,7 +72,7 @@ const Events = () => {
             </div>
 
             <section>
-                <div className="header flex justify-between md:mt-5 md:ml-32 md:mr-32 align-middle items-center">
+                <div className="header flex justify-between md:mt-5 md:ml-36 md:mr-36 align-middle items-center">
                     <div className="hidden md:block left">
                         <span className='capitalize text-2xl font-bold'>
                             {category}
@@ -80,10 +80,10 @@ const Events = () => {
                     </div>
 
                     <div className="flex justify-center align-middle items-center">
-                        <div className="search">
+                        <div className="hidden md:block search">
                             <div class="p-4">
                                 <div class="relative mt-1">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <div class="absolute inset-y-0 right-4 flex items-center pl-3 pointer-events-none">
                                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd"
@@ -92,7 +92,25 @@ const Events = () => {
                                         </svg>
                                     </div>
 
-                                    <input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
+                                    <input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-50 md:text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 md:w-44 pl-5 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search event" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="md:hidden search">
+                            <div class="p-4">
+                                <div class="relative mt-1">
+                                    <div class="absolute inset-y-0 right-4 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+
+                                    <input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 md:w-44 pl-5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" />
 
                                 </div>
                             </div>
@@ -102,9 +120,12 @@ const Events = () => {
                             <div className="relative inline-block text-left">
                                 <button
                                     onClick={toggleDropdown}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 md:w-52 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 >
-                                    <span className='text-gray-500'>Filter by Features</span>
+                                    <span className='hidden md:block text-gray-500'>Filter by Features</span>
+                                    <span className='md:hidden block text-gray-500'>Filter</span>
+
+                                    <img src="/images/icons/filter.svg" alt="" />
                                 </button>
                                 {isOpen && (
                                     <div
@@ -198,51 +219,67 @@ const Events = () => {
                         <div className="datepicker">
                             <div className="p-4">
                                 <label htmlFor="date"></label>
-                                <input className='bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
+                                <input className='bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 md:w-40  p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
                             </div>
                         </div>
-
                     </div>
                 </div>
 
-                <div className='max-w-screen flex flex-col md:flex-row'>
-                    <div className='hidden md:flex w-11/12 md:ml-32 md:flex-wrap justify-center md:justify-start align-middle space-y-0'>
-                        <Link to="/events/eventid" className=' h-72 ' >
-                            <EventCard />
-                        </Link>
-                        <Link to="/events/eventid" >
-                            <EventCard />
-                        </Link>
-                        <Link to="/events/eventid" >
-                            <EventCard />
-                        </Link>
-                        <Link to="/events/eventid" >
-                            <EventCard />
-                        </Link>
-                    </div>
-
-                    <div>
-                        <Carousel />
-                    </div>
-
-                    <div className='md:mr-40 mt-3 flex flex-col justify-center align-middle items-center'>
-                        <div>
-                            <GoogleMap className={"md:h-96 md:w-80"} />
-                        </div>
-
-
-                        <div className="flex flex-col justify-center items-center ">
-                            <div className="mt-3 mx-auto">
-                                <span className="text-xl ml-8 font-bold mt-3">
-                                    Trending in Muscat
-                                </span>
+                <div className="md:ml-36 md:mr-36 max-w-screen flex flex-col md:flex-row">
+                    <div className="left w-full ">
+                        <div className="md:flex md:justify-start md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
+                            <div className='snap-start'>
+                                < EventCard />
                             </div>
-                            <SubEventCard />
-                            <SubEventCard />
-                            <SubEventCard />
+                            <div>
+                                < EventCard />
+                            </div>
+                            <div>
+                                < EventCard />
+                            </div>
+                            <div>
+                                < EventCard />
+                            </div>
+                            <div>
+                                < EventCard />
+                            </div>
+                            <div>
+                                < EventCard />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="relative right flex flex-col justify-center items-center md:w-2/4">
+                        <div>
+                            <div className='flex'>
+                                <GoogleMap className={'md:h-80 md:w-72 mt-6 md:mr-5'} />
+                            </div>
                         </div>
 
+                        <div className="md:flex flex-col ">
+                            <div className="mt-3 ">
+                                <p className="text-xl md:ml-10 font-bold mt-3">
+                                    Trending In Muscat
+                                </p>
+                            </div>
+                            <div className='flex flex-col justify-center items-center md:ml-8'>
+                                <SubEventCard />
+                                <SubEventCard />
+                                <SubEventCard />
+                            </div>
 
+                            <div className='hidden md:flex justify-end flex-col absolute -right-32 bottom-0'>
+                                <div className='flex justify-between mb-2'>
+                                    <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                    </button>
+                                    <img className='h-10 ml-16' src="/images/icons/whatsapp-color.svg" alt="" />
+                                    <button>
+                                    </button>
+                                </div>
+                                <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-2 pr-3 pl-3 text-white font-semibold'>Need Help?</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -255,5 +292,47 @@ const Events = () => {
         </>
     )
 }
+
+// <div className='w-11/12 md:ml-36 md:mr-36 align-middle items-center flex flex-col md:flex-row'>
+//                     <div className='hidden md:flex flex-wrap'>
+//                         <Link to="/events/eventid" className='' >
+//                             <EventCard />
+//                         </Link>
+//                         <Link to="/events/eventid" >
+//                             <EventCard />
+//                         </Link>
+//                         <Link to="/events/eventid" >
+//                             <EventCard />
+//                         </Link>
+//                         <Link to="/events/eventid" >
+//                             <EventCard />
+//                         </Link>
+//                     </div>
+
+//                     <div>
+//                         <Carousel />
+//                     </div>
+
+//                     <div className='md:mr-40 mt-3 flex flex-col justify-center align-middle items-center'>
+//                         <div>
+//                             <GoogleMap className={"md:h-96 md:w-80"} />
+//                         </div>
+
+
+//                         <div className="flex flex-col justify-center items-center ">
+//                             <div className="mt-3 mx-auto">
+//                                 <span className="text-xl ml-8 font-bold mt-3">
+//                                     Trending in Muscat
+//                                 </span>
+//                             </div>
+//                             <SubEventCard />
+//                             <SubEventCard />
+//                             <SubEventCard />
+//                         </div>
+
+
+//                     </div>
+//                 </div>
+
 
 export default Events

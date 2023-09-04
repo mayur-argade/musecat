@@ -35,9 +35,9 @@ const AboutUs = () => {
                     <img className='h-52 md:h-full' src="/images/assets/about2.jpg" alt="" />
                 </div>
 
-                <hr className='h-px my-8 bg-blue-500 border-0 dark:bg-gray-700'/>
+                <hr className='h-px my-8 bg-blue-500 border-0 dark:bg-gray-700' />
 
-                <div className="space-y-10 md:mr-36 md:ml-36 ">
+                <div className="relative space-y-10 md:mr-36 md:ml-36 ">
                     <div className='flex justify-center items-center align-middle space-x-14'>
                         <div className="font-bold text-5xl">Find Your <br /> Next Event</div>
                         <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose"><p>Choose a venue according to cuisine type, day of the week or other filters. Check offers including Friday Brunch, Happy Hour, Ladies Night, Live Music, Pool & beach passes and more.Save your favorite offer or event into your favorite list and rate the places you visited.</p></div>
@@ -49,10 +49,25 @@ const AboutUs = () => {
                             <img className='ml-3 h-52 md:h-64' src="images/assets/about3.png" alt="" />
                         </div>
                     </div>
+
+                    <div className='hidden md:flex justify-end flex-col absolute -right-14 bottom-0'>
+                        <div className='flex justify-between mb-2'>
+                            <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                            </button>
+                            <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
+                            <button>
+                            </button>
+                        </div>
+                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                    </div>
+
                 </div>
             </section>
+
+
             <div className=''>
-            < Footer />
+                < Footer />
             </div>
 
         </>

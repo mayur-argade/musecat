@@ -2,37 +2,40 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Tabbar = () => {
+
     return (
         <>
-            <nav className='shadow-md hidden md:flex justify-center py-3 space-x-4'>
-                <Link to='/Category/events'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Events</span>
-                </Link>
-                <Link to='/Category/eat'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Eat</span>
-                </Link>
-                <Link to='/Category/ladiesnight'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Ladies Night</span>
-                </Link>
-                <Link to='/Category/weeklyoffers'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Weekly Offers</span>
-                </Link>
-                <Link to='/Category/thingstodo'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Things To Do</span>
-                </Link>
-                <Link to='/Category/staycation'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Staycation</span>
-                </Link>
-                <Link to='/Category/poolnbeach'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Pool & beach</span>
-                </Link>
-                <Link to='/Category/kidscorner'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Kids Corner</span>
-                </Link>
-                <Link to='/Category/spaoffers'>
-                    <span className='font-medium hover:underline hover:underline-offset-4 cursor-pointer'>Spa Offers</span>
-                </Link>
-            </nav>
+            <section>
+                <nav className='shadow-lg hidden md:flex justify-center py-3 space-x-4'>
+                    <Link to='/Category/events'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/events' ? 'font-bold' : ''}`}>Events</span>
+                    </Link>
+                    <Link to='/Category/eat'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/eat' ? 'font-bold' : ''}`}>Eat</span>
+                    </Link>
+                    <Link to='/Category/ladiesnight'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/ladiesnight' ? 'font-bold' : ''}`}>Ladies Night</span>
+                    </Link>
+                    <Link to='/Category/weeklyoffers'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/weeklyoffers' ? 'font-bold' : ''}`}>Weekly Offers</span>
+                    </Link>
+                    <Link to='/Category/thingstodo'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/thingstodo' ? 'font-bold' : ''}`}>Things To Do</span>
+                    </Link>
+                    <Link to='/Category/staycation'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/staycation' ? 'font-bold' : ''}`}>Staycation</span>
+                    </Link>
+                    <Link to='/Category/poolnbeach'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/poolnbeach' ? 'font-bold' : ''}`}>Pool & beach</span>
+                    </Link>
+                    <Link to='/Category/kidscorner'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/kidscorner' ? 'font-bold' : ''}`}>Kids Corner</span>
+                    </Link>
+                    <Link to='/Category/spaoffers'>
+                        <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/spaoffers' ? 'font-bold' : ''}`}>Spa Offers</span>
+                    </Link>
+                </nav>
+            </section>
         </>
     )
 }

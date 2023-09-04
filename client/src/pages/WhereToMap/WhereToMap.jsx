@@ -17,7 +17,7 @@ const WhereToMap = () => {
                 </div>
                 <div className="flex justify-around items-center align-middle md:flex-row flex-col ml-5 mr-5 ">
                     <div className="drop-shadow-2xl map w-9/12">
-                        <GoogleMap className={" w-80 md:w-11/12 md:h-128 md:max-h-128"}/>
+                        <GoogleMap className={" w-80 md:w-11/12 md:h-128 md:max-h-128"} />
                     </div>
 
                     <div className=" flex flex-col justify-center items-center align-middle ml-10 items-center h-128 snap-start overflow-y-auto events ml-2 mr-2 pl-2 pr-2">
@@ -27,8 +27,19 @@ const WhereToMap = () => {
                         <SubEventCard />
                     </div>
                 </div>
+                <div className='w-full hidden md:flex justify-end items-end flex-col '>
+                <div className='flex justify-end mb-2 mr-8 mt-3'>
+                    {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                        </button> */}
+                    <img className='h-10 ml-12 ' src="/images/icons/whatsapp-color.svg" alt="" />
+                    <button>
+                    </button>
+                </div>
+                <button className='mr-8 rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+            </div>
             </section>
-
+            
             <div className="">
                 <Footer />
             </div>
