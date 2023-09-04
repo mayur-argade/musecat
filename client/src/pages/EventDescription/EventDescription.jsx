@@ -32,7 +32,7 @@ const EventDescription = () => {
         <>
             <Navbar />
             <Tabbar />
-            <section className='md:mr-32 md:ml-32 mt-5 ml-4 mr-4'>
+            <section className='md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
 
                 <div className="hidden md:flex align-middle items-center">
                     <button className="backlogo rounded-full shadow-md shadow-gray-500">
@@ -57,12 +57,37 @@ const EventDescription = () => {
                 </div>
 
                 <div className="mt-8 grid grid-cols-4">
+
                     <div className="col-span-4 md:col-span-2  flex flex-col items-center justify-center">
-                        <div>
-                            <img className='h-80' src="/images/assets/eventdescription.png" alt="" />
+                    <div className="w-full max-w-6xl rounded-lg relative">
+                            {/* Image */}
+                            <img className="h-80 w-full rounded-lg" src="/images/assets/eventdescription.png" alt="" />
+
+                            {/* Top-right Edit and View Sales */}
+                            <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
+
+                                <button className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
+                                    <img className="text-white " src="/images/icons/heart.svg" alt="" />
+                                </button>
+                            </div>
+
+                            {/* Bottom Rectangle */}
+                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-75 p-2">
+                                <div className="flex items-center justify-between text-white">
+                                    {/* Like Button */}
+                                    <button className="text-white rounded-md px-3 py-1 hover:bg-red-700">
+                                        <img className='h-7' src="/images/icons/like.svg" alt="" />
+                                    </button>
+
+                                    {/* Like Count */}
+                                    <div className="flex items-center">
+                                        <span>1,531 People liked this event</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className='flex mt-3 w-10/12  align-middle items-center space-x-2'>
+                        <div className='flex mt-3 w-full align-middle items-center space-x-2'>
                             <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
                                 <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
                             </div>
@@ -70,6 +95,7 @@ const EventDescription = () => {
                             <div>
                                 <p className='font-light text-wrap text-xs'>Get exclusive updates on events, artists, offers and things to do</p>
                             </div>
+
                             <div>
                                 <button className='flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm py-2 pl-1 pr-4 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
                                     <img className='h-4' src="/images/icons/share.svg" alt="" />
@@ -80,7 +106,12 @@ const EventDescription = () => {
 
                         </div>
 
-                        <div className='w-10/12 pl-4 pr-4 py-4 flex flex-col rounded-lg shadow-xl shadow-gray-300'>
+
+
+                    </div>
+
+                    <div className="mt-6 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
+                        <div className='w-full pl-4 pr-4 py-4 flex flex-col rounded-lg shadow-2xl shadow-[#F3F3F3] rounded-lg '>
 
                             <div className='p-3 flex items-center align-middle space-x-2'>
                                 <img className='h-5' src="/images/icons/map-1.svg" alt="" />
@@ -103,34 +134,24 @@ const EventDescription = () => {
 
                         </div>
 
-                        <div className="mt-3 space-x-5 w-10/12  justify-center flex align-middle items-center">
-                            <button className='w-full flex items-center justify-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm py-2 pl-1 pr-4 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                        <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
+                            <Link to='/favorites' className='w-full'>
+                            <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                 <img className='h-4' src="/images/icons/heart.svg" alt="" />
                                 <span>Add to Favorite</span>
                             </button>
-                            <button className='w-full flex items-center justify-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm py-2 pl-1 pr-4 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                            </Link>
+                            <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                 <img className='h-4' src="/images/icons/heart.svg" alt="" />
                                 <span>Add to Calendar</span>
                             </button>
                         </div>
-                    </div>
 
-                    <div className="mt-6 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
-                        {accordions.map((accordion, index) => (
-                            <Accordian
-                                className='mx-auto'
-                                textcol={'font-semibold'}
-                                key={index}
-                                title={accordion.title}
-                                content={accordion.content}
-                                isOpened={accordion.isOpened}
-                                onClick={() => handleAccordionClick(index)}
-                            />
-                        ))}
-
-                        <div className="space-y-3">
-                            <div className="contactus">
+                        <div className="">
+                            <div className="contactus mb-5 mt-5">
+                                <Link to='/contactus'>
                                 <button type="button" class="w-full border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Contact Us</button>
+                                </Link>
 
                             </div>
                             <Link to="/bookticket">
@@ -140,8 +161,22 @@ const EventDescription = () => {
                             </Link>
                         </div>
                     </div>
+
                 </div>
 
+                <div className="eventdesc w-full mt-8">
+                    {accordions.map((accordion, index) => (
+                        <Accordian
+                            className='mx-auto'
+                            textcol={'font-semibold'}
+                            key={index}
+                            title={accordion.title}
+                            content={accordion.content}
+                            isOpened={accordion.isOpened}
+                            onClick={() => handleAccordionClick(index)}
+                        />
+                    ))}
+                </div>
                 <div className='flex flex-col justify-center items-center mt-5'>
                     <span className='text-xl font-bold'>
                         Location
@@ -193,7 +228,27 @@ const EventDescription = () => {
 
 
 
-                <Offer />
+                <section>
+                <section className='mt-3 ml-3 mr-3'>
+                    <div className='flex justify-between '>
+                        <div className="left"><span className='text-xl font-bold'>Offers</span></div>
+                        <div className="right"></div>
+
+                    </div>
+
+                    <div className="ml-1 mr-1">
+                        <div className='md:flex md:justify-around carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-5'>
+                            <img className='h-64 w-52 snap-start' src="/images/assets/offer1.jpg" alt="" />
+                            <img className='h-64 w-52' src="/images/assets/offer2.jpg" alt="" />
+                            <img className='h-64 w-52' src="/images/assets/offer3.jpg" alt="" />
+                            <img className='h-64 w-52' src="/images/assets/offer4.jpg" alt="" />
+                        </div>
+                        <div className='flex justify-end space-x-2 '>
+                            <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
 
                 <div className="mt-8 ">
                     <img src="/images/assets/download.png" alt="" />

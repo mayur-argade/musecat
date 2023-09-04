@@ -80,7 +80,6 @@ const Events = () => {
                     </div>
 
                     <div className="flex justify-center align-middle items-center">
-
                         <div className="search">
                             <div class="p-4">
                                 <div class="relative mt-1">
@@ -199,7 +198,7 @@ const Events = () => {
                         <div className="datepicker">
                             <div className="p-4">
                                 <label htmlFor="date"></label>
-                                <input className='bg-gray-50 border border-gray-300 text-transparent text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
+                                <input className='bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
                             </div>
                         </div>
 
@@ -207,18 +206,18 @@ const Events = () => {
                 </div>
 
                 <div className='max-w-screen flex flex-col md:flex-row'>
-                    <div className='hidden md:flex w-11/12 md:ml-32 md:flex-wrap justify-center md:justify-start leading-3'>
-                        <Link to="/events/eventid" > 
-                        <EventCard />
+                    <div className='hidden md:flex w-11/12 md:ml-32 md:flex-wrap justify-center md:justify-start align-middle space-y-0'>
+                        <Link to="/events/eventid" className=' h-72 ' >
+                            <EventCard />
                         </Link>
-                        <Link to="/events/eventid" > 
-                        <EventCard />
+                        <Link to="/events/eventid" >
+                            <EventCard />
                         </Link>
-                        <Link to="/events/eventid" > 
-                        <EventCard />
+                        <Link to="/events/eventid" >
+                            <EventCard />
                         </Link>
-                        <Link to="/events/eventid" > 
-                        <EventCard />
+                        <Link to="/events/eventid" >
+                            <EventCard />
                         </Link>
                     </div>
 

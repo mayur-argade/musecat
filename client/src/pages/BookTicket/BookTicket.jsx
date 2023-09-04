@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Footer from '../../components/shared/Footer/Footer'
+import { Link, useNavigate  } from 'react-router-dom'
 
 const BookTicket = () => {
     const [price, setPrice] = useState(false);
-
+    let navigate = useNavigate();
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
@@ -17,7 +18,13 @@ const BookTicket = () => {
     };
 
     const handleBookNowClick = () => {
-        setPrice(true);
+        if (price) {
+            // Redirect to the next page when clicked for the second time
+            navigate('/ticketstatus/ticketid')
+          } else {
+            // Show the price when clicked for the first time
+            setPrice(true);
+          }
     };
 
     return (
@@ -49,7 +56,7 @@ const BookTicket = () => {
                     {isModalOpen && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
                             <div className="bg-white p-4 rounded-lg relative  ml-3 mr-3">
-                                
+
                                 <button
                                     onClick={closeModal}
                                     className="absolute top-2 right-2 text-black hover:text-gray-800"
@@ -70,7 +77,7 @@ const BookTicket = () => {
                                     </svg>
                                 </button>
 
-                                
+
                                 <img className='pt-4' src="/images/assets/theater.png" alt="Theater" />
                             </div>
                         </div>
@@ -135,12 +142,15 @@ const BookTicket = () => {
                                     </div>
                                 </div>
 
-                                <div className='flex justify-between mt-3'>
+                                <div className='flex flex-col justify-between mt-3'>
                                     <div class="flex items-center mb-4">
-                                        <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                        <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                         <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Are you 18plus ?</label>
                                     </div>
-                                    <span className='underline '>T&C</span>
+                                    <div class="flex items-center mb-4">
+                                        <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Terms & Condtions</label>
+                                    </div>
                                 </div>
 
                                 {price && (

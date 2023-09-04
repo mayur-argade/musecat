@@ -11,6 +11,15 @@ module.exports = {
                 xm: '0.5rem',
                 xss: '0.6rem'
             },
+            spacing: {
+                '128': '32rem',
+              },
+            maxWidth: {
+                '2xs': '22rem',
+              },
+            borderRadius: {
+                'xl': '1rem',
+            },
             fontWeight: {
                 thin: '100',
                 hairline: '100',
