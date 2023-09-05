@@ -3,12 +3,29 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
 import Footer from '../../components/shared/Footer/Footer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import EditEventModal from '../../components/EditEventModal/EditEventModal'
 
 const VendorEventDescripton = () => {
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const [showModal, setShowModal] = useState(false)
+
+    const handleShowModal = () => {
+        setShowModal(true)
+    }
 
     document.title = 'Vendor ~ Event Info'
-
+    const navigate = useNavigate();
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
     const [accordions, setAccordions] = useState([
         {
             title: 'Event Information',
@@ -30,11 +47,11 @@ const VendorEventDescripton = () => {
     return (
         <>
             <Navbar />
-            <section className='md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
+            <section className='relative md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
 
                 <div className="hidden md:flex align-middle items-center">
-                    <button className="backlogo rounded-full shadow-md shadow-gray-500">
-                        <img className="" src="/images/icons/backarrow.svg" alt="" />
+                    <button onClick={handleBack} className=' mt-1'>
+                        <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                     </button>
                     <span className='text-lg font-bold'>Event Description</span>
                 </div>
@@ -54,7 +71,7 @@ const VendorEventDescripton = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 grid grid-cols-4">
+                <div className=" grid grid-cols-4">
                     <div className="col-span-4 md:col-span-2  flex flex-col items-stretch justify-center">
                         <div className="w-full max-w-6xl rounded-lg relative">
                             {/* Image */}
@@ -67,7 +84,7 @@ const VendorEventDescripton = () => {
                                     View Sales
                                 </button>
 
-                                <button className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
+                                <button onClick={handleShowModal} className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
                                     <img className="text-white " src="/images/icons/edit.svg" alt="" />
                                 </button>
                             </div>
@@ -172,29 +189,34 @@ const VendorEventDescripton = () => {
                         Location
                     </span>
                     <div>
-                        <div className="right rounded-sm">
-                            <iframe
-                                className="rounded-xl max-w-xs md:max-w-6xl"
-                                width="920"
-                                height="386"
-                                frameborder="0"
-                                scrolling="no"
-                                marginheight="0"
-                                marginwidth="0"
-                                id="gmap_canvas"
-                                src="https://maps.google.com/maps?width=520&amp;height=386&amp;hl=en&amp;q=pimplegaon%20pune+(pimpalgaon)&amp;t=k&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                            ></iframe>{" "}
-                            <a href="https://add-map.com/"></a>{" "}
-                            <script
-                                type="text/javascript"
-                                src="https://embedmaps.com/google-maps-authorization/script.js?id=0be1ddff42e0997de165b8ff4033d38efb3890f2"
-                            ></script>
+                        <div class="mapouter">
+                            <div class="gmap_canvas">
+                                <iframe
+                                    className={`rounded-xl h-[300px] w-[1000px]`}
+                                    id="gmap_canvas" src="https://maps.google.com/maps?q=Muscat&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                                </iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-
             </section>
+            {showModal && (
+                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                    <div className="relative rounded-lg ">
+                        <EditEventModal
+                            isOpen={showModal}
+                            onClose={closeModal} />
+                        {/* Close button */}
+                        <button
+                            className="absolute -top-5 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                        >
+                            <img src="/images/icons/cancel-icon.png" alt="" />
+                        </button>
+                    </div>
+                </div>
+            )}
+
 
             <div className=''>
                 < Footer />
