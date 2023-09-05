@@ -2,6 +2,8 @@ import React from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Footer from '../../components/shared/Footer/Footer'
 const Contactus = () => {
+    document.title = 'Contact Us'
+
     return (
         <>
             <Navbar />

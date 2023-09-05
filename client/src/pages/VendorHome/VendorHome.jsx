@@ -5,6 +5,9 @@ import VendorOfferCard from '../../components/Cards/VendorOfferCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
 const VendorHome = () => {
+
+    document.title = 'Vendor ~ Home'
+
     return (
         <div>
             <Navbar />

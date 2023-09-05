@@ -8,6 +8,9 @@ import Ticket from '../../components/Ticket/Ticket'
 import { useNavigate } from 'react-router-dom'
 
 const TicketStatus = () => {
+
+    document.title = 'TicketStatus'
+
     const navigate = useNavigate();
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page

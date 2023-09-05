@@ -8,6 +8,7 @@ import Offer from '../../components/category/Offer'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate } from 'react-router-dom'
 const EventDescription = () => {
+    document.title = 'Event descritption'
 
     const navigate = useNavigate();
     const handleBack = () => {

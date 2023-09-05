@@ -7,6 +7,9 @@ import Footer from '../../components/shared/Footer/Footer'
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard'
 
 const PastPurchase = () => {
+
+    document.title = 'Past purchase'
+
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 

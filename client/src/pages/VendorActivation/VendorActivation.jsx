@@ -1,6 +1,9 @@
 import React from 'react'
 
 const VendorActivation = () => {
+
+    document.title = 'Vendor Activation'
+
     return (
         <>
             <section className=' mr-6 ml-6 mt-5 md:mt-10 md:ml-24 md:mr-24 h-screen'>

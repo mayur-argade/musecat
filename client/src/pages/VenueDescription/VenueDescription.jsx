@@ -6,6 +6,9 @@ import Footer from '../../components/shared/Footer/Footer'
 import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 const VenueDescription = () => {
+
+    document.title = 'Vendor ~ Venue Description'
+
     return (
         <>
             <Navbar />

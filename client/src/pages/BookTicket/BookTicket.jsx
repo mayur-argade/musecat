@@ -5,7 +5,7 @@ import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate } from 'react-router-dom'
 
 const BookTicket = () => {
-
+    document.title = 'Book Ticket'
     
     const [price, setPrice] = useState(false);
     let navigate = useNavigate();

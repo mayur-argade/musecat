@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Login = () => {
-    document.title = 'login'
+    document.title = 'Login'
 
     return (
 

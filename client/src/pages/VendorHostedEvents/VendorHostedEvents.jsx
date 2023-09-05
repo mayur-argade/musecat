@@ -6,6 +6,9 @@ import VendorOfferCard from '../../components/Cards/VendorOfferCard';
 import Footer from '../../components/shared/Footer/Footer';
 import { Link } from 'react-router-dom';
 const VendorHostedEvents = () => {
+
+    document.title = 'Vendor ~ Hosted Events'
+
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 

@@ -7,6 +7,8 @@ import SubEventCard from '../../components/Cards/SubEventCard'
 import { useNavigate } from 'react-router-dom'
 
 const WhereToMap = () => {
+    document.title = 'Where To Map'
+
     const navigate = useNavigate();
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page

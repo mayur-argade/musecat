@@ -4,6 +4,9 @@ import DebitCard from '../../components/Debit-Card/DebitCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
 const Profile = () => {
+
+    document.title = 'Profile'
+
     return (
         <>
             <Navbar />

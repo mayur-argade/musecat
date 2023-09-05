@@ -5,6 +5,9 @@ import Accordian from '../../components/Accordian/Accordian'
 import Footer from '../../components/shared/Footer/Footer'
 
 const FAQ = () => {
+
+    document.title = 'FAQs'
+
     const [accordions, setAccordions] = useState([
         {
             question: 'What is check-In and Check-Out time for any booked Event?',

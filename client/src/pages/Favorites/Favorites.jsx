@@ -4,6 +4,9 @@ import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import FavoriteCard from '../../components/Cards/FavoriteCard'
 import Footer from '../../components/shared/Footer/Footer'
 const Favorites = () => {
+
+    document.title = 'Favorites'
+
     return (
         <>
             <Navbar />

@@ -12,10 +12,10 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 
 const Events = () => {
-    document.title = 'muscat ~ Events'
     let { category } = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+
 
     if (category === 'event') {
         category = 'Events'
@@ -44,7 +44,7 @@ const Events = () => {
     else if (category === 'kidscorner') {
         category = 'Kids Corner'
     }
-
+    document.title = `muscat ~ ${category}`
 
     // Close the dropdown when clicking anywhere outside of it
     const handleClickOutside = (event) => {

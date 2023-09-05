@@ -6,6 +6,9 @@ import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
 
 const VendorEventDescripton = () => {
+
+    document.title = 'Vendor ~ Event Info'
+
     const [accordions, setAccordions] = useState([
         {
             title: 'Event Information',
