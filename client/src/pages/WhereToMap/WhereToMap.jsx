@@ -4,15 +4,21 @@ import Footer from '../../components/shared/Footer/Footer'
 import WhereToMapCard from '../../components/WhereToMapCard.jsx/WhereToMapCard'
 import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import SubEventCard from '../../components/Cards/SubEventCard'
+import { useNavigate } from 'react-router-dom'
 
 const WhereToMap = () => {
-
+    const navigate = useNavigate();
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
     return (
         <>
             <Navbar />
             <section className='md:mr-12 md:ml-12 '>
                 <div className="flex  align-middle items-center">
-                    <img className='h-16' src="/images/icons/back-button.png" alt="" />
+                    <button onClick={handleBack}>
+                        <img className='h-16' src="/images/icons/back-button.png" alt="" />
+                    </button>
                     <span className='text-2xl font-bold'> Where To Map</span>
                 </div>
                 <div className="flex justify-around items-center align-middle md:flex-row flex-col ml-5 mr-5 ">
@@ -30,18 +36,18 @@ const WhereToMap = () => {
                     </div>
                 </div>
                 <div className='w-full hidden md:flex justify-end items-end flex-col '>
-                <div className='flex justify-end mb-2 mr-8 mt-3'>
-                    {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                    <div className='flex justify-end mb-2 mr-8 mt-3'>
+                        {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                             <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                         </button> */}
-                    <img className='h-10 ml-12 ' src="/images/icons/whatsapp-color.svg" alt="" />
-                    <button>
-                    </button>
+                        <img className='h-10 ml-12 ' src="/images/icons/whatsapp-color.svg" alt="" />
+                        <button>
+                        </button>
+                    </div>
+                    <button className='mr-8 rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                 </div>
-                <button className='mr-8 rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-            </div>
             </section>
-            
+
             <div className="">
                 <Footer />
             </div>

@@ -6,9 +6,13 @@ import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import EventCard from '../../components/Cards/EventCard'
 import Offer from '../../components/category/Offer'
 import Footer from '../../components/shared/Footer/Footer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 const EventDescription = () => {
 
+    const navigate = useNavigate();
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
     const [accordions, setAccordions] = useState([
         {
             title: 'Event Information',
@@ -35,8 +39,8 @@ const EventDescription = () => {
             <section className='md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
 
                 <div className="hidden md:flex align-middle items-center">
-                    <button className="backlogo rounded-full shadow-md shadow-gray-500">
-                        <img src="/images/icons/backarrow.svg" alt="" />
+                    <button className="backlogo" onClick={handleBack}>
+                        <img className='h-16' src="/images/icons/back-button.png" alt="" />
                     </button>
                     <span className='text-lg font-bold'>Event Description</span>
                 </div>

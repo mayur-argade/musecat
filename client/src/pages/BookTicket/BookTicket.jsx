@@ -2,11 +2,18 @@ import React, { useState } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Footer from '../../components/shared/Footer/Footer'
-import { Link, useNavigate  } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const BookTicket = () => {
+
+    
     const [price, setPrice] = useState(false);
     let navigate = useNavigate();
+    
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
+
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
@@ -21,10 +28,10 @@ const BookTicket = () => {
         if (price) {
             // Redirect to the next page when clicked for the second time
             navigate('/ticketstatus/ticketid')
-          } else {
+        } else {
             // Show the price when clicked for the first time
             setPrice(true);
-          }
+        }
     };
 
     return (
@@ -33,7 +40,7 @@ const BookTicket = () => {
             <Tabbar />
             <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                 <div className="ml-3 hidden md:flex align-middle items-center">
-                    <button className=' mt-1'>
+                    <button onClick={handleBack} className='mt-1'>
                         <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                     </button>
                     <p className='text-2xl font-bold'>Book Your Seat</p>
@@ -119,17 +126,17 @@ const BookTicket = () => {
                                 </div>
 
                                 <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Select class</label>
-                                        <select
-                                            className='w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                            placeholder='Doe'
-                                        >
-                                            <option selected value="US">Platinum</option>
-                                            <option value="CA">Gold</option>
-                                            <option value="FR">Silver</option>
-                                        </select>
+                                    <label className='text-xs mt-1' htmlFor="first name">Select class</label>
+                                    <select
+                                        className='w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                        placeholder='Doe'
+                                    >
+                                        <option selected value="US">Platinum</option>
+                                        <option value="CA">Gold</option>
+                                        <option value="FR">Silver</option>
+                                    </select>
 
-                                    </div>
+                                </div>
 
                                 <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
                                     <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>

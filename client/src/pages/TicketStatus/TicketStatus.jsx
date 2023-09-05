@@ -5,8 +5,14 @@ import Footer from '../../components/shared/Footer/Footer'
 import FavoriteCard from '../../components/Cards/FavoriteCard'
 import TicketStatusCard from '../../components/Cards/TicketStatusCard'
 import Ticket from '../../components/Ticket/Ticket'
+import { useNavigate } from 'react-router-dom'
 
 const TicketStatus = () => {
+    const navigate = useNavigate();
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
@@ -23,7 +29,7 @@ const TicketStatus = () => {
 
             <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                 <div className="ml-3 hidden md:flex align-middle items-center">
-                    <button className=' mt-1'>
+                    <button onClick={handleBack} className=' mt-1'>
                         <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                     </button>
                     <p className='text-2xl font-bold'>Ticket Status</p>
