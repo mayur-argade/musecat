@@ -79,7 +79,7 @@ exports.getVendorProfile = async (req, res) => {
     }
 }
 
-module.exports.getAllNotifications = async (req, res) => {
+exports.getAllNotifications = async (req, res) => {
     const { _id } = req.user
     try {
         const notifications = await notificationService.getAllNotifications({ userId: _id })
@@ -237,4 +237,8 @@ exports.getEventDetails = async (req, res) => {
     }
 
 
+}
+
+exports.getPastPurchase = async (req, res) => {
+    
 }

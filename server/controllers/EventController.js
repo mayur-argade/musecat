@@ -303,3 +303,19 @@ module.exports.getUpcomingEvents = async (req, res) => {
         });
     }
 };
+
+module.exports.customQue = async (req, res) => {
+    const eventid = req.params.eventid
+
+    try {
+        const eventQue = await eventService.findEvent({ _id: eventid })
+        let data = eventQue.custom
+        return res.status(200).json({
+            success: true,
+            data: data
+        })
+
+    } catch (error) {
+        console.log(error)
+    }
+}

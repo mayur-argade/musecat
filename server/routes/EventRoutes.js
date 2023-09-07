@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isUserLoggedin, isVerified } = require('../middleware/authMiddleware')
 
 
-const { createEvent, getEventById, getVendorAllEventsNOffers, createOffer, updateEvent, addToFavorites, getUpcomingEvents } = require('../controllers/EventController')
+const { createEvent, getEventById, getVendorAllEventsNOffers, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue } = require('../controllers/EventController')
 
 router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
@@ -13,5 +13,6 @@ router.route('/vendor/event/:eventid').patch(isLoggedin, isVerified, updateEvent
 
 router.route('/event/like/:eventid').put(isUserLoggedin, addToFavorites)
 router.route('/getUpcomingEvent').get(getUpcomingEvents)
+router.route('/event/:eventid/customq').get(customQue)
 
 module.exports = router;

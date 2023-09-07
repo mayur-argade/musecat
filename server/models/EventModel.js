@@ -68,6 +68,18 @@ const eventSchema = new mongoose.Schema({
     bookedSeats: {
         type: Array,
         default: []
+    },
+    bookedPlatinumSeats: {
+        type: Array,
+        default: []
+    },
+    bookedGoldSeats: {
+        type: Array,
+        default: []
+    },
+    bookedSilverSeats: {
+        type: Array,
+        default: []
     }
 
 },

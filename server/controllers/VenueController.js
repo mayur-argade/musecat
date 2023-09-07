@@ -1,3 +1,4 @@
+const eventService = require('../services/event-service')
 const venueService = require('../services/venue-service')
 const cloudinary = require('cloudinary')
 
@@ -45,9 +46,14 @@ module.exports.getVenueDetails = async (req, res) => {
 
     try {
 
-        const venue = await venueService.findVenue({ _id: venue })
+        const venuedata = await venueService.findVenue({ _id: venue })
+        const events = await eventService.findAllEvents({ location: venuedata.name })
         return res.status(200).json({
-            
+            success: true,
+            data: {
+                venue: venuedata,
+                events: events
+            }
         })
     } catch (error) {
         console.log(error)
