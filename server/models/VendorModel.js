@@ -5,18 +5,23 @@ const vendorSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: [true, 'Please provide a first-name'],
-        maxLength: [10, 'Name should be under 40 characters'],
+        // maxLength: [10, 'Name should be under 40 characters'],
     },
     lastname: {
         type: String,
         required: [true, 'Please provide a last-name'],
-        maxLength: [10, 'Name should be under 40 characters'],
+        // maxLength: [10, 'Name should be under 40 characters'],
     },
     email: {
         type: String,
         required: [true, 'Please provide an email'],
         validate: [validator.isEmail, 'Please enter email in the correct format'],
         unique: true,
+    },
+    isVerified: {
+        type: Boolean,
+        required: true,
+        default: false
     },
     password: {
         type: String,
@@ -49,7 +54,7 @@ const vendorSchema = new mongoose.Schema({
     },
     logo: {
         type: String,
-        required: [true, 'Please provide company logo']
+        // required: [true, 'Please provide company logo']
     },
     crNo: {
         type: String,
@@ -65,6 +70,10 @@ const vendorSchema = new mongoose.Schema({
     socialmedia: [
         String
     ],
-});
+},
+    {
+        timestamp: true,
+    }
+);
 
 module.exports = mongoose.model('Vendors', vendorSchema);

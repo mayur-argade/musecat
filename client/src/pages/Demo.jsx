@@ -133,7 +133,7 @@ const Demo = () => {
                                 className={`w-10 h-10 bg-gray-300 cursor-pointer`}
                                 onClick={() => toggleGoldSeatSelection(row, col)}
                             >
-                                <span className={`w-7 h-7 rounded-lg ${isGoldSeatSelected(row, col) ? 'bg-red-500' : 'bg-white'}`}></span>
+                                 <span className={`w-5 h-4 px-3 py-0.5 rounded-lg cursor-pointer ${isGoldSeatSelected(row, col) ? 'bg-red-500' : 'bg-white'} `}></span>
                             </td>
                         ))}
                     </tr>
@@ -167,7 +167,7 @@ const Demo = () => {
                                 className={`w-10 h-10 bg-gray-300 cursor-pointer`}
                                 onClick={() => toggleSilverSeatSelection(row, col)}
                             >
-                                <span className={`w-7 h-7 rounded-lg ${isSilverSeatSelected(row, col) ? 'bg-red-500' : 'bg-white'}`}></span>
+                                 <span className={`w-5 h-4 px-3 py-0.5 rounded-lg cursor-pointer ${isSilverSeatSelected(row, col) ? 'bg-red-500' : 'bg-white'} `}></span>
                             </td>
                         ))}
                     </tr>

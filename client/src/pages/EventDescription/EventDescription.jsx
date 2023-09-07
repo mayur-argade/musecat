@@ -189,7 +189,7 @@ const EventDescription = () => {
                         <div class="mapouter">
                             <div class="gmap_canvas">
                                 <iframe
-                                    className={`rounded-xl h-48 w-80 md:h-[386px] md:w-[1000px] md:max-h-fit md:w-full`}
+                                    className={`rounded-xl h-48 w-80 md:h-[386px] md:w-[1000px]`}
                                     id="gmap_canvas" src="https://maps.google.com/maps?q=Muscat&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
                                 </iframe>
                             </div>

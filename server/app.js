@@ -8,17 +8,29 @@ const cookieParser = require('cookie-parser')
 app.use(morgan('tiny'));
 
 // Regular middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Set up EJS as the render engine
-app.set('view engine', 'ejs');
+// cookie parser
+app.use(cookieParser())
 
-const vendorauth = require('./routes/VendorRoutes/VendorAuthRoute')
+// cors middleware
+app.use(cors())
+
+// import all routes here
+const auth = require('./routes/AuthRoutes')
+const user = require('./routes/UserRoute')
+const events = require('./routes/EventRoutes')
+const categories = require('./routes/CategoryRoute')
+const venue = require('./routes/VenueRoute')
 
 
 // Router middleware
-app.use('/api/v1/vendor/auth', vendorauth);
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/', user);
+app.use('/api/v1/', events);
+app.use('/api/v1/category', categories)
+app.use('/api/v1/venue', venue)
 
 
 module.exports = app;
