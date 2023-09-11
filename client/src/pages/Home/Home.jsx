@@ -338,7 +338,7 @@ const Home = () => {
                                 </div>
 
                                 <div className='hidden md:block flex space-x-1'>
-                                    {((item) => (
+                                    {next7Days.map((item) => (
                                         <button onClick={() => setnewfilterdate(item.actualdate)} className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border'>
                                             <div className='flex flex-col'>
                                                 <p>
@@ -371,7 +371,7 @@ const Home = () => {
                         </div>
 
                         <div>
-                            <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-10'>
+                            <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-6'>
                                 {
                                     upcomingEvents.data.map((event) => (
 
