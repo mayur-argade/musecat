@@ -11,7 +11,7 @@ router.route('/user/register').post(clientRegister)
 router.route('/user/login').post(clientLogin)
 router.route('/refresh').post(refresh)
 router.route('/vendor/logout').post(isLoggedin, logout)
-// router.route('/user/logout').post(isUserLoggedin, logout)
+router.route('/user/logout').post(isUserLoggedin, logout)
 
 
 module.exports = router;
