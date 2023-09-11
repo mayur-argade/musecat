@@ -1,14 +1,53 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import './navbar.css'
 import { useParams } from 'react-router-dom';
-const Navbar = () => {
-    let { category } = useParams();
+import { clientLogout, vendorLogout } from '../../../http';
+import { useDispatch, useSelector } from 'react-redux'
+import { setAuth } from '../../../store/authSlice'
+
+const Navbar = ({ searchQuery, setSearchQuery }) => {
+    let { category, eventid } = useParams();
     const navigate = useNavigate();
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page
     };
+
+    const handleSearchInput = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const dispatch = useDispatch();
+    const { isAuth, user } = useSelector((state) => state.auth)
+
+    const userLogout = async () => {
+        try {
+            const { data } = await clientLogout()
+            dispatch(setAuth(data));
+            navigate("/");
+        } catch (error) {
+            window.alert(error)
+            console.log(error)
+        }
+    }
+
+    const funVendorLogout = async () => {
+        try {
+            const { data } = await vendorLogout()
+            dispatch(setAuth(data));
+            navigate("/vendor/login");
+        } catch (error) {
+            window.alert(error)
+            console.log(error)
+        }
+    }
 
     const [sidebar, setSidebar] = useState(false);
 
@@ -107,7 +146,8 @@ const Navbar = () => {
                                                     </svg>
                                                 </div>
 
-                                                <input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52 pl-5 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
+                                                <input value={searchQuery}
+                                                    onChange={handleSearchInput} type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52 pl-5 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
 
                                             </div>
                                         </div>
@@ -120,19 +160,74 @@ const Navbar = () => {
 
 
                     <div class="hidden md:flex md:order-2 space-x-2">
-                        <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign in</button>
-                        <button type="button" class="border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                        {
+                            isAuth
+                                ?
+                                <button onClick={toggleDropdown}>
+                                    <img className='m-1 h-10' src="/images/icons/navprofile.png" alt="" />
+                                    {isOpen && (
+                                        <div
+                                            className="origin-top-right absolute right-60 mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
+                                            ref={dropdownRef}
+                                        >
+                                            <div className="px-3 flex flex-col">
+                                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                                                    <Link to={
+                                                        window.location.pathname == "/vendor/home" ||
+                                                            window.location.pathname == "/vendor/notification" ||
+                                                            window.location.pathname == "/vendor/helpcenter" ||
+                                                            window.location.pathname == "/vendor/home" ||
+                                                            window.location.pathname == '/vendor/profile'
+                                                            ?
+                                                            `/vendor/profile`
+                                                            :
+                                                            `/profile`
+                                                    }>
+                                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                                                    </Link>
+                                                    {
+                                                        window.location.pathname == "/vendor/notification" ||
+                                                            window.location.pathname == "/vendor/helpcenter" ||
+                                                            window.location.pathname == "/vendor/home" ||
+                                                            window.location.pathname == '/vendor/profile'
+                                                            ?
+                                                            <button onClick={funVendorLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-center dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                logout
+                                                            </button>
+                                                            :
+                                                            <button onClick={userLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-center dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                logout
+                                                            </button>
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    )}
+                                </button>
+                                : <div className='space-x-2'>
+                                    <Link to="/login">
+                                        <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
+                                    </Link>
+                                    <Link to="/signup">
+                                        <button type="button" class="border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                    </Link>
+                                </div>
+                        }
+
+
                     </div>
 
                     {
                         window.location.pathname == "/vendor/notification" ||
                             window.location.pathname == "/vendor/home" ||
-                            window.location.pathname == "/vendor/event/eventid" || 
-                            window.location.pathname == "/vendor/bookedtickets" ?
+                            window.location.pathname == `/vendor/event/${eventid}` ||
+                            window.location.pathname == '/vendor/profile' ||
+                            window.location.pathname == `/vendor/${eventid}/bookedtickets` ?
                             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
                                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                                     <li>
-                                        <Link to='/vendor/home' className={`${window.location.pathname == '/home' ? 'text-blue-500' : ''}`}>
+                                        <Link to='/vendor/home' className={`${window.location.pathname == '/' ? 'text-blue-500' : ''}`}>
                                             <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page"><span className='text-sm'>Home</span></a>
                                         </Link>
 
@@ -154,13 +249,13 @@ const Navbar = () => {
                             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
                                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                                     <li>
-                                        <Link to='/home' className={`${window.location.pathname == '/home' ? 'font-bold' : ''}`}>
+                                        <Link to='/' className={`${window.location.pathname == '/' ? 'font-bold' : ''}`}>
                                             <a href="#" className={`block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Home</a>
                                         </Link>
 
                                     </li>
                                     <li>
-                                        <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'font-bold' : ''}`}>
+                                        <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold' : ''}`}>
                                             <a href="#" className="block text-sm py-2 pl-3 pr-4  md:p-0 hover:font-bold 
                                             md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Where To ?</a>
                                         </Link>
@@ -189,10 +284,10 @@ const Navbar = () => {
                         <img src="/images/icons/notification.svg" alt="" />
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* sidebar for mobile view */}
-            <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+            < nav className={sidebar ? "nav-menu active" : "nav-menu"} >
                 <ul className="nav-menu-items" onClick={showSidebar}>
                     <li className="navbar-toggle flex justify-end justify-items-end">
                         <div>
@@ -203,7 +298,7 @@ const Navbar = () => {
                     </li>
 
                     <div className='flex flex-col space-y-8'>
-                        <Link to='/home' className={`${window.location.pathname == '/home' ? 'font-bold' : 'font-medium'}`}>
+                        <Link to='/' className={`${window.location.pathname == '/' ? 'font-bold' : 'font-medium'}`}>
                             <span className=' hover:border'>Home</span>
                         </Link>
 
@@ -221,7 +316,7 @@ const Navbar = () => {
                     </div>
 
                 </ul>
-            </nav>
+            </ nav>
         </>
     );
 }

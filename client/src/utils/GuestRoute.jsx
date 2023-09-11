@@ -1,35 +1,35 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 const GuestRoute = (props) => {
-  const {Component} = props;
-  
-  const navigate = useNavigate();
-  
-  const {user, isAuth} = useSelector((state) => state.auth);
+    const { Component } = props;
 
-useEffect(() => {
-  function specialTreatment() {
-    if(isAuth===true && user.activated==false){
-        navigate("/activate")
-    }
-    else if(isAuth === true && user.activated===true){
-      navigate('/rooms')
-    }
+    const navigate = useNavigate();
 
-  }
-
-  specialTreatment();
-}, [navigate])
+    const { user, isAuth } = useSelector((state) => state.auth);
 
 
-  return (
-    <div>
-        <Component />
-    </div>
-  )
+    useEffect(() => {
+        function specialTreatment() {
+            if (isAuth === true && user.isVerified == false) {
+                navigate("/vendor/activation")
+            }
+            else if (isAuth == false) {
+                navigate("/vendor/login")
+            }
+        }
+
+        specialTreatment();
+    }, [navigate])
+
+
+    return (
+        <div>
+            <Component />
+        </div>
+    )
 }
 
 export default GuestRoute

@@ -98,13 +98,15 @@ exports.getAllNotifications = async (req, res) => {
 
 exports.updateUserProfile = async (req, res) => {
 
-    const { email, username, mobilenumber } = req.body
+    const { email, firstname, lastname, username, mobilenumber } = req.body
 
     try {
         const data = {
             _id: req.user._id,
             email: email,
             username: username,
+            firstname: firstname,
+            lastname: lastname,
             mobilenumber: mobilenumber
         }
 
@@ -125,7 +127,7 @@ exports.updateUserProfile = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
     try {
-
+console.log(req.user)
         const user = await userService.findUser({ _id: req.user._id })
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
@@ -240,5 +242,17 @@ exports.getEventDetails = async (req, res) => {
 }
 
 exports.getPastPurchase = async (req, res) => {
-    
+    try {
+        const user = await userService.findUser({ _id: req.user.id })
+        let pastpurchased = user.pastPurchase
+        const pastEvents = await eventService.findAllEvents({_id: {$in: pastpurchased}})
+        return res.status(200).json({
+            success: true,
+            data: {
+                pastpurchased: pastEvents
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }

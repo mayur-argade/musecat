@@ -17,8 +17,9 @@ const VendorLogin = () => {
             window.alert("both fields are required")
         } try {
             const { data } = await vendorLogin({ email, password })
-            dispatch(setAuth(data.user));
-            navigate('/activate');
+            console.log(data)
+            dispatch(setAuth(data));
+            navigate('/vendor/home');
         } catch (error) {
             console.log(error)
         }

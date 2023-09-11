@@ -3,7 +3,6 @@ import React from 'react'
 const Table = () => {
     return (
         <div>
-
             <div class="relative overflow-x-auto rounded-lg">
                 <table class="rounded-lg w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
                     <thead class="text-xs text-gray-700 uppercase bg-[#EEEEEE] dark:bg-gray-700 dark:text-gray-400">

@@ -1,26 +1,40 @@
 const offerService = require("../services/offer-service");
 const eventService = require('../services/event-service');
 const statusCode = require("../data/statusCode");
+const CategoryModel = require('../models/CategoryModel')
+
+exports.createCategory = async (req, res) => {
+
+
+
+}
 
 module.exports.getCategories = async (req, res) => {
     try {
+        // Query the categories from the database
+        const categories = await CategoryModel.find();
+
+        console.log(categories)
+
         // Query the offers from the database
         const offers = await offerService.findAllOffer();
+        console.log(offers)
 
-        // Group offers by category name and calculate the count for each category
-        const categoryCounts = offers.reduce((acc, offer) => {
+        // Calculate the offer counts for each category
+        const categoryCounts = {};
+
+        offers.forEach((offer) => {
             const categoryName = offer.category; // Assuming you have a 'category' field in your offer schema
-            if (!acc[categoryName]) {
-                acc[categoryName] = 0;
+            if (!categoryCounts[categoryName]) {
+                categoryCounts[categoryName] = 0;
             }
-            acc[categoryName]++;
-            return acc;
-        }, {});
+            categoryCounts[categoryName]++;
+        });
 
-        // Create a response object with offer count and category data
-        const response = Object.keys(categoryCounts).map((categoryName) => ({
-            category: categoryName,
-            count: categoryCounts[categoryName],
+        // Create a response object that includes both category data and offer counts
+        const response = categories.map((category) => ({
+            category: category.name, // Assuming you have a 'categoryName' field in your category schema
+            count: categoryCounts[category.name] || 0, // Default to 0 if no offers for the category
         }));
 
         // Send the response to the frontend
@@ -38,11 +52,20 @@ module.exports.getCategories = async (req, res) => {
 }
 
 module.exports.getCategoryAllEvents = async (req, res) => {
-    const categoryDisplayName = req.params.categoryname
+    let categoryDisplayName = req.params.categoryname
     console.log(categoryDisplayName)
 
+
+
+
     try {
-        const events = await eventService.findAllEvents({ category: categoryDisplayName })
+        let events;
+        if (categoryDisplayName != "events") {
+            events = await eventService.findAllEvents({ category: categoryDisplayName })
+        } else {
+            events = await eventService.findAllEvents()
+        }
+
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: events

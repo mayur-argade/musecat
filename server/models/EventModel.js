@@ -10,6 +10,15 @@ const eventSchema = new mongoose.Schema({
         type: String,
         // required: [true, "Please provide event Display photo"]
     },
+    Banner:{
+        type: String,
+    },
+    Video: {
+        type: String,
+    },
+    shortDescription:{
+        type: String,
+    },
     description: {
         type: String,
         require: [true, "Please provide description for an event"]
@@ -17,6 +26,9 @@ const eventSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: [true, "Please provide date and time for an event"]
+    },
+    category:{
+        type: String,
     },
     location: {
         type: String,

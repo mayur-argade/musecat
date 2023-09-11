@@ -1,0 +1,120 @@
+div.container {
+    /* display: none; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 810px;
+    overflow: hidden
+  }
+
+  .container .item {
+    width: 100%;
+    height: 310px;
+    float: left;
+    /* padding: 0 0px; */
+    background: #fff;
+    overflow: hidden;
+    margin: 10px
+  }
+  .container .item-right, .container .item-left {
+    float: left;
+    padding: 15px 
+  }
+  .container .item-right {
+    background-color: #C0A04C;
+    /* padding: 79px 50px; */
+    /* margin-right: 20px; */
+    width: 273px;
+    position: relative;
+    height: 330px
+  }
+  .container .item-right .up-border, .container .item-right .down-border {
+      padding: 14px 15px;
+      background-color: #ddd;
+      border-radius: 50%;
+      position: absolute
+  }
+  .container .item-right .up-border {
+    top: -10px;
+    right: 260px;
+  }
+  .container .item-right .down-border {
+    bottom: 8px;
+    right: 260px;
+  }
+  .container .item-right .num {
+    font-size: 60px;
+    text-align: center;
+    color: #111
+  }
+  .container .item-right .day, .container .item-left .event {
+    color: #555;
+    font-size: 20px;
+    margin-bottom: 9px;
+  }
+  .container .item-right .day {
+    text-align: center;
+    font-size: 25px;
+  }
+  .container .item-left {
+    width: 65%;
+    padding: 34px 0px 19px 46px;
+    border-right: 3px dotted #999;
+  } 
+  .container .item-left .title {
+    color: #111;
+    font-size: 34px;
+    margin-bottom: 12px
+  }
+  .container .item-left .sce {
+    margin-top: 5px;
+    display: block
+  }
+  .item-left .sce .icon, .item-left .sce p,
+  .item-left .loc .icon, .item-left .loc p{
+      float: left;
+      word-spacing: 5px;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 10px;
+  }
+  .item-left .sce .icon,  .item-left .loc .icon {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #666
+  }
+    .item-left .loc {display: block}
+  .fix {clear: both}
+   .item .tickets, .booked, .cancel{
+      color: #fff;
+      padding: 6px 14px;
+      float: right;
+      margin-top: 10px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer
+  }
+   .item .tickets {background: white}
+   .item .booked {background: #3D71E9}
+   .item .cancel {background: #DF5454}
+  .linethrough {text-decoration: line-through}
+
+  @media only screen and (max-width: 1150px) {
+    .container .item {
+      width: 100%;
+      margin-right: 20px
+    }
+    div.container {
+      margin: 0 20px auto
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .container .item {
+        width: 100%;
+        margin-right: 20px
+      }
+      div.container {
+        margin: 0 20px auto
+      }
+  }

@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Footer from '../../components/shared/Footer/Footer'
+import { getVendorNotification } from '../../http/index'
 
 const VendorNotification = () => {
 
     document.title = 'Vendor ~ Notification'
+
+    // const [response, setReponse] = useState({});
+
+
+    // useEffect(() => {
+    //     const fetchdata = async () => {
+    //         try {
+    //             const { data } = await getVendorNotification()
+    //             console.log(data.data)
+    //             setReponse(data)
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+
+    //     fetchdata()
+    // }, []);
+
 
     return (
         <div>

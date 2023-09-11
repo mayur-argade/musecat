@@ -10,6 +10,19 @@ const offerSchema = new mongoose.Schema({
         type: String,
         // required: [true, "Please provide event Display photo"]
     },
+    banner:{
+        type: String,
+    },
+    video:{
+        type: String,
+    },
+    shortDescription: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    
     description: {
         type: String,
         require: [true, "Please provide description for an event"]

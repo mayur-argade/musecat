@@ -5,15 +5,17 @@ const userService = require('../services/user-service')
 
 exports.isLoggedin = async (req, res, next) => {
     try {
-        const { accessToken } = req.cookies;
+        const accessToken = req.cookies.accessToken;
         console.log("this is logged in", req.cookies)
         if (!accessToken) {
             throw new Error();
         }
 
         const userid = await tokenService.verifyAccessToken(accessToken);
+        console.log(userid)
         // console.log(userid)
-        const userData = await vendorService.findVendor({ _id: userid.id });
+
+        const userData = await vendorService.findVendor({ _id: userid._id });
         if (userData) {
             // console.log(userData)
             req.user = userData;
@@ -29,15 +31,16 @@ exports.isLoggedin = async (req, res, next) => {
 
 exports.isUserLoggedin = async (req, res, next) => {
     try {
-        const { accessToken } = req.cookies;
+        const accessToken = req.cookies.accessToken;
+        console.log(accessToken)
         console.log("this is logged in", req.cookies)
         if (!accessToken) {
             throw new Error();
         }
 
         const userid = await tokenService.verifyAccessToken(accessToken);
-        // console.log(userid)
-        const userData = await userService.findUser({ _id: userid.id });
+        console.log(userid)
+        const userData = await userService.findUser({ _id: userid._id });
         if (userData) {
             // console.log(userData)
             req.user = userData;
@@ -53,6 +56,7 @@ exports.isUserLoggedin = async (req, res, next) => {
 
 exports.isVerified = async (req, res, next) => {
     try {
+        console.log(req.user)
         if (req.user.isVerified == true) {
             next();
         } else {

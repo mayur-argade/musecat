@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Footer from '../../components/shared/Footer/Footer'
+import { useNavigate } from 'react-router-dom'
+import { ClientContactUs } from '../../http/index'
+
 const Contactus = () => {
     document.title = 'Contact Us'
+
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
+    const [email, setEmail] = useState('')
+    const [message, setMessage] = useState('')
+
+
+    async function submit() {
+        if (!firstname || !lastname || !email || !message) {
+            alert("all fields are mandatory")
+        }
+        const contactdata = {
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            message: message
+        }
+
+        const { data } = await ClientContactUs(contactdata)
+        window.alert("message has been sent")
+    }
 
     return (
         <>
@@ -36,22 +60,24 @@ const Contactus = () => {
                                             <input
                                                 type="text"
                                                 className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                                onChange={(e) => setFirstname(e.target.value)}
                                                 placeholder='John'
 
                                             />
                                         </div>
                                     </div>
-                                    <div className="md:w-1/2 mt-5">
+                                    <div className="md:w-1/2 mt-5 md:mt-0">
                                         <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
                                             <label className='text-xs mt-1' htmlFor="first name">last name</label>
                                             <input
                                                 type="text"
                                                 className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                                onChange={(e) => setLastname(e.target.value)}
                                                 placeholder='John'
-
                                             />
                                         </div>
                                     </div>
+                                    
                                 </div>
                                 <div className="row2 mt-4">
                                     <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
@@ -59,6 +85,7 @@ const Contactus = () => {
                                         <input
                                             type="text"
                                             className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                            onChange={(e) => setEmail(e.target.value)}
                                             placeholder='John@gmail.com'
 
                                         />
@@ -71,6 +98,7 @@ const Contactus = () => {
                                         <textarea
                                             type="text"
                                             className='border h-24 bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                            onChange={(e) => setMessage(e.target.value)}
                                             placeholder='write your message here...'
 
                                         />
@@ -78,7 +106,7 @@ const Contactus = () => {
 
                                 </div>
                                 <div className="flex justify-center mt-5">
-                                    <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Send Message</button>
+                                    <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" onClick={submit}>Send Message</button>
                                 </div>
                                 <div className="flex flex-col justify-center items-center mt-5 space-y-2">
                                     <span className='text-sm font-bold'>

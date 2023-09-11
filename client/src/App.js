@@ -28,7 +28,13 @@ import VendorHostedEvents from './pages/VendorHostedEvents/VendorHostedEvents';
 import VendorHome from './pages/VendorHome/VendorHome';
 import VendorEventDescripton from './pages/VendorEventDescription/VendorEventDescripton';
 import VendorBookedTickets from './pages/VendorBookedTickets/VendorBookedTickets';
+import VendorProfile from './pages/Profile/VendorProfile'
 // components
+
+// utils
+import GuestRoute from './utils/GuestRoute'
+import Protected from './utils/Protected';
+import SemiProtected from './utils/SemiProtected'
 
 
 function App() {
@@ -36,29 +42,38 @@ function App() {
         <div className="App">
             <Router>
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" exact element={<Home />} />
+                    <Route path="/signup" exact element={<Signup />} />
+                    <Route path="/login" exact element={<Login />} />
+                    <Route path="/aboutus" exact element={<AboutUs />} />
+                    <Route path="/contactus" exact element={<Contactus />} />
+                    <Route path="/profile" exact element={<Profile />} />
+                    <Route path="/whereto" exact element={<WhereToMap />} />
+                    <Route path="/category/:category" exact element={<Events />} />
+                    <Route path="/events/:eventid" exact element={<EventDescription />} />
+                    <Route path="/venue/venueid" exact element={<VenueDescription />} />
+                    <Route path="/favorites" exact element={<Favorites />} />
+                    <Route path="/pastpurchase" exact element={<PastPurchase />} />
+                    <Route path="/faq" exact element={<FAQ />} />
+                    <Route path="/bookticket" exact element={<Protected Component={BookTicket} />} />
+                    <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
+
+                    <Route path="/vendor/notification" exact element={<VendorNotification />} />
+
+                    {/* vendor pages */}
                     <Route path="/vendor/login" element={<VendorLogin />} />
-                    <Route path="/signup" element={<Signup />} />
                     <Route path="/vendor/signup" element={<VendorSignup />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/aboutus" element={<AboutUs />} />
-                    <Route path="/contactus" element={<Contactus />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/whereto" element={<WhereToMap />} />
-                    <Route path="/category/:category" element={<Events />} />
-                    <Route path="/events/eventid" element={<EventDescription />} />
-                    <Route path="/venue/venueid" element={<VenueDescription />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="/pastpurchase" element={<PastPurchase />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/bookticket" element={<BookTicket />} />
-                    <Route path="/ticketstatus/ticketid" element={<TicketStatus />} />
-                    <Route path="/vendor/hostedevents" element={<VendorHostedEvents />} />
-                    <Route path="/vendor/home" element={<VendorHome />} />
-                    <Route path="/vendor/activation" element={<VendorActivation />} />
-                    <Route path="/vendor/notification" element={<VendorNotification />} />
-                    <Route path="/vendor/event/eventid" element={<VendorEventDescripton />} />
-                    <Route path="/vendor/bookedtickets" element={<VendorBookedTickets />} />
+                    <Route path="/vendor/home" exact element={<GuestRoute Component={VendorHome} />} />
+                    <Route path="/vendor/activation" exact element={<VendorActivation />} />
+                    <Route path="/vendor/hostedevents" exact element={<GuestRoute Component={VendorHostedEvents} />} />
+                    <Route path="/vendor/event/:eventid" exact element={<GuestRoute Component={VendorEventDescripton} />} />
+                    <Route path="/vendor/profile" exact element={<GuestRoute Component={VendorProfile} />} />
+                    <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
+                    
+
+
+
+
                     <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>

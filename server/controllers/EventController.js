@@ -3,11 +3,12 @@ const cloudinary = require('cloudinary')
 const eventService = require('../services/event-service')
 const offerService = require('../services/offer-service')
 const userService = require('../services/user-service')
+const tokenService = require('../services/token-service')
 
 exports.createEvent = async (req, res) => {
-    const { title, description, date, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
+    const { title, description, category, date, time, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
 
-    if (!title, !description, !date, !location, !silverSeats, !silverPrice, !goldSeats, !goldPrice, !platinumSeats, !platinumPrice) {
+    if (!title, !description, !category || !date || !location || !silverSeats || !silverPrice || !goldSeats || !goldPrice || !platinumSeats || !platinumPrice) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: "All fields are mandatory"
@@ -35,12 +36,18 @@ exports.createEvent = async (req, res) => {
             goldPrice: goldPrice,
             platinumSeats: platinumSeats, platinumPrice: platinumPrice, displayPhoto: displayPhoto,
             custom: custom,
+            category: category,
             features: features,
             vendorid: req.user._id,
             displayPhoto: uploadedEventPhoto.secure_url
         }
 
         event = await eventService.createEvent(data)
+
+        res.status(statusCode.SUCCESS.code).json({
+            success: true,
+            data: event
+        })
 
     } catch (error) {
         console.log(error);
@@ -49,12 +56,6 @@ exports.createEvent = async (req, res) => {
             data: "Internal server error"
         })
     }
-
-    res.status(statusCode.SUCCESS.code).json({
-        success: true,
-        data: event
-    })
-
 }
 
 exports.getEventById = async (req, res) => {
@@ -265,6 +266,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
         // Check if a date is provided in the request query
         const customDate = req.query.date || new Date().toISOString().split('T')[0];
 
+        console.log(customDate)
         // Calculate the start and end of the specified date
         const startOfDay = new Date(customDate);
         startOfDay.setHours(0, 0, 0, 0); // Set time to midnight (00:00:00)
@@ -278,7 +280,6 @@ module.exports.getUpcomingEvents = async (req, res) => {
         const eventsOnDate = await eventService.findAllEvents({
             date: {
                 $gte: startOfDay,
-                $lte: endOfDay,
             },
         });
 
@@ -318,4 +319,17 @@ module.exports.customQue = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+exports.getAllOffers = async (req, res) => {
+    try {
+        const offers = await offerService.findAllOffer({}, 4)
+        return res.status(200).json({
+            success: true,
+            data: offers
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
 }

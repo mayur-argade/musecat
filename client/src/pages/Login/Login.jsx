@@ -1,8 +1,31 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../store/authSlice";
+import { ClientLogin } from "../../http/index"
 
 const Login = () => {
     document.title = 'Login'
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    async function submit() {
+        if (!email || !password) {
+            window.alert("both fields are required")
+        } try {
+            const { data } = await ClientLogin({ email, password })
+            console.log(data)
+            dispatch(setAuth(data));
+            navigate('/');
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return (
 
@@ -18,18 +41,22 @@ const Login = () => {
                         <h2 class="text-xl font-bold text-white md:text-black">Welcome Back</h2>
                     </div>
                     <div>
-                        <input class="w-full p-2 text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" placeholder="Email" />
+                        <input class="w-full p-2 text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                            value={email} onChange={(e) => setEmail(e.target.value)}
+                            type="text" placeholder="Email" />
                     </div>
                     <div>
-                        <input class="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" placeholder="Password" />
+                        <input class="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                            value={password} onChange={(e) => setPassword(e.target.value)}
+                            type="password" placeholder="Password" />
                     </div>
                     <div className='flex justify-items-end justify-end'>
                         <a class="justify-self-end text-sm font-medium text-white md:text-black underline" href="#">Forgot password?</a>
                     </div>
                     <div>
-                        <Link to='/home'>
-                            <button class="w-full p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">Login</button>
-                        </Link>
+                        {/* <Link to='/home'> */}
+                            <button class="w-full p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit}>Login</button>
+                        {/* </Link> */}
                     </div>
                     <div class="flex items-center justify-between">
 

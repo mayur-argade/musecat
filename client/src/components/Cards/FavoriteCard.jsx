@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-const FavoriteCard = () => {
+const FavoriteCard = ({data}) => {
     document.title = 'favorites'
     return (
         <>
@@ -11,18 +11,18 @@ const FavoriteCard = () => {
                 </button>
 
                 <a href="#">
-                    <img class="h-70 w-full rounded-t-lg" src="/images/assets/eventdescription.png" alt="" />
+                    <img class="h-70 w-full rounded-t-lg" src={`${data.displayPhoto}`} alt="" />
                 </a>
                 <div class="p-1 pt-4 pb-2 mx-1">
                     <div class="">
                         <p class="title text-md md:text-md font-bold text-left">
-                            Breakfast and Pool Pass at
+                            {data.title} at
                         </p>
-                        <p className='text-md md:text-md font-bold text-left mb-1  leading-loose'> Crowne Plaza OCEC</p>
+                        <p className='text-md md:text-md font-bold text-left mb-1  leading-loose'> {data.location}</p>
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                            Turn your breakfast into a day out by the pool at <Link to='/venue/venueid'><span className='ml-0 text-[#C0A04C] underline'> Crowne Plaza OCEC</span></Link>
+                            {data.description} <Link to='/venue/venueid'><span className='ml-0 text-[#C0A04C] underline'> Crowne Plaza OCEC</span></Link>
                         </p>
                     </div>
                 </div>

@@ -3,17 +3,30 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ClientBookTicket } from '../../http/index'
+import { setEvent } from '../../store/eventSlice'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BookTicket = () => {
     document.title = 'Book Ticket'
-    
+
+    const { event } = useSelector((state) => state.event);
+
     const [price, setPrice] = useState(false);
+    const [basePrice, setBasePrice] = useState('')
+    const [tax, setTax] = useState('')
     let navigate = useNavigate();
-    
+
+    console.log(event)
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page
     };
 
+    const closePrice = () => {
+        setPrice(false)
+    }
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
@@ -24,15 +37,75 @@ const BookTicket = () => {
         setModalOpen(false);
     };
 
+
+
     const handleBookNowClick = () => {
         if (price) {
-            // Redirect to the next page when clicked for the second time
-            navigate('/ticketstatus/ticketid')
+            submit()
+            // // Redirect to the next page when clicked for the second time
+            // navigate('/ticketstatus/ticketid')
         } else {
-            // Show the price when clicked for the first time
+            const { basePrice, tax, totalPrice } = calculatePrice()
+            setTotalPrice(totalPrice)
+            setBasePrice(basePrice)
+            setTax(tax)
             setPrice(true);
         }
     };
+
+    function calculatePrice() {
+        let basePrice;
+        if (ticketclass == 'platinum') {
+            basePrice = event.platinumPrice
+        } else if (ticketclass == 'gold') {
+            basePrice = event.goldPrice
+        } else if (ticketclass == 'silver') {
+            basePrice = event.silverPrice
+        }
+        basePrice = basePrice * seats
+
+        var percentage = 18; // The percentage you want to calculate
+
+        var tax = (basePrice * percentage) / 100;
+
+        const totalPrice = basePrice + tax
+        return {
+            basePrice, tax, totalPrice
+        }
+    }
+    const [loading, setLoading] = useState(false)
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
+    const [email, setEmail] = useState('')
+    const [ticketclass, setTicketclass] = useState('')
+    const [seats, setSeats] = useState('')
+    const [row, setRow] = useState('')
+    const [totalPrice, setTotalPrice] = useState('')
+
+    async function submit() {
+        if (!firstname || !lastname || !ticketclass || !seats || !row) {
+            alert("all fields are mandatory")
+        }
+        const ticketdata = {
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            ticketclass: ticketclass,
+            seats: seats,
+            row: row,
+            eventid: event._id,
+            totalPrice: totalPrice
+        }
+        setLoading(true)
+        const { data } = await ClientBookTicket(ticketdata)
+        console.log(data.seatsbooked._id)
+        setLoading(false)
+        window.alert("ticket has been booked")
+        if (data) {
+            navigate(`/ticketstatus/${data.seatsbooked._id}`)
+        }
+
+    }
 
     return (
         <>
@@ -103,6 +176,8 @@ const BookTicket = () => {
                                         <input
                                             type="text"
                                             className='font-medium border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            onChange={(e) => setFirstname(e.target.value)}
+                                            onClick={closePrice}
                                             placeholder='John'
                                         />
                                     </div>
@@ -111,7 +186,10 @@ const BookTicket = () => {
                                         <input
                                             type="text"
                                             className='font-medium  border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            onChange={(e) => setLastname(e.target.value)}
+                                            onClick={closePrice}
                                             placeholder='Doe'
+
                                         />
                                     </div>
                                 </div>
@@ -121,6 +199,8 @@ const BookTicket = () => {
                                     <input
                                         type="text"
                                         className='font-medium  w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        onClick={closePrice}
                                         placeholder='John@email.com'
                                     />
                                 </div>
@@ -129,11 +209,13 @@ const BookTicket = () => {
                                     <label className='text-xs mt-1' htmlFor="first name">Select class</label>
                                     <select
                                         className='w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                        onChange={(e) => setTicketclass(e.target.value)}
+                                        onClick={closePrice}
                                         placeholder='Doe'
                                     >
-                                        <option selected value="US">Platinum</option>
-                                        <option value="CA">Gold</option>
-                                        <option value="FR">Silver</option>
+                                        <option selected value="platinum">Platinum</option>
+                                        <option value="gold">Gold</option>
+                                        <option value="silver">Silver</option>
                                     </select>
 
                                 </div>
@@ -144,6 +226,8 @@ const BookTicket = () => {
                                         <input
                                             type="number"
                                             className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            onChange={(e) => setSeats(e.target.value)}
+                                            onClick={closePrice}
                                             placeholder='5'
                                         />
                                     </div>
@@ -151,49 +235,59 @@ const BookTicket = () => {
                                         <label className='text-xs mt-1' htmlFor="first name">Select Row</label>
                                         <select
                                             className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                            onChange={(e) => setRow(e.target.value)}
+                                            onClick={closePrice}
                                             placeholder='Doe'
                                         >
-                                            <option selected>Select ROW</option>
-                                            <option value="US">Platinum</option>
-                                            <option value="CA">Gold</option>
-                                            <option value="FR">Silver</option>
+                                            <option selected value="platinum">Platinum</option>
+                                            <option value="gold">Gold</option>
+                                            <option value="silver">Silver</option>
                                         </select>
 
                                     </div>
                                 </div>
 
                                 <div className='flex flex-col justify-between mt-3'>
-                                    <div class="flex items-center mb-4">
-                                        <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Are you 18plus ?</label>
-                                    </div>
-                                    <div class="flex items-center mb-4">
-                                        <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Terms & Condtions</label>
-                                    </div>
+                                    {event.custom.map((que) => (
+                                        <div class="flex items-center mb-4">
+                                            <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                            <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{que}</label>
+                                        </div>
+                                    ))}
                                 </div>
 
                                 {price && (
                                     <div className="flex flex-col p-4 rounded">
 
                                         <div className="w-full baseprice flex justify-between">
-                                            <p className='font-semibold'>Base price {`x5`}</p>
-                                            <p className='font-semibold'>OMR 950</p>
+                                            <p className='font-semibold'>Base price x{seats}</p>
+                                            <p className='font-semibold'>{basePrice}</p>
                                         </div>
                                         <div className="w-full baseprice flex justify-between">
                                             <p className='font-semibold'>Taxes</p>
-                                            <p className='font-semibold'>OMR 164</p>
+                                            <p className='font-semibold'>{tax}</p>
                                         </div>
                                         <hr />
                                         <div className="w-full baseprice flex justify-between">
                                             <p className='font-semibold'>Total</p>
-                                            <p className='font-semibold'>OMR 1114</p>
+                                            <p className='font-semibold'>{totalPrice}</p>
                                         </div>
                                     </div>
                                 )}
 
                                 <div onClick={handleBookNowClick} className="flex justify-center w-full mt-3">
-                                    <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Book Seat</button>
+                                    <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                        {
+                                            loading
+                                                ?
+                                                <img className='h-5' src="/images/icons/loading.svg" alt="" />
+                                                :
+                                                <p>
+                                                    Book Seat
+                                                </p>
+                                        }
+
+                                    </button>
                                 </div>
                             </form>
                         </div>

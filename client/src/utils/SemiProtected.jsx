@@ -1,33 +1,33 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 const SemiProtected = (props) => {
-  const { Component } = props;
+    const { Component } = props;
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const {user, isAuth} = useSelector((state) => state.auth);
+    const { user, isAuth } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    function checkLogin(){
-        if (isAuth !== true){ 
-            navigate("/")
-        }if(isAuth===true && user.activated==true){
-            navigate("/rooms")
+    useEffect(() => {
+        function checkLogin() {
+            if (isAuth !== false) {
+                navigate('/home')
+            } if (isAuth === true && user.activated == true) {
+
+            }
+
         }
-        
-    }
-    checkLogin();
-  }, [navigate]);
+        checkLogin();
+    }, [navigate]);
 
-  return (
-    <div>
-      <Component />
-    </div>
-  );
+    return (
+        <div>
+            <Component />
+        </div>
+    );
 };
 
 export default SemiProtected;

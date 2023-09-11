@@ -1,7 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { ClientRegister } from '../../http'
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     document.title = 'Signup'
+
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [mobileNumber, setMobileNumber] = useState('')
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    async function submit() {
+        if (!email || !username || !password || !mobileNumber) {
+            alert("all fields are mandatory")
+        }
+        const clientdata = {
+            email: email,
+            username: username,
+            password: password,
+            mobilenumber: mobileNumber
+        }
+
+        const { data } = await ClientRegister(clientdata)
+        console.log(data)
+        dispatch(setAuth(data));
+        navigate('/');
+
+    }
+
     return (
         <section class="h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
 
@@ -15,15 +46,21 @@ const Signup = () => {
                         <h2 class="text-xl font-bold text-white md:text-black">Hello there</h2>
                     </div>
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600" type="email" for="email" id='email' placeholder="Email" />
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                            value={email} onChange={(e) => setEmail(e.target.value)}
+                            type="email" for="email" id='email' placeholder="Email" />
                     </div>
 
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="username" id='username' placeholder="Username" />
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                            value={username} onChange={(e) => setUsername(e.target.value)}
+                            type="text" for="username" id='username' placeholder="Username" />
                     </div>
 
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" for="password" id='password' placeholder="Password" />
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                            value={password} onChange={(e) => setPassword(e.target.value)}
+                            type="password" for="password" id='password' placeholder="Password" />
                     </div>
 
                     <div>
@@ -31,18 +68,19 @@ const Signup = () => {
                     </div>
                     <div>
                         <p className='text-white text-xs font-light md:font-regular md:text-slate-400 md:text-xs'>
-                        (Optional) if you wish to receive updates on whatsapp
+                            (Optional) if you wish to receive updates on whatsapp
                         </p>
                         <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="text" id='text' placeholder="Mobile Number" />
-                    </div>
+                            <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)}
+                                type="number" for="text" id='text' placeholder="Mobile Number" />
+                        </div>
                     </div>
 
                     <div className='flex justify-items-end justify-end'>
                         <a class="justify-self-end text-xs text-white md:text-black font-medium underline" href="#">Already have an account ? Login</a>
                     </div>
                     <div>
-                        <button class="w-full py-2.5 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">Signup</button>
+                        <button class="w-full py-2.5 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit}>Signup</button>
                     </div>
                     <div class="flex items-center justify-between">
 

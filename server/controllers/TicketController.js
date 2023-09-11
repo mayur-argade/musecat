@@ -173,3 +173,27 @@ module.exports.getAllTickets = async (req, res) => {
         console.log(error)
     }
 }
+
+exports.getTicketsByEvent = async (req, res) => {
+    const { eventid } = req.params
+
+    try {
+        const event = await eventService.findEvent({ _id: eventid })
+        const seatsBooked = event.bookedSeats.length
+
+        const allTicketIds = event.bookTickets
+        const tickets = await ticketService.findAllTickets({ _id: { $in: allTicketIds } })
+        
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                seatsBooked: seatsBooked,
+                tickets: tickets
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}

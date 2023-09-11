@@ -110,20 +110,24 @@ exports.vendorLogin = async (req, res) => {
                 });
             }
 
-            const accessToken = await tokenService.generateTokens({ id: user._id })
+            const { accessToken, refreshToken } = tokenService.generateTokens({
+                _id: user._id,
+                activated: false,
+            });
 
-            user.password = null
-            // console.log(accessToken)
+            await tokenService.storeRefreshToken(refreshToken, user._id);
+
             res
                 .status(200)
+                .cookie("refreshtoken", refreshToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
                 .cookie("accessToken", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
                 })
-                .json({
-                    success: true,
-                    user: user
-                });
+                .json({ user: user });
         }
     } catch (error) {
         console.log(error)
@@ -135,58 +139,62 @@ exports.vendorLogin = async (req, res) => {
 }
 
 exports.clientLogin = async (req, res) => {
- // get email and password from the user
- const { email, password } = req.body;
+    // get email and password from the user
+    const { email, password } = req.body;
 
- if (!email || !password) {
-     return res.status(400).json({
-         success: false,
-         data: "All field are manadatory"
-     })
- }
+    if (!email || !password) {
+        return res.status(400).json({
+            success: false,
+            data: "All field are manadatory"
+        })
+    }
 
 
- let updatedUser;
- try {
-     let user = await userService.findUser({ email: email })
+    let updatedUser;
+    try {
+        let user = await userService.findUser({ email: email })
 
-     if (!user) {
-         return res.status(404).json({
-             success: false,
-             data: "User does not found"
-         })
-     } else {
-         const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                data: "User does not found"
+            })
+        } else {
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-         if (!isPasswordMatch) {
-             return res.status(401).json({
-                 success: false,
-                 data: "Incorrect password"
-             });
-         }
+            if (!isPasswordMatch) {
+                return res.status(401).json({
+                    success: false,
+                    data: "Incorrect password"
+                });
+            }
 
-         const accessToken = await tokenService.generateTokens({ id: user._id })
+            const { accessToken, refreshToken } = tokenService.generateTokens({
+                _id: user._id,
+                activated: false,
+            });
 
-         user.password = null
-         // console.log(accessToken)
-         res
-             .status(200)
-             .cookie("accessToken", accessToken, {
-                 maxAge: 1000 * 60 * 60 * 24 * 30,
-                 httpOnly: true,
-             })
-             .json({
-                 success: true,
-                 user: user
-             });
-     }
- } catch (error) {
-     console.log(error)
-     return res.status(500).json({
-         success: false,
-         data: "Internal server error"
-     })
- }
+            await tokenService.storeRefreshToken(refreshToken, user._id);
+
+            res
+                .status(200)
+                .cookie("refreshtoken", refreshToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .cookie("accessToken", accessToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .json({ user: user });
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
 }
 
 exports.clientRegister = async (req, res) => {
@@ -243,3 +251,67 @@ exports.clientRegister = async (req, res) => {
     }
 
 }
+
+exports.refresh = async (req, res) => {
+    // Get refresh token from the request cookies
+    const { refreshtoken: refreshTokenFromCookie } = req.cookies;
+
+    console.log(refreshTokenFromCookie)
+
+    try {
+        // Verify the refresh token
+        const userdata = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
+
+        console.log(userdata)
+        // Check if the user exists in the user table
+        let user = await userService.findUser({ _id: userdata._id });
+
+
+        // If the user doesn't exist in the user table, check the vendor table
+        if (!user) {
+            user = await vendorService.findVendor({ _id: userdata._id });
+
+            // If the user doesn't exist in either table, return an error
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+        }
+
+        console.log(user)
+
+        // Generate new tokens
+        const { refreshToken, accessToken } = tokenService.generateTokens({ _id: userdata._id });
+
+        // Update the refresh token
+        await tokenService.updateRefreshToken(userdata._id, refreshToken);
+
+        // Set the new tokens in cookies and send the user object in the response
+        res
+            .status(200)
+            .cookie("refreshtoken", refreshToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            })
+            .cookie("accessToken", accessToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            })
+            .json({ user: user });
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid token" });
+    }
+};
+
+exports.logout = async (req, res) => {
+    // delete refresh token from db
+    const { refreshtoken } = req.cookies;
+    console.log(refreshtoken)
+
+    await tokenService.removeToken(refreshtoken);
+    // clear cookie
+    res
+        .clearCookie("refreshtoken")
+        .clearCookie("accessToken")
+        .status(200)
+        .json({ user: null, auth: false });
+};

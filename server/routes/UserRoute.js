@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isVerified, isUserLoggedin } = require('../middleware/authMiddleware')
 
 
-const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails } = require('../controllers/UserController')
+const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase } = require('../controllers/UserController')
 const { vendorHome } = require('../controllers/EventController')
 
 router.route('/vendor/update-profile').patch(isLoggedin, updateVendorProfile)
@@ -18,5 +18,7 @@ router.route('/user/write-contactmsg').post(writeContactMessage)
 router.route('/user/favorites').get(isUserLoggedin, getFavoriteEvents)
 
 router.route('/user/eventDetails/:eventid').get(getEventDetails)
+
+router.route('/user/pastpurchased').get(isUserLoggedin, getPastPurchase)
 
 module.exports = router;
