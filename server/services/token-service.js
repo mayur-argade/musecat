@@ -6,10 +6,10 @@ const refreshTokenSecret = "thisrefreshTokenSecret"
 
 class TokenService {
     generateTokens(payload) {
-        const accessToken = jwt.sign(payload, accessTokenSecret, {
+        const accessToken = jwt.sign(payload, process.env.JWT_ACCESSTOKEN_SECRET, {
           expiresIn: "3h",
         });
-        const refreshToken = jwt.sign(payload, refreshTokenSecret, {
+        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESHTOKEN_SECRET, {
           expiresIn: "1y",
         });
         return { accessToken, refreshToken };
@@ -27,11 +27,11 @@ class TokenService {
       }
     
       async verifyAccessToken(token) {
-        return jwt.verify(token, accessTokenSecret);
+        return jwt.verify(token, process.env.JWT_ACCESSTOKEN_SECRET);
       }
     
       async verifyRefreshToken(refreshToken) {
-        return jwt.verify(refreshToken, refreshTokenSecret);
+        return jwt.verify(refreshToken, process.env.JWT_REFRESHTOKEN_SECRET);
       }
     
       async findRefreshToken(userid, token) {
