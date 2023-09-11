@@ -422,7 +422,7 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         </div>
 
                         <div>
-                            <div className='md:flex md:justify-around carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-5'>
+                            <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-5'>
                                 {
                                     upcomingEvents.data.map((event) => (
                                         <EventCard data={event} />
