@@ -102,12 +102,11 @@ const Home = () => {
     console.log(upcomingEvents)
 
     if (offers.data == null || offers.data == undefined || upcomingEvents.data == undefined) {
-        <>
-            loading..
-        </>
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
-
             <div className=''>
                 <Navbar />
                 <div class="standalone:hidden bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">

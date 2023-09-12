@@ -4,6 +4,7 @@ import { vendorLogin } from '../../http/index'
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 const VendorLogin = () => {
     const [email, setEmail] = useState('')
@@ -21,13 +22,15 @@ const VendorLogin = () => {
             dispatch(setAuth(data));
             navigate('/vendor/home');
         } catch (error) {
+            // console.log(error.response.data.data)
+            toast.error(error.response.data.data)
             console.log(error)
         }
     }
 
     return (
         <section className="h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692776288/mwt/login_djjlaa.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
-
+            <Toaster />
             <section className="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
                 <div className="title">
                     <img className='h-6 md:h-14' src="/images/assets/vendorlogin.png" alt="" />

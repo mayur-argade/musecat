@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { ClientRegister } from '../../http'
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Signup = () => {
     document.title = 'Signup'
 
+    const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -25,18 +27,21 @@ const Signup = () => {
             password: password,
             mobilenumber: mobileNumber
         }
-
-        const { data } = await ClientRegister(clientdata)
-        console.log(data)
-        dispatch(setAuth(data));
-        navigate('/');
+        try {
+            const { data } = await ClientRegister(clientdata)
+            console.log(data)
+            // dispatch(setAuth(data));
+            navigate('/login');
+        } catch (error) {
+            toast.error(error.response.data.data)
+        }
 
     }
 
     return (
         <section class="h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
-
-            <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10 shadow-2xl">
+            <Toaster />
+            <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10 ">
                 <div className="title mb-3">
                     <img className='h-6 md:h-12' src="/images/logo/login-logo.png" alt="" />
                 </div>
@@ -77,37 +82,26 @@ const Signup = () => {
                     </div>
 
                     <div className='flex justify-items-end justify-end'>
-                        <a class="justify-self-end text-xs text-white md:text-black font-medium underline" href="#">Already have an account ? Login</a>
+                        <Link to="/login">
+                            <a class="justify-self-end text-xs text-white md:text-black font-medium underline" href="#">Already have an account ? Login</a>
+                        </Link>
                     </div>
                     <div>
-                        <button class="w-full py-2.5 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit}>Signup</button>
+                        {
+                            loading
+                                ?
+                                <button class="flex justify-center items-center w-full  p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">
+                                    <img className='h-6' src="/images/icons/button-loading.svg" alt="" />
+                                </button>
+                                :
+                                <button class="w-full p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit}>Signup</button>
+
+                        }
                     </div>
                     <div class="flex items-center justify-between">
 
                     </div>
                 </div>
-
-                {/* <div className="max-w-md w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
-                    <button type="button" class="text-gray-900 bg-white hover:bg-white md:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                        <img src="/images/icons/facebook-icon.png" alt="" />
-                        <span className='mx-auto text-center'>
-                            Continue with Facebook
-                        </span>
-                    </button>
-                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                        <img src="/images/icons/google-icon.png" alt="" />
-                        <span className='mx-auto text-center'>
-                            Continue with Google
-                        </span>
-                    </button>
-                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                        <img src="/images/icons/email-icon.png" alt="" />
-                        <span className='mx-auto text-center'>
-                            Continue with Email
-                        </span>
-                    </button>
-                </div> */}
-
             </section>
 
         </section >
