@@ -402,7 +402,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             <span className=' hover:border'>Contact</span>
                         </Link>
                     </div>
-                    <div className='absolute w-10/12 flex justify-center items-center bottom-10'>
+                    <div className='absolute w-10/12 flex justify-center items-center bottom-20'>
 
                         {
                             isAuth
