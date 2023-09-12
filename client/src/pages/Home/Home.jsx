@@ -113,9 +113,14 @@ const Home = () => {
                     <header className='p-5 md:p-10 '>
 
                         <div className='flex justify-center md: pt-0 md:p-10'>
-                            <p className='pb-5 leading-loose text-5xl md:text-4xl text-center text-white font-bold'>
-                                Find the perfect experience in
-                                <br className='' />
+                            <p className='pb-5 leading-loose text-4xl md:text-4xl text-center text-white font-bold'>
+                                <span>Find the</span> 
+                                <br className='block md:hidden'/>
+                                <span>perfect</span>
+                                <br className='block md:hidden'/>
+
+                                <span>experience </span>
+
 
                                 <div className='md:hidden absolute top-16 right-3'>
                                     <img className='h-12' src="/images/assets/download-banner.png" alt="" />
@@ -149,7 +154,12 @@ const Home = () => {
                                     </div>
                                 </div>
 
-                                any destination
+                               <span> in </span>
+                                <br className='md:block hidden'/>
+                                <span> any </span>
+                                <br className='block md:hidden'/>
+
+                                <span>destination</span>
                             </p>
                         </div>
 
@@ -237,10 +247,10 @@ const Home = () => {
                         </div>
 
                         <div>
-                            <div id="content" className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide  space-x-5'>
+                            <div id="content" className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide space-x-5'>
                                 <Link to='/category/staycation'>
                                     <div>
-                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-56 relative h-72 max-h-72 bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692690811/1.1_pumpaw.png')] bg-gray-400 bg-blend-multiply">
+                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-44 h-64 md:w-56 md:h-72 max-h-72 relative bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692690811/1.1_pumpaw.png')] bg-gray-400 bg-blend-multiply">
                                             <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                                                 <p className='text-xl text-white font-medium'>Staycation</p>
                                                 <button className='bg-white w-28 text-black rounded-md text-sm py-1.5 pl-1 pr-1 font-semibold'>
@@ -253,7 +263,7 @@ const Home = () => {
 
                                 <Link to='/category/events'>
                                     <div>
-                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-56 relative h-72 max-h-72 bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692690810/1.2_n802iw.png')]  bg-gray-400 bg-blend-multiply">
+                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-44 h-64 md:w-56 md:h-72 max-h-72 relative  bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692690810/1.2_n802iw.png')]  bg-gray-400 bg-blend-multiply">
                                             <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                                                 <p className='text-xl text-white font-medium'>Friday Brunch</p>
                                                 <button className='bg-white w-28 text-black rounded-md text-sm py-1.5 pl-1 pr-1 font-semibold'>
@@ -268,7 +278,7 @@ const Home = () => {
 
                                 <Link to="/category/thingstodo">
                                     <div>
-                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-56 relative h-72 max-h-72 bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692692203/mwt/e3_tquumk.jpg')]  bg-gray-300 bg-blend-multiply">
+                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-44 h-64 md:w-56 md:h-72 max-h-72 relative bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692692203/mwt/e3_tquumk.jpg')]  bg-gray-300 bg-blend-multiply">
                                             <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                                                 <p className='text-xl text-white font-medium'>Things to Do</p>
                                                 <button className='bg-white w-28 text-black rounded-md text-sm py-1.5 pl-1 pr-1 font-semibold'>
@@ -282,7 +292,7 @@ const Home = () => {
 
                                 <Link to='/category/events'>
                                     <div>
-                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-56 relative h-72 max-h-72 bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692696310/IMAGE_qmootq.jpg')]  bg-gray-300 bg-blend-multiply">
+                                        <div className="mb-2 rounded-lg bg-center bg-no-repeat w-44 h-64 md:w-56 md:h-72 max-h-72 relative bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692696310/IMAGE_qmootq.jpg')]  bg-gray-300 bg-blend-multiply">
                                             <div className='absolute bottom-0 left-0 flex flex-col p-2'>
                                                 <p className='text-xl text-white font-medium'>Events</p>
                                                 <button className='bg-white w-28 text-black rounded-md text-sm py-1.5 pl-1 pr-1 font-semibold'>

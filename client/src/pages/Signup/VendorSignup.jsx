@@ -4,6 +4,7 @@ import { VendorRegister } from '../../http/index'
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 const VendorSignup = () => {
     document.title = "Vendor ~ Signup"
@@ -73,12 +74,13 @@ const VendorSignup = () => {
             navigate('/vendor/home');
         } catch (error) {
             console.log(error)
+            toast.error(error.response.data.data)
         }
     }
 
     return (
         <section className="h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
-
+            <Toaster />
             <section className="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
                 <div className="title">
                     <img className='h-6 md:h-12' src="/images/assets/vendorlogin.png" alt="" />

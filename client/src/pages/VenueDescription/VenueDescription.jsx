@@ -55,7 +55,7 @@ const VenueDescription = () => {
 
 
 
-                <div className='md:mt-3 md:grid md:grid-cols-6 gap-8 place-items-center'>
+                <div className='md:mt-3 md:grid md:grid-cols-6 gap-8 '>
 
                     <div className="caursel col-span-4">
                         <div className='mt-3 md:ml-5 mb-2'>
@@ -64,7 +64,7 @@ const VenueDescription = () => {
                             </p>
                         </div>
                         <div className="md:flex md:justify-start md:flex-wrap snap-x carousel  pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide  ">
-                            <div className='snap-start'>
+                            {/* <div className='snap-start'>
                                 < EventCard />
                             </div>
                             <div>
@@ -81,13 +81,13 @@ const VenueDescription = () => {
                             </div>
                             <div>
                                 < EventCard />
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="md:flex md:justify-center w-full">
-                            <div>
+                            {/* <div>
                                 <button type="button" class="w-full text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Show more</button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
