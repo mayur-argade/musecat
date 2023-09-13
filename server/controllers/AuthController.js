@@ -184,10 +184,12 @@ exports.clientLogin = async (req, res) => {
                 .cookie("refreshtoken", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
+                    secure: true, sameSite: 'none'
                 })
                 .cookie("accessToken", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
+                    secure: true, sameSite: 'none'
                 })
                 .json({ user: user });
         }

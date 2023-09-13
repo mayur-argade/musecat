@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const api = axios.create({
     baseURL: "https://muscat.onrender.com/api/v1/",
     withCredentials: true,
