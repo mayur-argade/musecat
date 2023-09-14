@@ -12,14 +12,15 @@ module.exports = {
                 xss: '0.6rem'
             },
             height: {
+                '85': '21rem',
                 '128': '32rem',
-              },
+            },
             width: {
-                '128' : '32rem'
+                '128': '32rem'
             },
             maxWidth: {
                 '2xs': '22rem',
-              },
+            },
             borderRadius: {
                 'xl': '1rem',
             },
@@ -38,7 +39,9 @@ module.exports = {
             screens: {
                 'xs': '390px',
                 // => @media (min-width: 390px) { ... }
-
+            },
+            grayscale: {
+                10: '10%',
             },
             margin: {
                 '175px': '175px',
@@ -46,8 +49,8 @@ module.exports = {
         },
     },
     plugins: [
-        require('flowbite/plugin'),
         require('tailwindcss-displaymodes'),
+        require('flowbite/plugin'),
         require('tailwindcss-box-shadow'),
     ],
 }

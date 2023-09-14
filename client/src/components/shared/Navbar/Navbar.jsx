@@ -424,7 +424,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     <button onClick={handleOnclick} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
                                         <img className='h-5' src="/images/icons/logout.svg" alt="" />
                                         <p>
-                                            Sign up
+                                            Log out
                                         </p>
                                     </button>
                             }

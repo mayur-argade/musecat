@@ -1,0 +1,25 @@
+create a search query function route
+
+[x] create a category controllers
+[x] create a offer controllers
+
+[Y] get max6 categories have the most offers in descending order 
+[Y] get all categories and there offer count should be greater than equal to 1
+[Y] get datewise categories count data 
+[] get max 3 upcoming events date query
+[Y] upcoming view all link it to the events  
+[] createa a category of ediors pick
+[Y] link view all to the category/event page
+[] show active offer only in the get offers 
+[] scroll to top function
+[] need to talk button routing
+[] whatsapp no linking
+
+{
+"title": "offer",
+"description": "description",
+"startdate": "2023-09-15",
+"expiry": "2023-09-16",
+"category": "ladiesnight",
+"photo": ""
+}

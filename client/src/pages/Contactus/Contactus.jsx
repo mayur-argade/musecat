@@ -29,7 +29,7 @@ const Contactus = () => {
     }
 
     return (
-        <>
+        <div className='contactmargine'>
             <Navbar />
             <section className='md:mr-48 md:ml-48 mt-3'>
                 <div className="title ">
@@ -152,7 +152,7 @@ const Contactus = () => {
             <div className="">
                 <Footer />
             </div>
-        </>
+        </div>
     )
 }
 

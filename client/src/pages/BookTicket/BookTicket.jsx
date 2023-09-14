@@ -108,6 +108,7 @@ const BookTicket = () => {
 
     return (
         <>
+        <div className='appmargine'>
             <Navbar />
             <Tabbar />
             <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
@@ -309,6 +310,7 @@ const BookTicket = () => {
             <div className=''>
                 < Footer />
             </div>
+        </div>
         </>
     )
 }

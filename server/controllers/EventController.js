@@ -4,6 +4,7 @@ const eventService = require('../services/event-service')
 const offerService = require('../services/offer-service')
 const userService = require('../services/user-service')
 const tokenService = require('../services/token-service')
+const categoryService = require('../services/category-service')
 
 exports.createEvent = async (req, res) => {
     const { title, description, category, date, time, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
@@ -82,46 +83,6 @@ exports.getEventById = async (req, res) => {
         })
     }
 
-
-}
-
-exports.createOffer = async (req, res) => {
-    const { title, description, photo, expiry, startdate } = req.body
-
-    if (!title || !description || !expiry || !startdate) {
-        return res.status(401).json({
-            success: false,
-            data: "Bad request"
-        })
-    }
-
-    try {
-        let uploadedPhoto = ''
-        if (photo) {
-            uploadedPhoto = await cloudinary.v2.uploader.upload(photo, {
-                folder: "muscat/events",
-            })
-        }
-
-        let data = {
-            title: title,
-            description: description,
-            expiry: expiry,
-            startdate: startdate,
-            vendorid: req.user._id,
-            photo: uploadedPhoto.secure_url
-        }
-
-        const offer = await offerService.createOffer(data)
-
-        return res.status(200).json({
-            success: true,
-            data: offer
-        })
-
-    } catch (error) {
-        console.log(error)
-    }
 
 }
 
@@ -328,6 +289,90 @@ exports.getAllOffers = async (req, res) => {
             success: true,
             data: offers
         })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+
+// --------------------offers -------------------
+exports.createOffer = async (req, res) => {
+    // get data from the frontend
+    const { title, description, photo, banner, video, shortDescription, location, expiry, startdate, category } = req.body
+
+    // null check for required fields
+    if (!title || !description || !expiry || !startdate) {
+        return res.status(401).json({
+            success: false,
+            data: "Bad request"
+        })
+    }
+
+    try {
+        // upload photo to cloudinary
+        let uploadedPhoto = ''
+        if (photo) {
+            uploadedPhoto = await cloudinary.v2.uploader.upload(photo, {
+                folder: "muscat/offers",
+            })
+        }
+
+        // upload video to cloudinary
+        let uploadedVideo;
+        let videourl
+        if (video) {
+            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+                folder: "muscat/offers"
+            })
+            videourl = uploadedVideo.secure_url
+        }
+
+        // initialise data to save in catgories
+        let data = {
+            title: title,
+            description: description,
+            expiry: expiry,
+            banner: banner,
+            video: videourl,
+            shortDescription: shortDescription, location: location,
+            category: category,
+            startdate: startdate,
+            vendorid: req.user._id,
+            photo: uploadedPhoto.secure_url
+        }
+
+        // search for category which is selected
+        const categorydata = await categoryService.findCategory({
+            categoryURL: category
+        })
+
+        console.log(categorydata)
+
+        // if no category then return error
+        if (!categorydata) {
+            return res.status(404).json({
+                success: false,
+                data: "Category not found"
+            })
+        }
+
+        // if found category then create a offer
+        const offer = await offerService.createOffer(data)
+
+        // push offer id into the category
+        categorydata.offers.push(offer._id)
+
+        categorydata.save()
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                offer: offer,
+                category: categorydata
+            }
+        })
+
     } catch (error) {
         console.log(error)
     }

@@ -175,7 +175,7 @@ exports.getFavoriteEvents = async (req, res) => {
 
     try {
         // Find the user by ID to get their 'favorites' array
-        const user = await userService.findUser({ _id });
+        const user = await userService.findUser({ _id:_id });
 
         if (!user) {
             return res.status(statusCode.NOT_FOUND.code).json({
@@ -183,6 +183,8 @@ exports.getFavoriteEvents = async (req, res) => {
                 data: statusCode.NOT_FOUND.message
             });
         }
+
+        console.log(user)
 
         // Extract the event IDs from the user's 'favorites' array
         const favoriteEventIds = user.favorites;

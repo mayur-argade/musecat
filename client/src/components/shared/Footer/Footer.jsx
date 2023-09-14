@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <>
+        <div className='NoFooter'>
             <div className='standalone:hidden bg-[#F3F3F3] border border-2 border-t-indigo-500 mt-8'>
                 <footer class="md:pr-44 md:pl-44 pt-5 pl-6 pr-6">
                     <div class=" bg-[#F3F3F3] max-w-screen  py-6 sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@ const Footer = () => {
                                 <div class="flex mt-3 space-x-3 text-gray-600">
                                     <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
                                         <span class="sr-only"> whatsapp </span>
-                                       <img className='h-8' src="/images/icons/whatsapp.svg" alt="" />
+                                        <img className='h-8' src="/images/icons/whatsapp.svg" alt="" />
                                     </a>
                                     <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
                                         <span class="sr-only"> facebook </span>
@@ -106,7 +106,7 @@ const Footer = () => {
                     </div>
                 </footer>
             </div>
-        </>
+        </div>
     )
 }
 

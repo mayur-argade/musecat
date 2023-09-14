@@ -9,8 +9,8 @@ const AboutUs = () => {
             <Navbar />
 
 
-            <section className=''>
-                <div className='h-40 md:h-64 mt-28 md:mt-52 justify-center items-center relative'>
+            <section className='contactmargine'>
+                <div className='h-40 md:h-64 mt-32 md:mt-52 justify-center items-center relative'>
 
                     <section className="flex md:grid md:grid-cols-6 h-11/12 items-center md:mt-16 relative">
                         <div className="col-start-1 col-end-3 md:col-start-2 md:col-end-4 justify-items-start relative z-20">
@@ -26,7 +26,7 @@ const AboutUs = () => {
                     </section>
                 </div>
 
-                <section className='md:mr-52 md:ml-52 '>
+                <section className='md:mr-52 md:ml-52 ml-3 mr-3'>
                     <p className='text-center font-medium text-lg'>
                         Muscat Where To is a platform to discover the latest offers and events in Muscat.Browse through offers, find more info and directions. Find Muscat’s offers and events by type and filters like Eat & Drink, Kids Corner, Health and Beauty, Getaway Deals, Gym Memberships, Activities & Adventure and much more.
                     </p>

@@ -1,9 +1,34 @@
-body{
+body {
     font-family: 'Poppins', sans-serif;
 }
 
 .container {
-  width: 1200px;
-  max-width: 90%;
-  margin: 0 auto;
+    width: 1200px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.grayscale {
+    filter: grayscale(10%)
+}
+
+@media all and (display-mode: standalone) {
+    .body {
+        margin-bottom: 50px;
+    }
+    .NoFooter {
+        display: none;
+    }
+
+    .NoHeader {
+        display: none;
+    }
+
+    .appmargine{
+        margin-bottom: 3rem;
+    }
+
+    .contactmargine{
+        margin-bottom: 6rem;
+    }
 }

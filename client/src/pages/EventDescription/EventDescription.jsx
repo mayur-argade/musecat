@@ -64,7 +64,7 @@ const EventDescription = () => {
         </>
     } else {
         return (
-            <>
+            <div className='appmargine'>
                 <Navbar />
                 <Tabbar />
                 <section className='md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
@@ -289,7 +289,7 @@ const EventDescription = () => {
                 <div className=''>
                     < Footer />
                 </div>
-            </>
+            </div>
         )
     }
 

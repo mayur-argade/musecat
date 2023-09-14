@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "https://muscat.onrender.com/api/v1/",
+    baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 export const vendorLogin = (data) => api.post("auth/vendor/login", data);
-export const VendorRegister = (data) => api.post("auth/vendor/register", data)
+export const VendorRegister = (data)  => api.post("auth/vendor/register", data)
 export const VendorHomeApi = (data) => api.get("vendor/home", data)
 export const VendorHostedEventsApi = (data) => api.get("vendor/events", data)
 export const getEventDataApi = (data) => api.get(`event/${data}`, data)
@@ -36,9 +36,11 @@ export const ClientTicketStatusApi = (data) => api.get(`ticket/${data}`, data)
 export const clientLogout = (data) => api.post("auth/user/logout", data)
 export const vendorLogout = (data) => api.post("auth/vendor/logout", data)
 
+
 export const GetAllCategory = (data) => api.get("category/", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
 export const ClientGetOffers = (data) => api.get("/offers/", data)
+export const CategoryCount = (data) => api.get(`category/offercounts${data}`, data)
 
 
 api.interceptors.response.use(
@@ -55,7 +57,7 @@ api.interceptors.response.use(
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    baseURL: "https://muscat.onrender.com/api/v1/",
+                    baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",

@@ -12,6 +12,10 @@ const categoryModel = new mongoose.Schema({
         type: String,
         required: [true, "Please provide categoryURL"],
     },
+    offers: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
+        default: []
+    }
 
 },
     {

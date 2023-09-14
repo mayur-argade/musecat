@@ -13,9 +13,9 @@ const SemiProtected = (props) => {
 
     useEffect(() => {
         function checkLogin() {
-            if (isAuth !== false) {
-                navigate('/home')
-            } if (isAuth === true && user.activated == true) {
+            if (isAuth == false) {
+                navigate('/')
+            } if (isAuth === true) {
 
             }
 

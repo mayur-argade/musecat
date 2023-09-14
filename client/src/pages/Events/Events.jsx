@@ -91,7 +91,7 @@ const Events = () => {
         </>
     } else {
         return (
-            <>
+            <div className='contactmargine'>
                 <Navbar />
                 <div className="hidden md:block">
                     <Tabbar />
@@ -322,7 +322,7 @@ const Events = () => {
                 <div className=''>
                     < Footer />
                 </div>
-            </>
+            </div>
         )
     }
 

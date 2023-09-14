@@ -29,34 +29,43 @@ import VendorHome from './pages/VendorHome/VendorHome';
 import VendorEventDescripton from './pages/VendorEventDescription/VendorEventDescripton';
 import VendorBookedTickets from './pages/VendorBookedTickets/VendorBookedTickets';
 import VendorProfile from './pages/Profile/VendorProfile'
+import EventsPWA from './pages/PWA-Events/EventsPWA';
+
 // components
+import BottomNav from './components/shared/BottomNav/BottomNav';
 
 // utils
 import GuestRoute from './utils/GuestRoute'
 import Protected from './utils/Protected';
 import SemiProtected from './utils/SemiProtected'
+import SearchPWA from './pages/SearchPWA/SearchPWA';
 
 
 function App() {
     return (
         <div className="App">
             <Router>
+                <BottomNav>
+                </BottomNav>
                 <Routes>
                     <Route path="/" exact element={<Home />} />
+                    <Route path="/profile" exact element={<SemiProtected Component={Profile} />} />
+                    <Route path="/favorites" exact element={<SemiProtected Component={Favorites} />} />
+                    <Route path="/category/:category" exact element={<Events />} />
                     <Route path="/signup" exact element={<Signup />} />
                     <Route path="/login" exact element={<Login />} />
                     <Route path="/aboutus" exact element={<AboutUs />} />
-                    <Route path="/contactus" exact element={<Contactus />} />
-                    <Route path="/profile" exact element={<Profile />} />
                     <Route path="/whereto" exact element={<WhereToMap />} />
-                    <Route path="/category/:category" exact element={<Events />} />
+                    <Route path="/contactus" exact element={<Contactus />} />
                     <Route path="/events/:eventid" exact element={<EventDescription />} />
                     <Route path="/venue/venueid" exact element={<VenueDescription />} />
-                    <Route path="/favorites" exact element={<Favorites />} />
-                    <Route path="/pastpurchase" exact element={<PastPurchase />} />
+                    <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
                     <Route path="/faq" exact element={<FAQ />} />
                     <Route path="/bookticket" exact element={<Protected Component={BookTicket} />} />
-                    <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
+                    <Route path="/ticketstatus/:ticketid" exact element={<Protected Component={TicketStatus} />} />
+                    <Route path="/events" exact element={<EventsPWA />} />
+                    <Route path="/searchpage" exact element={<SearchPWA />} />
+
 
                     <Route path="/vendor/notification" exact element={<VendorNotification />} />
 
@@ -69,7 +78,7 @@ function App() {
                     <Route path="/vendor/event/:eventid" exact element={<GuestRoute Component={VendorEventDescripton} />} />
                     <Route path="/vendor/profile" exact element={<GuestRoute Component={VendorProfile} />} />
                     <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
-                    
+
 
 
 
