@@ -171,10 +171,12 @@ const Home = () => {
                                     <br className='block md:hidden' />
 
                                     <span>experience</span>
+                                   
 
-                                    <div className='md:hidden absolute top-16 right-3'>
-                                        <img className='h-12' src="/images/assets/download-banner.png" alt="" />
-                                    </div>
+                                        <div className='md:hidden absolute top-16 right-3'>
+                                            <img className='h-12' src="/images/assets/download-banner.png" alt="" />
+                                        </div>
+                                   
 
 
                                     <div className=' flex md:hidden items-center justify-center '>

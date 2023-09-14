@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -41,7 +41,9 @@ import SemiProtected from './utils/SemiProtected'
 import SearchPWA from './pages/SearchPWA/SearchPWA';
 
 
+
 function App() {
+
     return (
         <div className="App">
             <Router>
