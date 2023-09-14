@@ -14,7 +14,7 @@ const SemiProtected = (props) => {
     useEffect(() => {
         function checkLogin() {
             if (isAuth == false) {
-                navigate('/')
+                navigate('/login')
             } if (isAuth === true) {
 
             }
