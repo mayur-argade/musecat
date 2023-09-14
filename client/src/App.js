@@ -47,8 +47,6 @@ function App() {
     return (
         <div className="App">
             <Router>
-                <BottomNav>
-                </BottomNav>
                 <Routes>
                     <Route path="/" exact element={<Home />} />
                     <Route path="/profile" exact element={<SemiProtected Component={Profile} />} />
