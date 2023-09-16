@@ -91,7 +91,8 @@ Ticket status page -->
 2. View ticket make it perfect use image if want 
 3. show neat qrcode in white
 
-ADD CHAT ENGINEEN
+ADD CHAT engine
+
 
 
 
