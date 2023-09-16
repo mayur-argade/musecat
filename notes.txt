@@ -4,7 +4,7 @@ create a search query function route
 [x] create a offer controllers
 
 [Y] get max6 categories have the most offers in descending order 
-[Y] get all categories and there offer count should be greater than equal to 1
+[Y] get eve and there offer count should be greater than equal to 1
 [Y] get datewise categories count data 
 [] get max 3 upcoming events date query
 [Y] upcoming view all link it to the events  
@@ -15,11 +15,83 @@ create a search query function route
 [] need to talk button routing
 [] whatsapp no linking
 
-{
-"title": "offer",
-"description": "description",
-"startdate": "2023-09-15",
-"expiry": "2023-09-16",
-"category": "ladiesnight",
-"photo": ""
-}
+0. Clear database for events offers users (categories OK)
+1. loading screen to all pages
+2. Complete backend apis
+3. Complete vendor side with proper date and time
+4. correct event apis
+5. make better folder structure
+6. whatever you are showing make sure it should only have a incoming or current offers
+7. calender events
+8. filter option
+9. Add to Favorites
+10. QR code
+
+Login screen --->
+1. Show back button to come on the Homepage
+2. google sign in
+3. facebook sign in 
+4. Forgot password functionality
+
+
+Homepage -->
+1. Get searchbar working
+2. get categories data with the total active events or offers
+3. show all the upcoming events on the show on map 
+4. Modify upcoming events api such a way that it should show events of that day only
+5. Create a new category of editors pick
+6. show all the active offers
+7. create a scroll to top
+8. link whatsapp number
+9. Start integrating chatbot
+10. Link footer to the site 
+
+About Us --->
+1. Migrate side things into a component
+
+Contact us ---> 
+1. Create loading icon when we are submitting details
+2. Add validation correctly
+3. Give a success response once msg has been sent
+4. Link all the social media icons
+5. whatsapp linking
+
+Events Page --->
+1. Add to favorite option
+2. Trending in muscat
+3. Add filter
+4. Add searching events datewise
+5. Show no events available for categories having no events
+6. show skeleton for events loading first time
+7. give it a scroll option make it overflow after 3 lines 
+8. look for responsiveness
+
+Event Description page --->
+1. Make alignment proper
+2. Link view on map to the cordinates
+3. Add to Favorites
+4. add share option
+5. upcoming events in the crown plaza
+6. offers on the crown plaza
+7. like button 
+8. Contact us redirect to the whatsapp number of the vendor
+9. make call option work for the vendor number
+
+Book seat Page --->
+1. fetch this page from the backend
+2. create a controller in the backend 
+3. add validation
+4. This values should be prefilled by getting user from the store
+5. If any field is remaining dont show the ticket price
+
+ADD PAYMENT GATEWAY
+
+Ticket status page -->
+1. show like button neatly
+2. View ticket make it perfect use image if want 
+3. show neat qrcode in white
+
+ADD CHAT ENGINEEN
+
+
+

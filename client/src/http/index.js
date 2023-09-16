@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "https://muscat.onrender.com/api/v1/",
+    baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -51,13 +51,13 @@ api.interceptors.response.use(
         const originalRequest = error.config;
         if (
             error.response.status === 401 && originalRequest &&
-            !originalRequest._isretry
+            !originalRequest.isretry
         ) {
             originalRequest.isRetry = true;
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    baseURL: "https://muscat.onrender.com/api/v1/",
+                    baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",
