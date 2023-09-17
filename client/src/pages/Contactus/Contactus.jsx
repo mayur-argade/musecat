@@ -3,10 +3,13 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import Footer from '../../components/shared/Footer/Footer'
 import { useNavigate } from 'react-router-dom'
 import { ClientContactUs } from '../../http/index'
+import toast, { Toaster } from 'react-hot-toast';
+import validator from 'validator';
 
 const Contactus = () => {
     document.title = 'Contact Us'
 
+    const [loading, setLoading] = useState(false)
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
@@ -15,23 +18,36 @@ const Contactus = () => {
 
     async function submit() {
         if (!firstname || !lastname || !email || !message) {
-            alert("all fields are mandatory")
+            toast.error("All field are mandatory")
+        } else if (!validator.isEmail(email)) {
+            toast.error("Enter valid Email address")
         }
-        const contactdata = {
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            message: message
+        else {
+            setLoading(true)
+            try {
+                const contactdata = {
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    message: message
+                }
+                const res = await ClientContactUs(contactdata)
+                setLoading(false)
+                toast.success("Message sent")
+            } catch (error) {
+                setLoading(false)
+                // console.log(error.response.data.data)
+                toast.error(error.response.data.data)
+            }
         }
 
-        const { data } = await ClientContactUs(contactdata)
-        window.alert("message has been sent")
     }
 
     return (
         <div className='contactmargine'>
             <Navbar />
             <section className='md:mr-48 md:ml-48 mt-3'>
+                <Toaster />
                 <div className="title ">
                     <span className='text-2xl font-bold'
                     >Contact US</span>
@@ -62,7 +78,7 @@ const Contactus = () => {
                                                 className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setFirstname(e.target.value)}
                                                 placeholder='John'
-
+                                                required
                                             />
                                         </div>
                                     </div>
@@ -74,20 +90,21 @@ const Contactus = () => {
                                                 className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setLastname(e.target.value)}
                                                 placeholder='John'
+                                                required
                                             />
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div className="row2 mt-4">
                                     <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
                                         <label className='text-xs mt-1' htmlFor="first name">email</label>
                                         <input
-                                            type="text"
+                                            type="email"
                                             className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder='John@gmail.com'
-
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -100,13 +117,13 @@ const Contactus = () => {
                                             className='border h-24 bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setMessage(e.target.value)}
                                             placeholder='write your message here...'
-
+                                            required
                                         />
                                     </div>
 
                                 </div>
                                 <div className="flex justify-center mt-5">
-                                    <button type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" onClick={submit}>Send Message</button>
+                                            <button onClick={submit}  type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] font-medium rounded-lg text-sm px-4 w-40 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Send Message</button>
                                 </div>
                                 <div className="flex flex-col justify-center items-center mt-5 space-y-2">
                                     <span className='text-sm font-bold'>

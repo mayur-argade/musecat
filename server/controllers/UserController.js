@@ -79,6 +79,26 @@ exports.getVendorProfile = async (req, res) => {
     }
 }
 
+exports.getVendorDetails = async (req, res) => {
+    const vendorid  = req.params.vendorid
+    console.log(vendorid)
+    try {
+
+        const vendor = await vendorService.findVendor({ _id: vendorid })
+        return res.status(200).json({
+            success: true,
+            data: vendor
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error
+        })
+    }
+}
+
 exports.getAllNotifications = async (req, res) => {
     const { _id } = req.user
     try {
@@ -127,7 +147,7 @@ exports.updateUserProfile = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
     try {
-console.log(req.user)
+        console.log(req.user)
         const user = await userService.findUser({ _id: req.user._id })
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
@@ -175,7 +195,7 @@ exports.getFavoriteEvents = async (req, res) => {
 
     try {
         // Find the user by ID to get their 'favorites' array
-        const user = await userService.findUser({ _id:_id });
+        const user = await userService.findUser({ _id: _id });
 
         if (!user) {
             return res.status(statusCode.NOT_FOUND.code).json({
@@ -247,7 +267,7 @@ exports.getPastPurchase = async (req, res) => {
     try {
         const user = await userService.findUser({ _id: req.user.id })
         let pastpurchased = user.pastPurchase
-        const pastEvents = await eventService.findAllEvents({_id: {$in: pastpurchased}})
+        const pastEvents = await eventService.findAllEvents({ _id: { $in: pastpurchased } })
         return res.status(200).json({
             success: true,
             data: {

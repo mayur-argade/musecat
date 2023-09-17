@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+
+    const navigate = useNavigate()
+
     return (
         <div className='NoFooter'>
             <div className='standalone:hidden bg-[#F3F3F3] border border-2 border-t-indigo-500 mt-8'>
@@ -38,19 +42,19 @@ const Footer = () => {
                                     Follow us on social media
                                 </p>
                                 <div class="flex mt-3 space-x-3 text-gray-600">
-                                    <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
+                                    <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
                                         <span class="sr-only"> whatsapp </span>
                                         <img className='h-8' src="/images/icons/whatsapp.svg" alt="" />
                                     </a>
-                                    <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
+                                    <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
                                         <span class="sr-only"> facebook </span>
                                         <img className='h-8' src="/images/icons/facebook.svg" alt="" />
                                     </a>
-                                    <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
+                                    <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
                                         <span class="sr-only"> Instagram </span>
                                         <img className='h-8' src="/images/icons/instagram.svg" alt="" />
                                     </a>
-                                    <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
+                                    <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
                                         <span class="sr-only"> Email </span>
                                         <img className='h-8' src="/images/icons/email.svg" alt="" />
                                     </a>
@@ -64,9 +68,9 @@ const Footer = () => {
                                             Popular Navigation
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a class="hover:opacity-75 font-medium" href> Events </a>
-                                            <a class="hover:opacity-75 font-medium" href> Weekly Offers </a>
-                                            <a class="hover:opacity-75 font-medium" href> Kids corner </a>
+                                            <a onClick={() => navigate("/category/events")} class="hover:opacity-75 font-medium cursor-pointer" href> Events </a>
+                                            <a onClick={() => navigate("/category/weeklyoffers")} class="hover:opacity-75 font-medium cursor-pointer" href> Weekly Offers </a>
+                                            <a onClick={() => navigate("/category/kidscorner")} class="hover:opacity-75 font-medium cursor-pointer" href> Kids corner </a>
                                         </nav>
                                     </div>
                                 </div>
@@ -77,9 +81,9 @@ const Footer = () => {
                                             Information
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a class="hover:opacity-75 font-medium" href> About </a>
-                                            <a class="hover:opacity-75 font-medium" href> Contact Us </a>
-                                            <a class="hover:opacity-75 font-medium" href> Home </a>
+                                            <a onClick={() => navigate("/aboutus")} class="hover:opacity-75 font-medium cursor-pointer" href> About </a>
+                                            <a onClick={() => navigate("/contactus")} class="hover:opacity-75 font-medium cursor-pointer" href> Contact Us </a>
+                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Home </a>
                                         </nav>
                                     </div>
                                 </div>
@@ -90,9 +94,9 @@ const Footer = () => {
                                             The Legal Corner
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a class="hover:opacity-75 font-medium" href> Privacy policy </a>
-                                            <a class="hover:opacity-75 font-medium" href> Terms and conditions </a>
-                                            <a class="hover:opacity-75 font-medium" href> Cookies </a>
+                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Privacy policy </a>
+                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Terms and conditions </a>
+                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Cookies </a>
                                         </nav>
                                     </div>
                                 </div>

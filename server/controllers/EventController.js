@@ -5,7 +5,9 @@ const offerService = require('../services/offer-service')
 const userService = require('../services/user-service')
 const tokenService = require('../services/token-service')
 const categoryService = require('../services/category-service')
+const moment = require('moment')
 
+// used epoch timstamp and didn't handle this restaurant thing
 exports.createEvent = async (req, res) => {
     const { title, description, category, date, time, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
 
@@ -26,10 +28,16 @@ exports.createEvent = async (req, res) => {
             })
             console.log(uploadedEventPhoto)
         }
+        // Create a moment object representing your date
+        const newDate = moment(date);
+
+        // Get the epoch timestamp in milliseconds
+        const epochDate = newDate.valueOf();
+
         const data = {
             title: title,
             description: description,
-            date: date,
+            date: epochDate,
             location: location,
             silverSeats: silverSeats,
             silverPrice: silverPrice,
@@ -43,7 +51,27 @@ exports.createEvent = async (req, res) => {
             displayPhoto: uploadedEventPhoto.secure_url
         }
 
+        // search for category which is selected
+        const categorydata = await categoryService.findCategory({
+            categoryURL: category
+        })
+
+        console.log(categorydata)
+
+        // if no category then return error
+        if (!categorydata) {
+            return res.status(404).json({
+                success: false,
+                data: "Category not found"
+            })
+        }
+
         event = await eventService.createEvent(data)
+
+        // push offer id into the category
+        categorydata.events.push(event._id)
+
+        categorydata.save()
 
         res.status(statusCode.SUCCESS.code).json({
             success: true,
@@ -179,8 +207,9 @@ exports.vendorHome = async (req, res) => {
 
 exports.addToFavorites = async (req, res) => {
     const { _id } = req.user;
-    const { eventid } = req.params;
+    const { eventid } = req.body
 
+    console.log(_id, eventid)
     try {
         // Find the user by ID
         const user = await userService.findUser({ _id: _id });
@@ -202,6 +231,11 @@ exports.addToFavorites = async (req, res) => {
             event.likes = event.likes.filter(userId => userId !== _id);
             // Remove the event ID from the user's 'favorites' array if present
             user.favorites = user.favorites.filter(eventid => eventid !== event._id);
+            // Save the updated event and user data
+            await event.save();
+            await user.save();
+
+            return res.status(200).json({ success: true, message: 'like has been removed' });
         } else {
             // If the user's ID is not in the 'likes' array, add it
             event.likes.push(_id);
@@ -209,62 +243,18 @@ exports.addToFavorites = async (req, res) => {
             if (!user.favorites.includes(event._id)) {
                 user.favorites.push(event._id);
             }
+            // Save the updated event and user data
+            await event.save();
+            await user.save();
+            return res.status(200).json({ success: true, message: 'like has been added' });
         }
 
-        // Save the updated event and user data
-        await event.save();
-        await user.save();
-
-        res.status(200).json({ success: true, message: 'Operation completed successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
 
-module.exports.getUpcomingEvents = async (req, res) => {
-    try {
-        // Check if a date is provided in the request query
-        const customDate = req.query.date || new Date().toISOString().split('T')[0];
-
-        console.log(customDate)
-        // Calculate the start and end of the specified date
-        const startOfDay = new Date(customDate);
-        startOfDay.setHours(0, 0, 0, 0); // Set time to midnight (00:00:00)
-
-        const endOfDay = new Date(customDate);
-        endOfDay.setHours(23, 59, 59, 999); // Set time to the end of the day (23:59:59.999)
-
-        console.log(startOfDay, endOfDay)
-
-        // Find events happening on the specified date
-        const eventsOnDate = await eventService.findAllEvents({
-            date: {
-                $gte: startOfDay,
-            },
-        });
-
-        // Check if there are no events on the specified date
-        if (eventsOnDate.length === 0) {
-            return res.status(200).json({
-                success: true,
-                message: 'No events are happening on the specified date.',
-            });
-        }
-
-        // Send the events happening on the specified date as a response
-        res.status(200).json({
-            success: true,
-            data: eventsOnDate,
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: 'Internal server error',
-        });
-    }
-};
 
 module.exports.customQue = async (req, res) => {
     const eventid = req.params.eventid
@@ -282,19 +272,45 @@ module.exports.customQue = async (req, res) => {
     }
 }
 
-exports.getAllOffers = async (req, res) => {
+// --------------------Client side ---------------
+module.exports.getUpcomingEvents = async (req, res) => {
     try {
-        const offers = await offerService.findAllOffer({}, 4)
-        return res.status(200).json({
+        // Check if a date is provided in the request query
+        const customDate = req.query.date || new Date().toISOString().split('T')[0];
+
+
+        // Convert the input date to a moment object
+        const dateMoment = moment(customDate);
+
+        // Get the epoch timestamp in milliseconds
+        const epochTimestamp = dateMoment.valueOf();
+
+
+        // Find events happening on the specified date
+        const eventsOnDate = await eventService.findAllEvents({
+            date: {
+                $eq: epochTimestamp,
+            },
+        });
+
+        // Send the events happening on the specified date as a response
+        res.status(200).json({
             success: true,
-            data: offers
-        })
+            data: eventsOnDate,
+        });
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
     }
+};
+
+// yet to done this is for map screen here you have to pass venue lat lon also
+exports.whereToMap = async (req, res) => {
 
 }
-
 
 // --------------------offers -------------------
 exports.createOffer = async (req, res) => {
@@ -373,6 +389,26 @@ exports.createOffer = async (req, res) => {
             }
         })
 
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+exports.getAllOffers = async (req, res) => {
+
+    const today = new Date
+    const todayepoch = moment(today);
+
+    // Get the epoch timestamp in milliseconds
+    const todaysEpochTimestamp = todayepoch.valueOf();
+
+    try {
+        const offers = await offerService.findAllOffer({ expiry: { $gte: todaysEpochTimestamp } }, 4)
+        return res.status(200).json({
+            success: true,
+            data: offers
+        })
     } catch (error) {
         console.log(error)
     }

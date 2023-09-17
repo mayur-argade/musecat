@@ -34,39 +34,18 @@ Login screen --->
 4. Forgot password functionality
 
 
-Homepage -->
-1. Get searchbar working
-2. get categories data with the total active events or offers
-3. show all the upcoming events on the show on map 
-4. Modify upcoming events api such a way that it should show events of that day only
-5. Create a new category of editors pick
-6. show all the active offers
-7. create a scroll to top
-8. link whatsapp number
-9. Start integrating chatbot
-10. Link footer to the site 
-
-About Us --->
-1. Migrate side things into a component
-
-Contact us ---> 
-1. Create loading icon when we are submitting details
-2. Add validation correctly
-3. Give a success response once msg has been sent
-4. Link all the social media icons
-5. whatsapp linking
-
 Events Page --->
-1. Add to favorite option
-2. Trending in muscat
-3. Add filter
-4. Add searching events datewise
-5. Show no events available for categories having no events
-6. show skeleton for events loading first time
+5. Show no events available for categories having no events (done)
 7. give it a scroll option make it overflow after 3 lines 
-8. look for responsiveness
+8. look for responsiveness (partially done)
+2. Trending in muscat
+3. Add filter 
+4. Add searching events datewise 
+1. Add to favorite option 
+6. show skeleton for events loading first time
 
 Event Description page --->
+0. After time changed in vendor side change here also 
 1. Make alignment proper
 2. Link view on map to the cordinates
 3. Add to Favorites
@@ -96,3 +75,28 @@ ADD CHAT engine
 
 
 
+---------------------------------------------------
+Contact us ---> 
+1. Create loading icon when we are submitting details
+2. Add validation correctly (done)
+3. Give a success response once msg has been sent (done)
+4. Link all the social media icons
+5. whatsapp linking
+
+Homepage -->
+changed date type to epoch timestamp
+1. Get searchbar working
+2. get categories data with the total active events (done)
+3. show all the upcoming events on the show on map 
+4. Modify upcoming events api such a way that it should show events of that day only (done)
+5. Create a new category of editors pick (done)
+6. show all the active offers (partially done)
+7. create a scroll to top (done)
+8. link whatsapp number 
+9. Start integrating chatbot
+10. Link footer to the site 
+11. Change offer to date (discussion)
+
+
+About Us --->
+1. scroll to top button

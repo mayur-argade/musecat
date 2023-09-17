@@ -62,6 +62,11 @@ const Home = () => {
     const [date, setDate] = useState(`${filterdate}`)
     const [showLinks, setShowLinks] = useState(false)
     const [day, SetDay] = useState(`${catdate}`)
+    const [categoryLoading, setCategoryLoading] = useState(false)
+    const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false)
+    const [offersLoading, setOffersLoading] = useState(false)
+    const [editorpickLoading, setEditorpickLoading] = useState(false)
+
 
     function setnewfilterdate(actualdate) {
         setDate(actualdate)
@@ -96,11 +101,15 @@ const Home = () => {
 
     useEffect(() => {
         const fetchdata = async () => {
+            setCategoryLoading(true)
             try {
                 const { data } = await CategoryCount(`?date=${day}`)
                 console.log("categorydata", data)
                 setCategory(data)
+
+                setCategoryLoading(false)
             } catch (error) {
+                setCategoryLoading(false)
                 console.log(error)
             }
         }
@@ -110,11 +119,14 @@ const Home = () => {
 
     useEffect(() => {
         const fetchdata = async () => {
+            setUpcomingEventsLoading(true)
             try {
                 const { data } = await ClientUpcomingEvents(`?date=${date}`)
                 console.log(data.data)
                 setUpcomingEvents(data)
+                setUpcomingEventsLoading(false)
             } catch (error) {
+                setUpcomingEventsLoading(false)
                 console.log(error)
             }
         }
@@ -135,28 +147,28 @@ const Home = () => {
 
     useEffect(() => {
         const fetchdata = async () => {
+            setEditorpickLoading(true)
             try {
-                const { data } = await getCategoryEvents("staycation")
+                const { data } = await getCategoryEvents("editorspick")
                 // console.log(data.data)
                 setEditorpick(data)
+                setEditorpickLoading(false)
             } catch (error) {
                 console.log(error)
+                setEditorpickLoading(false)
             }
         }
 
         fetchdata()
     }, []);
 
-    console.log(upcomingEvents)
-
-    if (category.data == null || offers.data == null || offers.data == undefined || upcomingEvents.data == undefined) {
+    if (category.data == null || offers.data == null || offers.data == undefined) {
         return (<div className='h-screen w-full flex justify-center align-middle items-center'>
             <img src="/images/icons/loadmain.svg" alt="" />
         </div>)
     } else {
         return (
             <>
-
                 <div className='appmargine'>
                     <Navbar />
                     <div
@@ -171,12 +183,12 @@ const Home = () => {
                                     <br className='block md:hidden' />
 
                                     <span>experience</span>
-                                   
 
-                                        <div className='md:hidden absolute top-16 right-3'>
-                                            <img className='h-12' src="/images/assets/download-banner.png" alt="" />
-                                        </div>
-                                   
+
+                                    <div className='md:hidden absolute top-16 right-3'>
+                                        <img className='h-12' src="/images/assets/download-banner.png" alt="" />
+                                    </div>
+
 
 
                                     <div className=' flex md:hidden items-center justify-center '>
@@ -328,14 +340,24 @@ const Home = () => {
                             <div>
                                 <div id="content" className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide space-x-5'>
                                     {
-                                        category.data.map((category) => (
-                                            <Link to={`/category/${category.categoryURL}`}>
-                                                <div className='w-44 md:w-56'>
-                                                    <CategoryCard data={category} />
-                                                </div>
-                                            </Link>
-                                        ))
+                                        categoryLoading
+                                            ? "loading"
+                                            :
+                                            category.data.length === 0
+                                                ? "No event listings"
+                                                :
+                                                category.data.map((category) => {
+                                                    return (
+                                                        <Link to={`/category/${category.categoryURL}`} key={category._id}>
+                                                            <div className='w-44 md:w-56'>
+                                                                <CategoryCard data={category} />
+                                                            </div>
+                                                        </Link>
+                                                    );
+
+                                                })
                                     }
+
 
                                 </div>
                             </div>
@@ -415,35 +437,37 @@ const Home = () => {
 
                             <div>
                                 <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-6'>
-                                    {
-                                        upcomingEvents.data.map((event) => (
-
-                                            <div >
-                                                <div className="relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-96 max-h-96 bg-[#F3F3F3] top-0 md:mt-5">
-                                                    <div className='absolute bottom-0 left-0 flex flex-col rounded-lg'>
-                                                        <img className="rounded-lg object-fill rounded-lg h-52 w-52 md:h-72 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
-                                                        <button className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
-                                                            <img src="/images/icons/heart.svg" alt="" />
-                                                        </button>
-                                                        <div className='flex flex-col p-2'>
-                                                            <p className='text-sm mt-2 font-medium'>{event.title},</p>
-                                                            <p className='text-sm mt-2 font-medium'>{event.location}</p>
-                                                            <p className="mt-1 mb-1 text-xs font-light">Events</p>
-                                                            <div className='flex items-center justify-between space-x-2'>
-                                                                <Link className='button w-full' to={`/events/${event._id}`}>
-                                                                    <button type="button" className="text-white hover:bg-[#A48533]
+                                    {upcomingEventsLoading
+                                        ? "loading"
+                                        : upcomingEvents.data.length === 0
+                                            ? "No Events for this date"
+                                            :
+                                            upcomingEvents.data.map((event) => (
+                                                <div >
+                                                    <div className="relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-96 max-h-96 bg-[#F3F3F3] top-0 md:mt-5">
+                                                        <div className='absolute bottom-0 left-0 flex flex-col rounded-lg'>
+                                                            <img className="rounded-lg object-fill rounded-lg h-52 w-52 md:h-72 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
+                                                            <button className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
+                                                                <img src="/images/icons/heart.svg" alt="" />
+                                                            </button>
+                                                            <div className='flex flex-col p-2'>
+                                                                <p className='text-sm mt-2 font-medium'>{event.title},</p>
+                                                                <p className='text-sm mt-2 font-medium'>{event.location}</p>
+                                                                <p className="mt-1 mb-1 text-xs font-light">Events</p>
+                                                                <div className='flex items-center justify-between space-x-2'>
+                                                                    <Link className='button w-full' to={`/events/${event._id}`}>
+                                                                        <button type="button" className="text-white hover:bg-[#A48533]
 bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Book Now</button>
-                                                                </Link>
-                                                                <Link to='/contactus' className='hidden md:block w-full'>
-                                                                    <button type="button" className="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Contact us</button>
-                                                                </Link>
+                                                                    </Link>
+                                                                    <Link to='/contactus' className='hidden md:block w-full'>
+                                                                        <button type="button" className="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 w-full">Contact us</button>
+                                                                    </Link>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                        ))
+                                            ))
                                     }
                                 </div>
 
@@ -466,12 +490,17 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
 
                             <div>
                                 <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3'>
-                                    {
-                                        upcomingEvents.data.map((event) => (
-                                            <EventCard data={event} />
-                                        ))
+                                    {editorpickLoading
+                                        ? "loading"
+                                        : editorpick.data.length === 0
+                                            ? "No Events available"
+                                            :
+                                            editorpick.data.map((event) => (
+                                                <Link to={`/events/${event._id}`}>
+                                                    <EventCard data={event} />
+                                                </Link>
+                                            ))
                                     }
-
                                 </div>
 
                             </div>
@@ -567,21 +596,24 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         </section>
                         <div className='hidden md:flex justify-end flex-col absolute right-16 bottom-10'>
                             <div className='flex justify-between mb-2'>
-                                <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                    <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                </button>
-                                <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
-                                <button>
-                                </button>
-                            </div>
-                            <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                                <button onClick={() => window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                            </button>
+                            <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
+                            <button>
+                            </button>
                         </div>
-                    </section>
-                    <Footer />
+                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                 </div>
-                <div>
-                    <BottomNav />
-                </div>
+            </section >
+                <Footer />
+                </div >
+    <div>
+        <BottomNav />
+    </div>
             </>
         )
     }

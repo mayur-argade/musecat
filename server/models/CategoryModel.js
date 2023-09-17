@@ -13,10 +13,13 @@ const categoryModel = new mongoose.Schema({
         required: [true, "Please provide categoryURL"],
     },
     offers: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Offers" }],
+        default: []
+    },
+    events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []
     }
-
 },
     {
         timestamp: true,

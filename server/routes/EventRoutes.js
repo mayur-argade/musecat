@@ -11,7 +11,7 @@ router.route('/vendor/events').get(isLoggedin, isVerified, getVendorAllEventsNOf
 router.route('/vendor/create-offer').post(isLoggedin, isVerified, createOffer)
 router.route('/vendor/event/:eventid').patch(isLoggedin, isVerified, updateEvent)
 
-router.route('/event/like/:eventid').put(isUserLoggedin, addToFavorites)
+router.route('/event/like').put(isUserLoggedin, addToFavorites)
 router.route('/events/upcoming-events').get(getUpcomingEvents)
 router.route('/event/:eventid/customq').get(customQue)
 router.route('/offers/').get(getAllOffers)

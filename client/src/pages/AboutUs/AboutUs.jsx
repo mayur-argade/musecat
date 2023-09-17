@@ -7,8 +7,6 @@ const AboutUs = () => {
     return (
         <>
             <Navbar />
-
-
             <section className='contactmargine'>
                 <div className='h-40 md:h-64 mt-32 md:mt-52 justify-center items-center relative'>
 
@@ -50,7 +48,7 @@ const AboutUs = () => {
                     </div>
 
                     <div className='flex mr-5 md:mr-24 md:ml-24 justify-around md:flex-row flex-col-reverse align-items items-center'>
-                        
+
                         <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose"><p>If you wish to have your offer displayed on Muscat Where To platform, kindly <Link to='/contactus'><span className='ml-0 text-[#C0A04C]'>contact us</span></Link> at info@muscatwhereto.com. (if you don’t hear from us, check your spam folder)</p></div>
 
                         <div className="">
@@ -60,7 +58,12 @@ const AboutUs = () => {
 
                     <div className='hidden md:flex justify-end flex-col absolute -right-14 bottom-0'>
                         <div className='flex justify-between mb-2'>
-                            <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                            <button
+                                onClick={() => window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                })}
+                                className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                                 <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                             </button>
                             <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />

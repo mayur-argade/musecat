@@ -5,6 +5,7 @@ const CategoryModel = require('../models/CategoryModel')
 const categoryService = require('../services/category-service')
 const cloudinary = require('cloudinary')
 const Offer = require("../models/OfferModel")
+const Event = require("../models/EventModel")
 const moment = require('moment')
 
 exports.createCategory = async (req, res) => {
@@ -43,12 +44,17 @@ exports.createCategory = async (req, res) => {
 
 }
 
-exports.getCategoriesWithOffers = async (req, res) => {
+exports.getCategoriesWithEvents = async (req, res) => {
 
     const date = req.query.date
-    const filterDate = moment(date).toISOString()
 
+    // Convert the input date to a moment object
+    const dateMoment = moment(date);
+
+    // Get the epoch timestamp in milliseconds
+    const epochTimestamp = dateMoment.valueOf();
     try {
+        // console.log(filterDate)
         const categories = await categoryService.findAllCategory();
 
         const categoryCounts = [];
@@ -63,31 +69,35 @@ exports.getCategoriesWithOffers = async (req, res) => {
             };
 
             const query = {
-                _id: { $in: category.offers }, // Filter by offer IDs in the category
+                _id: { $in: category.events }, // Filter by offer IDs in the category
             };
 
-            if (filterDate) {
-                query.expiry = { $gte: new Date(filterDate) }; // Filter for expiry dates greater than or equal to the specified date
+            if (epochTimestamp) {
+                query.date = {
+                    $eq: epochTimestamp,
+                }; // Filter for expiry dates greater than or equal to the specified date
             }
 
-            const validOfferCount = await Offer.countDocuments(query);
+            const validOfferCount = await Event.countDocuments(query);
 
             categoryCount.validOfferCount = validOfferCount;
 
             categoryCounts.push(categoryCount);
         }
 
+
+        const filteredCategoryCounts = categoryCounts.filter((categoryCount) => categoryCount.validOfferCount >= 1);
+
         return res.status(200).json({
             success: true,
-            data: categoryCounts
+            data: filteredCategoryCounts
         })
 
-} catch (error) {
-    console.error('Error:', error);
-    throw error;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
 }
-}
-
 
 exports.getAllCategories = async (req, res) => {
     try {
@@ -146,19 +156,35 @@ module.exports.getCategories = async (req, res) => {
 module.exports.getCategoryAllEvents = async (req, res) => {
     let categoryDisplayName = req.params.categoryname
     console.log(categoryDisplayName)
+
+    const today = new Date
+    const convertedString = moment(today).format("YYYY-MM-DD");
+    const todayepoch = moment(convertedString)
+
+    // Get the epoch timestamp in milliseconds
+    const todaysEpochTimestamp = todayepoch.valueOf();
+    // console.log(todaysEpochTimestamp)
     try {
         let events;
         if (categoryDisplayName != "events") {
-            events = await eventService.findAllEvents({ category: categoryDisplayName })
+            const query = {
+                category: categoryDisplayName // Filter by offer IDs in the category
+            };
+
+            query.date = {
+                $gte: todaysEpochTimestamp,
+            };
+
+            events = await eventService.findAllEvents(query)
+
         } else {
-            events = await eventService.findAllEvents()
+            events = await eventService.findAllEvents({ date: { $gte: todaysEpochTimestamp } })
         }
 
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: events
         })
-
 
     } catch (error) {
         console.log(error)
@@ -167,3 +193,4 @@ module.exports.getCategoryAllEvents = async (req, res) => {
 
 
 }
+

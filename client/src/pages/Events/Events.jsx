@@ -6,7 +6,7 @@ import EventCard from '../../components/Cards/EventCard'
 import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import Footer from '../../components/shared/Footer/Footer'
 import TrendingCard from '../../components/Cards/TrendingCard'
-import { getCategoryEvents } from '../../http/index'
+import { getCategoryEvents, GetAllCategory } from '../../http/index'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 
@@ -44,26 +44,65 @@ const Events = () => {
     else if (category === 'kidscorner') {
         categoryName = 'Kids Corner'
     }
+    else if (category === 'fridaybrunch') {
+        categoryName = 'Friday Brunch'
+    }
+    else if (category === 'editorspick') {
+        categoryName = 'Editors Pick'
+    }
 
     document.title = `muscat ~ ${category}`
 
 
-    const [response, setReponse] = useState({});
+    const [loading, setLoading] = useState(false)
+    const [response, setResponse] = useState({});
     const [search, setSearch] = useState('')
+    const [categories, setCategories] = useState([])
+    const [selectedCategories, setSelectedCategories] = useState([])
+
+    const handleCategoryChange = (categoryURL) => {
+        // console.log(categoryURL)
+        // Check if the categoryURL is already in selectedCategories
+        if (selectedCategories.includes(categoryURL)) {
+            // Remove the categoryURL from selectedCategories
+            setSelectedCategories(selectedCategories.filter((url) => url !== categoryURL));
+        } else {
+            // Add the categoryURL to selectedCategories
+            setSelectedCategories([...selectedCategories, categoryURL]);
+        }
+    };
+
 
     useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+
+                const res = await GetAllCategory()
+                setCategories(res.data)
+                // console.log("categories", response.data.data)
+            } catch (error) {
+                // console.log(error)
+            }
+        }
+        fetchCategories()
+
         const fetchdata = async () => {
+            setLoading(true)
             try {
                 const { data } = await getCategoryEvents(category)
                 // console.log(data.data)
-                setReponse(data)
+                setResponse(data)
+                setLoading(false)
             } catch (error) {
-                console.log(error)
+                // console.log(error)
+                setLoading(false)
             }
         }
 
         fetchdata()
     }, [category]);
+
+
 
     // Close the dropdown when clicking anywhere outside of it
     const handleClickOutside = (event) => {
@@ -83,12 +122,11 @@ const Events = () => {
         setIsOpen(!isOpen);
     };
 
-    console.log(response.data)
 
     if (response.data == null) {
-        <>
-            loading...
-        </>
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <div className='contactmargine'>
@@ -163,35 +201,17 @@ const Events = () => {
                                             <div className="p-5">
                                                 <div className="popular">
                                                     <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                    <div class="flex items-center mb-1 mt-2">
-                                                        <input id="staycation" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Staycation</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="thingstodo" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="thingstodo" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">thingstodo</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="fridayNightOuts" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="fridayNightOuts" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Friday NightOuts</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="djNights" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="djNights" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">DJ Nights</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="meetNgreet" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="meetNgreet" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Meet and Greet</label>
-                                                    </div>
-
-                                                    <div class="flex items-center">
-                                                        <input id="celebritiesAround" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="celebritiesAround" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Celebrities Around</label>
-                                                    </div>
+                                                    {
+                                                        categories.data.map((e) => (
+                                                            <div class="flex items-center mb-1 mt-2">
+                                                                <input id={e.categoryURL} type="checkbox"
+                                                                    onChange={() => handleCategoryChange(e.categoryURL)}
+                                                                    checked={selectedCategories.includes(e.categoryURL)}
+                                                                    value={e.categoryURL} class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                            </div>
+                                                        ))
+                                                    }
                                                 </div>
 
                                                 <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
@@ -256,30 +276,26 @@ const Events = () => {
                     <div className="md:ml-36 md:mr-36 max-w-screen flex md:align-top flex-col md:flex-row">
                         <div className="left w-full ">
                             <div className="md:flex md:justify-start md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
-                                {response.data.filter((item) => {
-                                    return search.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(search)
-                                }).map((event) => (
-                                    <Link to={`/events/${event._id}`} >
-                                        < EventCard data={event} />
-                                    </Link>
-                                ))
+                                {loading
+                                    ?
+                                    <div>
+                                        loading
+                                    </div>
+                                    :
+                                    response.data.length == 0
+                                        ?
+                                        <div>
+                                            No events listing found
+                                        </div>
+                                        :
+                                        response.data.filter((item) => {
+                                            return search.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(search)
+                                        }).map((event) => (
+                                            <Link to={`/events/${event._id}`} >
+                                                < EventCard data={event} />
+                                            </Link>
+                                        ))
                                 }
-                                {/* <Link to="/events/eventid" >
-                                    < EventCard />
-                                </Link>
-                                
-                                <Link to="/events/eventid" >
-                                    < EventCard />
-                                </Link>
-                                <Link to="/events/eventid" >
-                                    < EventCard />
-                                </Link>
-                                <Link to="/events/eventid" >
-                                    < EventCard />
-                                </Link>
-                                <Link to="/events/eventid" >
-                                    < EventCard />
-                                </Link> */}
                             </div>
                         </div>
 

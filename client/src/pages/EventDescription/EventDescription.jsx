@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import { ClientEventDetailsApi } from '../../http'
+import { ClientEventDetailsApi, addToFavorites, VedorDetails } from '../../http'
 import EventCard from '../../components/Cards/EventCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { setEvent } from '../../store/eventSlice'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
+import toast, { Toaster } from 'react-hot-toast';
 
 const EventDescription = () => {
     let { eventid } = useParams();
+
+    console.log(eventid)
 
     const [response, setReponse] = useState({});
     const [accordions, setAccordions] = useState([])
@@ -40,9 +43,40 @@ const EventDescription = () => {
                 console.log(error)
             }
         }
-
         fetchdata()
     }, [eventid]);
+
+
+    const favoriteFeature = async () => {
+        // console.log(eventid)
+        try {
+            const eventdata = {
+                eventid: eventid
+            }
+            const { data } = await addToFavorites(eventdata)
+            console.log(data)
+            toast.success(data.message)
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+
+    }
+
+    const getVendorDetails = async () => {
+        var data = response.data.eventDetails.vendorid
+        var eventname = response.data.eventDetails.title
+
+        try {
+            const response = await VedorDetails(data)
+            const externalURL = `https://wa.me/${response.data.data.mobilenumber}/?text=Interested%20in%20${eventname}.%20Can%20you%20share%20details%20and%20the%20event%20link,%20please%3F`;
+            console.log("response",)
+            // Use window.location.href to redirect
+            window.location.href = externalURL;
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const navigate = useNavigate();
     const handleBack = () => {
@@ -65,6 +99,7 @@ const EventDescription = () => {
     } else {
         return (
             <div className='appmargine'>
+                <Toaster />
                 <Navbar />
                 <Tabbar />
                 <section className='md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
@@ -146,11 +181,13 @@ const EventDescription = () => {
                         <div className="mt-3 md:mt-0 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
                             <div className='card w-full h- pl-4 pr-4 py-4 flex flex-col rounded-xl  border shadow-2xl shadow-[#F3F3F3] rounded-lg '>
 
-                                <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
-                                    <img className='h-5' src="/images/icons/map-1.svg" alt="" />
-                                    <p className='text-md'>{response.data.eventDetails.location}</p>
-                                    <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
-                                </div>
+                                <Link to="/whereto">
+                                    <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
+                                        <img className='h-5' src="/images/icons/map-1.svg" alt="" />
+                                        <p className='text-md'>{response.data.eventDetails.location}</p>
+                                        <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
+                                    </div>
+                                </Link>
 
                                 <hr />
 
@@ -168,23 +205,27 @@ const EventDescription = () => {
                             </div>
 
                             <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
-                                <Link to='/favorites' className='w-full'>
-                                    <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                        <img className='h-4' src="/images/icons/heart.svg" alt="" />
-                                        <span>Add to Favorite</span>
-                                    </button>
-                                </Link>
-                                <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                {/* <Link to='/favorites' className='w-full'> */}
+                                <button
+                                    onClick={favoriteFeature}
+                                    className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                     <img className='h-4' src="/images/icons/heart.svg" alt="" />
+                                    <span>Add to Favorite</span>
+                                </button>
+                                {/* </Link> */}
+                                <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                    <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
                                     <span>Add to Calendar</span>
                                 </button>
                             </div>
 
                             <div className="">
                                 <div className="contactus mb-5 mt-5">
-                                    <Link to='/contactus'>
-                                        <button type="button" class="border border-[#C0A04C] w-full border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Contact Us</button>
-                                    </Link>
+                                    {/* <Link to='/contactus'> */}
+                                    <button
+                                        onClick={getVendorDetails}
+                                        type="button" class="border border-[#C0A04C] w-full border text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Contact Us</button>
+                                    {/* </Link> */}
 
                                 </div>
                                 <Link to="/bookticket">

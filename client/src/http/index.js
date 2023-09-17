@@ -11,16 +11,18 @@ const api = axios.create({
 });
 
 export const vendorLogin = (data) => api.post("auth/vendor/login", data);
-export const VendorRegister = (data)  => api.post("auth/vendor/register", data)
+export const VendorRegister = (data) => api.post("auth/vendor/register", data)
 export const VendorHomeApi = (data) => api.get("vendor/home", data)
 export const VendorHostedEventsApi = (data) => api.get("vendor/events", data)
 export const getEventDataApi = (data) => api.get(`event/${data}`, data)
-export const getVendorNotification = (data) => api.get('notification')
+export const getVendorNotification = (data) => api.get('notification', data)
 export const vendorProfileApi = (data) => api.get('vendor/profile', data)
 export const VendorUpdateProfileApi = (data) => api.patch('vendor/update-profile', data)
 export const VendorBookedTicketApi = (data) => api.get(`vendor/${data}/tickets`, data)
 export const VendorCreateOffer = (data) => api.post("vendor/create-offer", data)
 export const VendorCreateEvent = (data) => api.post("/vendor/create-event", data)
+export const vendorLogout = (data) => api.post("auth/vendor/logout", data)
+export const VedorDetails = (data) => api.get(`vendor/details/${data}`, data)
 
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)
@@ -34,13 +36,12 @@ export const getCategoryEvents = (data) => api.get(`category/${data}`, data)
 export const ClientBookTicket = (data) => api.post("ticket/bookticket", data)
 export const ClientTicketStatusApi = (data) => api.get(`ticket/${data}`, data)
 export const clientLogout = (data) => api.post("auth/user/logout", data)
-export const vendorLogout = (data) => api.post("auth/vendor/logout", data)
+export const addToFavorites = (data) => api.put(`event/like`, data)
 
-
-export const GetAllCategory = (data) => api.get("category/", data)
+export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
 export const ClientGetOffers = (data) => api.get("/offers/", data)
-export const CategoryCount = (data) => api.get(`category/offercounts${data}`, data)
+export const CategoryCount = (data) => api.get(`category/eventcounts${data}`, data)
 
 
 api.interceptors.response.use(

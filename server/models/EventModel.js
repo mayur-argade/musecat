@@ -24,7 +24,7 @@ const eventSchema = new mongoose.Schema({
         require: [true, "Please provide description for an event"]
     },
     date: {
-        type: Date,
+        type: Number,
         required: [true, "Please provide date and time for an event"]
     },
     category:{
