@@ -27,6 +27,9 @@ create a search query function route
 9. Add to Favorites
 10. QR code
 
+------------------------------------------------------------------------------------------
+
+
 Login screen --->
 1. Show back button to come on the Homepage
 2. google sign in
@@ -44,24 +47,6 @@ Events Page --->
 1. Add to favorite option 
 6. show skeleton for events loading first time
 
-Event Description page --->
-0. After time changed in vendor side change here also 
-1. Make alignment proper
-2. Link view on map to the cordinates
-3. Add to Favorites
-4. add share option
-5. upcoming events in the crown plaza
-6. offers on the crown plaza
-7. like button 
-8. Contact us redirect to the whatsapp number of the vendor
-9. make call option work for the vendor number
-
-Book seat Page --->
-1. fetch this page from the backend
-2. create a controller in the backend 
-3. add validation
-4. This values should be prefilled by getting user from the store
-5. If any field is remaining dont show the ticket price
 
 ADD PAYMENT GATEWAY
 
@@ -69,6 +54,15 @@ Ticket status page -->
 1. show like button neatly
 2. View ticket make it perfect use image if want 
 3. show neat qrcode in white
+
+
+steps: 
+create a book ticket controller (done)
+take all data from the frontend to that controller (done)
+create a session into that controller (done)
+give url as a response and also status and other things (done)
+from the frontend redirect it to the checkout page
+
 
 ADD CHAT engine
 
@@ -100,3 +94,23 @@ changed date type to epoch timestamp
 
 About Us --->
 1. scroll to top button
+
+Event Description page --->
+0. After time changed in vendor side change here also 
+1. Make alignment proper (done)
+2. Link view on map to the cordinates (partially done)
+3. Add to Favorites (done)
+4. add share option (not done)
+5. upcoming events in the crown plaza (partially done)
+6. offers on the crown plaza (partially done)
+7. like button (partially done)
+8. Contact us redirect to the whatsapp number of the vendor (done)
+9. make call option work for the vendor number
+10. make like option red and unred
+
+Book seat Page --->
+3. add validation (done)
+5. If any field is remaining dont show the ticket price (done)
+4. This values should be prefilled by getting user from the store (done)
+2. create a controller in the backend 
+1. fetch this page from the backend (no)

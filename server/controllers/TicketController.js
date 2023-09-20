@@ -1,10 +1,13 @@
 const eventService = require("../services/event-service");
+const paymentService = require("../services/payment-service");
 const ticketService = require("../services/ticket-service");
 const userService = require("../services/user-service");
 
+
+
 module.exports.generateTicket = async (req, res) => {
 
-    const { eventid, firstname, lastname, email, ticketclass, seats, row, totalPrice } = req.body
+    const { eventid, firstname, lastname, email, ticketclass, seats, row, totalPrice, basePrice } = req.body
 
     try {
 
@@ -109,8 +112,30 @@ module.exports.generateTicket = async (req, res) => {
             const updateUser = await userService.updateUser(userdata)
         }
 
+        const paymentdata = {
+            client_ref_id: req.user._id,
+            name: ticket._id,
+            quantity: seats,
+            unitAmout: basePrice
+        }
+
+        const payment = await paymentService.CreateSession(paymentdata)
+
+        console.log(payment)
+
+        if (payment.code >= 4000 && payment.code <= 4301 || payment.success == false) {
+            return res.status(500).json({
+                success: false,
+                data: {
+                    seatsbooked: ticket,
+                    message: "Unable to start payment session"
+                }
+            })
+        }
+
         return res.status(200).json({
-            seatsbooked: ticket
+            seatsbooked: ticket,
+            session_id: payment.data.session_id
         })
 
 
@@ -183,7 +208,7 @@ exports.getTicketsByEvent = async (req, res) => {
 
         const allTicketIds = event.bookTickets
         const tickets = await ticketService.findAllTickets({ _id: { $in: allTicketIds } })
-        
+
 
         return res.status(200).json({
             success: true,

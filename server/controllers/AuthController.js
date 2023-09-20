@@ -74,7 +74,7 @@ exports.vendorRegister = async (req, res) => {
         .cookie("accessToken", accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
             httpOnly: true,
-            secure: true, sameSite: 'none'
+            sameSite: 'none'
         })
         .json({ message: "user", data: user });
 
@@ -123,12 +123,12 @@ exports.vendorLogin = async (req, res) => {
                 .cookie("refreshtoken", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
-                    secure: true, sameSite: 'none'
+                    sameSite: 'none'
                 })
                 .cookie("accessToken", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
-                    secure: true, sameSite: 'none'
+                    sameSite: 'none'
                 })
                 .json({ user: user });
         }
@@ -184,12 +184,12 @@ exports.clientLogin = async (req, res) => {
                 .cookie("refreshtoken", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
-                    secure: true, sameSite: 'none'
+                    sameSite: 'none'
                 })
                 .cookie("accessToken", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 30,
                     httpOnly: true,
-                    secure: true, sameSite: 'none'
+                    sameSite: 'none'
                 })
                 .json({ user: user });
         }
