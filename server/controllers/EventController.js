@@ -28,11 +28,11 @@ exports.createEvent = async (req, res) => {
             })
             console.log(uploadedEventPhoto)
         }
-        // Create a moment object representing your date
-        const newDate = moment(date);
+        const dateMoment = moment.utc(date, "YYYY-MM-DD")
 
+        console.log(dateMoment)
         // Get the epoch timestamp in milliseconds
-        const epochDate = newDate.valueOf();
+        const epochDate = dateMoment.valueOf();
 
         const data = {
             title: title,

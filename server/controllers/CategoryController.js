@@ -49,10 +49,14 @@ exports.getCategoriesWithEvents = async (req, res) => {
     const date = req.query.date
 
     // Convert the input date to a moment object
-    const dateMoment = moment(date);
 
+    const dateMoment = moment.utc(date, "YYYY-MM-DD")
+
+    console.log(dateMoment)
     // Get the epoch timestamp in milliseconds
     const epochTimestamp = dateMoment.valueOf();
+    console.log(epochTimestamp)
+
     try {
         // console.log(filterDate)
         const categories = await categoryService.findAllCategory();

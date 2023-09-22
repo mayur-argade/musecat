@@ -13,9 +13,10 @@ const Protected = (props) => {
 
     useEffect(() => {
         function protectedRoute() {
-            if (isAuth === false || user == null || event == null) {
-                navigate(-1);
-            } 
+            if (isAuth == false || user == null || event == null)  {
+                console.log("this is running")
+                navigate('/');
+            }
         }
 
         protectedRoute();

@@ -58,10 +58,11 @@ function App() {
                     <Route path="/whereto" exact element={<WhereToMap />} />
                     <Route path="/contactus" exact element={<Contactus />} />
                     <Route path="/events/:eventid" exact element={<EventDescription />} />
+                    <Route path="/bookticket" element={<BookTicket />} />
+
                     <Route path="/venue/venueid" exact element={<VenueDescription />} />
                     <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
                     <Route path="/faq" exact element={<FAQ />} />
-                    <Route path="/bookticket" exact element={<Protected Component={BookTicket} />} />
                     <Route path="/ticketstatus/:ticketid" exact element={<Protected Component={TicketStatus} />} />
                     <Route path="/events" exact element={<EventsPWA />} />
                     <Route path="/searchpage" exact element={<SearchPWA />} />
