@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -63,7 +63,7 @@ function App() {
                     <Route path="/venue/venueid" exact element={<VenueDescription />} />
                     <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
                     <Route path="/faq" exact element={<FAQ />} />
-                    <Route path="/ticketstatus/:ticketid" exact element={<Protected Component={TicketStatus} />} />
+                    <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
                     <Route path="/events" exact element={<EventsPWA />} />
                     <Route path="/searchpage" exact element={<SearchPWA />} />
 

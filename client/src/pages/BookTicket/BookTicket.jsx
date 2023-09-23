@@ -104,28 +104,34 @@ const BookTicket = () => {
         } else if (seats <= 0) {
             toast.error("Enter valid seat number")
         } else {
-            const ticketdata = {
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                ticketclass: ticketclass,
-                seats: seats,
-                row: row,
-                eventid: event._id,
-                totalPrice: totalPrice,
-                basePrice: basePrice
-            }
-            setLoading(true)
-            const { data } = await ClientBookTicket(ticketdata)
-            // console.log(data.seatsbooked._id)
-            setLoading(false)
-            toast.success("Your ticket has been booked proceed to checkout page")
-            if (data.session_id) {
-                const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
+            try {
+                const ticketdata = {
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    ticketclass: ticketclass,
+                    seats: seats,
+                    row: row,
+                    eventid: event._id,
+                    totalPrice: totalPrice,
+                    basePrice: basePrice
+                }
+                setLoading(true)
+                const { data } = await ClientBookTicket(ticketdata)
+                // console.log("checking data for the 404 error",data)
+                setLoading(false)
+                toast.success("Your ticket has been booked proceed to checkout page")
+                if (data.session_id) {
+                    const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
 
-                window.location.href = externalURL;
-                // navigate him to the checkout page
-                // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                    window.location.href = externalURL;
+                    // navigate him to the checkout page
+                    // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                }
+            } catch (error) {
+                setLoading(false)
+                console.log(error)
+                toast.error(error.response.data.data)
             }
         }
     }
@@ -201,7 +207,6 @@ const BookTicket = () => {
                                                 <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                                 <input
                                                     type="text"
-                                                    defaultValue={user.firstname}
                                                     className='font-medium border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                                     onChange={(e) => setFirstname(e.target.value)}
                                                     onClick={closePrice}
@@ -213,7 +218,6 @@ const BookTicket = () => {
                                                 <input
                                                     type="text"
                                                     className='font-medium  border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                    defaultValue={user.lastname}
                                                     onChange={(e) => setLastname(e.target.value)}
                                                     onClick={closePrice}
                                                     placeholder='Doe'
@@ -227,7 +231,6 @@ const BookTicket = () => {
                                             <input
                                                 type="text"
                                                 className='font-medium  w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                defaultValue={user.email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 onClick={closePrice}
                                                 placeholder='John@email.com'

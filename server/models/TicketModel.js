@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const ticketModel = new mongoose.Schema({
+    userid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        required: true
+    },
     eventid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendors',

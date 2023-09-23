@@ -114,3 +114,9 @@ Book seat Page --->
 4. This values should be prefilled by getting user from the store (done)
 2. create a controller in the backend 
 1. fetch this page from the backend (no)
+
+
+Add ticketid into the user document when ticket is getting booked
+retrive that data when showing past purchase events
+add ticketid into it 
+redirect it there

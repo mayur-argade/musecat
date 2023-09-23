@@ -4,7 +4,8 @@ const userService = require('../services/user-service')
 const cloudinary = require('cloudinary');
 const ContactUsModel = require('../models/ContactUsModel');
 const eventService = require('../services/event-service')
-const offerService = require('../services/offer-service')
+const offerService = require('../services/offer-service');
+const ticketService = require('../services/ticket-service');
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -80,7 +81,7 @@ exports.getVendorProfile = async (req, res) => {
 }
 
 exports.getVendorDetails = async (req, res) => {
-    const vendorid  = req.params.vendorid
+    const vendorid = req.params.vendorid
     console.log(vendorid)
     try {
 
@@ -265,16 +266,49 @@ exports.getEventDetails = async (req, res) => {
 
 exports.getPastPurchase = async (req, res) => {
     try {
-        const user = await userService.findUser({ _id: req.user.id })
-        let pastpurchased = user.pastPurchase
-        const pastEvents = await eventService.findAllEvents({ _id: { $in: pastpurchased } })
+        const user = await userService.findUser({ _id: req.user.id });
+        let pastpurchased = user.BookedTickets;
+        const BookedTickets = await ticketService.findAllTickets({ _id: { $in: pastpurchased } });
+
+        // Iterate through BookedTickets and log specific properties
+        console.log("Logging BookedTickets:");
+        BookedTickets.forEach((ticket) => {
+            console.log("Ticket ID:", ticket._id);
+            console.log("Event ID:", ticket.eventid);
+            // Add more properties as needed
+        });
+
+        const response = [];
+
+        for (const ticket of BookedTickets) {
+            let event = await eventService.findEvent({ _id: ticket.eventid });
+            event.ticketid = ticket._id
+
+            console.log("ticket id in event", event.ticketid)
+
+            const eventobject = {
+                eventid: event._id,
+                title: event.title,
+                description: event.description,
+                displayPhoto: event.displayPhoto,
+                location: event.location,
+                ticketid: ticket._id
+            }
+            // console.log(event)
+            response.push(eventobject);
+        }
+
         return res.status(200).json({
             success: true,
             data: {
-                pastpurchased: pastEvents
-            }
-        })
+                pastpurchased: response, // Use the response array, not 'res'
+            },
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            error: "An error occurred while processing the request.",
+        });
     }
-}
+};

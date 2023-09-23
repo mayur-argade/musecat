@@ -54,6 +54,7 @@ module.exports.generateTicket = async (req, res) => {
 
 
         const ticketdata = {
+            userid: req.user._id,
             eventid: eventid,
             firstname: firstname,
             lastname: lastname,
@@ -101,13 +102,20 @@ module.exports.generateTicket = async (req, res) => {
 
         // console.log(req.user)
         let pastpurchasedEvents = req.user.pastPurchase
-        console.log(pastpurchasedEvents)
+        let userTickets = req.user.BookedTickets
+        console.log(req.user)
+        // console.log(req.user.BookedTickets)
+        // console.log(userTickets)
+        userTickets.push(ticket._id)
+
+        // console.log(pastpurchasedEvents)
         if (!pastpurchasedEvents.includes(eventid)) {
             pastpurchasedEvents.push(eventid)
 
             const userdata = {
                 _id: req.user._id,
-                pastPurchase: pastpurchasedEvents
+                pastPurchase: pastpurchasedEvents,
+                BookedTickets: userTickets
             }
             const updateUser = await userService.updateUser(userdata)
         }
@@ -219,6 +227,39 @@ exports.getTicketsByEvent = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+    }
+
+}
+
+exports.getTicketIdByEventIduser = async (req, res) => {
+    try {
+        // const userid = req.user._id
+        // const eventid = req.body.eventid
+        // console.log(eventid)
+
+        // const event = await eventService.findEvent({ _id: eventid })
+        // const bookedTickets = event.bookTickets
+
+        // console.log(bookedTickets)
+        // for (const tickets of bookedTickets) {
+        //     console.log(tickets)
+        //     // const ticket = ticketService.findTicket({ _id: tickets })
+
+        //     // if (ticket.userid == userid) {
+        //     //     return res.status(200).json({ ticketid: ticket._id })
+        //     // }
+        // }
+        console.log("funtion running")
+        // return res.status(404).json({
+        //     success: false,
+        //     data: "No ticket found"
+        // })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
     }
 
 }

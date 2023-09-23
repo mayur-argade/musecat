@@ -4,12 +4,18 @@ import moment from 'moment';
 
 const PastPurchaseCard = ({ data }) => {
 
-    const currentDate = moment(); // Current date
-    const eventDate = moment(data.date); // Date from the API data
+    const currentdate = moment().utc()
+    // console.log(currentdate._d)
 
-    // Compare the event date with today's date
-    const status = eventDate.isBefore(currentDate) ? 'Expired' : 'Ongoing';
-    console.log(data)
+    const currentEpoch = currentdate.valueOf()
+    console.log("current epoch time", currentEpoch)
+
+    const epochTimestamp = data.date
+    console.log("epoch timestamp for event", epochTimestamp)
+
+    let status = currentEpoch > epochTimestamp ? "Expired" : "Ongoing"
+    // let status = "Expired"
+    // console.log(data)
     return (
         <>
             <div class="relative md:m-3 h-auto w-44 md:w-44 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -21,7 +27,7 @@ const PastPurchaseCard = ({ data }) => {
                 <a href="#">
                     <img class="h-70 w-full rounded-none" src={`${data.displayPhoto}`} alt="" />
                 </a>
-                
+
                 <div class="p-1 pt-4 pb-2 mx-1">
                     <div class="">
                         <p class="title text-md md:text-xl font-bold text-left">

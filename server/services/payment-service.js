@@ -15,7 +15,7 @@ class PaymentService {
                 client_reference_id: paymentdata.client_ref_id,
                 mode: 'payment',
                 products: [{ name: paymentdata.name, quantity: paymentdata.quantity, unit_amount: paymentdata.unitAmout }],
-                success_url: `https://www.omanwhereto.com/${paymentdata.name}`,
+                success_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.name}`,
                 cancel_url: 'https://www.omanwhereto.com/',
                 metadata: { 'Customer name': 'user01', 'order id': paymentdata.name }
             }

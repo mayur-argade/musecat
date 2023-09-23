@@ -2,9 +2,9 @@ import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import FavoriteCard from '../../components/Cards/FavoriteCard'
-import { ClientPastPurchaseApi } from '../../http'
+import { ClientPastPurchaseApi, getTicketId } from '../../http'
 import Footer from '../../components/shared/Footer/Footer'
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard'
 
@@ -14,14 +14,14 @@ const PastPurchase = () => {
 
 
     const [response, setReponse] = useState({});
-
+    const [eventid, setEventid] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchdata = async () => {
             try {
                 const { data } = await ClientPastPurchaseApi()
-                // console.log(data.data)
+                console.log(data.data)
                 setReponse(data)
             } catch (error) {
                 console.log(error)
@@ -31,6 +31,20 @@ const PastPurchase = () => {
         fetchdata()
     }, []);
 
+    useEffect(() => {
+        const getTicketid = async () => {
+            try {
+                const data = {
+                    eventid: eventid
+                }
+                const res = await getTicketId(data)
+
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    })
 
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -55,7 +69,7 @@ const PastPurchase = () => {
         setIsOpen(!isOpen);
     };
 
-    console.log(response.data)
+    // console.log(response.data)
 
     if (response.data == null) {
         <>
@@ -177,15 +191,14 @@ const PastPurchase = () => {
                     </div>
 
                     <div className="grid  xs:grid-cols-2  justify-items-center md:flex-wrap gap-y-4 md:justify-start md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                        {response.data.pastpurchased.map((event) => (
-                            <PastPurchaseCard data={event} />
-                        ))
+                        {response.data.pastpurchased
+                            .sort((a, b) => b.date - a.date)
+                            .map((event) => (
+                                <Link to={`/ticketstatus/${event.ticketid}`}>
+                                    <PastPurchaseCard data={event} />
+                                </Link>
+                            ))
                         }
-                        {/* <PastPurchaseCard status={"Expired"} />
-                        <PastPurchaseCard status={"Expired"} />
-                        <PastPurchaseCard status={"Upcoming"} />
-                        <PastPurchaseCard status={"Upcoming"} />
-                        <PastPurchaseCard status={"Expired"} /> */}
 
                     </div>
 

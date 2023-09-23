@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "please provide email"],
         unique: true
     },
-    firstname:{
+    firstname: {
         type: String,
     },
     lastname: {
@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     pastPurchase: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
+        default: []
+    },
+    BookedTickets: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []
     }
