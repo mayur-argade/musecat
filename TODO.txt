@@ -1,0 +1,45 @@
+homepage --> 
+1. make searchbar working and redirect page to events page
+2. link all the social media sites
+3. In popular categories api change the controller to give all events count at first and then give specific day event counts
+4. In upcoming events api change the controller to give all events count at first and then give specific day event count
+5. Add upcoming event
+6. Add editors pick events
+7. Show calender option to show events for specific date
+8. Add skeleton view for events at first
+8. When events data is fetching up then 1st show the whole page and only load the skeleton view for events whicha re getting fetched
+
+Profile --> 
+1. If no firstname lastname then show black space or type your name
+2. remove all the saved card UI as we are not asking any contact details on our site
+3. user can update his profile photo
+4. after saving fields refresh the page to show the updated user
+5. Add page loading screen 
+
+Events page -->
+1. Make filter working
+2. Make calender working
+3. show scrollbar for events after 3 Rows
+4. Add Map view 
+5. Add trending events
+6. Show like option red unred
+7.
+
+Event description page -->
+1. link view to map option and scroll screen to the map view
+2. add to favorites option make it red and unred
+3. add to calender option make it working
+4. like button is different from the favorite button
+
+
+
+
+
+------------------------------------------------------------------------------
+
+vendor Homepage -->
+1. Add button to see hosted events in navbar (done)
+
+vendor hostedEvents page -->
+2. make filter working 
+3. make searchbar working (done)

@@ -75,8 +75,8 @@ const VendorEventDescripton = () => {
     // console.log("Response", response)
     if (response.data == null) {
         return (<div className='h-screen w-full flex justify-center align-middle items-center'>
-        <img src="/images/icons/loadmain.svg" alt="" />
-    </div>)
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     }
     else {
         return (
@@ -114,7 +114,7 @@ const VendorEventDescripton = () => {
                                 {/* Top-right Edit and View Sales */}
                                 <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
 
-                                    <button className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
+                                    <button onClick={() => navigate(`/vendor/${response.data._id}/bookedtickets`)} className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
                                         View Sales
                                     </button>
 

@@ -7,6 +7,15 @@ div.container {
     overflow: hidden
   }
 
+  .custom-qr-code {
+    background-color: transparent !important; /* Make the background transparent */
+  }
+  
+  /* Change black color to white */
+  .custom-qr-code svg rect {
+    fill: white !important; /* Change the fill color to white */
+  }
+
   .container .item {
     width: 100%;
     height: 310px;

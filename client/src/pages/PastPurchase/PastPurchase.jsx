@@ -4,7 +4,7 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import { Link, useNavigate } from 'react-router-dom'
 import FavoriteCard from '../../components/Cards/FavoriteCard'
-import { ClientPastPurchaseApi, getTicketId } from '../../http'
+import { ClientPastPurchaseApi } from '../../http'
 import Footer from '../../components/shared/Footer/Footer'
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard'
 
@@ -31,21 +31,6 @@ const PastPurchase = () => {
         fetchdata()
     }, []);
 
-    useEffect(() => {
-        const getTicketid = async () => {
-            try {
-                const data = {
-                    eventid: eventid
-                }
-                const res = await getTicketId(data)
-
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    })
-
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -55,8 +40,6 @@ const PastPurchase = () => {
             setIsOpen(false);
         }
     };
-
-
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -69,12 +52,10 @@ const PastPurchase = () => {
         setIsOpen(!isOpen);
     };
 
-    // console.log(response.data)
-
     if (response.data == null) {
-        <>
-            loading..
-        </>
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <>

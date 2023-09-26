@@ -4,6 +4,7 @@ import Table from '../../components/Table/Table';
 import Footer from '../../components/shared/Footer/Footer';
 import { VendorBookedTicketApi } from '../../http/index'
 import { useNavigate, useParams } from 'react-router-dom';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 
 const VendorBookedTickets = () => {
     document.title = 'Vendor ~ Booked Tickets'
@@ -57,6 +58,9 @@ const VendorBookedTickets = () => {
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
+
+
+
 
     if (response.data == null) {
         <>
@@ -176,22 +180,26 @@ const VendorBookedTickets = () => {
                                 </div>
                             </div>
 
-                           
-                           <div className="flex align-middle justify-center items-center totalseats space-x-2">
+
+                            <div className="flex align-middle justify-center items-center totalseats space-x-2">
                                 <p className='font-semibold text-sm'>total seats sold</p>
                                 <p className='text-white font-semibold bg-black px-4 py-2 rounded-lg text-sm'>{response.data.seatsBooked}</p>
                             </div>
-                            
-                            <button type="button" class="flex justify-center items-center align-middle space-x-1 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
-                                <p>Export</p>
-                                <img src="/images/icons/export.svg" alt="" />
-                            </button>
+
+                            <ReactHTMLTableToExcel
+                                id="exportbutton"
+                                className="flex justify-center items-center align-middle space-x-1 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                                table="ticketTable"
+                                filename="tickets"
+                                sheet="tickets"
+                                buttonText="Export to Excel"
+                            />
                         </div>
                     </div>
 
                     <div className="">
                         <div class="relative overflow-x-auto rounded-lg">
-                            <table class="rounded-lg w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
+                            <table id="ticketTable" class="rounded-lg w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
                                 <thead class="text-xs text-gray-700 uppercase bg-[#EEEEEE] dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
@@ -279,7 +287,7 @@ const VendorBookedTickets = () => {
                                             </td>
                                             <td class="px-6 py-4">
                                                 <p className='text-xs text-black font-medium'>
-                                                    {ticket.allotedSeats}
+                                                    {ticket.allotedSeats.join(', ')}
                                                 </p>
                                             </td>
                                             <td class="px-6 py-4">
@@ -304,7 +312,7 @@ const VendorBookedTickets = () => {
                         </div>
                     </div>
 
-                    {response.data.seatsBooked != 0  ? <div className='hidden md:flex justify-end flex-col absolute -right-36 bottom-0'>
+                    {response.data.seatsBooked != 0 ? <div className='hidden md:flex justify-end flex-col absolute -right-36 bottom-0'>
                         <div className='flex justify-between mb-2'>
 
                             <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
@@ -313,9 +321,9 @@ const VendorBookedTickets = () => {
                         </div>
                         <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                     </div>
-                :
-                <></>    
-                }
+                        :
+                        <></>
+                    }
                 </section>
 
 

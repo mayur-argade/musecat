@@ -72,11 +72,11 @@ const VendorHostedEvents = () => {
                             <p className='text-xl font-bold'>Hosted Events</p>
                         </div>
 
-                        <div class="filterbyfeature mb-3">
+                        <div class="filterbyfeature mb-3 mr-8">
                             <div className="relative inline-block text-left">
                                 <button
                                     onClick={toggleDropdown}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 md:w-24 pt-1 pb-1 pl-2 pr-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex align-middle justify-around"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 md:w-28 pt-1 pb-1 pl-2 pr-2 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex align-middle justify-around"
                                 >
                                     <p className='text-sm text-gray-500'>Filter</p>
                                     <img className='h-5' src="/images/icons/filter.svg" alt="" />

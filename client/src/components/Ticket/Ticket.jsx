@@ -1,6 +1,22 @@
 import React from 'react'
 import './ticket.css'
+import QRCode from 'qrcode.react'
+
 const Ticket = ({ event, ticket }) => {
+
+    const qrdata = {
+        title: event.title,
+        name: `${ticket.firstname} ${ticket.lastname}`,
+        email: ticket.email,
+        class: ticket.class,
+        seats: ticket.seats,
+        row: ticket.row
+    }
+
+    const qrCodeValue = JSON.stringify(qrdata)
+
+    
+
     return (
         <>
             <div class="container bg-white rounded-lg">
@@ -35,7 +51,9 @@ const Ticket = ({ event, ticket }) => {
                         <span class="tickets">Tickets</span>
                     </div>
                     <div class="item-right">
-                        <img className='h-60 mt-5' src="/images/assets/qrcode.png" alt="" />
+                        {/* <img className='h-60 mt-5' src="/images/assets/qrcode.png" alt="" /> */}
+                        <QRCode value={qrCodeValue} className='mt-5'
+                         bgColor ="#C0A04C" fgColor="#ffff" level='L' size="240"/>
                         <span class="up-border"></span>
                         <span class="down-border"></span>
 
