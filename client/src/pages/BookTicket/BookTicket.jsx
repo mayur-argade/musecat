@@ -314,7 +314,9 @@ const BookTicket = () => {
                                                 {
                                                     loading
                                                         ?
-                                                        <img className='h-5' src="/images/icons/loading.svg" alt="" />
+                                                        <button class="flex justify-center items-center w-full bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">
+                                                            <img className='h-5' src="/images/icons/button-loading.svg" alt="" />
+                                                        </button>
                                                         :
                                                         <p>
                                                             Book Seat

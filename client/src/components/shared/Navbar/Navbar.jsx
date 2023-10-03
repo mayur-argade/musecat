@@ -193,11 +193,11 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             </>
                                                             :
                                                             <>
-                                                                <button onClick={userLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-center dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                <button onClick={userLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
                                                                     logout
                                                                 </button>
                                                                 <Link to="/pastpurchase">
-                                                                    <button className=' w-full block px-4 py-2 hover:bg-gray-100 text-center dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                    <button className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
                                                                         Past Purchased
                                                                     </button>
                                                                 </Link>

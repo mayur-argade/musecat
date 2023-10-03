@@ -312,3 +312,113 @@ exports.getPastPurchase = async (req, res) => {
         });
     }
 };
+
+exports.deleteVendor = async (req, res) => {
+    const { vendorid } = req.body
+
+    try {
+        const deleteUser = await vendorService.deleteVendor({ _id: vendorid })
+
+        if (!deleteUser) {
+            return res.status(400).json({
+                success: false,
+                data: "Something went wrong"
+            })
+        } else {
+            return res.status(200).json({
+                success: true,
+                data: "Vendor deleted Successfully"
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
+    }
+
+}
+
+exports.verifyVendor = async (req, res) => {
+
+    const { vendorid } = req.body
+
+    try {
+        const vendor = await vendorService.findVendor({ _id: vendorid })
+        if (vendor) {
+            const data = {
+                _id: vendorid,
+                isVerified: true
+            }
+
+            const updatedVendor = vendorService.updateVendor(data)
+
+            return res.status(200).json({
+                success: true,
+                data: updatedVendor
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
+    }
+
+}
+
+exports.getAllUnverifiedVendors = async (req, res) => {
+
+    const vendors = await vendorService.findVendors({ isVerified: false })
+
+    return res.status(200).json({
+        success: true,
+        data: vendors
+    })
+
+}
+
+exports.getAllUsers = async (req, res) => {
+
+    const users = await userService.findUsers()
+
+    return res.status(200).json({
+        success: true,
+        data: users
+    })
+}
+
+exports.adminStats = async (req, res) => {
+
+    try {
+
+        const today = new Date
+        const todayepoch = moment(today);
+
+        // Get the epoch timestamp in milliseconds
+        const todaysEpochTimestamp = todayepoch.valueOf();
+
+        const users = await userService.countUsers()
+        const vendors = await vendorService.countVendors()
+        const offers = await offerService.countOffers({ expiry: { $gte: todaysEpochTimestamp } })
+        const events = await eventService.countEvents({ date: { $gte: todaysEpochTimestamp } })
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                users: users,
+                vendors: vendors,
+                offers: offers,
+                events: events
+            }
+        })
+    } catch (error) {
+
+    }
+
+
+}

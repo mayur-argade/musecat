@@ -21,6 +21,15 @@ class EventService {
         return event;
     }
 
+    async deleteEvent(filter){
+        const event = await EventModel.deleteOne(filter)
+        return event
+    }
+
+    async countEvents(filter){
+        const events = await EventModel.countDocuments(filter)
+        return events
+    }
 }
 
 module.exports = new EventService();

@@ -3,10 +3,14 @@ import Footer from '../../components/shared/Footer/Footer'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import CategoryCard from '../../components/Cards/CategoryCard'
 import { Link } from 'react-router-dom'
-import { ClientGetOffers, CategoryCount, ClientUpcomingEvents, getCategoryEvents } from '../../http/index'
+import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, getCategoryEvents } from '../../http/index'
 import moment from 'moment'
 import EventCard from '../../components/Cards/EventCard'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Home = () => {
 
@@ -22,8 +26,14 @@ const Home = () => {
     const next7Days = [];
     const currentDate = moment();
 
-    let filterdate = moment().format("YYYY-MM-DD")
-    let catdate = moment().format("YYYY-MM-DD")
+    const datePickerRef = useRef(null);
+
+    const openDatePicker = () => {
+        if (datePickerRef.current) {
+            datePickerRef.current.setOpen(true);
+        }
+    };
+
     for (let i = 0; i < 7; i++) {
         const formattedDate = currentDate.format('D MMM'); // Format date as "9 Sep"
         const acutaldate = moment(currentDate).format("YYYY-MM-DD")
@@ -51,17 +61,13 @@ const Home = () => {
         });
     }
 
-    // Print the array of days and dates
-    console.log(daysAndDates);
-
-
     const [category, setCategory] = useState('')
     const [upcomingEvents, setUpcomingEvents] = useState('')
     const [editorpick, setEditorpick] = useState('')
     const [offers, setOffers] = useState([])
-    const [date, setDate] = useState(`${filterdate}`)
+    const [date, setDate] = useState('')
     const [showLinks, setShowLinks] = useState(false)
-    const [day, SetDay] = useState(`${catdate}`)
+    const [day, SetDay] = useState('')
     const [categoryLoading, setCategoryLoading] = useState(false)
     const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false)
     const [offersLoading, setOffersLoading] = useState(false)
@@ -69,12 +75,12 @@ const Home = () => {
 
 
     function setnewfilterdate(actualdate) {
-        setDate(actualdate)
+        setDate(`?date=${actualdate}`)
         console.log(actualdate)
     }
 
     function setDayforCategory(selectedDay) {
-        SetDay(selectedDay)
+        SetDay(`?date=${selectedDay}`)
         console.log(selectedDay)
     }
 
@@ -103,7 +109,7 @@ const Home = () => {
         const fetchdata = async () => {
             setCategoryLoading(true)
             try {
-                const { data } = await CategoryCount(`?date=${day}`)
+                const { data } = await CategoryCount(day)
                 console.log("categorydata", data)
                 setCategory(data)
 
@@ -121,7 +127,7 @@ const Home = () => {
         const fetchdata = async () => {
             setUpcomingEventsLoading(true)
             try {
-                const { data } = await ClientUpcomingEvents(`?date=${date}`)
+                const { data } = await ClientUpcomingEvents(date)
                 console.log(data.data)
                 setUpcomingEvents(data)
                 setUpcomingEventsLoading(false)
@@ -161,6 +167,24 @@ const Home = () => {
 
         fetchdata()
     }, []);
+
+    const favoriteFeature = async (eventid) => {
+        // console.log(eventid)
+        try {
+            const eventdata = {
+                eventid: eventid
+            }
+            const { data } = await addToFavorites(eventdata)
+            console.log(data)
+            toast.success(data.message)
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+
+    }
+
+
 
     if (category.data == null || offers.data == null || offers.data == undefined) {
         return (<div className='h-screen w-full flex justify-center align-middle items-center'>
@@ -398,24 +422,32 @@ const Home = () => {
                             <div className='flex justify-between items-center '>
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
                                 <div className="flex items-center align-middle ">
-                                    <div>
-                                        <img className="h-8 mr-2" src="/images/assets/calender-icon.png" alt="" />
+                                    <div className="date-picker ">
+                                        <img className=" h-8 mr-2" onClick={openDatePicker} src="/images/assets/calender-icon.png" alt="" />
+                                        {/* <DatePicker
+                                                selected={date}
+                                                className='z-30 opacity-0 absolute top-0 left-0 w-1 h-1'
+                                                onChange={() => setnewfilterdate(date)}
+                                                dateFormat="dd-mm-yyyy"  // Customize the date format as per your requirement
+                                                ref={datePickerRef}
+                                            /> */}
+                                        {/* <input type="date" name="calender" id="" className='' /> */}
                                     </div>
-
-                                    <div className='hidden md:block flex space-x-1'>
-                                        {next7Days.map((item) => (
-                                            <button onClick={() => setnewfilterdate(item.actualdate)} className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border'>
-                                                <div className='flex flex-col'>
-                                                    <p>
-                                                        {item.day}
-                                                    </p>
-                                                    <p className='font-semibold'>
-                                                        {item.date}
-                                                    </p>
-                                                </div>
-                                            </button>
-                                        ))}
-
+                                    <div>
+                                        <div className='hidden md:block flex space-x-1'>
+                                            {next7Days.map((item) => (
+                                                <button onClick={() => setnewfilterdate(item.actualdate)} className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border'>
+                                                    <div className='flex flex-col'>
+                                                        <p>
+                                                            {item.day}
+                                                        </p>
+                                                        <p className='font-semibold'>
+                                                            {item.date}
+                                                        </p>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
 
                                     <div className='block md:hidden'>
@@ -447,7 +479,7 @@ const Home = () => {
                                                     <div className="relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-96 max-h-96 bg-[#F3F3F3] top-0 md:mt-5">
                                                         <div className='absolute bottom-0 left-0 flex flex-col rounded-lg'>
                                                             <img className="rounded-lg object-fill rounded-lg h-52 w-52 md:h-72 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
-                                                            <button className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
+                                                            <button onClick={() => favoriteFeature(event._id)} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
                                                                 <img src="/images/icons/heart.svg" alt="" />
                                                             </button>
                                                             <div className='flex flex-col p-2'>
@@ -600,20 +632,20 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                                     top: 0,
                                     behavior: 'smooth', // You can use 'auto' for instant scrolling
                                 })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button>
-                            <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
-                            <button>
-                            </button>
+                                    <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                </button>
+                                <img className='h-10 ml-12' src="/images/icons/whatsapp-color.svg" alt="" />
+                                <button>
+                                </button>
+                            </div>
+                            <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                         </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                </div>
-            </section >
-                <Footer />
+                    </section >
+                    <Footer />
                 </div >
-    <div>
-        <BottomNav />
-    </div>
+                <div>
+                    <BottomNav />
+                </div>
             </>
         )
     }

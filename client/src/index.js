@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import swDev from './swDev';
-
+import ScrollToTop from './utils/ScrollToTop'
 import { persistor, store } from './store/index';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux'

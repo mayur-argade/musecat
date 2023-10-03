@@ -9,6 +9,7 @@ import TrendingCard from '../../components/Cards/TrendingCard'
 import { getCategoryEvents, GetAllCategory } from '../../http/index'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'
+import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 
 const Events = () => {
     let { category } = useParams();
@@ -278,8 +279,15 @@ const Events = () => {
                             <div className="md:flex md:justify-start md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                 {loading
                                     ?
-                                    <div>
-                                        loading
+                                    <div className='md:flex md:justify-start md:space-x-3 md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
+                                        <SkeletonCard />
+                                        <SkeletonCard />
+                                        <SkeletonCard />
+
+
+                                        {/* <div className="h-screen w-full flex justify-center align-middle items-center">
+                                            <img src="/images/icons/loading.svg" alt="" />
+                                        </div> */}
                                     </div>
                                     :
                                     response.data.length == 0

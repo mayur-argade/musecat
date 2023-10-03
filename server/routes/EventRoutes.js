@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { isLoggedin, isUserLoggedin, isVerified } = require('../middleware/authMiddleware')
+const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { createEvent, getEventById, getVendorAllEventsNOffers, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers } = require('../controllers/EventController')
+const { createEvent, getEventById, getVendorAllEventsNOffers, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer } = require('../controllers/EventController')
 
 router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
@@ -16,5 +16,9 @@ router.route('/events/upcoming-events').get(getUpcomingEvents)
 router.route('/event/:eventid/customq').get(customQue)
 router.route('/offers/').get(getAllOffers)
 
+router.route('/admin/create-event').post(isUserLoggedin, requiredRole("admin"), createEvent);
+router.route('/admin/create-offer').post(isUserLoggedin, requiredRole("admin"), createOffer)
+router.route('/admin/delete-event').delete(isUserLoggedin, requiredRole("admin"), deleteEvent)
+router.route('/admin/delete-offer').delete(isUserLoggedin, requiredRole("admin"), deleteOffer)
 
 module.exports = router;

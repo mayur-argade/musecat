@@ -21,6 +21,16 @@ class OfferService {
         return offer;
     }
 
+    async deleteOffer(filter){
+        const offer = await OfferModel.deleteOne(filter)
+        return offer
+    }
+
+    async countOffers(filter){
+        const offers = await OfferModel.countDocuments(filter)
+        return offers
+    }
+
 }
 
 module.exports = new OfferService();

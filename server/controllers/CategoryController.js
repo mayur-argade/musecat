@@ -48,13 +48,11 @@ exports.getCategoriesWithEvents = async (req, res) => {
 
     const date = req.query.date
 
+
     // Convert the input date to a moment object
-
     const dateMoment = moment.utc(date, "YYYY-MM-DD")
-
     console.log(dateMoment)
-    // Get the epoch timestamp in milliseconds
-    const epochTimestamp = dateMoment.valueOf();
+    var epochTimestamp = dateMoment.valueOf();
     console.log(epochTimestamp)
 
     try {
@@ -76,10 +74,22 @@ exports.getCategoriesWithEvents = async (req, res) => {
                 _id: { $in: category.events }, // Filter by offer IDs in the category
             };
 
-            if (epochTimestamp) {
+            if (date) {
+                console.log("this is working")
                 query.date = {
                     $eq: epochTimestamp,
                 }; // Filter for expiry dates greater than or equal to the specified date
+            } else {
+                const today = new Date
+                const convertedString = moment(today).format("YYYY-MM-DD");
+                const todayepoch = moment(convertedString)
+
+                // Get the epoch timestamp in milliseconds
+                const todaysEpochTimestamp = todayepoch.valueOf();
+
+                query.date = {
+                    $gte: todaysEpochTimestamp
+                }
             }
 
             const validOfferCount = await Event.countDocuments(query);

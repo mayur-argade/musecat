@@ -138,7 +138,7 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <div className="savedCards mt-10 ">
+                        {/* <div className="savedCards mt-10 ">
                             <div className="text-2xl">Saved Cards</div>
                             <div className="flex md:flex-row space-y-5 flex-col items-center justify-center align-middle md:space-x-2">
                                 <div className='mt-5'>
@@ -152,7 +152,7 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                        </div>
+                        </div> */}
                     </section>
 
                     <section className='block mt-1 md:hidden '>

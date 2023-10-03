@@ -34,11 +34,16 @@ const vendorSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: [true, 'Please provide registerd addredd'],
+        // required: [true, 'Please provide registerd addredd'],
+    },
+    role: {
+        type: String,
+        enum: ["vendor", "admin"],
+        default: "vendor"
     },
     accountType: {
         type: String,
-        required: [true, 'Please specify an account type'],
+        // required: [true, 'Please specify an account type'],
         enum: {
             values: ['business', 'individual'],
             message: 'Account type must be either "business" or "individual"',
@@ -46,11 +51,11 @@ const vendorSchema = new mongoose.Schema({
     },
     companyname: {
         type: String,
-        required: [true, 'Please provide company name']
+        // required: [true, 'Please provide company name']
     },
     companyDisplayName: {
         type: String,
-        required: [true, 'Please Provide Company display name']
+        // required: [true, 'Please Provide Company display name']
     },
     logo: {
         type: String,
@@ -58,7 +63,7 @@ const vendorSchema = new mongoose.Schema({
     },
     crNo: {
         type: String,
-        required: [true, 'Please provide crNo']
+        // required: [true, 'Please provide crNo']
     },
     crImage: {
         type: String,

@@ -80,8 +80,8 @@ exports.requiredRole = (requiredRole) => {
 
             const userid = await tokenService.verifyAccessToken(accessToken);
             console.log(userid)
-            const userData = await vendorService.findVendor({ _id: userid.id });
-            // console.log(userData)
+            const userData = await userService.findUser({ _id: userid._id });
+            console.log(userData)
             if (userData.role === requiredRole) {
                 req.user = userData; // Attach user data to the request object
                 next(); // User has the required role, proceed to the next middleware/route handler

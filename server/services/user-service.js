@@ -8,6 +8,10 @@ class UserService {
         return user;
     }
 
+    async findUsers(filter) {
+        const users = UserModel.find(filter).sort({ createdAt: -1 }).limit(3)
+        return users
+    }
     async createUser(data) {
         data.password = await bcrypt.hash(data.password, 10)
         const user = UserModel.create(data);
@@ -17,6 +21,16 @@ class UserService {
     async updateUser(data) {
         const user = UserModel.findOneAndUpdate({ _id: data._id }, data)
         return user;
+    }
+
+    async deleteUser(filter) {
+        const user = await UserModel.deleteOne(filter)
+        return user
+    }
+
+    async countUsers() {
+        const users = await UserModel.countDocuments()
+        return users
     }
 }
 

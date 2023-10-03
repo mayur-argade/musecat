@@ -29,17 +29,20 @@ import VendorHome from './pages/VendorHome/VendorHome';
 import VendorEventDescripton from './pages/VendorEventDescription/VendorEventDescripton';
 import VendorBookedTickets from './pages/VendorBookedTickets/VendorBookedTickets';
 import VendorProfile from './pages/Profile/VendorProfile'
+import AdminHome from './pages/AdminDashboard/AdminHome';
+import AdminAdd from './pages/AdminDashboard/AdminAdd'
 import EventsPWA from './pages/PWA-Events/EventsPWA';
 
 // components
 import BottomNav from './components/shared/BottomNav/BottomNav';
 
 // utils
+import AdminRoute from './utils/AdminRoute'
 import GuestRoute from './utils/GuestRoute'
 import Protected from './utils/Protected';
 import SemiProtected from './utils/SemiProtected'
 import SearchPWA from './pages/SearchPWA/SearchPWA';
-
+import ScrollToTop from './utils/ScrollToTop';
 
 
 function App() {
@@ -47,6 +50,7 @@ function App() {
     return (
         <div className="App">
             <Router>
+                <ScrollToTop />
                 <Routes>
                     <Route path="/" exact element={<Home />} />
                     <Route path="/profile" exact element={<SemiProtected Component={Profile} />} />
@@ -81,6 +85,9 @@ function App() {
                     <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
 
 
+                    {/* admin pages */}
+                    <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
+                    <Route path="/admin/add" exact element={<AdminAdd />} />
 
 
 

@@ -20,7 +20,11 @@ const VendorLogin = () => {
             const { data } = await vendorLogin({ email, password })
             console.log(data)
             dispatch(setAuth(data));
-            navigate('/vendor/home');
+            if (data.user.role == "admin") {
+                navigate('/admin/home')
+            } else {
+                navigate('/vendor/home');
+            }
         } catch (error) {
             // console.log(error.response.data.data)
             toast.error(error.response.data.data)

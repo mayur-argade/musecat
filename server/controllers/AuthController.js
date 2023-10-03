@@ -7,14 +7,14 @@ const userService = require('../services/user-service');
 
 exports.vendorRegister = async (req, res) => {
 
-    const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
+    const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage, role, isVerified } = req.body
 
-    if (!firstname, !lastname, !email, !password, !mobilenumber, !address, !accountType, !companyname, !companyDisplayName, !crNo) {
-        res.status(statusCode.BAD_REQUEST.code).json({
-            success: false,
-            data: "All field are mandatory"
-        })
-    }
+    // if (!firstname, !lastname, !email, !password, !mobilenumber, !address, !accountType, !companyname, !companyDisplayName, !crNo) {
+    //     return res.status(statusCode.BAD_REQUEST.code).json({
+    //         success: false,
+    //         data: "All field are mandatory"
+    //     })
+    // }
     let user = {}
     try {
         user = await vendorService.findVendor({ email: email })
@@ -42,7 +42,9 @@ exports.vendorRegister = async (req, res) => {
                 firstname: firstname,
                 lastname: lastname,
                 email: email,
+                isVerified: isVerified,
                 password: password,
+                role: role,
                 mobilenumber: mobilenumber,
                 address: address,
                 accountType: accountType,
@@ -197,7 +199,7 @@ exports.clientLogin = async (req, res) => {
     }
 }
 
-exports.clientRegister = async (req, res) => {
+exports.register = async (req, res) => {
 
     const { email, username, password, mobilenumber } = req.body
 
@@ -207,12 +209,21 @@ exports.clientRegister = async (req, res) => {
             data: statusCode.BAD_REQUEST.message
         })
     }
+
     try {
-        const user = await userService.findUser({ email: email })
+        let user = await userService.findUser({ email: email })
         if (user) {
             return res.status(statusCode.CONFLICT.code).json({
                 success: false,
-                data: statusCode.CONFLICT.message
+                data: "Account with this email Id already exist try signing in"
+            })
+        }
+
+        let usernameExist = await userService.findUser({ username: username })
+        if (usernameExist) {
+            return res.status(statusCode.CONFLICT.code).json({
+                success: false,
+                data: "Username Already Exists"
             })
         }
 
@@ -222,7 +233,6 @@ exports.clientRegister = async (req, res) => {
             password: password,
             mobilenumber: mobilenumber
         }
-
         const newUser = await userService.createUser(data)
 
         const accessToken = await tokenService.generateTokens({
@@ -315,3 +325,5 @@ exports.logout = async (req, res) => {
         .status(200)
         .json({ user: null, auth: false });
 };
+
+

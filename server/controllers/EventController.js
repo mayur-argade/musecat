@@ -275,23 +275,40 @@ module.exports.customQue = async (req, res) => {
 // --------------------Client side ---------------
 module.exports.getUpcomingEvents = async (req, res) => {
     try {
+        let eventsOnDate;
         // Check if a date is provided in the request query
-        const customDate = req.query.date || new Date().toISOString().split('T')[0];
+        const customDate = req.query.date
+        console.log(customDate)
+        if (customDate) {
 
+            // Convert the input date to a moment object
+            const dateMoment = moment.utc(customDate, "YYYY-MM-DD")
 
-        // Convert the input date to a moment object
-        const dateMoment = moment(customDate);
+            // console.log(dateMoment)
+            // Get the epoch timestamp in milliseconds
+            const epochTimestamp = dateMoment.valueOf();
+            // console.log()
+            // Find events happening on the specified date
+            eventsOnDate = await eventService.findAllEvents({
+                date: {
+                    $eq: epochTimestamp,
+                },
+            });
 
-        // Get the epoch timestamp in milliseconds
-        const epochTimestamp = dateMoment.valueOf();
+        } else {
+            const today = new Date
+            const convertedString = moment(today).format("YYYY-MM-DD");
+            const todayepoch = moment(convertedString)
 
+            // Get the epoch timestamp in milliseconds
+            const todaysEpochTimestamp = todayepoch.valueOf();
 
-        // Find events happening on the specified date
-        const eventsOnDate = await eventService.findAllEvents({
-            date: {
-                $eq: epochTimestamp,
-            },
-        });
+            eventsOnDate = await eventService.findAllEvents({
+                date: {
+                    $gte: todaysEpochTimestamp,
+                },
+            });
+        }
 
         // Send the events happening on the specified date as a response
         res.status(200).json({
@@ -413,4 +430,56 @@ exports.getAllOffers = async (req, res) => {
         console.log(error)
     }
 
+}
+
+exports.deleteOffer = async (req, res) => {
+    const { offerid } = req.body
+
+    try {
+        const offer = await offerService.deleteOffer({ _id: offerid })
+        if(!offer){
+            return res.status(400).json({
+                success: true,
+                data: "something went wrong"
+            })
+        }else{
+            return res.status(200).json({
+                success: true,
+                data: "Offer deleted successfully"
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
+    }
+}
+
+exports.deleteEvent = async (req, res) => {
+    const { eventid } = req.body
+
+    try {
+        const event = await eventService.deleteEvent({ _id: eventid })
+        if(!event){
+            return res.status(400).json({
+                success: true,
+                data: "something went wrong"
+            })
+        }else{
+            return res.status(200).json({
+                success: true,
+                data: "Event deleted successfully"
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
+    }
 }

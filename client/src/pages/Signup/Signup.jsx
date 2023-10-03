@@ -18,20 +18,22 @@ const Signup = () => {
     const dispatch = useDispatch();
 
     async function submit() {
-        if (!email || !username || !password || !mobileNumber) {
-            alert("all fields are mandatory")
-        }
-        const clientdata = {
-            email: email,
-            username: username,
-            password: password,
-            mobilenumber: mobileNumber
-        }
         try {
+            if (!email || !username || !password || !mobileNumber) {
+                alert("all fields are mandatory")
+            }
+            const clientdata = {
+                email: email,
+                username: username,
+                password: password,
+                mobilenumber: mobileNumber
+            }
             const { data } = await ClientRegister(clientdata)
-            console.log(data)
+            // console.log()
             // dispatch(setAuth(data));
-            navigate('/login');
+            if (data.success == true) {
+                navigate('/login');
+            }
         } catch (error) {
             toast.error(error.response.data.data)
         }

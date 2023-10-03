@@ -29,10 +29,6 @@ create a search query function route
 
 ------------------------------------------------------------------------------------------
 
-
-
-
-
 Login screen --->
 1. Show back button to come on the Homepage
 2. google sign in
@@ -126,3 +122,13 @@ Add ticketid into the user document when ticket is getting booked
 retrive that data when showing past purchase events
 add ticketid into it 
 redirect it there
+
+
+
+
+
+
+Admin login 
+- change login user api
+- give validation if role is user or not
+- check the work flow after done
