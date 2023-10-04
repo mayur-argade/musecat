@@ -18,7 +18,7 @@ router.route('/offers/').get(getAllOffers)
 
 router.route('/admin/create-event').post(isUserLoggedin, requiredRole("admin"), createEvent);
 router.route('/admin/create-offer').post(isUserLoggedin, requiredRole("admin"), createOffer)
-router.route('/admin/delete-event').delete(isUserLoggedin, requiredRole("admin"), deleteEvent)
-router.route('/admin/delete-offer').delete(isUserLoggedin, requiredRole("admin"), deleteOffer)
+router.route('/admin/delete-event').delete(deleteEvent)
+router.route('/admin/delete-offer').delete(deleteOffer)
 
 module.exports = router;

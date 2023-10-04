@@ -12,6 +12,11 @@ class UserService {
         const users = UserModel.find(filter).sort({ createdAt: -1 }).limit(3)
         return users
     }
+
+    async findAllUsers(filter) {
+        const users = UserModel.find(filter).sort({ createdAt: -1 })
+        return users
+    }
     async createUser(data) {
         data.password = await bcrypt.hash(data.password, 10)
         const user = UserModel.create(data);

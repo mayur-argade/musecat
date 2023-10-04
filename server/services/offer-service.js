@@ -22,7 +22,7 @@ class OfferService {
     }
 
     async deleteOffer(filter){
-        const offer = await OfferModel.deleteOne(filter)
+        const offer = await OfferModel.findByIdAndDelete(filter)
         return offer
     }
 

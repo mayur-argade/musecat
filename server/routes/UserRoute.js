@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isVerified, isUserLoggedin, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats } = require('../controllers/UserController')
+const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser } = require('../controllers/UserController')
 const { vendorHome } = require('../controllers/EventController')
 
 router.route('/vendor/update-profile').patch(isLoggedin, updateVendorProfile)
@@ -27,12 +27,18 @@ router.route('/vendor/details/:vendorid').get(getVendorDetails)
 
 router.route('/admin/update-vendor').patch(isUserLoggedin, requiredRole("admin"), verifyVendor)
 
-router.route('/admin/delete-vendor').delete(isUserLoggedin, requiredRole("admin"), deleteVendor)
+router.route('/admin/delete-vendor').delete(deleteVendor)
 
 router.route('/admin/get-unverified-vendors').get(getAllUnverifiedVendors)
 
 router.route('/admin/getAllUsers').get(getAllUsers)
 
 router.route('/admin/stats').get(adminStats)
+
+router.route('/admin/list-all-users').get(getAllUsersList)
+router.route('/admin/delete-user').delete(deleteUser)
+router.route('/admin/list-all-vendors').get(getAllVendorsList)
+
+router.route('/admin/verify-vendor').patch(verifyVendor)
 
 module.exports = router;

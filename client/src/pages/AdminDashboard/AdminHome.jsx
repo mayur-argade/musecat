@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import { AdminGetUnverifiedVendors, AdminGetAllUsers, getCategoryEvents, ClientGetOffers, AdminStats } from '../../http/index'
+import { AdminGetUnverifiedVendors, AdminGetAllUsers, getCategoryEvents, ClientGetOffers, AdminStats, AdminVerifyVendor } from '../../http/index'
+import { Link } from 'react-router-dom'
+
 import moment from 'moment'
 const AdminHome = () => {
     document.title = "Admin Dashboard"
@@ -72,27 +74,42 @@ const AdminHome = () => {
         fetchOffers()
 
 
-        // const fetchCount = async () => {
-        //     setLoading(true)
-        //     try {
-        //         const res = await AdminStats()
-        //         // console.log(data.data)
-        //         setStats(res.data)
-        //         setLoading(false)
-        //     } catch (error) {
-        //         // console.log(error)
-        //         setLoading(false)
-        //     }
-        // }
+        const fetchCount = async () => {
+            setLoading(true)
+            try {
+                const res = await AdminStats()
+                // console.log(data.data)
+                setStats(res.data)
+                setLoading(false)
+            } catch (error) {
+                // console.log(error)
+                setLoading(false)
+            }
+        }
 
-        // fetchCount()
+        fetchCount()
 
 
     }, []);
 
+    const verifyUsers = async (vendorid) => {
+        setLoading(true)
+        try {
+
+            const offerdata = {
+                vendorid: vendorid
+            }
+
+            const res = await AdminVerifyVendor(offerdata)
+            window.alert("Vendor Verified")
+            window.location.reload()
+        } catch (error) {
+
+        }
+    }
 
     console.log("this is vendor", users)
-    if (vendors.data == null || users.data == null || response.data == null || offers.data == null) {
+    if (vendors.data == null || users.data == null || response.data == null || offers.data == null || stats.data == null) {
         return (
             "loading"
         )
@@ -106,74 +123,89 @@ const AdminHome = () => {
                     </div>
 
                     <div className='pl-20 flex flex-col w-full'>
-                        {/* <div className="navbar flex justify-end">
+                        <div className="navbar flex justify-end mr-10 space-x-8">
+                            <button>
+                                <img src="/images/icons/notification.svg" alt="" />
+                            </button>
+                            <button>
+                                <img src="/images/icons/setting.svg" alt="" />
+                            </button>
+                        </div>
 
-                        </div> */}
-                        {/* <div className="headline ">
+                        <div className="headline ">
                             <div className="heading">
-                                <span className="text-2xl font-semibold">Dashboard</span>
+                                <span className="text-2xl font-semibold text-lg">Dashboard</span>
                                 <hr className='mt-3 mb-3' />
                                 <div className='flex justify-between '>
 
-                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                            <div class="flex items-start justify-between">
-                                                <div class="flex flex-col space-y-2">
-                                                    <span class="text-gray-400">Total Users</span>
-                                                    <span class="text-lg font-semibold">{stats.data.users}</span>
+                                    <Link to='/admin/users'>
+                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="flex flex-col space-y-2">
+                                                        <span class="text-gray-400">Total Users</span>
+                                                        <span class="text-lg font-semibold text-lg">{stats.data.users}</span>
+                                                    </div>
+                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
                                                 </div>
-                                                <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                            </div>
+
+                                        </div>
+                                    </Link>
+
+                                    <Link to='/admin/vendors'>
+                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="flex flex-col space-y-2">
+                                                        <span class="text-gray-400">Total Vendors</span>
+                                                        <span class="text-lg font-semibold text-lg">{stats.data.vendors}</span>
+                                                    </div>
+                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                </div>
                                             </div>
                                         </div>
+                                    </Link>
 
-                                    </div>
-
-                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                            <div class="flex items-start justify-between">
-                                                <div class="flex flex-col space-y-2">
-                                                    <span class="text-gray-400">Total Vendors</span>
-                                                    <span class="text-lg font-semibold">100,221</span>
+                                    <Link to='/admin/events'>
+                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="flex flex-col space-y-2">
+                                                        <span class="text-gray-400">Total Events</span>
+                                                        <span class="text-lg font-semibold text-lg">{stats.data.events}</span>
+                                                    </div>
+                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
                                                 </div>
-                                                <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
 
-                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                            <div class="flex items-start justify-between">
-                                                <div class="flex flex-col space-y-2">
-                                                    <span class="text-gray-400">Total Events</span>
-                                                    <span class="text-lg font-semibold">100,221</span>
+                                    <Link to='/admin/offers'>
+                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="flex flex-col space-y-2">
+                                                        <span class="text-gray-400">Total Offers</span>
+                                                        <span class="text-lg font-semibold text-lg">4</span>
+                                                    </div>
+                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
                                                 </div>
-                                                <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                            <div class="flex items-start justify-between">
-                                                <div class="flex flex-col space-y-2">
-                                                    <span class="text-gray-400">Total Offers</span>
-                                                    <span class="text-lg font-semibold">100,221</span>
-                                                </div>
-                                                <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
-                                            </div>
                                         </div>
-
-                                    </div>
+                                    </Link>
                                 </div>
                             </div>
-                        </div> */}
-                        <div className="maincontent mt-5">
+                        </div>
+
+                        <div className="maincontent ml-4 mr-4 mt-5">
 
                             <div className="1st row grid grid-cols-2 gap-8 ">
                                 <div className='table1 h-96 shadow-md'>
-                                    <div className="title flex justify-between">
-                                        <p>Unverified Vendors</p>
-                                        <button>show all</button>
+                                    <div className="title mb-2 flex justify-between">
+                                        <p className='font-semibold text-lg'>Unverified Vendors</p>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full">
@@ -207,14 +239,13 @@ const AdminHome = () => {
                                                                 {vendor.lastname}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                <button onClick={() => verifyUsers(vendor._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                     Verify
                                                                 </button>
                                                             </td>
                                                         </tr>
                                                     ))
                                                 }
-                                                {/* Add more table rows as needed */}
                                             </tbody>
                                         </table>
                                     </div>
@@ -223,9 +254,9 @@ const AdminHome = () => {
 
 
                                 <div className='table1 h-96 shadow-md'>
-                                    <div className="title flex justify-between">
-                                        <p>Recent registered Users</p>
-                                        <button>show all</button>
+                                    <div className="title mb-2 flex justify-between">
+                                        <p className='font-semibold text-lg'>Recently Registered Users</p>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full">
@@ -240,9 +271,9 @@ const AdminHome = () => {
                                                     <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                         Last Name
                                                     </th>
-                                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    {/* <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                         Action
-                                                    </th>
+                                                    </th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -258,44 +289,25 @@ const AdminHome = () => {
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                 {user.lastname}
                                                             </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                 <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                     Verify
                                                                 </button>
-                                                            </td>
+                                                            </td> */}
                                                         </tr>
                                                     ))
                                                 }
-                                            </tbody>
-                                            {
-
-                                            }
-                                            <tr>
-                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                    john@example.com
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                    John
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                    Doe
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                        Verify
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            </tbody>                   
                                         </table>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="recentOffers">
-                                <div className='table1 h-96 shadow-md'>
-                                    <div className="title flex justify-between">
-                                        <p>Recent Events</p>
-                                        <button>show all</button>
+                            <div className="recentOffers mt-4">
+                                <div className='table1 h-auto shadow-md'>
+                                    <div className="mb-2 title flex justify-between">
+                                        <p className='font-semibold text-lg'>Recently Added Events</p>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                     </div>
                                     <div className="overflow-x-auto">
 
@@ -322,9 +334,6 @@ const AdminHome = () => {
                                                             Price starts from
                                                         </th>
 
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Action
-                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -349,27 +358,21 @@ const AdminHome = () => {
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {event.silverPrice}
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                        Verify
-                                                                    </button>
-                                                                </td>
                                                             </tr>
                                                         ))
                                                     }
                                                 </tbody>
                                             </table>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="recentEvents">
+                            <div className="recentEvents mt-4">
                                 <div className='table1 h-96 shadow-md'>
-                                    <div className="title flex justify-between">
-                                        <p>Recent Offers</p>
-                                        <button>show all</button>
+                                    <div className="title mb-2 flex justify-between">
+                                        <p className='font-semibold text-lg'>Recently Added Offers</p>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                     </div>
                                     <div className="overflow-x-auto">
 
@@ -378,7 +381,7 @@ const AdminHome = () => {
                                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                     <tr>
                                                         <th scope="col" class="px-6 py-3">
-                                                            Event Name
+                                                            Offer Name
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
                                                             Vendor Name
@@ -396,9 +399,9 @@ const AdminHome = () => {
                                                             Offer expiry
                                                         </th>
 
-                                                        <th scope="col" class="px-6 py-3">
+                                                        {/* <th scope="col" class="px-6 py-3">
                                                             Action
-                                                        </th>
+                                                        </th> */}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -424,11 +427,11 @@ const AdminHome = () => {
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {moment(offer.expiry).format("DD-MM-YYYY")}
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                         Verify
                                                                     </button>
-                                                                </td>
+                                                                </td> */}
                                                             </tr>
                                                         ))
                                                     }

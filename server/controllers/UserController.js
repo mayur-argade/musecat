@@ -6,6 +6,7 @@ const ContactUsModel = require('../models/ContactUsModel');
 const eventService = require('../services/event-service')
 const offerService = require('../services/offer-service');
 const ticketService = require('../services/ticket-service');
+const moment = require('moment')
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -313,34 +314,6 @@ exports.getPastPurchase = async (req, res) => {
     }
 };
 
-exports.deleteVendor = async (req, res) => {
-    const { vendorid } = req.body
-
-    try {
-        const deleteUser = await vendorService.deleteVendor({ _id: vendorid })
-
-        if (!deleteUser) {
-            return res.status(400).json({
-                success: false,
-                data: "Something went wrong"
-            })
-        } else {
-            return res.status(200).json({
-                success: true,
-                data: "Vendor deleted Successfully"
-            })
-        }
-
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            success: false,
-            data: error
-        })
-    }
-
-}
-
 exports.verifyVendor = async (req, res) => {
 
     const { vendorid } = req.body
@@ -392,8 +365,79 @@ exports.getAllUsers = async (req, res) => {
     })
 }
 
-exports.adminStats = async (req, res) => {
+exports.getAllUsersList = async (req, res) => {
+    const users = await userService.findAllUsers()
+    return res.status(200).json({
+        success: true,
+        data: users
+    })
+}
 
+exports.deleteUser = async (req, res) => {
+    const { userid } = req.body
+
+    try {
+        const user = await userService.deleteUser({ _id: userid })
+
+        if (user) {
+            return res.status(200).json({
+                success: true,
+                data: "User Deleted Successfully"
+            })
+        }
+        else {
+            return res.status(500).json({
+                success: false,
+                data: "something went wrong"
+            })
+
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
+
+    }
+}
+
+exports.getAllVendorsList = async (req, res) => {
+    const vendors = await vendorService.findVendors()
+    return res.status(200).json({
+        success: true,
+        data: vendors
+    })
+}
+
+exports.deleteVendor = async (req, res) => {
+    const { userid } = req.body
+
+    try {
+        const deleteUser = await vendorService.deleteVendor({ _id: userid })
+
+        if (!deleteUser) {
+            return res.status(400).json({
+                success: false,
+                data: "Something went wrong"
+            })
+        } else {
+            return res.status(200).json({
+                success: true,
+                data: "Vendor deleted Successfully"
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
+    }
+
+}
+
+exports.adminStats = async (req, res) => {
     try {
 
         const today = new Date
@@ -403,9 +447,18 @@ exports.adminStats = async (req, res) => {
         const todaysEpochTimestamp = todayepoch.valueOf();
 
         const users = await userService.countUsers()
+
+        const convertedString = moment(today).format("YYYY-MM-DD");
+        const todaysepoch = moment(convertedString)
+
+        // Get the epoch timestamp in milliseconds
+        const eventTimestamp = todaysepoch.valueOf();
+        // console.log(todaysEpochTimestamp)
+        console.log(users)
+
         const vendors = await vendorService.countVendors()
         const offers = await offerService.countOffers({ expiry: { $gte: todaysEpochTimestamp } })
-        const events = await eventService.countEvents({ date: { $gte: todaysEpochTimestamp } })
+        const events = await eventService.countEvents({ date: { $gte: eventTimestamp } })
 
         return res.status(200).json({
             success: true,
@@ -417,7 +470,11 @@ exports.adminStats = async (req, res) => {
             }
         })
     } catch (error) {
-
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: error
+        })
     }
 
 

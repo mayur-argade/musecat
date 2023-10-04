@@ -4,7 +4,6 @@ import { VendorCreateEvent } from '../../http/index'
 const AddEventModal = ({ onClose }) => {
 
     const [loading, setLoading] = useState(false)
-
     const [title, setTitle] = useState('')
     const [shortDesc, setShortDesc] = useState('')
     const [description, setDescription] = useState('')

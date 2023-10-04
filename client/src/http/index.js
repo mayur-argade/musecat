@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "https://omanwhereto.com/api/v1/",
+    baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -43,23 +43,33 @@ export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${d
 export const ClientGetOffers = (data) => api.get("/offers/", data)
 export const CategoryCount = (data) => api.get(`category/eventcounts${data}`, data)
 
+
 export const AdminCreateEvent = (data) => api.post("/admin/create-event", data)
 export const AdminCreateOffer = (data) => api.post("/admin/create-offer", data)
 export const AdminCreateVendor = (data) => api.post("/admin/create-vendor", data)
 export const AdminCreateVenue = (data) => api.post("/admin/create-venue", data)
+export const AdminCreateCategory = (data) => api.post("/admin/category/create-category", data)
+
+export const AdminGetAllUsers = (data) => api.get("/admin/getAllUsers", data)
+
+export const AdminListUsers = (data) => api.get('/admin/list-all-users', data)
+export const AdminDeleteUser = (data) => api.delete("/admin/delete-user", data)
+
+export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', data)
+export const AdminDeleteVendor = (data) => api.delete("/admin/delete-vendor", data)
+
+export const AdminGetAllEvents = (data) => api.get("/admin/getAllEvents", data)
+export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", data)
+export const AdminEditEvent = (data) => api.patch("/admin/edit-event", data)
+
+export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
+export const AdminDeleteOffer = (data) => api.delete("/admin/delete-offer", data)
+export const AdminEditOffer = (data) => api.patch("/admin/edit-offer", data)
 
 export const AdminGetUnverifiedVendors = (data) => api.get("admin/get-unverified-vendors", data)
+export const AdminVerifyVendor = (data) => api.patch(`/admin/verify-vendor`, data)
+
 export const AdminGetAllVendors = (data) => api.get("/admin/getUnverifiedVendors", data)
-export const AdminGetAllUsers = (data) => api.get("/admin/getAllUsers", data)
-export const AdminGetAllEvents = (data) => api.get("/admin/getAllEvents", data)
-export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
-export const AdminEditEvent = (data) => api.patch("/admin/edit-event", data)
-export const AdminEditOffer = (data) => api.patch("/admin/edit-offer", data)
-export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", data)
-export const AdminDeleteOffer = (data) => api.delete("/admin/delete-offer", data)
-export const AdminDeleteVendor = (data) => api.delete("/admin/delete-vendor", data)
-export const AdminDeleteUser = (data) => api.delete("/admin/delete-user", data)
-export const AdminVerifyVendor = (data) => api.patch("/admin/verify-vendor", data)
 export const AdminStats = (data) => api.get('/admin/stats', data)
 
 api.interceptors.response.use(
@@ -76,7 +86,7 @@ api.interceptors.response.use(
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    baseURL: "https://omanwhereto.com/api/v1/",
+                    baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",

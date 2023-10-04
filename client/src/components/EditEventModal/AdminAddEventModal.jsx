@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AdminCreateEvent } from '../../http/index'
+import { AdminCreateEvent, VendorCreateEvent } from '../../http/index'
 
 const AdminAddEventModal = ({ onClose }) => {
     const [loading, setLoading] = useState(false)
@@ -77,7 +77,7 @@ const AdminAddEventModal = ({ onClose }) => {
         // console.log(offerdata)
         setLoading(true)
         try {
-            const { data } = await AdminCreateEvent(eventdata)
+            const { data } = await VendorCreateEvent(eventdata)
             setLoading(false)
             console.log(data)
             if (data.success == true) {

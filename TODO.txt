@@ -47,20 +47,26 @@ Task to do today
 -> vendor navbar
 
 Admin Model
-Create event (done)
-Create offer (done)
-Delete offer  (done)
-Delete event (done)
-Create vendor (done)
-Verify vendor (done)
-Delete vendor (done)
-Delete user 
-Add venue 
-List vendors
-List events
-List users
-Event description
-Ticket status
+Create event (done) (api integration)
+Create offer (done) (api integration)
+Delete offer  (done) (page) (api integration)
+Delete event (done) (page) (api integration)
+Create vendor (done) (api integration)
+Verify vendor (done) (page) (api integration)
+Delete vendor (done) (page) (api integration)
+Delete user (page) (api integration)
+Add venue (page) (api integration)
+List vendors (page) (api integration)
+List events (page) (api integration)
+List users (page) (api integration)
+Event description (page) (api integration)
+Ticket status (page) (api integration)
+
+list offers
+list users
+list vendors
+list events
+
 
 
 Admin APIs

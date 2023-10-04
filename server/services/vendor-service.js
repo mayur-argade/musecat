@@ -29,6 +29,11 @@ class VendorService {
         return vendors
     }
 
+    async deleteVendor(filter){
+        const vendor = await VendorModel.deleteOne(filter)
+        return vendor
+    }
+
 }
 
 module.exports = new VendorService();

@@ -43,6 +43,10 @@ import Protected from './utils/Protected';
 import SemiProtected from './utils/SemiProtected'
 import SearchPWA from './pages/SearchPWA/SearchPWA';
 import ScrollToTop from './utils/ScrollToTop';
+import AdminUsers from './pages/AdminDashboard/AdminUsers';
+import AdminVendors from './pages/AdminDashboard/AdminVendors';
+import AdminEvents from './pages/AdminDashboard/AdminEvents';
+import AdminOffers from './pages/AdminDashboard/AdminOffers';
 
 
 function App() {
@@ -88,6 +92,10 @@ function App() {
                     {/* admin pages */}
                     <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
                     <Route path="/admin/add" exact element={<AdminAdd />} />
+                    <Route path="/admin/users" exact element={<AdminUsers />} />
+                    <Route path="/admin/vendors" exact element={<AdminVendors />} />
+                    <Route path="/admin/events" exact element={<AdminEvents />} />
+                    <Route path="/admin/offers" exact element={<AdminOffers />} />
 
 
 

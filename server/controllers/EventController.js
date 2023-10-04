@@ -19,6 +19,12 @@ exports.createEvent = async (req, res) => {
     }
 
     let event = {}
+    if ((silverPrice || platinumPrice || goldPrice) < 100) {
+        return res.status(statusCode.BAD_REQUEST.code).json({
+            success: false,
+            data: "Order sum can not be less than 100 Baisa"
+        })
+    }
 
     try {
         let uploadedEventPhoto = ''
@@ -433,22 +439,25 @@ exports.getAllOffers = async (req, res) => {
 }
 
 exports.deleteOffer = async (req, res) => {
-    const { offerid } = req.body
-
+    console.log(req.body)
+    const offerid = req.body.offerid
+    console.log(offerid)
     try {
-        const offer = await offerService.deleteOffer({ _id: offerid })
-        if(!offer){
-            return res.status(400).json({
-                success: true,
-                data: "something went wrong"
-            })
-        }else{
+
+        const offer = await offerService.deleteOffer(offerid)
+        console.log(offer)
+        if (offer) {
             return res.status(200).json({
                 success: true,
                 data: "Offer deleted successfully"
             })
-        }
 
+        } else {
+            return res.status(400).json({
+                success: true,
+                data: "something went wrong"
+            })
+        }
     } catch (error) {
         console.log(error)
         return res.status(500).json({
@@ -463,12 +472,12 @@ exports.deleteEvent = async (req, res) => {
 
     try {
         const event = await eventService.deleteEvent({ _id: eventid })
-        if(!event){
+        if (!event) {
             return res.status(400).json({
                 success: true,
                 data: "something went wrong"
             })
-        }else{
+        } else {
             return res.status(200).json({
                 success: true,
                 data: "Event deleted successfully"

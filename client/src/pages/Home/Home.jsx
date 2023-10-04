@@ -7,8 +7,6 @@ import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, g
 import moment from 'moment'
 import EventCard from '../../components/Cards/EventCard'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import toast, { Toaster } from 'react-hot-toast';
 
 
