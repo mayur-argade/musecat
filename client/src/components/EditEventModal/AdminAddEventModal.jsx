@@ -74,7 +74,7 @@ const AdminAddEventModal = ({ onClose }) => {
             custom: custom,
             features: "features"
         }
-        // console.log(offerdata)
+        console.log(eventdata)
         setLoading(true)
         try {
             const { data } = await VendorCreateEvent(eventdata)
@@ -147,7 +147,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                             onChange={((e) => setCategory(e.target.value))}
                                             placeholder='Theatre of Arts'
                                         >
-                                            <option className=' text-sm font-medium' value="staycaton">Staycation</option>
+                                            <option className=' text-sm font-medium' value="staycation">Staycation</option>
                                             <option className=' text-sm font-medium' value="eat">Eat</option>
                                             <option className=' text-sm font-medium' value="weeklyoffers">Weekly Offers</option>
                                         </select>

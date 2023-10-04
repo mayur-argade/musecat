@@ -16,6 +16,7 @@ body {
     .body {
         margin-bottom: 50px;
     }
+
     .NoFooter {
         display: none;
     }
@@ -24,11 +25,19 @@ body {
         display: none;
     }
 
-    .appmargine{
+    .appmargine {
         margin-bottom: 3rem;
     }
 
-    .contactmargine{
+    .contactmargine {
         margin-bottom: 6rem;
+    }
+
+    .calender {
+        display: none;
+    }
+
+    .selectoption{
+        display: none;
     }
 }

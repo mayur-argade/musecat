@@ -40,7 +40,6 @@ const Home = () => {
         currentDate.add(1, 'days'); // Move to the next day
     }
 
-
     // Get the current date
     const nowdate = moment();
 
@@ -331,7 +330,7 @@ const Home = () => {
                     </div>
 
                     <section>
-                        <section className='md:mr-48 md:ml-48 mt-10'>
+                        <section className='md:mr-48 md:ml-48 md:mt-10 mt-5'>
                             <div className='flex justify-between align-middle '>
 
                                 <div className="left flex items-center align-middle ">
@@ -345,16 +344,23 @@ const Home = () => {
                                         ))
                                     }
 
-                                    <div className='pr-2'>
-                                        <select id="countries" class="md:hidden bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option selected value="US">Sunday</option>
-                                            <option value="CA">Monday</option>
-                                            <option value="FR">Tuesday</option>
-                                            <option value="DE">Thursday</option>
-                                            <option value="DE">Friday</option>
-                                            <option value="DE">Saturday</option>
+                                    <div className='selectoption pr-2 md:hidden'>
+                                        <select
+                                            id="countries"
+                                            className="bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                            {daysAndDates.map((e) => (
+                                                <option
+                                                    key={e.date} // Make sure to add a unique key prop when mapping in React
+                                                    onClick={() => setDayforCategory(e.date)}
+                                                    className="hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border"
+                                                >
+                                                    {e.day}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
+
 
                                 </div>
                             </div>
@@ -420,8 +426,8 @@ const Home = () => {
                             <div className='flex justify-between items-center '>
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
                                 <div className="flex items-center align-middle ">
-                                    <div className="date-picker ">
-                                        <img className=" h-8 mr-2" onClick={openDatePicker} src="/images/assets/calender-icon.png" alt="" />
+                                    <div className="calender date-picker ">
+                                        <img className="calender h-8 mr-2" onClick={openDatePicker} src="/images/assets/calender-icon.png" alt="" />
                                         {/* <DatePicker
                                                 selected={date}
                                                 className='z-30 opacity-0 absolute top-0 left-0 w-1 h-1'

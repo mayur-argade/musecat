@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "https://omanwhereto.com/api/v1/",
+    baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export const AdminCreateEvent = (data) => api.post("/admin/create-event", data)
 export const AdminCreateOffer = (data) => api.post("/admin/create-offer", data)
 export const AdminCreateVendor = (data) => api.post("/admin/create-vendor", data)
 export const AdminCreateVenue = (data) => api.post("/admin/create-venue", data)
-export const AdminCreateCategory = (data) => api.post("/admin/category/create-category", data)
+export const AdminCreateCategory = (data) => api.post("/category/create-category", data)
 
 export const AdminGetAllUsers = (data) => api.get("/admin/getAllUsers", data)
 
@@ -86,7 +86,7 @@ api.interceptors.response.use(
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    baseURL: "https://omanwhereto.com/api/v1/",
+                    baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",
