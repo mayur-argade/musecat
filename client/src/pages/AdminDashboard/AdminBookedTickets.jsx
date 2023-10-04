@@ -310,7 +310,7 @@ const AdminBookedTickets = () => {
                     {response.data.seatsBooked != 0 ? <div className='hidden md:flex justify-end flex-col absolute -right-36 bottom-0'>
                         <div className='flex justify-between mb-2'>
 
-                            <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
+                            {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
                             <button>
                             </button>
                         </div>

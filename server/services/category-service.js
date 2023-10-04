@@ -26,6 +26,11 @@ class CategoryService {
         return category
     }
 
+    async countCategory(filter){
+        const category = await CategoryModel.countDocuments(filter)
+        return category
+    }
+
 }
 
 module.exports = new CategoryService();

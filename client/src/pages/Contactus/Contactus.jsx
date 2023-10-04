@@ -77,7 +77,6 @@ const Contactus = () => {
                                                 type="text"
                                                 className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setFirstname(e.target.value)}
-                                                placeholder='John'
                                                 required
                                             />
                                         </div>
@@ -89,7 +88,6 @@ const Contactus = () => {
                                                 type="text"
                                                 className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setLastname(e.target.value)}
-                                                placeholder='John'
                                                 required
                                             />
                                         </div>
@@ -103,7 +101,6 @@ const Contactus = () => {
                                             type="email"
                                             className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setEmail(e.target.value)}
-                                            placeholder='John@gmail.com'
                                             required
                                         />
                                     </div>
@@ -116,7 +113,6 @@ const Contactus = () => {
                                             type="text"
                                             className='border h-24 bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setMessage(e.target.value)}
-                                            placeholder='write your message here...'
                                             required
                                         />
                                     </div>
@@ -156,7 +152,7 @@ const Contactus = () => {
                             {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                             <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                         </button> */}
-                            <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
+                            {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
                             <button>
                             </button>
                         </div>

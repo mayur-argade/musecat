@@ -127,7 +127,7 @@ const AddEventModal = ({ onClose }) => {
                                         className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent placeholder:text-sm focus:ring-transparent  outline-0
                                 font-medium'
                                         onChange={((e) => setDescription(e.target.value))}
-                                        placeholder='write your description here'
+                                        placeholder="Amr Diab, the legendary Egyptian singer is set to perform at the Etihad Arena in Abu Dhabi, promising a night of unforgettable entertainment. As one of the most successful musicians in the Arab world and a Guinness World Record Holder, Amr Diab's music has captured the hearts of millions of............"
                                     />
                                 </div>
                                 <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -162,8 +162,6 @@ const AddEventModal = ({ onClose }) => {
                                         placeholder='Theatre of Arts'
                                     >
                                         <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
-                                        <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
-                                        <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
                                     </select>
                                 </div>
 
@@ -174,7 +172,7 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             onChange={((e) => setSilverPrice(e.target.value))}
                                             className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='OMR 390'
                                         />
                                     </div>
                                     <div className='w-full mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -183,7 +181,7 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             onChange={((e) => setSilverSeats(e.target.value))}
                                             className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='72'
                                         />
                                     </div>
                                 </div>
@@ -195,7 +193,7 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             onChange={((e) => setGoldPrice(e.target.value))}
                                             className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='OMR 390'
                                         />
                                     </div>
                                     <div className='w-full mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -204,7 +202,7 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             onChange={((e) => setGoldSeats(e.target.value))}
                                             className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='56'
                                         />
                                     </div>
                                 </div>
@@ -216,7 +214,7 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             onChange={((e) => setPlatinumPrice(e.target.value))}
                                             className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='OMR 390'
                                         />
                                     </div>
                                     <div className='w-full mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -225,7 +223,7 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             onChange={((e) => setPlatinumseats(e.target.value))}
                                             className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='28'
                                         />
                                     </div>
                                 </div>

@@ -118,7 +118,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                         <input
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='short description'
                                         />
                                     </div>
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -146,10 +146,9 @@ const AdminAddEventModal = ({ onClose }) => {
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
                                             onChange={((e) => setCategory(e.target.value))}
-                                            placeholder='Theatre of Arts'
+                                            placeholder='staycation'
                                         >
                                             <option className=' text-sm font-medium' value="staycation">Staycation</option>
-                                            <option className=' text-sm font-medium' value="eat">Eat</option>
                                             <option className=' text-sm font-medium' value="weeklyoffers">Weekly Offers</option>
                                         </select>
                                     </div>
@@ -163,8 +162,6 @@ const AdminAddEventModal = ({ onClose }) => {
                                             placeholder='Theatre of Arts'
                                         >
                                             <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
-                                            <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
-                                            <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
                                         </select>
                                     </div>
 
@@ -175,7 +172,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                                 type="text"
                                                 onChange={((e) => setSilverPrice(e.target.value))}
                                                 className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                                placeholder='Breakfast and poolpass at crown plaza'
+                                                placeholder='OMR 100'
                                             />
                                         </div>
                                         <div className='w-full mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -184,7 +181,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                                 type="text"
                                                 onChange={((e) => setSilverSeats(e.target.value))}
                                                 className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                                placeholder='Breakfast and poolpass at crown plaza'
+                                                placeholder='12'
                                             />
                                         </div>
                                     </div>
@@ -196,7 +193,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                                 type="text"
                                                 onChange={((e) => setGoldPrice(e.target.value))}
                                                 className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                                placeholder='Breakfast and poolpass at crown plaza'
+                                                placeholder='OMR 123'
                                             />
                                         </div>
                                         <div className='w-full mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -205,7 +202,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                                 type="text"
                                                 onChange={((e) => setGoldSeats(e.target.value))}
                                                 className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                                placeholder='Breakfast and poolpass at crown plaza'
+                                                placeholder='12'
                                             />
                                         </div>
                                     </div>
@@ -217,7 +214,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                                 type="text"
                                                 onChange={((e) => setPlatinumPrice(e.target.value))}
                                                 className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                                placeholder='Breakfast and poolpass at crown plaza'
+                                                placeholder='OMR 210'
                                             />
                                         </div>
                                         <div className='w-full mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -226,7 +223,7 @@ const AdminAddEventModal = ({ onClose }) => {
                                                 type="text"
                                                 onChange={((e) => setPlatinumseats(e.target.value))}
                                                 className='px-0 py-0.5 w-full placeholder:text-sm  border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:font-medium font-medium'
-                                                placeholder='Breakfast and poolpass at crown plaza'
+                                                placeholder='28'
                                             />
                                         </div>
                                     </div>

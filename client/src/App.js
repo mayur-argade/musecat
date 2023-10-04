@@ -32,6 +32,7 @@ import VendorProfile from './pages/Profile/VendorProfile'
 import AdminHome from './pages/AdminDashboard/AdminHome';
 import AdminAdd from './pages/AdminDashboard/AdminAdd'
 import EventsPWA from './pages/PWA-Events/EventsPWA';
+import AdminCategory from './pages/AdminDashboard/AdminCategory'
 
 // components
 import BottomNav from './components/shared/BottomNav/BottomNav';
@@ -100,6 +101,7 @@ function App() {
                     <Route path="/admin/offers" exact element={<AdminOffers />} />
                     <Route path="/admin/event/:eventid" exact element={<AdminEventDescription />} />
                     <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
+                    <Route path="/admin/categories" exact element={<AdminCategory />} />
 
                     <Route path="/demo" element={<Demo />} />
                 </Routes>

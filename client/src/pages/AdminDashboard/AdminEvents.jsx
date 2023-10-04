@@ -70,14 +70,7 @@ const AdminEvents = () => {
                     </div>
 
                     <div className='pl-20 flex flex-col w-full'>
-                        <div className="navbar flex justify-end mr-10 space-x-8">
-                            <button>
-                                <img src="/images/icons/notification.svg" alt="" />
-                            </button>
-                            <button>
-                                <img src="/images/icons/setting.svg" alt="" />
-                            </button>
-                        </div>
+                        <div className="mt-7"></div>
                         <div className="headline ">
                             <div className="heading">
                                 <div className="flex justify-between">

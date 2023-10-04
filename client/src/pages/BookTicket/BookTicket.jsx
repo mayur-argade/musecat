@@ -335,7 +335,7 @@ const BookTicket = () => {
                                 {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                                 <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                             </button> */}
-                                <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" />
+                                {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
                                 <button>
                                 </button>
                             </div>

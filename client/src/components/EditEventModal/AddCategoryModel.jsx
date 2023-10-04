@@ -31,10 +31,14 @@ const AddCategoryModel = ({ onClose }) => {
         }
         // console.log(signupdata)
         try {
+            setLoading(true)
             const { data } = await AdminCreateCategory(categorydata)
+            setLoading(false)
+            window.location.reload()
             console.log(data)
             toast.success("Category Added")
         } catch (error) {
+            setLoading(false)
             console.log(error)
             toast.error(error.response.data.data)
         }

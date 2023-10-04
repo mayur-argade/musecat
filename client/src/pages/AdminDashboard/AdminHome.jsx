@@ -146,7 +146,9 @@ const AdminHome = () => {
                                                         <span class="text-gray-400">Total Users</span>
                                                         <span class="text-lg font-semibold text-lg">{stats.data.users}</span>
                                                     </div>
-                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                    <div class="ml-2">
+                                                        <img className="h-14" src="/images/icons/users.png" alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -161,7 +163,9 @@ const AdminHome = () => {
                                                         <span class="text-gray-400">Total Vendors</span>
                                                         <span class="text-lg font-semibold text-lg">{stats.data.vendors}</span>
                                                     </div>
-                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                    <div class="ml-2">
+                                                        <img className="h-14" src="/images/icons/vendor.png" alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -175,7 +179,9 @@ const AdminHome = () => {
                                                         <span class="text-gray-400">Total Events</span>
                                                         <span class="text-lg font-semibold text-lg">{stats.data.events}</span>
                                                     </div>
-                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                    <div class="ml-2">
+                                                        <img className="h-14" src="/images/icons/events.png" alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +195,9 @@ const AdminHome = () => {
                                                         <span class="text-gray-400">Total Offers</span>
                                                         <span class="text-lg font-semibold text-lg">{stats.data.offers}</span>
                                                     </div>
-                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                    <div class="ml-2">
+                                                        <img className="h-14" src="/images/icons/offers.png" alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -202,16 +210,18 @@ const AdminHome = () => {
                                                 <div class="flex items-start justify-between">
                                                     <div class="flex flex-col space-y-2">
                                                         <span class="text-gray-400">Total Categories</span>
-                                                        <span class="text-lg font-semibold text-lg">4</span>
+                                                        <span class="text-lg font-semibold text-lg">{stats.data.category}</span>
                                                     </div>
-                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                    <div class="ml-2">
+                                                        <img className="h-14" src="/images/icons/categories.png" alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
 
                                         </div>
                                     </Link>
 
-                                    <Link to='/admin/venue'>
+                                    {/* <Link to='/admin/venue'>
                                         <div className="m-3 cards flex justify-between md:flex-row flex-col">
                                             <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                                 <div class="flex items-start justify-between">
@@ -224,7 +234,7 @@ const AdminHome = () => {
                                             </div>
 
                                         </div>
-                                    </Link>
+                                    </Link> */}
                                 </div>
                             </div>
                         </div>

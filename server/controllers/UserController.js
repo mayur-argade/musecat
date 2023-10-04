@@ -1,6 +1,7 @@
 const statusCode = require('../data/statusCode');
 const vendorService = require('../services/vendor-service')
 const userService = require('../services/user-service')
+const categoryService = require('../services/category-service')
 const cloudinary = require('cloudinary');
 const ContactUsModel = require('../models/ContactUsModel');
 const eventService = require('../services/event-service')
@@ -375,7 +376,7 @@ exports.getAllUsersList = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     const { userid } = req.body
-    
+
     console.log(req.body)
 
     try {
@@ -462,6 +463,9 @@ exports.adminStats = async (req, res) => {
         const vendors = await vendorService.countVendors()
         const offers = await offerService.countOffers({ expiry: { $gte: todaysEpochTimestamp } })
         const events = await eventService.countEvents({ date: { $gte: eventTimestamp } })
+        const category = await categoryService.countCategory()
+        console.log(category)
+        // const venue = await 
 
         return res.status(200).json({
             success: true,
@@ -469,7 +473,8 @@ exports.adminStats = async (req, res) => {
                 users: users,
                 vendors: vendors,
                 offers: offers,
-                events: events
+                events: events,
+                category: category
             }
         })
     } catch (error) {

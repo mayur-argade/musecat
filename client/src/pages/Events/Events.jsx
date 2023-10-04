@@ -292,8 +292,10 @@ const Events = () => {
                                     :
                                     response.data.length == 0
                                         ?
-                                        <div>
-                                            No events listing found
+                                        <div className='mx-auto mt-20'>
+                                            <div>
+                                            <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                            </div>
                                         </div>
                                         :
                                         response.data.filter((item) => {
@@ -331,7 +333,7 @@ const Events = () => {
                                         <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                                             <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                                         </button>
-                                        <img className='h-10 ml-16' src="/images/icons/whatsapp-color.svg" alt="" />
+                                        {/* // <img className='h-10 ml-16' src="/images/icons/whatsapp-color.svg" alt="" /> */}
                                         <button>
                                         </button>
                                     </div>
