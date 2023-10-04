@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
+import AddEventModal from '../../components/EditEventModal/AdminAddEventModal'
 import { AdminDeleteEvent, getCategoryEvents } from '../../http/index'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const AdminEvents = () => {
 
+    const [showAddEvent, setShowAddEvent] = useState(false)
     const [events, setEvents] = useState([])
     const [loading, setLoading] = useState(false)
 
@@ -23,6 +26,14 @@ const AdminEvents = () => {
         fetchEvents()
 
     }, []);
+
+    const closeModal = () => {
+        setShowAddEvent(false);
+    };
+
+    const handleClick = () => {
+        setShowAddEvent(true)
+    }
 
     const deleteEvent = async (eventid) => {
         setLoading(true)
@@ -69,7 +80,10 @@ const AdminEvents = () => {
                         </div>
                         <div className="headline ">
                             <div className="heading">
-                                <span className="text-2xl font-semibold">Events</span>
+                                <div className="flex justify-between">
+                                    <span className="text-2xl font-semibold">Events</span>
+                                    <button onClick={handleClick} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Event</button>
+                                </div>
                                 <hr className='mt-3 mb-3' />
 
                                 <div className="maincontent flex flex-col">
@@ -98,18 +112,20 @@ const AdminEvents = () => {
                                                             Price starts from
                                                         </th>
 
-                                                        {/* <th scope="col" class="px-6 py-3">
+                                                        <th scope="col" class="px-6 py-3">
                                                             Action
-                                                        </th> */}
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
                                                         events.data.map((event) => (
                                                             <tr>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.title}
-                                                                </td>
+                                                                <Link to={`/admin/event/${event._id}`}>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {event.title}
+                                                                    </td>
+                                                                </Link>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {event.vendorid}
                                                                 </td>
@@ -125,11 +141,11 @@ const AdminEvents = () => {
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {event.silverPrice}
                                                                 </td>
-                                                                {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     <button onClick={() => deleteEvent(event._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                         delete
                                                                     </button>
-                                                                </td> */}
+                                                                </td>
                                                             </tr>
                                                         ))
                                                     }
@@ -143,6 +159,24 @@ const AdminEvents = () => {
                         </div>
                     </div>
                 </div>
+
+                {showAddEvent && (
+                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                        <div className="relative rounded-lg ">
+                            <AddEventModal
+                                isOpen={showAddEvent}
+                                onClose={closeModal} />
+                            {/* Close button */}
+                            <button
+                                onClick={closeModal}
+                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            >
+                                <img src="/images/icons/cancel-icon.png" alt="" />
+                            </button>
+                        </div>
+                    </div>
+                )}
+
             </div>
         )
     }

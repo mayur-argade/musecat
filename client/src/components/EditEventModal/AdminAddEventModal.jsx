@@ -54,8 +54,8 @@ const AdminAddEventModal = ({ onClose }) => {
 
 
     const handleSave = async () => {
-        if (!title || !shortDesc || !date || !category || !description || !location || !photo || !banner || !video) {
-            window.alert("All fields are mandatory")
+        if (!title || !date || !category || !description || !location || !photo || !banner || !video) {
+            return window.alert("All fields are mandatory")
         }
 
         const eventdata = {
@@ -80,11 +80,12 @@ const AdminAddEventModal = ({ onClose }) => {
             const { data } = await VendorCreateEvent(eventdata)
             setLoading(false)
             console.log(data)
-            if (data.success == true) {
-                window.location.reload()
-            } else if (data.success == false) {
-                window.alert(data.data)
-            }
+            window.location.reload()
+            // if (data.success == true) {
+            //     window.location.reload()
+            // } else if (data.success == false) {
+            //     window.alert(data.data)
+            // }
         } catch (error) {
             console.log(error)
         }

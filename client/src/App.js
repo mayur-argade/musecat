@@ -47,6 +47,8 @@ import AdminUsers from './pages/AdminDashboard/AdminUsers';
 import AdminVendors from './pages/AdminDashboard/AdminVendors';
 import AdminEvents from './pages/AdminDashboard/AdminEvents';
 import AdminOffers from './pages/AdminDashboard/AdminOffers';
+import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription';
+import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
 
 
 function App() {
@@ -96,8 +98,8 @@ function App() {
                     <Route path="/admin/vendors" exact element={<AdminVendors />} />
                     <Route path="/admin/events" exact element={<AdminEvents />} />
                     <Route path="/admin/offers" exact element={<AdminOffers />} />
-
-
+                    <Route path="/admin/event/:eventid" exact element={<AdminEventDescription />} />
+                    <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
 
                     <Route path="/demo" element={<Demo />} />
                 </Routes>

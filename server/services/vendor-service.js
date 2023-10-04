@@ -31,6 +31,7 @@ class VendorService {
 
     async deleteVendor(filter){
         const vendor = await VendorModel.deleteOne(filter)
+        console.log(vendor)
         return vendor
     }
 

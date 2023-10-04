@@ -375,6 +375,8 @@ exports.getAllUsersList = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     const { userid } = req.body
+    
+    console.log(req.body)
 
     try {
         const user = await userService.deleteUser({ _id: userid })
@@ -410,10 +412,11 @@ exports.getAllVendorsList = async (req, res) => {
 }
 
 exports.deleteVendor = async (req, res) => {
-    const { userid } = req.body
+    const { vendorid } = req.body
+
 
     try {
-        const deleteUser = await vendorService.deleteVendor({ _id: userid })
+        const deleteUser = await vendorService.deleteVendor({ _id: vendorid })
 
         if (!deleteUser) {
             return res.status(400).json({

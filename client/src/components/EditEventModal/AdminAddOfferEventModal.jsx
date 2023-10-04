@@ -65,6 +65,7 @@ const AdminAddOfferEventModal = ({ onClose }) => {
             const { data } = await VendorCreateOffer(offerdata)
             setLoading(false)
             console.log(data)
+            window.location.reload()
             if (data.success == true) {
                 window.location.reload()
             } else if (data.success == false) {

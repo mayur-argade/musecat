@@ -116,20 +116,20 @@ const AdminHome = () => {
     } else {
         return (
             <>
-                <div className='flex '>
-
-                    <div>
-                        <Sidebar />
-                    </div>
-
-                    <div className='pl-20 flex flex-col w-full'>
-                        <div className="navbar flex justify-end mr-10 space-x-8">
-                            <button>
-                                <img src="/images/icons/notification.svg" alt="" />
-                            </button>
-                            <button>
-                                <img src="/images/icons/setting.svg" alt="" />
-                            </button>
+                <div className=' '>
+                    <div className='flex flex-col w-full'>
+                        <div className="navbar flex justify-between ml-10 mr-10 space-x-8">
+                            <div className="left">
+                                <img src="/images/logo/logo.png" alt="" />
+                            </div>
+                            <div className='space-x-8'>
+                                <button >
+                                    <img src="/images/icons/notification.svg" alt="" />
+                                </button>
+                                <button>
+                                    <img src="/images/icons/setting.svg" alt="" />
+                                </button>
+                            </div>
                         </div>
 
                         <div className="headline ">
@@ -187,6 +187,36 @@ const AdminHome = () => {
                                                 <div class="flex items-start justify-between">
                                                     <div class="flex flex-col space-y-2">
                                                         <span class="text-gray-400">Total Offers</span>
+                                                        <span class="text-lg font-semibold text-lg">{stats.data.offers}</span>
+                                                    </div>
+                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </Link>
+
+                                    <Link to='/admin/Categories'>
+                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="flex flex-col space-y-2">
+                                                        <span class="text-gray-400">Total Categories</span>
+                                                        <span class="text-lg font-semibold text-lg">4</span>
+                                                    </div>
+                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </Link>
+
+                                    <Link to='/admin/venue'>
+                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="flex flex-col space-y-2">
+                                                        <span class="text-gray-400">Total Venues</span>
                                                         <span class="text-lg font-semibold text-lg">4</span>
                                                     </div>
                                                     <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
@@ -205,7 +235,9 @@ const AdminHome = () => {
                                 <div className='table1 h-96 shadow-md'>
                                     <div className="title mb-2 flex justify-between">
                                         <p className='font-semibold text-lg'>Unverified Vendors</p>
+                                        <Link to='/admin/vendors'>
                                         <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                        </Link>
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full">
@@ -256,7 +288,9 @@ const AdminHome = () => {
                                 <div className='table1 h-96 shadow-md'>
                                     <div className="title mb-2 flex justify-between">
                                         <p className='font-semibold text-lg'>Recently Registered Users</p>
+                                        <Link to='/admin/users'>
                                         <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                        </Link>
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full">
@@ -297,7 +331,7 @@ const AdminHome = () => {
                                                         </tr>
                                                     ))
                                                 }
-                                            </tbody>                   
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -307,7 +341,9 @@ const AdminHome = () => {
                                 <div className='table1 h-auto shadow-md'>
                                     <div className="mb-2 title flex justify-between">
                                         <p className='font-semibold text-lg'>Recently Added Events</p>
+                                        <Link to='/admin/events'>
                                         <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                        </Link>
                                     </div>
                                     <div className="overflow-x-auto">
 
@@ -372,7 +408,9 @@ const AdminHome = () => {
                                 <div className='table1 h-96 shadow-md'>
                                     <div className="title mb-2 flex justify-between">
                                         <p className='font-semibold text-lg'>Recently Added Offers</p>
+                                        <Link to='/admin/offers'>
                                         <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                        </Link>
                                     </div>
                                     <div className="overflow-x-auto">
 

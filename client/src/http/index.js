@@ -2,10 +2,10 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "http://localhost:5000/api/v1/",
+    baseURL: "https://omanwhereto.com/api/v1/",
     withCredentials: true,
     headers: {
-        "Content-Type": "application/json",
+        headers: { 'Content-Type': 'application/json' },
         Accept: "application/json",
     },
 });
@@ -53,13 +53,15 @@ export const AdminCreateCategory = (data) => api.post("/category/create-category
 export const AdminGetAllUsers = (data) => api.get("/admin/getAllUsers", data)
 
 export const AdminListUsers = (data) => api.get('/admin/list-all-users', data)
-export const AdminDeleteUser = (data) => api.delete("/admin/delete-user", data)
+
+export const AdminDeleteUser = (data) => api.delete('/admin/delete-user', { data: data })
+
 
 export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', data)
-export const AdminDeleteVendor = (data) => api.delete("/admin/delete-vendor", data)
+export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor/${data}`)
 
 export const AdminGetAllEvents = (data) => api.get("/admin/getAllEvents", data)
-export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", data)
+export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", { data: data })
 export const AdminEditEvent = (data) => api.patch("/admin/edit-event", data)
 
 export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
@@ -86,7 +88,7 @@ api.interceptors.response.use(
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    baseURL: "http://localhost:5000/api/v1/",
+                    baseURL: "https://omawhereto.com/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",

@@ -261,8 +261,6 @@ const VendorEventDescripton = () => {
                         </div>
                     </div>
                 )}
-
-
                 <div className=''>
                     < Footer />
                 </div>

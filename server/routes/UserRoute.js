@@ -27,7 +27,7 @@ router.route('/vendor/details/:vendorid').get(getVendorDetails)
 
 router.route('/admin/update-vendor').patch(isUserLoggedin, requiredRole("admin"), verifyVendor)
 
-router.route('/admin/delete-vendor').delete(deleteVendor)
+router.route('/admin/delete-vendor/').delete(deleteVendor)
 
 router.route('/admin/get-unverified-vendors').get(getAllUnverifiedVendors)
 

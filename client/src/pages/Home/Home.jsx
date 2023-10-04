@@ -360,11 +360,8 @@ const Home = () => {
                                             ))}
                                         </select>
                                     </div>
-
-
                                 </div>
                             </div>
-
                             <div>
                                 <div id="content" className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide space-x-5'>
                                     {
@@ -385,11 +382,8 @@ const Home = () => {
 
                                                 })
                                     }
-
-
                                 </div>
                             </div>
-
                             <div className='grid md:grid-cols-3 flex align-middle'>
                                 <div className=""></div>
 

@@ -46,7 +46,7 @@ const AddVendorModal = ({ onClose }) => {
     async function submit() {
 
         if (!firstname || !lastname || !email || !password || !mobile || !registerAddress || !accountType || !companyName || !companyDisplayName || !crNo || !website || !logo || !crImage) {
-            window.alert("all fields are mandatory")
+            return window.alert("all fields are mandatory")
         }
 
         const signupdata = {
@@ -65,12 +65,16 @@ const AddVendorModal = ({ onClose }) => {
             crImage: crImage
         }
         console.log(signupdata)
+
         try {
+            setLoading(true)
             const { data } = await VendorRegister(signupdata)
             console.log(data)
-            toast.success("Vendor Added")
+            setLoading(false)
+            window.location.reload()
         } catch (error) {
             console.log(error)
+            setLoading(false)
             toast.error(error.response.data.data)
         }
         onClose(); //
@@ -86,9 +90,9 @@ const AddVendorModal = ({ onClose }) => {
                             <div className='w-96 md:w-[1000px]'>
                                 <div className="modal bg-white px-3 py-4">
                                     <div className='space-y-4 max-h-auto  overflow-y-auto'>
-                                    <div className='text-left flex justify-start items-start align-middle'>
-                                    <p className='text-md font-bold'>Add Vendor </p>
-                                </div>
+                                        <div className='text-left flex justify-start items-start align-middle'>
+                                            <p className='text-md font-bold'>Add Vendor </p>
+                                        </div>
                                         <div>
                                             <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="email"
                                                 value={email} onChange={(e) => setEmail(e.target.value)} for="email" id='email' placeholder="Email" />

@@ -18,12 +18,12 @@ const AdminAdd = () => {
         setShowAddEvent(false);
     };
 
-    const closeOfferModal = () => {
-        setShowAddOffer(false)
-    }
-
     const handleClick = () => {
         setShowAddEvent(true)
+    }
+
+    const closeOfferModal = () => {
+        setShowAddOffer(false)
     }
 
     const handleOfferClick = () => {
@@ -154,23 +154,7 @@ const AdminAdd = () => {
                 )
                 }
 
-                {showAddVendor && (
-                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                        <div className="relative rounded-lg ">
-                            <AddVendorModal
-                                isOpen={showAddVendor}
-                                onClose={closeVendorModal} />
-                            {/* Close button */}
-                            <button
-                                onClick={closeVendorModal}
-                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                            >
-                                <img src="/images/icons/cancel-icon.png" alt="" />
-                            </button>
-                        </div>
-                    </div>
-                )
-                }
+                
 
                 {showAddCategory && (
                     <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">

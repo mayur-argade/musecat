@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
 import { AdminDeleteOffer, ClientGetOffers } from '../../http'
+import AddOfferModal from '../../components/EditEventModal/AdminAddOfferEventModal'
 import moment from 'moment'
 
 const AdminOffers = () => {
 
     const [offers, setOffers] = useState([])
     const [loading, setLoading] = useState(false)
+    const [showAddOffer, setShowAddOffer] = useState(false)
 
     useEffect(() => {
         const fetchOffers = async () => {
@@ -14,6 +16,7 @@ const AdminOffers = () => {
             try {
                 const res = await ClientGetOffers()
                 setOffers(res.data)
+                
                 setLoading(false)
             } catch (error) {
                 setLoading(false)
@@ -23,6 +26,15 @@ const AdminOffers = () => {
         fetchOffers()
 
     }, []);
+
+    const closeOfferModal = () => {
+        setShowAddOffer(false)
+    }
+
+    const handleOfferClick = () => {
+        setShowAddOffer(true)
+    }
+
 
     const deleteOffer = async (offerid) => {
         setLoading(true)
@@ -68,7 +80,11 @@ const AdminOffers = () => {
                         </div>
                         <div className="headline ">
                             <div className="heading">
-                                <span className="text-2xl font-semibold">Offers</span>
+                                <div className="flex justify-between">
+                                    <span className="text-2xl font-semibold">Offers</span>
+                                    <button onClick={handleOfferClick} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Offer</button>
+
+                                </div>
                                 <hr className='mt-3 mb-3' />
 
                                 <div className="maincontent flex flex-col">
@@ -144,6 +160,25 @@ const AdminOffers = () => {
                             </div>
                         </div>
                     </div>
+
+                    {showAddOffer && (
+                        <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                            <div className="relative rounded-lg ">
+                                <AddOfferModal
+                                    isOpen={showAddOffer}
+                                    onClose={closeOfferModal} />
+                                {/* Close button */}
+                                <button
+                                    onClick={closeOfferModal}
+                                    className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                                >
+                                    <img src="/images/icons/cancel-icon.png" alt="" />
+                                </button>
+                            </div>
+                        </div>
+                    )
+                    }
+
                 </div>
             </div>
         )

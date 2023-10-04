@@ -427,7 +427,7 @@ exports.getAllOffers = async (req, res) => {
     const todaysEpochTimestamp = todayepoch.valueOf();
 
     try {
-        const offers = await offerService.findAllOffer({ expiry: { $gte: todaysEpochTimestamp } }, 4)
+        const offers = await offerService.findAllOffer({ expiry: { $gte: todaysEpochTimestamp } })
         return res.status(200).json({
             success: true,
             data: offers

@@ -25,18 +25,23 @@ const AdminUsers = () => {
     }, []);
 
     const deleteUser = async (userid) => {
-        setLoading(true)
+        setLoading(true);
+
         const data = {
             userid: userid
-        }
-        try {
-            const res = await AdminDeleteUser(data)
-            window.alert(res.data.data)
-            window.location.reload()
-        } catch (error) {
+        };
 
+        try {
+            const res = await AdminDeleteUser(data);
+
+            if (res.data.success === true) {
+                window.location.reload();
+                // Reload the page only if the response indicates success
+            }
+        } catch (error) {
+            // Handle errors here
         }
-    }
+    };
 
     console.log(users.data)
 
@@ -50,24 +55,28 @@ const AdminUsers = () => {
     else {
         return (
             <div>
-                <div className='flex '>
+                <div className='flex'>
 
                     <div>
                         <Sidebar />
                     </div>
 
                     <div className='pl-20 flex flex-col w-full'>
-                        <div className="navbar flex justify-end mr-10 space-x-8">
-                            <button>
-                                <img src="/images/icons/notification.svg" alt="" />
-                            </button>
-                            <button>
-                                <img src="/images/icons/setting.svg" alt="" />
-                            </button>
+                        <div className="navbar flex justify-end ml-10 mr-10 space-x-8">
+                            <div className='space-x-8'>
+                                <button >
+                                    <img src="/images/icons/notification.svg" alt="" />
+                                </button>
+                                <button>
+                                    <img src="/images/icons/setting.svg" alt="" />
+                                </button>
+                            </div>
                         </div>
                         <div className="headline ">
                             <div className="heading">
-                                <span className="text-2xl font-semibold">Users</span>
+                                <div className="head">
+                                    <span className="text-2xl font-semibold">Users</span>
+                                </div>
                                 <hr className='mt-3 mb-3' />
 
                                 <div className="maincontent flex flex-col">
@@ -94,39 +103,39 @@ const AdminUsers = () => {
                                                                 <th scope="col" class="px-6 py-3">
                                                                     Mobile number
                                                                 </th>
-                                                                {/* <th scope="col" class="px-6 py-3">
+                                                                <th scope="col" class="px-6 py-3">
                                                                     Action
-                                                                </th> */}
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {
                                                                 users.data.map((user) => (
                                                                     <tr>
-                                                                            <Link className='w-full' to={`/profile/${user._id}`}>
+                                                                        <Link className='w-full' to={`/profile/${user._id}`}>
                                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                                 {user.email}
                                                                             </td>
-                                                                            </Link>
-                                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                                {user.username}
-                                                                            </td>
-                                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                                {user.firstname}
-                                                                            </td>
-                                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                                {user.lastname}
-                                                                            </td>
-                                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                                {user.mobilenumber}
-                                                                            </td>
-                                                                            {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        </Link>
+                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                            {user.username}
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                            {user.firstname}
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                            {user.lastname}
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                            {user.mobilenumber}
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                             <button onClick={() => deleteUser(user._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                                 Delete
                                                                             </button>
-                                                                        </td> */}
-                                                                        </tr>
-                                                                    
+                                                                        </td>
+                                                                    </tr>
+
                                                                 ))
                                                             }
 
