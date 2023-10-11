@@ -212,10 +212,18 @@ exports.vendorHome = async (req, res) => {
 }
 
 exports.addToFavorites = async (req, res) => {
+    // console.log(req.user)
     const { _id } = req.user;
     const { eventid } = req.body
 
-    console.log(_id, eventid)
+    if(_id == null || _id == undefined) {
+        return res.status(401).json({
+            success: false,
+            data: "Try login first"
+        })
+    }
+
+    // console.log(_id, eventid)
     try {
         // Find the user by ID
         const user = await userService.findUser({ _id: _id });

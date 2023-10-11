@@ -5,13 +5,16 @@ import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
 import { ClientProfileApi, ClientUpdateProfileApi } from '../../http/index'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
+import toast, { Toaster } from 'react-hot-toast';
 
 const Profile = () => {
     document.title = 'Profile'
 
+    const [displayModal, setDisplayModal] = useState(false)
     const [response, setReponse] = useState({});
-
+    const [loading, setLoading] = useState(false)
     const [firstname, setFirstname] = useState('')
+    const [photo, setPhoto] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
 
@@ -33,36 +36,63 @@ const Profile = () => {
     }, []);
 
     async function handleUpdate() {
-        const updatedata = {
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
+        try {
+            const updatedata = {
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                photo: photo
+            }
+            setLoading(true)
+            const { data } = await ClientUpdateProfileApi(updatedata)
+            setLoading(false)
+            console.log("update user data", data)
+            if (data.success == true) {
+                toast.success("User updated Successfully")
+                window.location.reload()
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response.data.data)
         }
-        const { data } = await ClientUpdateProfileApi(updatedata)
-
-        console.log(data)
 
     }
+
+    async function ImageModal() {
+        setDisplayModal(!displayModal)
+    }
+
+    function capturePhoto(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = function () {
+            setPhoto(reader.result);
+            // console.log(reader.result);
+        };
+    }
+
     if (response.data == null) {
-        <>
-            loading...
-        </>
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <>
-                <div>
+                <div className="relative">
                     <Navbar />
                     <section className='hidden md:block md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
-
+                        <Toaster />
                         <div className="profie flex flex-col md:flex-row justify-center align-middle items-center space-x-2">
                             <div className=" w-full right bg-neutral-200 pl-2 pr-2 py-2 rounded-lg">
                                 <p className='text-sm'>Profile card</p>
                                 <div className='flex justify-start align-middle items-center space-x-3 '>
 
                                     <div className="left w-2/6 md:w-auto">
-                                        <div className="profile">
-                                            <img className='h-20' src="/images/assets/profile.png" alt="" />
-                                        </div>
+
+                                        <button onClick={ImageModal} className="profile">
+                                            <img className='h-20 rounded-full' src={response.data.photo} alt="" />
+                                        </button>
                                     </div>
 
                                     <div className="right">
@@ -155,6 +185,47 @@ const Profile = () => {
                         </div> */}
                     </section>
 
+                    {
+                        displayModal
+                            ?
+                            <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                                <div className="relative rounded-lg ">
+                                    <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
+                                        <div className='w-96 md:w-[1000px]'>
+                                            <div className="modal bg-white px-3 py-4">
+                                                <div className='space-y-4 max-h-auto  overflow-y-auto'>
+                                                    <div className="flex items-center justify-center w-full">
+                                                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                            <div className="flex flex-col items-center justify-center ">
+                                                                <img src="/images/icons/upload-image.svg" alt="" />
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">Upload profile Photo</p>
+                                                            </div>
+                                                            <input onChange={capturePhoto}
+                                                                id="dropzone-file" type="file" className="hidden" />
+                                                        </label>
+                                                    </div>
+
+                                                    <div>
+                                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate} >Update profile</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <button
+                                        onClick={ImageModal}
+                                        className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                                    >
+                                        <img src="/images/icons/cancel-icon.png" alt="" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            :
+                            <></>
+                    }
+
                     <section className='block mt-1 md:hidden '>
                         <div className="header flex items-center align-middle">
                             <div className="profile">
@@ -228,7 +299,7 @@ const Profile = () => {
                     <div className="">
                         <Footer />
                     </div>
-                </div>
+                </div >
 
                 <div>
                     <BottomNav />

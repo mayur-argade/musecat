@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
 import { setAuth } from "../../store/authSlice";
-import { ClientLogin } from "../../http/index"
+import { ClientLogin, ClientGoogleLogin } from "../../http/index"
 
 const Login = () => {
     document.title = 'Login'
@@ -29,13 +29,28 @@ const Login = () => {
             navigate('/');
         } catch (error) {
             setLoading(false)
-            // console.log(error.response.data.data)
             toast.error(error.response.data.data)
         }
     }
 
+    async function signinWithGoogle() {
+        try {
+            setLoading(true)
+            const res = await ClientGoogleLogin()
+            console.log(res)
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+            toast.error(error.response)
+        }
+    }
+
     return (
-        <section class="h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+        <section class="relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+            <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
+                <img src="/images/icons/login-back.svg" alt="" />
+            </button>
             <Toaster />
             <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
                 <div className="logo image mb-3">
@@ -57,7 +72,8 @@ const Login = () => {
                             type="password" placeholder="Password" />
                     </div>
                     <div className='flex justify-items-end justify-end'>
-                        <a class="justify-self-end text-sm font-medium text-white md:text-black underline" href="#">Forgot password?</a>
+
+                        <Link to='/reset' class="justify-self-end text-sm font-medium text-white md:text-black underline" href="#">Forgot password?</Link>
                     </div>
                     <div>
                         {
@@ -84,7 +100,7 @@ const Login = () => {
                             Continue with Facebook
                         </span>
                     </button>
-                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                    <button onClick={signinWithGoogle} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                         <img src="/images/icons/google-icon.png" alt="" />
                         <span className='mx-auto text-center'>
                             Continue with Google

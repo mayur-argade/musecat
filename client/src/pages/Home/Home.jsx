@@ -2,17 +2,20 @@ import React, { useState, useRef, useEffect } from 'react'
 import Footer from '../../components/shared/Footer/Footer'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import CategoryCard from '../../components/Cards/CategoryCard'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, getCategoryEvents } from '../../http/index'
 import moment from 'moment'
 import EventCard from '../../components/Cards/EventCard'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import toast, { Toaster } from 'react-hot-toast';
+import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 
 
 const Home = () => {
 
     document.title = 'Home'
+
+    const navigate = useNavigate()
 
     const scrollLeft = () => {
         document.getElementById("content").scrollLeft -= 400;
@@ -176,6 +179,10 @@ const Home = () => {
             toast.success(data.message)
         } catch (error) {
             console.log(error)
+            if (error.response.status == 401) {
+                toast.error("Token Expired Login again")
+                navigate('/login')
+            }
             toast.error(error.message)
         }
 
@@ -255,17 +262,17 @@ const Home = () => {
                                     ?
                                     <div
                                         className='top-96 right-0 absolute  px-3 bg-white rounded-l-full flex space-x-2 py-2'>
-                                        <a blank href="https://wa.me/9076102474">
+                                        <a blank href="https://wa.me/+96891738405">
                                             <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
                                         </a>
-                                        <a href="">
+                                        <a href="https://www.facebook.com/muscatwhereto">
                                             <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
                                         </a>
 
-                                        <a href="">
+                                        <a href="https://www.instagram.com/muscat_whereto/">
                                             <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
                                         </a>
-                                        <a href="">
+                                        <a href="mailto:info@muscatwhereto.com">
                                             <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
                                         </a>
                                     </div>
@@ -283,7 +290,6 @@ const Home = () => {
                                         </span>
                                     </div>
 
-
                                     <input type="text" id="default-input" placeholder='Search by destination, experience, Food & wine, Live Events, Attractions, e.g. ' class="bg-[#E7E7E7] border border-gray-300 text-gray-900 text-xs rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
 
 
@@ -294,32 +300,31 @@ const Home = () => {
                                             </p>
 
                                             <div className='hidden md:flex flex-wrap justify-between space-y-2 md:space-x-52'>
-                                                <div className='flex md:space-x-2  '>
-                                                    <Link to='/category/staycation'>
+                                                <div className='flex flex-wrap justify-center md:space-x-2  '>
+                                                    <Link className='my-1' to='/category/staycation'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>staycation</button>
                                                     </Link>
-                                                    <Link to='/category/events'>
+                                                    <Link className='my-1' to='/category/events'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>friday bunch</button>
                                                     </Link>
-                                                    <Link to='/category/thingstodo'>
+                                                    <Link className='my-1' to='/category/thingstodo'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Things to do</button>
                                                     </Link>
-                                                    <Link to='/category/kidscorner'>
+                                                    <Link className='my-1' to='/category/kidscorner'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>kids corner</button>
                                                     </Link>
-                                                    <Link to='/category/weeklyoffers'>
+                                                    <Link className='my-1' to='/category/weeklyoffers'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Weekly Offers</button>
                                                     </Link>
-                                                    <Link to='/category/ladiesnight'>
+                                                    <Link className='my-1' to='/category/ladiesnight'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Ladies Night</button>
                                                     </Link>
-
                                                 </div>
-
                                             </div>
                                         </div>
-
-                                        <button type="button" class="shadow-lg shadow-cyan-500/25 align-middle h-14 w-28 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
+                                        <div className='flex mx-auto justify-center'>
+                                            <button type="button" class="shadow-lg shadow-cyan-500/25 align-middle h-14 w-28 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
+                                        </div>
 
                                     </div>
 
@@ -329,18 +334,18 @@ const Home = () => {
                         </header>
                     </div>
 
-                    <section>
-                        <section className='md:mr-48 md:ml-48 md:mt-10 mt-5'>
+                    <div className='flex justify-center items-center align-middle mt-5'>
+                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                             <div className='flex justify-between align-middle '>
 
                                 <div className="left flex items-center align-middle ">
                                     <span className='text-xl font-bold md:text-2xl md:font-[700]'>Popular Category</span></div>
 
-                                <div className="right md:flex flex-wrap space-x-2">
+                                <div className="hidden right lg:flex flex-wrap space-x-2">
                                     {
                                         daysAndDates.map((e) => (
                                             <button
-                                                onClick={() => setDayforCategory(e.date)} className='hidden md:block hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border'>{e.day}</button>
+                                                onClick={() => setDayforCategory(e.date)} className='md:block hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border'>{e.day}</button>
                                         ))
                                     }
 
@@ -366,10 +371,21 @@ const Home = () => {
                                 <div id="content" className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide space-x-5'>
                                     {
                                         categoryLoading
-                                            ? "loading"
+                                            ?
+                                            <>
+                                                <div className='h-60 space-x-3'>
+                                                    <SkeletonCard />
+                                                    <SkeletonCard />
+                                                </div>
+                                            </>
                                             :
                                             category.data.length === 0
-                                                ? "No event listings"
+                                                ?
+                                                <>
+                                                    <div className='flex justify-center'>
+                                                        <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                                    </div>
+                                                </>
                                                 :
                                                 category.data.map((category) => {
                                                     return (
@@ -413,23 +429,15 @@ const Home = () => {
 
                             </div>
                         </section>
-                    </section>
+                    </div>
 
-                    <section>
-                        <section className='md:mr-48 md:ml-48 mt-5'>
+                    <section className='flex justify-center items-center align-middle mt-5'>
+                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                             <div className='flex justify-between items-center '>
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
                                 <div className="flex items-center align-middle ">
                                     <div className="calender date-picker ">
                                         <img className="calender h-8 mr-2" onClick={openDatePicker} src="/images/assets/calender-icon.png" alt="" />
-                                        {/* <DatePicker
-                                                selected={date}
-                                                className='z-30 opacity-0 absolute top-0 left-0 w-1 h-1'
-                                                onChange={() => setnewfilterdate(date)}
-                                                dateFormat="dd-mm-yyyy"  // Customize the date format as per your requirement
-                                                ref={datePickerRef}
-                                            /> */}
-                                        {/* <input type="date" name="calender" id="" className='' /> */}
                                     </div>
                                     <div>
                                         <div className='hidden md:block flex space-x-1'>
@@ -468,9 +476,17 @@ const Home = () => {
                             <div>
                                 <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-6'>
                                     {upcomingEventsLoading
-                                        ? "loading"
+                                        ?
+                                        <>
+                                            <div className='h-30'>
+                                                <SkeletonCard />
+                                            </div>
+                                        </>
                                         : upcomingEvents.data.length === 0
-                                            ? "No Events for this date"
+                                            ?
+                                            <div className='flex justify-center'>
+                                                <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                            </div>
                                             :
                                             upcomingEvents.data.map((event) => (
                                                 <div >
@@ -511,8 +527,8 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         </section>
                     </section>
 
-                    <section>
-                        <section className='md:mr-48 md:ml-48 mt-3'>
+                    <section className='flex justify-center items-center align-middle mt-5'>
+                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                             <div className='flex justify-between '>
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Editors Pick</span></div>
                                 <div className="right"></div>
@@ -521,9 +537,17 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                             <div>
                                 <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3'>
                                     {editorpickLoading
-                                        ? "loading"
+                                        ?
+                                        <>
+                                            <div className='h-30'>
+                                                <SkeletonCard />
+                                            </div>
+                                        </>
                                         : editorpick.data.length === 0
-                                            ? "No Events available"
+                                            ?
+                                            <div className='flex justify-center'>
+                                                <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                            </div>
                                             :
                                             editorpick.data.map((event) => (
                                                 <Link to={`/events/${event._id}`}>
@@ -544,8 +568,8 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         </section>
                     </section>
 
-                    <section>
-                        <section className='md:mr-48 md:ml-48 mt-3 ml-3 mr-3'>
+                    <section className='flex justify-center items-center align-middle mt-5'>
+                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                             <div className='flex justify-between '>
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Offers</span></div>
                                 <div className="right"></div>
@@ -567,8 +591,8 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         </section>
                     </section>
 
-                    <section className=' relative '>
-                        <section className='md:mr-56 md:ml-56 mt-3'>
+                    <section className='relative flex justify-center items-center align-middle mt-5'>
+                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                             <p className='ml-6 md:ml-0 text-xl font-bold md:text-2xl md:font-[700]  '>
                                 Where to ?
                             </p>
@@ -624,7 +648,7 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                                 </div>
                             </Link>
                         </section>
-                        <div className='hidden md:flex justify-end flex-col absolute right-16 bottom-10'>
+                        <div className='hidden lg:flex justify-end flex-col absolute right-5 bottom-10'>
                             <div className='flex justify-between mb-2'>
                                 <button onClick={() => window.scrollTo({
                                     top: 0,
@@ -632,13 +656,15 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                                 })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                                     <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                                 </button>
-                                 
+
                                 <button>
                                 </button>
                             </div>
                             <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                         </div>
                     </section >
+
+
                     <Footer />
                 </div >
                 <div>

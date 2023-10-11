@@ -24,12 +24,20 @@ class UserService {
     }
 
     async updateUser(data) {
+        if (data.password) {
+            data.password = await bcrypt.hash(data.password, 10)
+        }
         const user = UserModel.findOneAndUpdate({ _id: data._id }, data)
         return user;
     }
 
     async deleteUser(filter) {
         const user = await UserModel.deleteOne(filter)
+        return user
+    }
+
+    async findAndUpdateUser(filter, data) {
+        const user = await UserModel.findOneAndUpdate(filter, data)
         return user
     }
 

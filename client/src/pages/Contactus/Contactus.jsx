@@ -119,7 +119,7 @@ const Contactus = () => {
 
                                 </div>
                                 <div className="flex justify-center mt-5">
-                                            <button onClick={submit}  type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] font-medium rounded-lg text-sm px-4 w-40 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Send Message</button>
+                                    <button onClick={submit} type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] font-medium rounded-lg text-sm px-4 w-40 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Send Message</button>
                                 </div>
                                 <div className="flex flex-col justify-center items-center mt-5 space-y-2">
                                     <span className='text-sm font-bold'>
@@ -141,10 +141,23 @@ const Contactus = () => {
                     <span className='font-bold text-lg md:ml-4'>our socials</span>
                     <img className='ml-24 h-8' src="/images/assets/arrow.png" alt="" />
                     <div className="ml-36 flex space-x-3 socialmedia">
+
+                        <a href="https://wa.me/+96891738405" target="_blank" rel="noopener noreferrer">
                         <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
-                        <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
-                        <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
-                        <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
+                        </a>
+
+                        <a href="https://www.facebook.com/muscatwhereto" target="_blank" rel="noopener noreferrer">
+                            <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
+                        </a>
+
+
+                        <a href="https://www.instagram.com/muscat_whereto/" target="_blank" rel="noopener noreferrer">
+                            <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
+                        </a>
+
+                        <a href="mailto:info@muscatwhereto.com">
+                            <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
+                        </a>
                     </div>
 
                     <div className='hidden md:flex justify-end flex-col absolute -right-28 bottom-0'>

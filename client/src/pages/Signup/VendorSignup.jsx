@@ -74,12 +74,15 @@ const VendorSignup = () => {
             navigate('/vendor/home');
         } catch (error) {
             console.log(error)
-            toast.error(error.response.data.data)
+            toast.error(error.response.data.message)
         }
     }
 
     return (
-        <section className="h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+        <section className="relative h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+            <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
+            <img src="/images/icons/login-back.svg" alt="" />
+            </button>
             <Toaster />
             <section className="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
                 <div className="title">

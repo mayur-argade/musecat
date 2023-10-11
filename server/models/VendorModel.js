@@ -23,6 +23,14 @@ const vendorSchema = new mongoose.Schema({
         required: true,
         default: false
     },
+    emailVerified: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
+    emailVerificationToken: {
+        type: String
+    },
     password: {
         type: String,
         required: [true, "Please provide password"],

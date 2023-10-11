@@ -28,20 +28,27 @@ const Signup = () => {
                 password: password,
                 mobilenumber: mobileNumber
             }
+            setLoading(true)
             const { data } = await ClientRegister(clientdata)
             // console.log()
             // dispatch(setAuth(data));
+            setLoading(false)
             if (data.success == true) {
-                navigate('/login');
+                toast.success("Registration successfull Kindly check your email for verification")
             }
         } catch (error) {
+            setLoading(false)
             toast.error(error.response.data.data)
         }
 
     }
 
     return (
-        <section class="h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
+        <section class="relative h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
+            <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
+            <img src="/images/icons/login-back.svg" alt="" />
+            </button>
+            
             <Toaster />
             <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10 ">
                 <div className="title mb-3">

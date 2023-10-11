@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { AdminListVendors, AdminDeleteVendor } from '../../http/index'
+import { AdminListVendors, AdminDeleteVendor, AdminVerifyVendor } from '../../http/index'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
 import AddVendorModal from '../../components/EditEventModal/AddVendorModal'
+import toast, { Toaster } from 'react-hot-toast';
 
 const AdminVendors = () => {
 
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
     const [users, setUsers] = useState([])
     const [showAddVendor, setShowAddVendor] = useState(false)
 
@@ -26,16 +28,35 @@ const AdminVendors = () => {
     }, []);
 
     const deleteUser = async (userid) => {
-        setLoading(true)
         const data = {
-            userid: userid
+            vendorid: userid
         }
         try {
+            setDeleteLoading(true)
             const res = await AdminDeleteVendor(data)
-            window.alert(res.data.data)
+            setDeleteLoading(false)
+            toast.success(res.data.data)
             window.location.reload()
         } catch (error) {
+            setDeleteLoading(false)
+            toast.error(error.response.data.data)
+            console.log(error)
+        }
+    }
 
+    const verifyUsers = async (vendorid) => {
+        setLoading(true)
+        try {
+
+            const offerdata = {
+                vendorid: vendorid
+            }
+
+            const res = await AdminVerifyVendor(offerdata)
+            toast.success("Vendor verified")
+            window.location.reload()
+        } catch (error) {
+            toast.error(error.response.data.data)
         }
     }
 
@@ -65,6 +86,7 @@ const AdminVendors = () => {
                     </div>
 
                     <div className='pl-20 flex flex-col w-full'>
+                        <Toaster />
                         <div className="mt-7"></div>
                         <div className="headline ">
                             <div className="heading">
@@ -99,9 +121,9 @@ const AdminVendors = () => {
                                                                 <th scope="col" class="px-6 py-3">
                                                                     Mobile Number
                                                                 </th>
-                                                                {/* <th scope="col" class="px-6 py-3">
-                                                                   Action
-                                                                </th> */}
+                                                                <th scope="col" class="px-6 py-3">
+                                                                    Action
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -123,11 +145,24 @@ const AdminVendors = () => {
                                                                         <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                             {user.mobilenumber}
                                                                         </td>
-                                                                        {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                            <button onClick={() => deleteUser(user._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                                Delete
+                                                                        <td className="space-x-2 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                            <button onClick={() => deleteUser(user._id)} className="px-4 py-2  bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+
+                                                                                <p>
+                                                                                    Delete
+                                                                                </p>
+
                                                                             </button>
-                                                                        </td> */}
+                                                                            {
+                                                                                user.isVerified
+                                                                                    ?
+                                                                                    <></>
+                                                                                    :
+                                                                                    <button onClick={() => verifyUsers(user._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                                        Verify
+                                                                                    </button>
+                                                                            }
+                                                                        </td>
                                                                     </tr>
                                                                 ))
                                                             }
@@ -146,13 +181,13 @@ const AdminVendors = () => {
                 </div>
             </div>
 
-            {showAddVendor && (
+                {showAddVendor && (
                     <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
                         <div className="relative rounded-lg ">
                             <AddVendorModal
                                 isOpen={showAddVendor}
                                 onClose={closeVendorModal} />
-                            
+
                             <button
                                 onClick={closeVendorModal}
                                 className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"

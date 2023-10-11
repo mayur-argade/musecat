@@ -20,6 +20,7 @@ import PastPurchase from './pages/PastPurchase/PastPurchase';
 import FAQ from './pages/FAQ/FAQ';
 import BookTicket from './pages/BookTicket/BookTicket';
 import TicketStatus from './pages/TicketStatus/TicketStatus';
+import VerifyUserAccount from './pages/VerifyUserAccount/VerifyUserAccount';
 import VendorLogin from './pages/Login/VendorLogin';
 import VendorSignup from './pages/Signup/VendorSignup';
 import VendorNotification from './pages/VendorNotification/VendorNotification';
@@ -33,6 +34,13 @@ import AdminHome from './pages/AdminDashboard/AdminHome';
 import AdminAdd from './pages/AdminDashboard/AdminAdd'
 import EventsPWA from './pages/PWA-Events/EventsPWA';
 import AdminCategory from './pages/AdminDashboard/AdminCategory'
+import AdminUsers from './pages/AdminDashboard/AdminUsers';
+import AdminVendors from './pages/AdminDashboard/AdminVendors';
+import AdminEvents from './pages/AdminDashboard/AdminEvents';
+import AdminOffers from './pages/AdminDashboard/AdminOffers';
+import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription';
+import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
+import SearchPWA from './pages/SearchPWA/SearchPWA';
 
 // components
 import BottomNav from './components/shared/BottomNav/BottomNav';
@@ -42,14 +50,10 @@ import AdminRoute from './utils/AdminRoute'
 import GuestRoute from './utils/GuestRoute'
 import Protected from './utils/Protected';
 import SemiProtected from './utils/SemiProtected'
-import SearchPWA from './pages/SearchPWA/SearchPWA';
 import ScrollToTop from './utils/ScrollToTop';
-import AdminUsers from './pages/AdminDashboard/AdminUsers';
-import AdminVendors from './pages/AdminDashboard/AdminVendors';
-import AdminEvents from './pages/AdminDashboard/AdminEvents';
-import AdminOffers from './pages/AdminDashboard/AdminOffers';
-import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription';
-import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
+import InputEmail from './pages/ForgotPassword/InputEmail';
+import ResetPassword from './pages/ForgotPassword/ResetPassword';
+
 
 
 function App() {
@@ -65,11 +69,15 @@ function App() {
                     <Route path="/category/:category" exact element={<Events />} />
                     <Route path="/signup" exact element={<Signup />} />
                     <Route path="/login" exact element={<Login />} />
+                    <Route path="/user/verify-account/:token" exact element={<VerifyUserAccount />} />
                     <Route path="/aboutus" exact element={<AboutUs />} />
                     <Route path="/whereto" exact element={<WhereToMap />} />
                     <Route path="/contactus" exact element={<Contactus />} />
                     <Route path="/events/:eventid" exact element={<EventDescription />} />
                     <Route path="/bookticket" element={<BookTicket />} />
+                    <Route path="/verifyaccount/:token" element={<VerifyUserAccount />} />
+                    <Route path="/reset" element={<InputEmail />} />
+                    <Route path="/user/reset-password/:token" element={<ResetPassword />} />
 
                     <Route path="/venue/venueid" exact element={<VenueDescription />} />
                     <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />

@@ -4,6 +4,7 @@ import axios from "axios";
 const api = axios.create({
     baseURL: "https://omanwhereto.com/api/v1/",
     withCredentials: true,
+    credentials: "include",
     headers: {
         headers: { 'Content-Type': 'application/json' },
         Accept: "application/json",
@@ -26,6 +27,8 @@ export const VedorDetails = (data) => api.get(`vendor/details/${data}`, data)
 
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)
+export const ClientGoogleLogin = (data) => api.get("auth/user/googlelogin", data)
+export const ClienVerify = (data) => api.patch(`auth/user/verify/${data}`, data)
 export const ClientProfileApi = (data) => api.get("user/profile", data)
 export const ClientUpdateProfileApi = (data) => api.patch("user/update-profile", data)
 export const ClientEventDetailsApi = (data) => api.get(`user/eventDetails/${data}`, data)
@@ -37,6 +40,8 @@ export const ClientBookTicket = (data) => api.post("ticket/bookticket", data)
 export const ClientTicketStatusApi = (data) => api.get(`ticket/${data}`, data)
 export const clientLogout = (data) => api.post("auth/user/logout", data)
 export const addToFavorites = (data) => api.put(`event/like`, data)
+export const SendVerificationLink = (data) => api.patch('auth/user/forget-password/send-mail', data)
+export const resetUserPassword = (data) => api.patch('auth/user/reset-password', data)
 
 export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
@@ -58,7 +63,7 @@ export const AdminDeleteUser = (data) => api.delete('/admin/delete-user', { data
 
 
 export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', data)
-export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor/${data}`)
+export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor`, { data: data })
 
 export const AdminGetAllEvents = (data) => api.get("/admin/getAllEvents", data)
 export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", { data: data })

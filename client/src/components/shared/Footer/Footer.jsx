@@ -1,12 +1,18 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 const Footer = () => {
 
     const navigate = useNavigate()
 
+    async function submit() {
+        toast.success("Added to newsletter")
+    }
+
     return (
         <div className='NoFooter'>
+            <Toaster />
             <div className='standalone:hidden bg-[#F3F3F3] border border-2 border-t-indigo-500 mt-8'>
                 <footer class="md:pr-44 md:pl-44 pt-5 pl-6 pr-6">
                     <div class=" bg-[#F3F3F3] max-w-screen  py-6 sm:px-6 lg:px-8">
@@ -28,7 +34,7 @@ const Footer = () => {
                                     </div>
                                     <div className='md:w-1/2 relative '>
                                         <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border-none rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                                        <button type="submit" class="absolute text-white absolute right-2.5 bottom-2.5 bg-[#C0A04C] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                                        <button onClick={submit} type="submit" class="absolute text-white absolute right-2.5 bottom-2.5 bg-[#C0A04C] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                     </div>
                                 </div>
                             </form>

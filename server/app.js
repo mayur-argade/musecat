@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+require('./middleware/passport')
 
 // Morgan middleware
 app.use(morgan('tiny'));
@@ -15,7 +16,12 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser())
 
 // cors middleware
-app.use(cors({origin: true, credentials: true}))
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionSuccessStatus: 200,
+}
+app.use(cors(corsOptions))
 
 // import all routes here
 const auth = require('./routes/AuthRoutes')

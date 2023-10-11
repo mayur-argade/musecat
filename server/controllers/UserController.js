@@ -121,15 +121,24 @@ exports.getAllNotifications = async (req, res) => {
 
 exports.updateUserProfile = async (req, res) => {
 
-    const { email, firstname, lastname, username, mobilenumber } = req.body
+    const { email, firstname, lastname, username, mobilenumber, photo } = req.body
 
     try {
+        let uploadedPhoto = ''
+
+        if (photo) {
+            uploadedPhoto = await cloudinary.v2.uploader.upload(photo, {
+                folder: "muscat/user",
+            })
+        }
+
         const data = {
             _id: req.user._id,
             email: email,
             username: username,
             firstname: firstname,
             lastname: lastname,
+            photo: uploadedPhoto.secure_url,
             mobilenumber: mobilenumber
         }
 
@@ -318,9 +327,10 @@ exports.getPastPurchase = async (req, res) => {
 exports.verifyVendor = async (req, res) => {
 
     const { vendorid } = req.body
-
+    console.log(vendorid)
     try {
         const vendor = await vendorService.findVendor({ _id: vendorid })
+
         if (vendor) {
             const data = {
                 _id: vendorid,
@@ -381,7 +391,7 @@ exports.deleteUser = async (req, res) => {
 
     try {
         const user = await userService.deleteUser({ _id: userid })
-
+        console.log(user)
         if (user) {
             return res.status(200).json({
                 success: true,
@@ -415,19 +425,19 @@ exports.getAllVendorsList = async (req, res) => {
 exports.deleteVendor = async (req, res) => {
     const { vendorid } = req.body
 
-
+    console.log(vendorid)
     try {
         const deleteUser = await vendorService.deleteVendor({ _id: vendorid })
 
-        if (!deleteUser) {
-            return res.status(400).json({
-                success: false,
-                data: "Something went wrong"
-            })
-        } else {
+        if (deleteUser) {
             return res.status(200).json({
                 success: true,
                 data: "Vendor deleted Successfully"
+            })
+        } else {
+            return res.status(400).json({
+                success: false,
+                data: "Something went wrong"
             })
         }
 
@@ -487,3 +497,4 @@ exports.adminStats = async (req, res) => {
 
 
 }
+

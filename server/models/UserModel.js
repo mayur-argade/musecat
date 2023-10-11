@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema({
         required: [true, "please provide email"],
         unique: true
     },
+    authid: {
+        type: String
+    },
+    photo: {
+        type: String,
+    },
     firstname: {
         type: String,
     },
@@ -17,7 +23,10 @@ const userSchema = new mongoose.Schema({
         required: [true, "Please provide username"],
         unique: true,
     },
-    
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
     password: {
         type: String,
         required: [true, "Please provide password"],
@@ -36,6 +45,12 @@ const userSchema = new mongoose.Schema({
     BookedTickets: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []
+    },
+    verificationToken: {
+        type: String
+    },
+    passwordToken: {
+        type: String
     }
 },
     {

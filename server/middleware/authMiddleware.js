@@ -6,7 +6,7 @@ const userService = require('../services/user-service')
 exports.isLoggedin = async (req, res, next) => {
     try {
         const accessToken = req.cookies.accessToken;
-        console.log("this is logged in", req.cookies)
+        // console.log("this is logged in", req.cookies)
         if (!accessToken) {
             throw new Error();
         }
@@ -32,19 +32,22 @@ exports.isLoggedin = async (req, res, next) => {
 exports.isUserLoggedin = async (req, res, next) => {
     try {
         const accessToken = req.cookies.accessToken;
-        console.log(accessToken)
-        console.log("this is logged in", req.cookies)
+        // console.log(accessToken)
+        // console.log("this is logged in", req.cookies)
         if (!accessToken) {
             throw new Error();
         }
 
         const userid = await tokenService.verifyAccessToken(accessToken);
-        console.log(userid)
+        // console.log(userid)
         const userData = await userService.findUser({ _id: userid._id });
-        if (userData) {
-            // console.log(userData)
+        console.log("user", userData)
+        if (userData != null || userData != undefined) {
+            console.log(userData)
             req.user = userData;
             // console.log(res.user)
+        } else {
+            throw new Error();
         }
         // console.log("this is not working")
         next(); // Call next() here, after the asynchronous operations are completed
