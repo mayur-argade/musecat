@@ -5,26 +5,34 @@ const offerService = require('../services/offer-service')
 const userService = require('../services/user-service')
 const tokenService = require('../services/token-service')
 const categoryService = require('../services/category-service')
-const moment = require('moment')
+const moment = require('moment-timezone')
 
-// used epoch timstamp and didn't handle this restaurant thing
+
+// vendor side
 exports.createEvent = async (req, res) => {
-    const { title, description, category, date, time, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
+    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+        date, categories, eventCategory
+    } = req.body
 
-    if (!title, !description, !category || !date || !location || !silverSeats || !silverPrice || !goldSeats || !goldPrice || !platinumSeats || !platinumPrice) {
-        return res.status(statusCode.BAD_REQUEST.code).json({
-            success: false,
-            data: "All fields are mandatory"
-        })
+    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || eventCategory) {
+    //     return res.status(statusCode.BAD_REQUEST.code).json({
+    //         success: false,
+    //         data: "Required fields are missing"
+    //     })
+    // }
+
+    console.log(categories)
+
+    for (const category of categories) {
+        if (category.price != null && category.price < 100) {
+            return res.status(400).json({
+                success: false,
+                data: "Price should be greater than 100 baisa"
+            })
+        }
     }
 
     let event = {}
-    if ((silverPrice || platinumPrice || goldPrice) < 100) {
-        return res.status(statusCode.BAD_REQUEST.code).json({
-            success: false,
-            data: "Order sum can not be less than 100 Baisa"
-        })
-    }
 
     try {
         let uploadedEventPhoto = ''
@@ -32,37 +40,45 @@ exports.createEvent = async (req, res) => {
             uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
                 folder: "muscat/events",
             })
-            console.log(uploadedEventPhoto)
+            // console.log(uploadedEventPhoto)
         }
-        const dateMoment = moment.utc(date, "YYYY-MM-DD")
 
-        console.log(dateMoment)
-        // Get the epoch timestamp in milliseconds
-        const epochDate = dateMoment.valueOf();
+        let uploadedBanner = ''
+        if (banner) {
+            uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
+                folder: "muscat/events",
+            })
+        }
+
+        let uploadedVideo = ''
+        if (video) {
+            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+                folder: "muscat/events",
+            })
+        }
 
         const data = {
             title: title,
+            displayPhoto: uploadedEventPhoto.secure_url,
+            type: 'event',
+            banner: uploadedBanner.secure_url,
+            video: uploadedVideo.secure_url,
+            shortDescription: shortDescription,
             description: description,
-            date: epochDate,
             location: location,
-            silverSeats: silverSeats,
-            silverPrice: silverPrice,
-            goldSeats: goldSeats,
-            goldPrice: goldPrice,
-            platinumSeats: platinumSeats, platinumPrice: platinumPrice, displayPhoto: displayPhoto,
             custom: custom,
-            category: category,
             features: features,
-            vendorid: req.user._id,
-            displayPhoto: uploadedEventPhoto.secure_url
+            termsAndConditions: termsAndConditions,
+            date: date,
+            categories: categories,
+            eventCategory: eventCategory,
+            vendorid: req.user._id
         }
 
         // search for category which is selected
         const categorydata = await categoryService.findCategory({
-            categoryURL: category
+            categoryURL: eventCategory
         })
-
-        console.log(categorydata)
 
         // if no category then return error
         if (!categorydata) {
@@ -74,7 +90,257 @@ exports.createEvent = async (req, res) => {
 
         event = await eventService.createEvent(data)
 
-        // push offer id into the category
+        // push event id into the category
+        categorydata.events.push(event._id)
+
+        categorydata.save()
+
+        res.status(statusCode.SUCCESS.code).json({
+            success: true,
+            data: event
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+}
+
+exports.updateEvent = async (req, res) => {
+    const { eventid } = req.params
+    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+        date, categories, eventCategory
+    } = req.body
+
+    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || eventCategory) {
+    //     return res.status(statusCode.BAD_REQUEST.code).json({
+    //         success: false,
+    //         data: "Required fields are missing"
+    //     })
+    // }
+
+    console.log(categories)
+
+    for (const category of categories) {
+        if (category.price != null && category.price < 100) {
+            return res.status(400).json({
+                success: false,
+                data: "Price should be greater than 100 baisa"
+            })
+        }
+    }
+
+    let event = {}
+
+    try {
+        let uploadedEventPhoto = ''
+        if (displayPhoto) {
+            uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
+                folder: "muscat/events",
+            })
+            // console.log(uploadedEventPhoto)
+        }
+
+        let uploadedBanner = ''
+        if (banner) {
+            uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
+                folder: "muscat/events",
+            })
+        }
+
+        let uploadedVideo = ''
+        if (video) {
+            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+                folder: "muscat/events",
+            })
+        }
+
+        const data = {
+            _id: eventid,
+            title: title,
+            displayPhoto: uploadedEventPhoto.secure_url,
+            type: 'event',
+            banner: uploadedBanner.secure_url,
+            video: uploadedVideo.secure_url,
+            shortDescription: shortDescription,
+            description: description,
+            location: location,
+            custom: custom,
+            features: features,
+            termsAndConditions: termsAndConditions,
+            date: date,
+            categories: categories,
+            eventCategory: eventCategory,
+            vendorid: req.user._id
+        }
+
+        // search for category which is selected
+        const categorydata = await categoryService.findCategory({
+            categoryURL: eventCategory
+        })
+
+        // if no category then return error
+        if (!categorydata) {
+            return res.status(404).json({
+                success: false,
+                data: "Category not found"
+            })
+        }
+
+        event = await eventService.updateEvent(data)
+
+        // push event id into the category
+        categorydata.events.push(event._id)
+
+        categorydata.save()
+
+        res.status(statusCode.SUCCESS.code).json({
+            success: true,
+            data: event
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+
+
+    // const { eventid } = req.params
+
+    // const { title, description, date, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
+
+
+    // try {
+
+    //     const data = {
+    //         _id: eventid,
+    //         title: title,
+    //         description: description,
+    //         date: date,
+    //         location: location,
+    //         silverSeats: silverSeats,
+    //         silverPrice: silverPrice,
+    //         goldSeats: goldSeats,
+    //         goldPrice: goldPrice,
+    //         platinumSeats: platinumSeats, platinumPrice: platinumPrice, displayPhoto: displayPhoto,
+    //         custom: custom,
+    //         features: features
+    //     }
+
+    //     const event = await eventService.updateEvent(data)
+    //     const updatedEvent = await eventService.findEvent({ _id: eventid })
+    //     return res.status(200).json({
+    //         success: true,
+    //         data: updatedEvent
+    //     })
+
+    // } catch (error) {
+    //     console.log(error)
+    //     return res.status(500).json({
+    //         success: false,
+    //         data: "internal service error"
+    //     })
+    // }
+}
+
+exports.createOffer = async (req, res) => {
+    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+        date, categories, eventCategory
+    } = req.body
+
+    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || eventCategory) {
+    //     return res.status(statusCode.BAD_REQUEST.code).json({
+    //         success: false,
+    //         data: "Required fields are missing"
+    //     })
+    // }
+
+    console.log(categories)
+
+    for (const category of categories) {
+        if (category.price != null && category.price < 100) {
+            return res.status(400).json({
+                success: false,
+                data: "Price should be greater than 100 baisa"
+            })
+        }
+    }
+
+    let event = {}
+
+    try {
+        let uploadedEventPhoto = ''
+        if (displayPhoto) {
+            uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
+                folder: "muscat/events",
+            })
+            // console.log(uploadedEventPhoto)
+        }
+
+        let uploadedBanner = ''
+        if (banner) {
+            uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
+                folder: "muscat/events",
+            })
+        }
+
+        let uploadedVideo = ''
+        if (video) {
+            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+                folder: "muscat/events",
+            })
+        }
+
+        // if (date.type == 'dateRange') {
+        //     let { dateRange } = date
+        //     const userTimezone = 'Asia/Muscat'; // User's local timezone (optional)
+        //     let temp = dateRange.startDate
+        //     let temp2 = dateRange.endDate
+
+        //     dateRange.startDate = moment(temp).tz(userTimezone).utc().format();
+        //     dateRange.endDate = moment(temp2).tz(userTimezone).utc().format();
+        // }
+
+        const data = {
+            title: title,
+            type: 'offer',
+            displayPhoto: uploadedEventPhoto.secure_url,
+            banner: uploadedBanner.secure_url,
+            video: uploadedVideo.secure_url,
+            shortDescription: shortDescription,
+            description: description,
+            location: location,
+            custom: custom,
+            features: features,
+            termsAndConditions: termsAndConditions,
+            date: date,
+            categories: categories,
+            eventCategory: eventCategory,
+            vendorid: req.user._id
+        }
+
+        // search for category which is selected
+        const categorydata = await categoryService.findCategory({
+            categoryURL: eventCategory
+        })
+
+        // if no category then return error
+        if (!categorydata) {
+            return res.status(404).json({
+                success: false,
+                data: "Category not found"
+            })
+        }
+
+        event = await eventService.createEvent(data)
+
+        // push event id into the category
         categorydata.events.push(event._id)
 
         categorydata.save()
@@ -147,55 +413,51 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
     }
 }
 
-exports.updateEvent = async (req, res) => {
-    const { eventid } = req.params
 
-    const { title, description, date, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
-
-
-    try {
-
-        const data = {
-            _id: eventid,
-            title: title,
-            description: description,
-            date: date,
-            location: location,
-            silverSeats: silverSeats,
-            silverPrice: silverPrice,
-            goldSeats: goldSeats,
-            goldPrice: goldPrice,
-            platinumSeats: platinumSeats, platinumPrice: platinumPrice, displayPhoto: displayPhoto,
-            custom: custom,
-            features: features
-        }
-
-        const event = await eventService.updateEvent(data)
-        const updatedEvent = await eventService.findEvent({ _id: eventid })
-        return res.status(200).json({
-            success: true,
-            data: updatedEvent
-        })
-
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            success: false,
-            data: "internal service error"
-        })
-    }
-
-
-}
 
 exports.vendorHome = async (req, res) => {
     const { _id } = req.user
 
     try {
         const today = new Date()
-        const events = await eventService.findAllEvents({ vendorid: _id, date: { $gte: today } }, 3)
+        // const today = moment().utc()
+        console.log(today)
+        const currentDay = moment().format('dddd').toLowerCase()
+        console.log(currentDay)
+        // const currentDay = "sunday"
+        const events = await eventService.findAllEvents(
+            {
+                vendorid: _id, // Assuming you pass the vendor id as a route parameter
+                // type: 'event',
+                // verified: true,
+                $or: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.startDate': { $lte: today },
+                        'date.dateRange.endDate': { $gte: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $in: [currentDay] },
+                    },
+                ],
+            }
+        )
 
-        const offers = await offerService.findAllOffer({ vendorid: _id }, 4)
+        const offers = await eventService.findAllEvents(
+            {
+                vendorid: _id, // Assuming you pass the vendor id as a route parameter
+                type: 'offer',
+                // verified: true,
+                $or: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.startDate': { $lte: today },
+                        'date.dateRange.endDate': { $gte: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $in: [currentDay] },
+                    },
+                ],
+            }
+        )
 
         res.status(200).json({
             success: true,
@@ -216,7 +478,7 @@ exports.addToFavorites = async (req, res) => {
     const { _id } = req.user;
     const { eventid } = req.body
 
-    if(_id == null || _id == undefined) {
+    if (_id == null || _id == undefined) {
         return res.status(401).json({
             success: false,
             data: "Try login first"
@@ -344,87 +606,7 @@ exports.whereToMap = async (req, res) => {
 }
 
 // --------------------offers -------------------
-exports.createOffer = async (req, res) => {
-    // get data from the frontend
-    const { title, description, photo, banner, video, shortDescription, location, expiry, startdate, category } = req.body
 
-    // null check for required fields
-    if (!title || !description || !expiry || !startdate) {
-        return res.status(401).json({
-            success: false,
-            data: "Bad request"
-        })
-    }
-
-    try {
-        // upload photo to cloudinary
-        let uploadedPhoto = ''
-        if (photo) {
-            uploadedPhoto = await cloudinary.v2.uploader.upload(photo, {
-                folder: "muscat/offers",
-            })
-        }
-
-        // upload video to cloudinary
-        let uploadedVideo;
-        let videourl
-        if (video) {
-            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
-                folder: "muscat/offers"
-            })
-            videourl = uploadedVideo.secure_url
-        }
-
-        // initialise data to save in catgories
-        let data = {
-            title: title,
-            description: description,
-            expiry: expiry,
-            banner: banner,
-            video: videourl,
-            shortDescription: shortDescription, location: location,
-            category: category,
-            startdate: startdate,
-            vendorid: req.user._id,
-            photo: uploadedPhoto.secure_url
-        }
-
-        // search for category which is selected
-        const categorydata = await categoryService.findCategory({
-            categoryURL: category
-        })
-
-        console.log(categorydata)
-
-        // if no category then return error
-        if (!categorydata) {
-            return res.status(404).json({
-                success: false,
-                data: "Category not found"
-            })
-        }
-
-        // if found category then create a offer
-        const offer = await offerService.createOffer(data)
-
-        // push offer id into the category
-        categorydata.offers.push(offer._id)
-
-        categorydata.save()
-
-        return res.status(200).json({
-            success: true,
-            data: {
-                offer: offer,
-                category: categorydata
-            }
-        })
-
-    } catch (error) {
-        console.log(error)
-    }
-
-}
 
 exports.getAllOffers = async (req, res) => {
 

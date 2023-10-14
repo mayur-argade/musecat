@@ -14,7 +14,7 @@ const VendorOfferCard = ({ data }) => {
         <div className="w-44 md:w-52  relative">
             <img
                 className="h-52 md:h-64 w-52 snap-start"
-                src={data.photo}
+                src={data.displayPhoto}
                 alt=""
             />
             <div className="absolute top-1 right-1 bg-white text-white p-1 pl-2 pr-2 rounded-md font-bold">

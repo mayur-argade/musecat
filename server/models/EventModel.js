@@ -10,90 +10,102 @@ const eventSchema = new mongoose.Schema({
         type: String,
         // required: [true, "Please provide event Display photo"]
     },
-    Banner:{
+    Banner: {
         type: String,
     },
     Video: {
         type: String,
     },
-    shortDescription:{
+    shortDescription: {
         type: String,
     },
     description: {
         type: String,
         require: [true, "Please provide description for an event"]
     },
+
     date: {
-        type: Number,
-        required: [true, "Please provide date and time for an event"]
+        type: {
+            type: String,
+            enum: ['dateRange', 'recurring'],
+            required: true,
+        },
+
+        dateRange: {
+            startDate: Date, // Start date of the event
+            endDate: Date,   // End date of the event
+        },
+
+        recurring: [{
+            type: String,
+            enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+        }],
     },
-    category:{
+
+    categories: [
+        {
+            className: {
+                type: String,
+                // required: true
+            },
+            seats: {
+                type: Number,
+                // required: true
+            },
+            price: {
+                type: Number,
+                // required: true
+            },
+            bookedSeats: {
+                type: Array,
+                default: []
+            }, // Add this field to track booked seats
+        },
+    ],
+
+    type: {
+        type: String,
+        enum: ['event', 'offer']
+    },
+
+    eventCategory: {
         type: String,
     },
+
     location: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Venues",
         required: [true, "Please provide location details for the event"]
     },
-    silverSeats: {
-        type: Number,
-        required: [true, "please provide number of silver seats for the event"]
-    },
-    silverPrice: {
-        type: Number,
-        required: [true, "Please provide price for silver class seats"]
-    },
-    goldSeats: {
-        type: Number,
-        required: [true, "please provide number of gold seats for the event"]
-    },
-    goldPrice: {
-        type: Number,
-        required: [true, "Please provide price for gold class seats"]
-    },
-    platinumSeats: {
-        type: Number,
-        required: [true, "Please provide number of platinum class seats"]
-    },
-    platinumPrice: {
-        type: Number,
-        required: [true, "Please provide price for platinum class seats"]
-    },
+
     vendorid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendors',
         required: true,
     },
+
     custom: [
         String
     ],
+
     likes: {
         type: Array,
         default: []
     },
+
     features: {
         type: String,
     },
-    bookTickets: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tickets" }],
-        default: []
-    },
-    bookedSeats: {
-        type: Array,
-        default: []
-    },
-    bookedPlatinumSeats: {
-        type: Array,
-        default: []
-    },
-    bookedGoldSeats: {
-        type: Array,
-        default: []
-    },
-    bookedSilverSeats: {
-        type: Array,
-        default: []
-    }
 
+    termsAndConditions: {
+        type: String,
+        required: true
+    },
+
+    verified: {
+        type: Boolean,
+        default: false
+    }
 },
     {
         timestamps: true

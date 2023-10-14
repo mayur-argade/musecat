@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Demo = () => {
+    const [value, onChange] = useState(new Date());
+
     const [selectedPlatinumSeats, setSelectedPlatinumSeats] = useState([]);
     const [selectedGoldSeats, setSelectedGoldSeats] = useState([]);
     const [selectedSilverSeats, setSelectedSilverSeats] = useState([]);
@@ -68,10 +69,14 @@ const Demo = () => {
         return selectedSilverSeats.includes(`${String.fromCharCode(65 + row)}-${col + 1}`);
     };
 
+    const dateInputRef = useRef(null);
 
+    const openCalendar = () => {
+        dateInputRef.current.click(); // Trigger the input's click event
+    };
     return (
         <>
-            <div >
+            {/* <div >
                 <div className="relative rounded-md mt-10 mb-2 w-52 h-85 mx-3 max-h-96 bg-[#F3F3F3] top-0">
                     <div className='absolute top-0 left-0 flex flex-col '>
                         <img className="relative rounded-lg h-52 w-52 object-cover" src="/images/assets/bgHome.png" alt="" />
@@ -98,6 +103,16 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                         </div>
                     </div>
                 </div>
+            </div> */}
+
+            <div className="calendar-container">
+                <label>Select Date:</label>
+                <input
+                    type="date"
+                    className="calendar-input"
+                    ref={dateInputRef}
+                />
+                <div className="calendar-trigger" onClick={openCalendar}></div>
             </div>
         </>
     )

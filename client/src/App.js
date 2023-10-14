@@ -42,9 +42,6 @@ import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription'
 import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
 import SearchPWA from './pages/SearchPWA/SearchPWA';
 
-// components
-import BottomNav from './components/shared/BottomNav/BottomNav';
-
 // utils
 import AdminRoute from './utils/AdminRoute'
 import GuestRoute from './utils/GuestRoute'
@@ -55,9 +52,7 @@ import InputEmail from './pages/ForgotPassword/InputEmail';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
 
 
-
 function App() {
-
     return (
         <div className="App">
             <Router>
@@ -78,7 +73,6 @@ function App() {
                     <Route path="/verifyaccount/:token" element={<VerifyUserAccount />} />
                     <Route path="/reset" element={<InputEmail />} />
                     <Route path="/user/reset-password/:token" element={<ResetPassword />} />
-
                     <Route path="/venue/venueid" exact element={<VenueDescription />} />
                     <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
                     <Route path="/faq" exact element={<FAQ />} />
@@ -87,7 +81,6 @@ function App() {
                     <Route path="/searchpage" exact element={<SearchPWA />} />
 
 
-                    <Route path="/vendor/notification" exact element={<VendorNotification />} />
 
                     {/* vendor pages */}
                     <Route path="/vendor/login" element={<VendorLogin />} />
@@ -98,7 +91,7 @@ function App() {
                     <Route path="/vendor/event/:eventid" exact element={<GuestRoute Component={VendorEventDescripton} />} />
                     <Route path="/vendor/profile" exact element={<GuestRoute Component={VendorProfile} />} />
                     <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
-
+                    <Route path="/vendor/notification" exact element={<VendorNotification />} />
 
                     {/* admin pages */}
                     <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
@@ -115,6 +108,7 @@ function App() {
                 </Routes>
             </Router>
         </div>
+
     );
 }
 

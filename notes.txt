@@ -132,3 +132,134 @@ Admin login
 - change login user api
 - give validation if role is user or not
 - check the work flow after done
+
+
+
+Home-->
+Login-logout issue resolve
+Searchbar working properly redirect it to the whereto events page
+Show daywise events and when I click on any day show all the events of that day
+Apply skeleton view for this
+Show calender option
+show like button
+show offers cards and when someone clicks on that card redirect him to the events page
+subscribe to out newsletter
+Make mobile view better (reduce card size, reduce banner, make proper searchbar)
+make proper settings in App view for bottom navbar 
+Add animations for skeleton view and searchbar
+
+About -->
+Change Image for about section
+
+Contact Us -->
+Add notification to the admin when someone fill info to the contact us
+
+Profile -->
+Show saved cards
+Show mobile view for profile
+clear saved cards 
+Update user profile
+Handle undefined values
+
+Events -->
+Show 3 events in a row 
+show 3 rows at max then scroll bar
+Add filter by category
+Add live search bar
+Add trending events
+Add datewise events
+Add to favorite 
+Show events on map
+Show in list view or in grid view
+
+Event Description -->
+Show Event photo size in a fixed manner
+Show Contact us option the way they said
+Show share option after clicking on share option link for this event should get copied
+after clicking on call icon number should get visible
+Add to calender option
+Add to favorites 
+Likes button
+Show location for the event
+Show upcoming events
+show upcoming offers
+show download banner 
+
+Venue Description -->
+Show the location of the vanue on the google map
+Show all the events happening on the venue
+Show the events which are of same categories which user have purchased earlieer if user haventt purchased anything then show the eents whose tickets are getting sold faster
+After clicking on show more button more events will get showed on the page
+
+Favorites -->
+Show all the favorite events of the user the upcoming event first and expired event should be at last
+user can also remove this events from favorites by clicking on the red heart
+
+Book Seat -->
+same form will be there for book seat 
+Create a backend api to get the data for the user and image of seating map
+prefill some field and also show only those options which vendor has created to do the same
+If event has no price then dont redirect him to the payment gateway
+If event has price then redirect him to the payment gateway and then after successfull payment allot seats which you want to allot
+Make a proper validation for the form 
+Same page will be there for the offers 
+Send invoice and mail about the event booked
+send notification to the vendor that your event has got booked
+send notification to the user that event has been successfully booked
+
+FAQ -->
+Create FAQ dynamic
+Give admin access to add and delete FAQ
+Chat with us button redirect to the chat screen
+
+Past-Purchased -->
+Show pastpurchased events first upcoming then expired
+after clicking on the event he can look his ticket which he booked
+Apply filter option 
+
+Help -->
+Chat bot integration
+Only logged in user can access this chatbot setting
+
+wheretomap -->
+Show all the upcoming events on the wheretomap
+
+Vendor Home -->
+Add Event 
+Add Offer 
+Ongoing events should be coursel view 
+if he clicks on view all then he will redirect to the hosted events page
+if he clicks on the event on the home page he will redirect to the event description
+Ongoing offers also having same functionality like events
+
+Booked Tickets -->
+Show all the booked tickets
+Apply filters 
+Show booked seats count
+Extract data into the excel or pdf 
+Cancel option for the tickets
+If he cancels the ticket then refund will get initiated 
+If he cancels the ticket user will get notification
+
+Hosted Events --> 
+Show all the ongoig upcoming events on the hosted events page
+show all the ongoging upcoming offers also on the hosted events page
+Add filter 
+
+Event description -->
+Same as client side
+Edit event modal
+redirect to the booked seats 
+
+Notification center -->
+Show all the notification in a decending order
+Clear notification button deleting offers
+Take confirmation from the user that he have to delete the offer or 
+
+Vendor profile -->
+same as client side profile page
+
+Ticket status -->
+show the ticket status as pending if no payment is done
+view ticket option show the ticket card for it 
+Configure it for mobile screens 

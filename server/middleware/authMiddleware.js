@@ -59,7 +59,7 @@ exports.isUserLoggedin = async (req, res, next) => {
 
 exports.isVerified = async (req, res, next) => {
     try {
-        console.log(req.user)
+        // console.log(req.user)
         if (req.user.isVerified == true) {
             next();
         } else {

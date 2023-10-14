@@ -292,7 +292,7 @@ const Events = () => {
                                     :
                                     response.data.length == 0
                                         ?
-                                        <div className='mx-auto mt-20'>
+                                        <div className='mx-auto mt-24'>
                                             <div>
                                             <img className='h-60' src="/images/assets/nothing.png" alt="" />
                                             </div>
@@ -301,10 +301,20 @@ const Events = () => {
                                         response.data.filter((item) => {
                                             return search.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(search)
                                         }).map((event) => (
-                                            <Link to={`/events/${event._id}`} >
+                                            <>
+                                            <Link className="mt-7" to={`/events/${event._id}`} >
                                                 < EventCard data={event} />
                                             </Link>
+                                            <Link className="mt-7" to={`/events/${event._id}`} >
+                                                < EventCard data={event} />
+                                            </Link>
+                                            <Link className="mt-7" to={`/events/${event._id}`} >
+                                                < EventCard data={event} />
+                                            </Link>
+                                            </>
+                                            
                                         ))
+                                        
                                 }
                             </div>
                         </div>

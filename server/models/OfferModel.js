@@ -6,43 +6,101 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide title for an event"]
     },
-    photo: {
+    displayPhoto: {
         type: String,
         // required: [true, "Please provide event Display photo"]
     },
-    banner:{
+    Banner: {
         type: String,
     },
-    video:{
+    Video: {
         type: String,
     },
     shortDescription: {
         type: String,
     },
-    location: {
-        type: String,
-    },
-    
     description: {
         type: String,
         require: [true, "Please provide description for an event"]
     },
-    startdate: {
-        type: Date,
-        required: [true, "Please provide date and time for an event"]
+
+    date: {
+        type: {
+            type: String,
+            enum: ['dateRange', 'recurring'],
+            required: true,
+        },
+
+        dateRange: {
+            startDate: Date, // Start date of the event
+            endDate: Date,   // End date of the event
+        },
+
+        recurring: [{
+            type: String,
+            enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+        }],
     },
+
+    categories: [
+        {
+            className: {
+                type: String,
+                // required: true
+            },
+            seats: {
+                type: Number,
+                // required: true
+            },
+            price: {
+                type: Number,
+                // required: true
+            },
+            bookedSeats: {
+                type: Array,
+                default: []
+            }, // Add this field to track booked seats
+        },
+    ],
+
+    eventCategory: {
+        type: String,
+    },
+
+    location: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Venues",
+        required: [true, "Please provide location details for the event"]
+    },
+
     vendorid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendors',
         required: true,
     },
-    category: {
+
+    custom: [
+        String
+    ],
+
+    likes: {
+        type: Array,
+        default: []
+    },
+
+    features: {
         type: String,
     },
-    expiry: {
-        type: Date,
-        required: [true, "Please provide expiry date and time for the event"]
+
+    termsAndConditions: {
+        type: String,
+        required: true
     },
+
+    verified: {
+        type: Boolean,
+        default: false
+    }
 },
     {
         timestamps: true

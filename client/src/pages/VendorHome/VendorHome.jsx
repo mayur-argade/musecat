@@ -84,7 +84,7 @@ const VendorHome = () => {
                     <div className='mt-5 flex flex-col'>
                         <span className='font-bold text-2xl'>Ongoing Events</span>
                         <div className="carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide   justify-between">
-                            {response.data.ongoingEvents != 0 ?
+                            {response.data.ongoingEvents.lendth != 0 ?
                                 response.data.ongoingEvents.map((event) => (
                                     <Link to={`/vendor/${event._id}/bookedtickets`}>
                                         <div key={event._id} className=" flex-shrink-0">
