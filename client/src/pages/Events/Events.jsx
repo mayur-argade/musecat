@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 
 const Events = () => {
+
     let { category } = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -267,8 +268,8 @@ const Events = () => {
 
                             <div className="datepicker">
                                 <div className="p-4">
-                                    <label htmlFor="date"></label>
-                                    <input className='bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 md:w-40  p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
+                                    <label for="session-date"></label>
+                                    <input id="session-date" className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 md:w-40  p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
                                 </div>
                             </div>
                         </div>
@@ -294,7 +295,7 @@ const Events = () => {
                                         ?
                                         <div className='mx-auto mt-20'>
                                             <div>
-                                            <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                                <img className='h-60' src="/images/assets/nothing.png" alt="" />
                                             </div>
                                         </div>
                                         :

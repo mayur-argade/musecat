@@ -16,12 +16,13 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser())
 
 // cors middleware
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,
-    optionSuccessStatus: 200,
-}
-app.use(cors(corsOptions))
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     credentials: true,
+//     optionSuccessStatus: 200,
+// }
+
+app.use(cors())
 
 // import all routes here
 const auth = require('./routes/AuthRoutes')

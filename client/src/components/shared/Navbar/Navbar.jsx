@@ -10,6 +10,16 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+    const openDropdown = () => {
+        setDropdownOpen(true);
+    };
+
+    const closeDropdown = () => {
+        setDropdownOpen(false);
+    };
+
     let { category, eventid } = useParams();
     const navigate = useNavigate();
     const handleBack = () => {
@@ -181,7 +191,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             window.location.pathname == "/vendor/home" ||
                                                             window.location.pathname == '/vendor/profile' ||
                                                             window.location.pathname == '/vendor/hostedevents'
-                                                            
+
                                                             ?
                                                             <>
                                                                 <button onClick={funVendorLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
@@ -258,26 +268,26 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     }
                                 </div>
                                 <div>
-                                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 
-                                    <li>
-                                        <Link to='/vendor/home' className={`${window.location.pathname == '/' ? 'text-blue-500' : ''}`}>
-                                            <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page"><span className='text-sm'>Home</span></a>
-                                        </Link>
+                                        <li>
+                                            <Link to='/vendor/home' className={`${window.location.pathname == '/' ? 'text-blue-500' : ''}`}>
+                                                <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page"><span className='text-sm'>Home</span></a>
+                                            </Link>
 
-                                    </li>
-                                    <li>
-                                        <Link to='/vendor/notification' className={`${window.location.pathname == '/vendor/notification' ? 'text-blue-500' : ''}`}>
-                                            <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Notification</span></a>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to='/vendor/helpcenter' className={`${window.location.pathname == '/helpcenter' ? 'text-blue-500' : ''}`}>
-                                            <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Help Center</span></a>
-                                        </Link>
-                                    </li>
+                                        </li>
+                                        <li>
+                                            <Link to='/vendor/notification' className={`${window.location.pathname == '/vendor/notification' ? 'text-blue-500' : ''}`}>
+                                                <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Notification</span></a>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to='/vendor/helpcenter' className={`${window.location.pathname == '/helpcenter' ? 'text-blue-500' : ''}`}>
+                                                <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Help Center</span></a>
+                                            </Link>
+                                        </li>
 
-                                </ul>
+                                    </ul>
                                 </div>
                             </div>
                             :
@@ -291,8 +301,53 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     </li>
                                     <li>
                                         <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold' : ''}`}>
-                                            <a href="#" className="block text-sm py-2 pl-3 pr-4  md:p-0 hover:font-bold 
-                                            md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Where To ?</a>
+                                            <div className="dropdown-container reltive">
+                                                <span
+                                                    className="hover-trigger"
+                                                    onMouseEnter={() => openDropdown()}
+                                                    onMouseLeave={() => closeDropdown()}
+                                                >
+                                                    Where to ?
+                                                </span>
+                                                {isDropdownOpen && (
+                                                    <div
+                                                        className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
+                                                        onMouseEnter={() => openDropdown()}
+                                                        onMouseLeave={() => closeDropdown()}
+                                                    >
+                                                        <div className=''>
+                                                            <Link  to='/category/events' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Events </a>
+                                                            </Link>
+                                                            <Link  to='/category/eat' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Eat </a>
+                                                            </Link>
+                                                            <Link  to='/category/ladiesnight' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Ladies Night </a>
+                                                            </Link>
+                                                            <Link  to='/category/weeklyoffers' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Weekly Offers </a>
+                                                            </Link>
+                                                            <Link  to='/category/thigstodo' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Things To Do </a>
+                                                            </Link>
+                                                            <Link  to='/category/staycation' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Staycation </a>
+                                                            </Link>
+                                                            <Link  to='/category/poolnbeach' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Pool & Beach </a>
+                                                            </Link>
+                                                            <Link  to='/category/kidscorner' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Kids Corner </a>
+                                                            </Link>
+                                                            <Link  to='/category/spaoffers' >
+                                                                <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Spa Offers </a>
+                                                            </Link>
+
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </Link>
                                     </li>
                                     <li>

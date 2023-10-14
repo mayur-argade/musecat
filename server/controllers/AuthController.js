@@ -91,7 +91,7 @@ exports.vendorRegister = async (req, res) => {
               <body>
                 <p>Dear ${firstname} ${lastname},</p>
                 <p>Thank you for registering vendor account with omanwhereto.com. To complete your registration and activate your account, please click on the following link:</p>
-                <p><a href="http://localhost:3000/vendor/verify-account/${token}" target="_blank">Verify Your Account</a></p>
+                <p><a href="https://www.omanwhereto.com/vendor/verify-account/${token}" target="_blank">Verify Your Account</a></p>
                 <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
                 <p>If you did not create this account, please ignore this email.</p>
                 <p>Thank you for choosing omanwhereto.com.</p>
@@ -315,7 +315,7 @@ exports.register = async (req, res) => {
               <body>
                 <p>Dear ${username},</p>
                 <p>Thank you for registering with omanwhereto.com. To complete your registration and activate your account, please click on the following link:</p>
-                <p><a href="http://localhost:3000/user/verify-account/${token}" target="_blank">Verify Your Account</a></p>
+                <p><a href="https://www.omanwhereto.com/user/verify-account/${token}" target="_blank">Verify Your Account</a></p>
                 <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
                 <p>If you did not create this account, please ignore this email.</p>
                 <p>Thank you for choosing omanwhereto.com.</p>
@@ -501,7 +501,7 @@ exports.sendMailForgotPassword = async (req, res) => {
                   <html>
                   <body>
                     <p>Dear ${user.username},</p>
-                    <p><a href="http://localhost:3000/user/reset-password/${token}" target="_blank">Reset Your Password</a></p>
+                    <p><a href="https://www.omanwhereto.com/user/reset-password/${token}" target="_blank">Reset Your Password</a></p>
                     <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
                     <p>Thank you for choosing omanwhereto.com.</p>
                     <p>Best regards,<br>The omanwhereto Team</p>

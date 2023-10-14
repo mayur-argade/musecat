@@ -9,6 +9,7 @@ import EventCard from '../../components/Cards/EventCard'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import toast, { Toaster } from 'react-hot-toast';
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
+import PlainDateRangePicker from '../../components/Calender/PlainDateRangePicker '
 
 
 const Home = () => {
@@ -24,16 +25,25 @@ const Home = () => {
         document.getElementById("content").scrollLeft += 400;
     }
 
+
+    const [showCalender, setShowCalender] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    // Define a callback function to receive the selected date
+    const handleDateSelection = (date) => {
+        setSelectedDate(date);
+        // You can perform any actions with the selected date here
+    };
+
+    const openCalender = () => {
+        setShowCalender(!showCalender)
+    }
+    const closeCalender = () => {
+        setShowCalender(!showCalender)
+    }
     const next7Days = [];
     const currentDate = moment();
 
-    const datePickerRef = useRef(null);
-
-    const openDatePicker = () => {
-        if (datePickerRef.current) {
-            datePickerRef.current.setOpen(true);
-        }
-    };
 
     for (let i = 0; i < 7; i++) {
         const formattedDate = currentDate.format('D MMM'); // Format date as "9 Sep"
@@ -289,8 +299,12 @@ const Home = () => {
                                             Where To ?
                                         </span>
                                     </div>
-
-                                    <input type="text" id="default-input" placeholder='Search by destination, experience, Food & wine, Live Events, Attractions, e.g. ' class="bg-[#E7E7E7] border border-gray-300 text-gray-900 text-xs rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                    <div className='flex w-full '>
+                                        <input type="text" id="default-input" placeholder='Search by destination, experience, Food & wine, Live Events, Attractions, e.g. ' class="bg-[#E7E7E7] border border-gray-300 text-gray-900 text-xs rounded-lg block w-full p-3 mx-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                        <div className='flex mx-auto justify-center'>
+                                            <button type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
+                                        </div>
+                                    </div>
 
 
                                     <div className='flex flex-wrap align-middle items-center justify-between mt-5 w-full'>
@@ -319,12 +333,13 @@ const Home = () => {
                                                     <Link className='my-1' to='/category/ladiesnight'>
                                                         <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Ladies Night</button>
                                                     </Link>
+                                                    <Link className='my-1' to='/category/editorspick'>
+                                                        <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Editor's Pick</button>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='flex mx-auto justify-center'>
-                                            <button type="button" class="shadow-lg shadow-cyan-500/25 align-middle h-14 w-28 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
-                                        </div>
+
 
                                     </div>
 
@@ -437,8 +452,13 @@ const Home = () => {
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
                                 <div className="flex items-center align-middle ">
                                     <div className="calender date-picker ">
-                                        <img className="calender h-8 mr-2" onClick={openDatePicker} src="/images/assets/calender-icon.png" alt="" />
+                                        <img className="calender h-8 mr-2" onClick={openCalender} src="/images/assets/calender-icon.png" alt="" />
                                     </div>
+                                    {/* {
+                                        showCalender && (
+                                            <PlainDateRangePicker initialDate={null} returnData={handleDateSelection} />
+                                        )
+                                    } */}
                                     <div>
                                         <div className='hidden md:block flex space-x-1'>
                                             {next7Days.map((item) => (
@@ -597,51 +617,59 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                                 Where to ?
                             </p>
 
-                            <div className='flex md:flex-row flex-col justify-center items-center md:space-x-3'>
-                                <div className="flex flex-col md:space-y-7 space-y-3">
+                            <div className='grid md:grid-cols-3 gap-3 p-3'>
+                                <div className='grid md:grid-cols-1 grid-rows-2 gap-3'>
                                     <Link to='/category/staycation'>
-                                        <div className="relative">
-                                            <img className="h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/events.jpg" alt="" />
+                                        <div className='relative'>
+                                            <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-10' src='/images/assets/banner-events.jpeg' alt='' />
+                                            <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
                                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Events</span>
                                         </div>
                                     </Link>
                                     <Link to='/category/weeklyoffers'>
                                         <div className='relative'>
-                                            <img className="h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/offers.jpg" alt="" />
+                                            <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-10' src='/images/assets/banner-weeklyoffers.jpeg' alt='' />
+                                            <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
                                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Weekly Offers</span>
                                         </div>
                                     </Link>
-
-
                                 </div>
 
-                                <div className="my-3">
+                                <div className='grid md:grid-cols-1 grid-rows-2 gap-3'>
                                     <Link to='/category/eat'>
                                         <div className='relative'>
-                                            <img className="h-36 w-80 md:w-80 md:h-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500" src="/images/assets/ead.jpg" alt="" />
+                                            <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-20' src='/images/assets/banner-eat.jpeg' alt='' />
+                                            <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
                                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Eat and drinks</span>
                                         </div>
                                     </Link>
+                                    <Link to='/category/poolandbeach'>
+                                        <div className='relative'>
+                                            <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500' src='/images/assets/banner-poolandbeach.jpg' alt='' />
+                                            <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
+                                            <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Pool & Beach</span>
+                                        </div>
+                                    </Link>
                                 </div>
 
-                                <div className="flex flex-col md:space-y-7 space-y-3">
+                                <div className='grid md:grid-cols-1 grid-rows-2 gap-3'>
                                     <Link to='/category/ladiesnight'>
                                         <div className='relative'>
-                                            <img className="h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/lnight.jpg" alt="" />
+                                            <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500' src='/images/assets/banner-ladiesnight.jpeg' alt='' />
+                                            <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
                                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Ladies Night</span>
                                         </div>
                                     </Link>
-
                                     <Link to='/category/thingstodo'>
                                         <div className='relative'>
-                                            <img className="h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/ttd.jpg" alt="" />
+                                            <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500' src='/images/assets/banner-thingstodo.jpeg' alt='' />
+                                            <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
                                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Things to do</span>
-
                                         </div>
                                     </Link>
                                 </div>
-
                             </div>
+
                             <Link to='/category/events'>
                                 <div className='flex justify-end space-x-2 '>
                                     <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>

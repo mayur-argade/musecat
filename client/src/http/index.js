@@ -3,6 +3,7 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: "https://omanwhereto.com/api/v1/",
+    // baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     credentials: "include",
     headers: {
@@ -94,6 +95,7 @@ api.interceptors.response.use(
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
                     baseURL: "https://omanwhereto.com/api/v1/",
+                    // baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",
@@ -102,7 +104,9 @@ api.interceptors.response.use(
                 });
 
                 const response = await refreshApi.post("auth/refresh");
+                if(response.response.status == 401){
 
+                }
                 console.log(response);
                 return api.request(originalRequest);
             } catch (err) {
