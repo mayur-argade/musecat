@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* 
 input#session-date {
     display: inline-block;
     position: relative;
@@ -19,7 +19,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     right: 0;
     top: 0;
     width: auto;
-}
+} */
 
 /* Customize the scrollbar for WebKit browsers */
 ::-webkit-scrollbar {

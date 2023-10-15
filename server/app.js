@@ -22,7 +22,10 @@ app.use(cookieParser())
 //     optionSuccessStatus: 200,
 // }
 
-app.use(cors())
+app.use(cors({
+    origin: ['https://www.omanwhereto.com', 'https://omanwhereto.com', "http://localhost:3000"],
+    credentials: true
+}));
 
 // import all routes here
 const auth = require('./routes/AuthRoutes')

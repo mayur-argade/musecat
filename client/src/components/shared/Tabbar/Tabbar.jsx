@@ -6,7 +6,7 @@ const Tabbar = () => {
     return (
         <>
             <section>
-                <nav className='shadow-lg hidden md:flex justify-center py-3 space-x-4'>
+                <nav className='shadow-lg hidden md:flex flex-wrap justify-center py-3 space-x-4'>
                     <Link to='/Category/events'>
                         <span className={`text-sm hover:underline hover:underline-offset-4 cursor-pointer ${window.location.pathname == '/Category/events' ? 'font-bold' : ''}`}>Events</span>
                     </Link>

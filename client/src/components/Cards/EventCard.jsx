@@ -6,7 +6,7 @@ const EventCard = ({data}) => {
     return (
         <>
             <div >
-                <div className="relative rounded-md mb-2 w-52 h-80 mx-3 max-h-96 bg-[#F3F3F3] top-0">
+                <div className="relative rounded-md mb-6 w-52 h-80 mx-3 max-h-96 bg-[#F3F3F3] top-0">
 
                     <div className='absolute bottom-0 left-0 flex flex-col '>
                         <img className="relative rounded-lg h-52 w-52 object-cover" src={`${data.displayPhoto}`} alt="" />
