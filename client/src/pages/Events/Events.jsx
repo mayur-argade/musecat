@@ -154,7 +154,7 @@ const Events = () => {
                     </div> */}
 
                     <section className="screenWrapper flex justify-center items-center align-middle mt-5">
-                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-9/12  xl:w-9/12 2xl:w-8/12'>
                             <div className="hidden md:flex justify-center mt-3  ">
                                 <span className='capitalize text-2xl font-bold'>
                                     {categoryName}
@@ -293,7 +293,7 @@ const Events = () => {
                             <div className='mainContainer grid grid-cols-1 lg:grid-cols-3'>
                                 <div className="1 col-span-2">
                                     <div className="left w-full ">
-                                        <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
+                                        <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                             {loading
                                                 ?
                                                 <div className='md:flex md:justify-start md:space-x-3 md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
@@ -304,10 +304,8 @@ const Events = () => {
                                                 :
                                                 response.data.length == 0
                                                     ?
-                                                    <div className='mx-auto mt-20'>
-                                                        <div>
-                                                            <img className='h-60' src="/images/assets/nothing.png" alt="" />
-                                                        </div>
+                                                    <div className='ml-60 mt-20 flex items-center justify-center w-full'>
+                                                        <img className='h-60' src="/images/assets/nothing.png" alt="" />
                                                     </div>
                                                     :
                                                     response.data.filter((item) => {
@@ -323,6 +321,7 @@ const Events = () => {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="2 flex md:justify-center lg:justify-end ">
                                     <div className="relative mx-auto md:mx-0">
                                         <div>
