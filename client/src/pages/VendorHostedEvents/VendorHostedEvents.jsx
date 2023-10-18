@@ -12,6 +12,7 @@ const VendorHostedEvents = () => {
 
     const [response, setReponse] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
+    const [showArchived, setShowArchived] = useState(false)
 
     const navigate = useNavigate();
 
@@ -69,10 +70,38 @@ const VendorHostedEvents = () => {
                             <button onClick={handleBack}>
                                 <img className='h-16' src="/images/icons/back-button.png" alt="" />
                             </button>
-                            <p className='text-xl font-bold'>Hosted Events</p>
+                            <p className='text-xl font-bold'>
+                                Hosted
+                                {
+                                    showArchived
+                                        ?
+                                        <span className='mx-2'>
+                                            Archived
+                                        </span>
+                                        :
+                                        <span className='mx-2'>
+                                            Ongoing
+                                        </span>
+                                }
+                                Events
+                            </p>
                         </div>
 
-                        <div class="filterbyfeature mb-3 mr-8">
+                        <div class="filterbyfeature mb-3 mr-8 flex align-middle items-center">
+                            <div onClick={() => setShowArchived(!showArchived)} className='mr-3 '>
+                                {
+                                    showArchived
+                                        ?
+                                        <p className='bg-[#E7E7E7] w-32 cursor-pointer px-2 py-1 rounded-md text-sm'>
+                                            Show Ongoing
+                                        </p>
+                                        :
+                                        <p className='bg-[#E7E7E7] w-32 cursor-pointer px-2 py-1 rounded-md text-sm'>
+                                            Show Archived
+                                        </p>
+                                }
+
+                            </div>
                             <div className="relative inline-block text-left">
                                 <button
                                     onClick={toggleDropdown}
@@ -119,51 +148,6 @@ const VendorHostedEvents = () => {
                                                     <label for="celebritiesAround" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Celebrities Around</label>
                                                 </div>
                                             </div>
-
-                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                            <div className="distance">
-                                                <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                                <div class="flex items-center mb-1 mt-2">
-                                                    <input id="4km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
-                                                </div>
-
-                                                <div class="flex items-center mb-1">
-                                                    <input id="10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
-                                                </div>
-
-                                                <div class="flex items-center mb-1">
-                                                    <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                                </div>
-
-
-                                            </div>
-
-                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                            <div className="timings">
-                                                <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                                <div class="flex items-center mb-1 mt-2">
-                                                    <input id="slota" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="slota" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">8am to 12pm</label>
-                                                </div>
-
-                                                <div class="flex items-center mb-1">
-                                                    <input id="slotb" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="slotb" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">12pm to 8pm </label>
-                                                </div>
-
-                                                <div class="flex items-center mb-1">
-                                                    <input id="slotc" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="slotc" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                                </div>
-
-
-                                            </div>
-
                                         </div>
                                     </div>
                                 )}
@@ -173,36 +157,73 @@ const VendorHostedEvents = () => {
 
                     <div className='mb-7 grid  xs:grid-cols-2  justify-items-center md:flex-wrap gap-y-4 md:justify-start md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4'>
                         {
-                            response.data.events.filter((item) => {
-                                return searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
-                            }).map((event) => (
-                                <Link to={`/vendor/event/${event._id}`}>
-                                    <PastPurchaseCard data={event} />
-                                </Link>
-                            ))
+                            showArchived
+                                ?
+                                <>
+                                    {
+                                        response.data.expiredEvents.filter((item) => {
+                                            return searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                        }).map((event) => (
+                                            <Link to={`/vendor/event/${event._id}`}>
+                                                <PastPurchaseCard data={event} />
+                                            </Link>
+                                        ))
+                                    }
+                                </>
+                                :
+                                <>
+                                    {
+                                        response.data.events.filter((item) => {
+                                            return searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                        }).map((event) => (
+                                            <Link to={`/vendor/event/${event._id}`}>
+                                                <PastPurchaseCard data={event} />
+                                            </Link>
+                                        ))
+                                    }
+                                </>
                         }
+
                     </div>
 
                     <div>
                         <span className='text-2xl font-bold '>Offers</span>
                         <div className=' md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-5'>
                             {
-                                response.data.offers.map((offer) => (
-                                    <div className='w-full'>
-                                        <Link to={`/vendor/offer/${offer._id}`}>
-                                            <VendorOfferCard data={offer} />
-                                        </Link>
-                                    </div>
-                                ))
+                                showArchived
+                                    ?
+                                    <>
+                                        {
+                                            response.data.expiredOffers.map((offer) => (
+                                                <div className='w-full'>
+                                                    <Link to={`/vendor/offer/${offer._id}`}>
+                                                        <VendorOfferCard data={offer} />
+                                                    </Link>
+                                                </div>
+                                            ))
+                                        }
+                                    </>
+                                    :
+                                    <>
+                                        {
+                                            response.data.offers.map((offer) => (
+                                                <div className='w-full'>
+                                                    <Link to={`/vendor/offer/${offer._id}`}>
+                                                        <VendorOfferCard data={offer} />
+                                                    </Link>
+                                                </div>
+                                            ))
+                                        }
+                                    </>
                             }
                         </div>
                     </div>
 
-                </section>
+                </section >
                 <div className=''>
                     < Footer />
                 </div>
-            </div>
+            </div >
         )
     }
 

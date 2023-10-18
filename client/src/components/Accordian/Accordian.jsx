@@ -17,10 +17,14 @@ const Accordian = ({ title, content, isOpened, onClick, color, textcol, contentf
             </div>
             {isOpened && (
                 <div className={`overflow-hidden transition-all duration-200 pl-3`}>
-                    <p className={`leading-relaxed ${contentfont}`}>{content}</p>
+                    <div className={`leading-relaxed ${contentfont}`}>
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                        {/* <HTMLviewer></HTMLviewer>
+                        {content} */}
+                    </div>
                 </div>
             )}
-        <hr className='border-slate-300'/>
+            <hr className='border-slate-300' />
         </div>
     )
 }

@@ -389,11 +389,75 @@ exports.getEventById = async (req, res) => {
 exports.getVendorAllEventsNOffers = async (req, res) => {
     const vendor = req.user
 
-    console.log(vendor)
+    // console.log(vendor)
+    const today = new Date()
+    // const today = moment().utc()
+    console.log(today)
+    const currentDay = moment().format('dddd').toLowerCase()
+    console.log(currentDay)
 
     try {
-        const events = await eventService.findAllEvents({ vendorid: vendor })
-        const offers = await offerService.findAllOffer({ vendorid: vendor })
+        const events = await eventService.findAllEvents({
+            vendorid: vendor,
+            // type: 'event',
+            // verified: true,
+            $or: [
+                { // Events with start date greater than or equal to today
+                    'date.dateRange.endDate': { $gte: today }
+                },
+                { // Events with recurring field containing today's day
+                    'date.recurring': { $in: [currentDay] },
+                },
+            ],
+
+        })
+
+        const expiredEvent = await eventService.findAllEvents({
+            vendorid: vendor,
+            // type: 'event',
+            // verified: true,
+            $and: [
+                { // Events with start date greater than or equal to today
+                    'date.dateRange.endDate': { $lt: today }
+                },
+                { // Events with recurring field containing today's day
+                    'date.recurring': { $nin: [currentDay] },
+                },
+            ],
+        })
+        const offers = await eventService.findAllEvents(
+            {
+                vendorid: vendor, // Assuming you pass the vendor id as a route parameter
+                type: 'offer',
+                // verified: true,
+                $or: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.startDate': { $lte: today },
+                        'date.dateRange.endDate': { $gte: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $in: [currentDay] },
+                    },
+                ],
+            }
+        )
+
+        const expiredOffers = await eventService.findAllEvents(
+            {
+                vendorid: vendor, // Assuming you pass the vendor id as a route parameter
+                type: 'offer',
+                // verified: true,
+                $and: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.endDate': { $lt: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $nin: [currentDay] },
+                    },
+                ],
+            }
+        )
+
         if (!events) {
             return res.status(statusCode.NOT_FOUND.code).json({
                 success: false,
@@ -405,15 +469,15 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
             success: true,
             data: {
                 events: events,
-                offers: offers
+                expiredEvents: expiredEvent,
+                offers: offers,
+                expiredOffers: expiredOffers
             }
         })
     } catch (error) {
         console.log(error)
     }
 }
-
-
 
 exports.vendorHome = async (req, res) => {
     const { _id } = req.user

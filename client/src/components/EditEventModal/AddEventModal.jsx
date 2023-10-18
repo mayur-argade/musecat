@@ -1,10 +1,11 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { VendorCreateEvent } from '../../http/index'
 import JoditEditor from 'jodit-react';
 import Cropper from 'react-easy-crop'
 import getCroppedImg from '../../utils/cropper'
 import toast, { Toaster } from 'react-hot-toast';
+import './addeventmodal.css'
 
 const AddEventModal = ({ onClose }) => {
 
@@ -18,6 +19,14 @@ const AddEventModal = ({ onClose }) => {
         buttonsXS: 'bold,italic,h1,h2,h3',
     }
 
+    const [minDateTime, setMinDateTime] = useState('');
+    useEffect(() => {
+        // Get the current date and time as an ISO string
+        const currentDate = new Date().toISOString().slice(0, 16);
+        setMinDateTime(currentDate);
+        console.log("currentDate=", currentDate)
+    }, []);
+
     const [content, setContent] = useState('')
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState('')
@@ -30,6 +39,10 @@ const AddEventModal = ({ onClose }) => {
     const [location, setLocation] = useState('')
     const [features, setFeatures] = useState('')
     const [termsAndConditions, setTermsAndConditions] = useState('')
+    const [number, setNumber] = useState('')
+    const [fb, setFb] = useState('')
+    const [insta, setInsta] = useState('')
+    const [mail, setMail] = useState('')
     const [photo, setPhoto] = useState('')
     const [seatingMap, setSeatingMap] = useState('')
     const [banner, setBanner] = useState('')
@@ -296,9 +309,10 @@ const AddEventModal = ({ onClose }) => {
                                             <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                                 <div className="flex w-full row1 space-x-4 ">
                                                     <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                        <label className='text-xs mt-1' htmlFor="first name">Date</label>
+                                                        <label className='input-container text-xs mt-1' htmlFor="first name">Date</label>
                                                         <input
                                                             type="datetime-local"
+                                                            min={minDateTime}
                                                             onChange={((e) => setStartDate(e.target.value))}
                                                             className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
                                                         />

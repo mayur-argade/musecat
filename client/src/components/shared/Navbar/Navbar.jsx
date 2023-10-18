@@ -167,6 +167,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             window.location.pathname == "/vendor/notification" ||
                                                             window.location.pathname == "/vendor/helpcenter" ||
                                                             window.location.pathname == "/vendor/home" ||
+                                                            window.location.pathname == `/vendor/event/${eventid}` ||
                                                             window.location.pathname == '/vendor/profile'
                                                             ?
                                                             `/vendor/profile`
@@ -180,6 +181,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             window.location.pathname == "/vendor/helpcenter" ||
                                                             window.location.pathname == "/vendor/home" ||
                                                             window.location.pathname == '/vendor/profile' ||
+                                                            window.location.pathname == `/vendor/event/${eventid}` ||
                                                             window.location.pathname == '/vendor/hostedevents'
                                                             
                                                             ?
@@ -249,7 +251,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                                                         <input value={searchQuery}
                                                             onChange={handleSearchInput} type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 md:w-52 pl-5 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" />
-
                                                     </div>
                                                 </div>
                                             </div>

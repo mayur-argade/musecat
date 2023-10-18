@@ -3,17 +3,23 @@ import { Link } from 'react-router-dom'
 import moment from 'moment';
 
 const PastPurchaseCard = ({ data }) => {
+    let status;
+    
+    const currentDate = moment(); // Current date
+    const startEventDate = moment(data.date.dateRange.startDate)
+    const eventDate = moment(data.date.dateRange.endDate);
 
-    const currentdate = moment().utc()
-    // console.log(currentdate._d)
+    if(currentDate.isBetween(startEventDate, eventDate)){
+        status = 'Ongoing'
+    }else if(eventDate.isBefore(currentDate)){
+        status = 'Archived'
+    }else if (startEventDate.isAfter(currentDate)){
+        status = 'Upcoming'
+    }
 
-    const currentEpoch = currentdate.valueOf()
-    console.log("current epoch time", currentEpoch)
-
-    const epochTimestamp = data.date
-    console.log("epoch timestamp for event", epochTimestamp)
-
-    let status = currentEpoch > epochTimestamp ? "Expired" : "Ongoing"
+    // console.log(data.title, data.date.dateRange.endDate)
+    // status = currentDate.isBetween(startEventDate, eventDate) ? 'Ongoing' : 'Upcoming'
+    // status =  ? 'Expired' : 'Active';
     // let status = "Expired"
     // console.log(data)
     return (
@@ -31,13 +37,13 @@ const PastPurchaseCard = ({ data }) => {
                 <div class="p-1 pt-4 pb-2 mx-1">
                     <div class="">
                         <p class="title text-md md:text-xl font-bold text-left">
-                            {data.title}
+                            {data.title} at
                         </p>
                         <p className='text-md md:text-xl font-bold text-left mb-1  '> {data.location}</p>
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                            {data.description} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'> {data.location}</span></Link>
+                            {data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'> {data.location}</span></Link>
                         </p>
                     </div>
                 </div>

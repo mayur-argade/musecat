@@ -134,7 +134,6 @@ Admin login
 - check the work flow after done
 
 
-
 Home-->
 Login-logout issue resolve
 Searchbar working properly redirect it to the whereto events page
