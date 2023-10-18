@@ -59,3 +59,15 @@ module.exports.getVenueDetails = async (req, res) => {
         console.log(error)
     }
 }
+
+exports.getAllVenues = async (req, res) => {
+    try {
+        const venues = await venueService.findAllVenue()
+        return res.status(200).json({
+            success: true,
+            data: venues
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { VendorCreateEvent } from '../../http/index'
+import { VendorCreateEvent, GetAllCategory, getAllVenues } from '../../http/index'
 import JoditEditor from 'jodit-react';
 import Cropper from 'react-easy-crop'
 import getCroppedImg from '../../utils/cropper'
@@ -20,7 +20,25 @@ const AddEventModal = ({ onClose }) => {
     }
 
     const [minDateTime, setMinDateTime] = useState('');
+    const [listCategory, setListCategory] = useState([])
+    const [listVenues, setListVenues] = useState([])
     useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                setLoading(true)
+                const res = await GetAllCategory()
+                const venues = await getAllVenues()
+                setListVenues(venues.data.data)
+                setListCategory(res.data.data)
+                setLoading(false)
+                // console.log("categories", response.data.data)
+            } catch (error) {
+                setLoading(false)
+                // console.log(error)
+            }
+        }
+        fetchCategories()
+
         // Get the current date and time as an ISO string
         const currentDate = new Date().toISOString().slice(0, 16);
         setMinDateTime(currentDate);
@@ -179,7 +197,7 @@ const AddEventModal = ({ onClose }) => {
         if (
             !title ||
             !content ||
-            // !location ||
+            !location ||
             !termsAndConditions ||
             !eventCategory ||
             !photo ||
@@ -227,7 +245,7 @@ const AddEventModal = ({ onClose }) => {
             title: title,
             shortDescription: shortDesc,
             description: content,
-            location: "6501f920130068e55be35c1e",
+            location: location,
             custom: inputFields,
             features: features,
             termsAndConditions: termsAndConditions,
@@ -236,7 +254,11 @@ const AddEventModal = ({ onClose }) => {
             displayPhoto: photo,
             banner: banner,
             date: eventdate,
-            seatingMap: seatingMap
+            seatingMap: seatingMap,
+            facebook: fb,
+            instagram: insta,
+            email: mail,
+            whatsapp: number
         }
         setLoading(true)
         try {
@@ -248,6 +270,7 @@ const AddEventModal = ({ onClose }) => {
                 toast.success("Event is successfully added")
                 navigate(`/vendor/event/${data.data._id}`)
             } else if (data.success == false) {
+                toast.error(data.data)
                 window.alert(data.data)
             }
         } catch (error) {
@@ -255,19 +278,25 @@ const AddEventModal = ({ onClose }) => {
         }
         onClose(); // This will close the modal
     };
-    return (
-        <div>
-            <Toaster />
-            {
-                !loading
-                    ?
-                    <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
-                        <div className='w-96 md:w-[1000px]'>
-                            <div className="modal bg-white px-3 py-4">
-                                <div className='text-left flex justify-start items-start align-middle'>
-                                    <p className='text-md font-bold'>Event Details</p>
-                                </div>
-                                <form action="post">
+    if (listCategory.length == 0 || listCategory == null || listVenues == null) {
+        return (
+            <div className="h-screen w-full flex justify-center align-middle items-center">
+                <img src="/images/icons/loading.svg" alt="" />
+            </div>
+        )
+    } else {
+        return (
+            <div>
+                <Toaster />
+                {
+                    !loading
+                        ?
+                        <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
+                            <div className='w-96 md:w-[1000px]'>
+                                <div className="modal bg-white px-3 py-4">
+                                    <div className='text-left flex justify-start items-start align-middle'>
+                                        <p className='text-md font-bold'>Event Details</p>
+                                    </div>
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name *">Title  *</label>
                                         <input
@@ -275,7 +304,7 @@ const AddEventModal = ({ onClose }) => {
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                             onChange={((e) => setTitle(e.target.value))}
                                             placeholder='Breakfast and poolpass at crown plaza'
-                                            required
+
                                         />
                                     </div>
 
@@ -291,7 +320,7 @@ const AddEventModal = ({ onClose }) => {
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">Event Description  *</label>
                                         <JoditEditor
-                                            required
+
                                             ref={editor}
                                             value={content}
                                             config={config}
@@ -313,6 +342,7 @@ const AddEventModal = ({ onClose }) => {
                                                         <input
                                                             type="datetime-local"
                                                             min={minDateTime}
+                                                            id="session-date"
                                                             onChange={((e) => setStartDate(e.target.value))}
                                                             className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
                                                         />
@@ -324,6 +354,7 @@ const AddEventModal = ({ onClose }) => {
                                                         <label className='text-xs mt-1' htmlFor="first name">Date</label>
                                                         <input
                                                             type="datetime-local"
+                                                            id="session-date"
                                                             onChange={((e) => setEndDate(e.target.value))}
                                                             className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
                                                         />
@@ -365,10 +396,15 @@ const AddEventModal = ({ onClose }) => {
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
                                             onChange={((e) => setEventCategory(e.target.value))}
-                                            required
+
                                             placeholder='Theatre of Arts'
                                         >
-                                            <option className=' text-sm font-medium' value="staycaton">Staycation</option>
+                                            {
+                                                listCategory.map((category) => (
+                                                    <option className=' text-sm font-medium' key={category._id} value={category.categoryURL}>{category.name}</option>
+                                                ))
+                                            }
+
                                             <option className=' text-sm font-medium' value="eat">Eat</option>
                                             <option className=' text-sm font-medium' value="weeklyoffers">Weekly Offers</option>
                                         </select>
@@ -377,13 +413,28 @@ const AddEventModal = ({ onClose }) => {
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">Location  *</label>
                                         <select
-                                            required
+
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
                                             onChange={((e) => setLocation(e.target.value))}
                                             placeholder='Theatre of Arts'
                                         >
-                                            <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
+                                            {
+                                                listVenues.length == 0
+                                                    ?
+                                                    <option className=' text-sm font-medium' >Select Venue
+                                                    </option>
+                                                    :
+                                                    <>
+                                                        <option className=' text-sm font-medium' >Select Venue
+                                                        </option>
+                                                        {
+                                                            listVenues.map((venue) => (
+                                                                <option className=' text-sm font-medium' key={venue._id} value={venue._id}>{venue.name}</option>
+                                                            ))
+                                                        }
+                                                    </>
+                                            }
                                         </select>
                                     </div>
 
@@ -512,33 +563,75 @@ const AddEventModal = ({ onClose }) => {
                                         />
                                     </div>
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">Terms And Condition  *</label>
                                         <input
-                                            required
+
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                             placeholder='Link for terms and condition'
                                             onChange={((e) => setTermsAndConditions(e.target.value))}
                                         />
                                     </div>
+                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Contact</label>
+                                    <div className='flex justify-between'>
+                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
+                                            <input
+
+                                                type="text"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Link for FB page'
+                                                onChange={((e) => setFb(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
+                                            <input
+
+                                                type="text"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Link for Instagram page'
+                                                onChange={((e) => setInsta(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Email</label>
+                                            <input
+
+                                                type="email"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Your email address'
+                                                onChange={((e) => setMail(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
+                                            <input
+                                                type="number"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Whatsapp number'
+                                                onChange={((e) => setNumber(e.target.value))}
+                                            />
+                                        </div>
+                                    </div>
 
 
                                     <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Display Photo</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-                                        required
+
                                         onChange={capturePhoto}
                                         id="photo" type="file" />
 
                                     <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-                                        required
+
                                         onChange={captureSeatingMap}
                                         id="photo" type="file" />
 
                                     <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
-                                        required
+
                                         onChange={captureBanner}
                                         type="file" />
 
@@ -556,19 +649,22 @@ const AddEventModal = ({ onClose }) => {
                                             Save
                                         </button>
                                     </div>
-                                </form>
+
+                                </div>
+
+
                             </div>
-
-
+                        </section>
+                        :
+                        <div className="h-screen w-full flex justify-center align-middle items-center">
+                            <img src="/images/icons/loading.svg" alt="" />
                         </div>
-                    </section>
-                    :
-                    <div className="h-screen w-full flex justify-center align-middle items-center">
-                        <img src="/images/icons/loading.svg" alt="" />
-                    </div>
-            }
-        </div >
-    )
+                }
+            </div >
+        )
+    }
+
+
 }
 
 export default AddEventModal

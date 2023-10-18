@@ -24,6 +24,8 @@ export const VendorCreateOffer = (data) => api.post("vendor/create-offer", data)
 export const VendorCreateEvent = (data) => api.post("/vendor/create-event", data)
 export const vendorLogout = (data) => api.post("auth/vendor/logout", data)
 export const VedorDetails = (data) => api.get(`vendor/details/${data}`, data)
+export const getAllVenues = (data) => api.get('venue/venues/all', data)
+export const VendorUpdateEvent = (data) => api.patch(`vendor/event/update-event`, data)
 
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)

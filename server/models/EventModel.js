@@ -63,6 +63,10 @@ const eventSchema = new mongoose.Schema({
         },
     ],
 
+    discountOnApp: {
+        type: Number
+    },
+
     type: {
         type: String,
         enum: ['event', 'offer']
@@ -105,6 +109,18 @@ const eventSchema = new mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
+    },
+    whatsapp: {
+        type: Number
+    },
+    facebook: {
+        type: String
+    },
+    instagram: {
+        type: String
+    },
+    email: {
+        type: String
     }
 },
     {

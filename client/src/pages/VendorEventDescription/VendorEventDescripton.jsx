@@ -91,7 +91,7 @@ const VendorEventDescripton = () => {
                             <button onClick={handleBack} className=' mt-1'>
                                 <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                             </button>
-                            <span className='text-lg font-bold'>Event Description</span>
+                            <span className='text-lg font-bold'>{response.data.type.charAt(0).toUpperCase()}{response.data.type.slice(1)} Description</span>
                         </div>
 
                         <div className='text-center'>
@@ -104,7 +104,7 @@ const VendorEventDescripton = () => {
                                 </Link></p>
                             <div className='mt-4 flex justify-center text-center'>
                                 <img src="/images/icons/calender.svg" alt="" />
-                                <p className='text-sm font-semibold'>{moment(response.data.date).format("dddd, MMMM D, YYYY | HH:mm")}</p>
+                                <p className='text-sm font-semibold'>{moment(response.data.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
                             </div>
                         </div>
 

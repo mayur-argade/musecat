@@ -107,7 +107,9 @@ const VendorHome = () => {
                         <div className="ml-3 md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scrollbar-hide space-x-3 md:space-x-5">
                             {response.data.ongoingOffers.map((offer) => (
                                 <div key={offer._id} className=" flex-shrink-0">
+                                    <Link to={`/vendor/event/${offer._id}`}>
                                     <VendorOfferCard data={offer} />
+                                    </Link>
                                 </div>
                             ))
                             }

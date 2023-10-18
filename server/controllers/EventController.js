@@ -11,15 +11,17 @@ const moment = require('moment-timezone')
 // vendor side
 exports.createEvent = async (req, res) => {
     let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
-        date, categories, eventCategory
+        date, categories, eventCategory, whatsapp, instagram, facebook, email, discountOnApp
     } = req.body
 
-    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || eventCategory) {
-    //     return res.status(statusCode.BAD_REQUEST.code).json({
-    //         success: false,
-    //         data: "Required fields are missing"
-    //     })
-    // }
+    // console.log(title, displayPhoto, banner, shortDescription, description, location, termsAndConditions, date, categories, eventCategory)
+
+    if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
+        return res.status(statusCode.BAD_REQUEST.code).json({
+            success: false,
+            data: "Required fields are missing"
+        })
+    }
 
     console.log(categories)
 
@@ -72,7 +74,12 @@ exports.createEvent = async (req, res) => {
             date: date,
             categories: categories,
             eventCategory: eventCategory,
-            vendorid: req.user._id
+            vendorid: req.user._id,
+            whatsapp: whatsapp,
+            email: email,
+            facebook: facebook,
+            intagram: instagram,
+            discountOnApp: discountOnApp
         }
 
         // search for category which is selected
@@ -110,12 +117,11 @@ exports.createEvent = async (req, res) => {
 }
 
 exports.updateEvent = async (req, res) => {
-    const { eventid } = req.params
-    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
-        date, categories, eventCategory
+    let { eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+        date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type
     } = req.body
 
-    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || eventCategory) {
+    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
     //     return res.status(statusCode.BAD_REQUEST.code).json({
     //         success: false,
     //         data: "Required fields are missing"
@@ -123,13 +129,15 @@ exports.updateEvent = async (req, res) => {
     // }
 
     console.log(categories)
+    if (categories) {
 
-    for (const category of categories) {
-        if (category.price != null && category.price < 100) {
-            return res.status(400).json({
-                success: false,
-                data: "Price should be greater than 100 baisa"
-            })
+        for (const category of categories) {
+            if (category.price != null && category.price < 100) {
+                return res.status(400).json({
+                    success: false,
+                    data: "Price should be greater than 100 baisa"
+                })
+            }
         }
     }
 
@@ -162,7 +170,7 @@ exports.updateEvent = async (req, res) => {
             _id: eventid,
             title: title,
             displayPhoto: uploadedEventPhoto.secure_url,
-            type: 'event',
+            type: type,
             banner: uploadedBanner.secure_url,
             video: uploadedVideo.secure_url,
             shortDescription: shortDescription,
@@ -174,28 +182,38 @@ exports.updateEvent = async (req, res) => {
             date: date,
             categories: categories,
             eventCategory: eventCategory,
-            vendorid: req.user._id
+            vendorid: req.user._id,
+            facebook: facebook,
+            whatsapp: whatsapp,
+            instagram: instagram,
+            email: email,
+            discountOnApp: discountOnApp
         }
 
         // search for category which is selected
-        const categorydata = await categoryService.findCategory({
-            categoryURL: eventCategory
-        })
-
-        // if no category then return error
-        if (!categorydata) {
-            return res.status(404).json({
-                success: false,
-                data: "Category not found"
+        let categorydata;
+        if (eventCategory) {
+            categorydata = await categoryService.findCategory({
+                categoryURL: eventCategory
             })
+            // if no category then return error
+            if (!categorydata) {
+                return res.status(404).json({
+                    success: false,
+                    data: "Category not found"
+                })
+            }
         }
+
 
         event = await eventService.updateEvent(data)
 
         // push event id into the category
-        categorydata.events.push(event._id)
+        if (categorydata) {
+            categorydata.events.push(event._id)
+            categorydata.save()
+        }
 
-        categorydata.save()
 
         res.status(statusCode.SUCCESS.code).json({
             success: true,

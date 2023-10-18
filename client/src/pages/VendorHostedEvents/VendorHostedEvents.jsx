@@ -208,7 +208,7 @@ const VendorHostedEvents = () => {
                                         {
                                             response.data.offers.map((offer) => (
                                                 <div className='w-full'>
-                                                    <Link to={`/vendor/offer/${offer._id}`}>
+                                                    <Link to={`/vendor/event/${offer._id}`}>
                                                         <VendorOfferCard data={offer} />
                                                     </Link>
                                                 </div>

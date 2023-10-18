@@ -9,7 +9,7 @@ router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
 router.route('/vendor/events').get(isLoggedin, isVerified, getVendorAllEventsNOffers)
 router.route('/vendor/create-offer').post(isLoggedin, isVerified, createOffer)
-router.route('/vendor/event/:eventid').patch(isLoggedin, isVerified, updateEvent)
+router.route('/vendor/event/update-event').patch(isLoggedin, isVerified, updateEvent)
 
 router.route('/event/like').put(isUserLoggedin, addToFavorites)
 router.route('/events/upcoming-events').get(getUpcomingEvents)
