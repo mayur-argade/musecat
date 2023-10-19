@@ -31,7 +31,7 @@ const PastPurchaseCard = ({ data }) => {
                 </button>
 
                 <a href="#">
-                    <img class="h-70 w-full rounded-none" src={`${data.displayPhoto}`} alt="" />
+                    <img class="h-72 w-full rounded-none" src={`${data.displayPhoto}`} alt="" />
                 </a>
 
                 <div class="p-1 pt-4 pb-2 mx-1">
