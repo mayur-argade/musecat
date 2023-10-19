@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 
-const EventCard = ({data}) => {
+const EventCard = ({ data }) => {
 
     return (
         <>
@@ -13,7 +13,15 @@ const EventCard = ({data}) => {
                             <img src="/images/icons/heart.svg" alt="" />
                         </button>
                         <div className='flex flex-col p-2'>
-                        <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange.startDate).format("ddd, Do MMMM YYYY")}</p>
+                            {
+                                data.date.type == 'dateRange'
+                                    ?
+                                    <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd, Do MMMM YYYY")}</p>
+                                    :
+                                    <p className='text-xs mt-2 font-medium'>
+                                        {data.date.recurring.join(" ")}
+                                    </p>
+                            }
                             <p className='text-xs mt-2 font-medium'>{data.title},</p>
                             <p className='text-xs mt-2 font-medium'>{data.location}</p>
                             <p className="mt-1 mb-1 text-xs font-light">{data.eventCategory}</p>
