@@ -15,10 +15,10 @@ class PaymentService {
                 client_reference_id: paymentdata.client_ref_id,
                 mode: 'payment',
                 products: [{ name: paymentdata.name, quantity: paymentdata.quantity, unit_amount: paymentdata.unitAmout }],
-                // success_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
-                // cancel_url: 'https://www.omanwhereto.com/',
-                success_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
-                cancel_url: 'http://localhost:3000',
+                success_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
+                cancel_url: 'https://www.omanwhereto.com/',
+                // success_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
+                // cancel_url: 'http://localhost:3000',
 
                 metadata: { 'Customer name': 'user01', 'order id': '1' }
             }

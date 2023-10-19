@@ -206,7 +206,13 @@ const EventDescription = () => {
                                         </Link></p>
                                     <div className='mt-4 flex justify-center space-x-2 text-center'>
                                         <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
-                                        <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
+                                        {
+                                            response.data.date == 'dateRange'
+                                                ?
+                                                <p className='text-sm font-semibold'>{moment(response.data.date.eventDetails.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
+                                                :
+                                                <p>{response.data.eventDetails.date.recurring.join(" ")}</p>
+                                        }
                                     </div>
                                 </div>
 
