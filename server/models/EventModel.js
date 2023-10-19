@@ -31,7 +31,7 @@ const eventSchema = new mongoose.Schema({
         type: {
             type: String,
             enum: ['dateRange', 'recurring'],
-            required: true,
+            // required: true,
         },
 
         dateRange: {
@@ -65,6 +65,11 @@ const eventSchema = new mongoose.Schema({
             }, // Add this field to track booked seats
         },
     ],
+
+    bookedTickets: {
+        type: Array,
+        default: []
+    },
 
     discountOnApp: {
         type: Number

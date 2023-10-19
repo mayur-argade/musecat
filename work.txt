@@ -1,3 +1,5 @@
+handle instgram
+
 home -->
 1. event category counts
 2. upcoming events
@@ -20,4 +22,20 @@ bookseats -->
 3. if no price no payment gateway redirection
 4. ticket status handling
 
-
+Ticket Booking
+event
+--> event with price (className/seats)
+    --> if className seats and price 
+        --> (book in a traditional manner)
+    --> if className and price
+        --> (no tension of avaialble seats)
+--> event without price (no className, no seats / className with seats / className with no seats)
+    --> if no className and no seats no price    
+        --> book ticket with awaiting confirmation
+    --> if className and seats without price
+        --> book ticket with checking availble seats dont redirect him to the payment gateway
+    --> if className with no seats and no price
+        --> (no tension of available seats book as much as you want)
+offer
+--> offer with price (className/seats)
+--> offfer without price (no className, no seats / className with seats / className with no seats)

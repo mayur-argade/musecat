@@ -6,28 +6,36 @@ import FavoriteCard from '../../components/Cards/FavoriteCard'
 import TicketStatusCard from '../../components/Cards/TicketStatusCard'
 import Ticket from '../../components/Ticket/Ticket'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ClientTicketStatusApi } from '../../http/index'
+import { ClientTicketStatusApi, UpdateTicketStatusPayment } from '../../http/index'
 
 const TicketStatus = () => {
 
     document.title = 'TicketStatus'
     let { ticketid } = useParams()
     console.log(ticketid)
+
     const [response, setReponse] = useState('')
 
     useEffect(() => {
         const fetchdata = async () => {
             try {
+                const ticketdata = {
+                    ticketid: ticketid
+                }
+                const res = await UpdateTicketStatusPayment(ticketdata)
+
                 const { data } = await ClientTicketStatusApi(ticketid)
                 console.log(data.data)
                 setReponse(data)
-
             } catch (error) {
                 console.log(error)
             }
         }
 
         fetchdata()
+
+
+
     }, [ticketid]);
 
     console.log(response.data)
@@ -67,7 +75,7 @@ const TicketStatus = () => {
                     <div className='flex flex-col justify-start align-middle items-stretch md:flex-row '>
 
                         <div className="left">
-                            <TicketStatusCard data={response.data.event}/>
+                            <TicketStatusCard data={response.data.event} />
                         </div>
 
                         <div className="right">
@@ -113,7 +121,7 @@ const TicketStatus = () => {
                                 </div>
                                 <div className="flex  md:space-y-0 space-x-3 mt-3">
                                     <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
+                                        <label className='text-xs mt-1' htmlFor="first name">No. of seats</label>
                                         <input
                                             type="number"
                                             className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
@@ -122,11 +130,11 @@ const TicketStatus = () => {
                                         />
                                     </div>
                                     <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Select row</label>
+                                        <label className='text-xs mt-1' htmlFor="first name">Ticket Status</label>
                                         <input
                                             type="number"
                                             className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                            placeholder={response.data.ticket.row}
+                                            placeholder={response.data.ticket.status}
                                             disabled
                                         />
                                     </div>

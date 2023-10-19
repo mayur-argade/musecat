@@ -60,9 +60,9 @@ const BookTicket = () => {
         setModalOpen(false);
     };
 
-
     let hasPrice = [];
     let hasSeats = [];
+    let hasClassName = [];
     if (response.data != null) {
         for (const category of response.data.eventDetails.categories) {
             if (category.price != null) {
@@ -71,6 +71,9 @@ const BookTicket = () => {
             if (category.seats != null) {
                 hasSeats.push(category.className)
             }
+            if (category.className != null) {
+                hasClassName.push(category.className)
+            }
         }
     }
 
@@ -78,8 +81,6 @@ const BookTicket = () => {
         if (hasPrice.length != 0) {
             if (price) {
                 submit()
-                // // Redirect to the next page when clicked for the second time
-                // navigate('/ticketstatus/ticketid')
             } else {
                 if (!firstname || !lastname || !ticketclass || !seats) {
                     toast.error("All fields are mandatory")
@@ -108,7 +109,7 @@ const BookTicket = () => {
         const taxRate = 0.05
         let basePrice1 = category.price
         const taxAmout = basePrice1 * taxRate
-        const baseTaxAmout = basePrice1 + taxAmout
+        const baseTaxAmout = Math.round(basePrice1 + taxAmout)
         const tax = taxAmout * seats
         const totalPrice = baseTaxAmout * seats
         const basePrice = basePrice1 * seats
@@ -127,18 +128,18 @@ const BookTicket = () => {
     const [priceWithTax, setPriceWithTax] = useState('')
 
     async function submit() {
-        if (hasSeats.length != 0 || hasSeats.length != 0) {
+        if (hasPrice.length != 0 && hasClassName.length != 0) {
             if (!firstname || !lastname || !email || !ticketclass || !seats) {
                 toast.error("All fields are mandatory")
             } else if (seats <= 0) {
-                toast.error("Enter valid seat number")
+                toast.error("Enter valid seats number")
             } else {
                 try {
                     const ticketdata = {
                         firstname: firstname,
-                        type: response.data.eventDetails.type,
                         lastname: lastname,
                         email: email,
+                        type: response.data.eventDetails.type,
                         ticketclass: ticketclass,
                         seats: seats,
                         priceWithTax: priceWithTax,
@@ -146,32 +147,49 @@ const BookTicket = () => {
                     }
                     setLoading(true)
                     const { data } = await ClientBookTicket(ticketdata)
-                    // console.log("checking data for the 404 error",data)
+                    console.log("checking data for the 404 error", data)
                     setLoading(false)
                     toast.success("To book your Ticket proceed to payment page")
-                    if (data.session_id) {
-                        const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
 
-                        window.location.href = externalURL;
-                        // navigate him to the checkout page
-                        // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                    if (data.session_id) {
+                        if (data.session_id) {
+                            const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
+
+                            window.location.href = externalURL;
+                            // navigate him to the checkout page
+                            // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                        }
+                    } else {
+                        toast.error("Failed to initiate payment service")
                     }
                 } catch (error) {
                     setLoading(false)
                     console.log(error)
                     if (error.response.status == 401) {
-                        toast.error("Token Expired Kindly login again")
+                        toast((t) => (
+                            <span>
+                                <b>Token Expired</b>
+                                <button onClick={() => navigate('/login')}>
+                                    Login
+                                </button>
+                            </span>
+                        ));
                     }
                     toast.error(error.response.data.data)
                 }
             }
-        } else {
+        }
+
+        // no price has classname has seatss
+        else if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length != 0) {
             try {
                 const ticketdata = {
                     firstname: firstname,
                     type: response.data.eventDetails.type,
                     lastname: lastname,
                     email: email,
+                    ticketclass: ticketclass,
+                    seats: seats,
                     eventid: eventid,
                 }
                 setLoading(true)
@@ -181,24 +199,101 @@ const BookTicket = () => {
                 if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
                 } else {
-                    toast.error("We are unable to book your ticket please try later")
+                    toast.error("no price has classname has seatss We are unable to book your ticket please try later")
                 }
-                // if (data.session_id) {
-                //     const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
-
-                //     window.location.href = externalURL;
-                //     // navigate him to the checkout page
-                //     // navigate(`/ticketstatus/${data.seatsbooked._id}`)
-                // }
             } catch (error) {
                 setLoading(false)
                 console.log(error)
                 if (error.response.status == 401) {
-                    toast.error("Token Expired Kindly login again")
+                    toast((t) => (
+                        <div className="flex space-x-3">
+                            <b>Token Expired</b>
+                            <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
+                                Login
+                            </button>
+                        </div>
+                    ));
                 }
                 toast.error(error.response.data.data)
             }
         }
+
+        else if (hasPrice.length == 0 && hasClassName.length != 0) {
+            try {
+                const ticketdata = {
+                    firstname: firstname,
+                    type: response.data.eventDetails.type,
+                    lastname: lastname,
+                    email: email,
+                    seats: seats,
+                    eventid: eventid,
+                    ticketclass: ticketclass
+                }
+                setLoading(true)
+                const { data } = await ClientBookTicket(ticketdata)
+                // console.log("checking data for the 404 error",data)
+                setLoading(false)
+                if (data.ticket != null) {
+                    toast.success("Ticket Has been booked")
+                } else {
+                    toast.error("We are unable to book your ticket please try later")
+                }
+            } catch (error) {
+                setLoading(false)
+                console.log(error)
+                if (error.response.status == 401) {
+                    toast((t) => (
+                        <span>
+                            <b>Token Expired</b>
+                            <button onClick={() => navigate('/login')}>
+                                Login
+                            </button>
+                        </span>
+                    ));
+                }
+                toast.error(error.response.data.data)
+            }
+        }
+
+        // no price no classname no seats
+        else if (hasPrice.length == 0 && hasClassName.length == 0 && hasSeats.length == 0) {
+            try {
+                const ticketdata = {
+                    firstname: firstname,
+                    type: response.data.eventDetails.type,
+                    lastname: lastname,
+                    email: email,
+                    seats: seats,
+                    eventid: eventid,
+                }
+                setLoading(true)
+                const { data } = await ClientBookTicket(ticketdata)
+                // console.log("checking data for the 404 error",data)
+                setLoading(false)
+                if (data.ticket != null) {
+                    toast.success("Ticket Has been booked")
+                } else {
+                    toast.error("no price no classname no seats We are unable to book your ticket please try later")
+                }
+            } catch (error) {
+                setLoading(false)
+                console.log(error)
+                if (error.response.status == 401) {
+                    toast((t) => (
+                        <div className="flex space-x-3">
+                            <b>Token Expired</b>
+                            <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
+                                Login
+                            </button>
+                        </div>
+                    ));
+                }
+                toast.error(error.response.data.data)
+            }
+        }
+
+
+
     }
 
     // console.log()
@@ -353,8 +448,8 @@ const BookTicket = () => {
                                                 <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
 
                                                 <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                    <a href="http://" target="_blank" rel="noopener noreferrer">
-                                                        {response.data.eventDetails.termsAndConditions}
+                                                    <a href={response.data.eventDetails.termsAndConditions} target="_blank" rel="noopener noreferrer">
+                                                        Terms and Conditions
                                                     </a>
                                                 </label>
                                             </div>

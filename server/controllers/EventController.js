@@ -428,7 +428,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
     const today = new Date()
     // const today = moment().utc()
     console.log(today)
-    const currentDay = moment().format('dddd').toLowerCase()
+    const currentDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     console.log(currentDay)
 
     try {
@@ -441,7 +441,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                     'date.dateRange.endDate': { $gte: today }
                 },
                 { // Events with recurring field containing today's day
-                    'date.recurring': { $in: [currentDay] },
+                    'date.recurring': { $in: currentDay },
                 },
             ],
 
@@ -456,7 +456,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                     'date.dateRange.endDate': { $lt: today }
                 },
                 { // Events with recurring field containing today's day
-                    'date.recurring': { $nin: [currentDay] },
+                    'date.recurring': { $nin: currentDay },
                 },
             ],
         })
@@ -471,7 +471,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                         'date.dateRange.endDate': { $gte: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring': { $in: [currentDay] },
+                        'date.recurring': { $in: currentDay },
                     },
                 ],
             }
@@ -487,7 +487,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                         'date.dateRange.endDate': { $lt: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring': { $nin: [currentDay] },
+                        'date.recurring': { $nin: currentDay },
                     },
                 ],
             }
@@ -535,7 +535,7 @@ exports.vendorHome = async (req, res) => {
                         'date.dateRange.endDate': { $gte: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring': { $in: [currentDay] },
+                        'date.recurring': { $in: currentDay },
                     },
                 ],
             }

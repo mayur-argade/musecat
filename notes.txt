@@ -262,3 +262,4 @@ Ticket status -->
 show the ticket status as pending if no payment is done
 view ticket option show the ticket card for it 
 Configure it for mobile screens 
+

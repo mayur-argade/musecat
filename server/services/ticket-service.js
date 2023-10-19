@@ -6,6 +6,11 @@ class TicketService {
         return ticket;
     }
 
+    async findTickets(filter) {
+        const tickets = TicketModel.find(filter)
+        return tickets
+    }
+
     async findAllTickets(filter, limit) {
         const tickets = TicketModel.find(filter).limit(limit).sort({ date: 1 })
         return tickets
@@ -25,25 +30,25 @@ class TicketService {
         console.log("function is running")
         let allotedSeats = [];
         let seatNumber = 1;
-
-        // console.log(bookedSeats)
-        // if(bookedSeats.includes('s3')){
-        //     console.log('yes')
-        // }else{
-        //     console.log('no')
-        // }
-
-        while (allotedSeats.length <= seats) {
+        let newBookedSeats = bookedSeats
+        console.log(bookedSeats)
+        console.log(className)
+        while (allotedSeats.length < seats) {
             // console.log("entering loop")
             const seatId = `${className.charAt(0)}${seatNumber}`
             if (!bookedSeats.includes(seatId)) {
                 allotedSeats.push(seatId);
+                newBookedSeats.push(seatId)
+                // console.log(allotedSeats)
             }
 
             seatNumber++
 
         }
-        return allotedSeats
+        return {
+            allotedSeats,
+            newBookedSeats
+        }
     }
 }
 

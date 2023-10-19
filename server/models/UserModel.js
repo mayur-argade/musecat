@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     BookedTickets: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tickets" }],
         default: []
     },
     verificationToken: {

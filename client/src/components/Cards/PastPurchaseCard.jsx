@@ -4,19 +4,24 @@ import moment from 'moment';
 
 const PastPurchaseCard = ({ data }) => {
     let status;
-    
-    const currentDate = moment(); // Current date
-    const startEventDate = moment(data.date.dateRange.startDate)
-    const eventDate = moment(data.date.dateRange.endDate);
 
-    if(currentDate.isBetween(startEventDate, eventDate)){
+    const currentDate = moment(); // Current date
+    const startEventDate = moment(data.date.dateRange?.startDate ?? null)
+    const eventDate = moment(data.date.dateRange?.endDate ?? null);
+
+    if (currentDate.isBetween(startEventDate, eventDate)) {
         status = 'Ongoing'
-    }else if(eventDate.isBefore(currentDate)){
+    } else if (eventDate.isBefore(currentDate)) {
         status = 'Archived'
-    }else if (startEventDate.isAfter(currentDate)){
+    } else if (startEventDate.isAfter(currentDate)) {
         status = 'Upcoming'
     }
 
+    if (data.date.recurring.includes(moment().format('dddd'))) {
+        status = 'Ongoing'
+    } else {
+        status = 'Upcoming'
+    }
     // console.log(data.title, data.date.dateRange.endDate)
     // status = currentDate.isBetween(startEventDate, eventDate) ? 'Ongoing' : 'Upcoming'
     // status =  ? 'Expired' : 'Active';
@@ -24,14 +29,14 @@ const PastPurchaseCard = ({ data }) => {
     // console.log(data)
     return (
         <>
-            <div class="relative md:m-3 h-auto w-44 md:w-44 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="relative md:m-3 h-96 w-44 md:w-44 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <button class="absolute top-2 right-2 py-3.5 bg-white rounded-md w-24 h-5 flex items-center justify-center align-middle text-white">
                     <p className={`text-sm font-semibold ${status == 'Expired' || status == 'Archived' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
                 </button>
 
                 <a href="#">
-                    <img class="h-72 w-full rounded-none" src={`${data.displayPhoto}`} alt="" />
+                    <img class="h-64 w-full rounded-none" src={`${data.displayPhoto}`} alt="" />
                 </a>
 
                 <div class="p-1 pt-4 pb-2 mx-1">

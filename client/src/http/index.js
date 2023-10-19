@@ -17,7 +17,6 @@ export const VendorRegister = (data) => api.post("auth/vendor/register", data)
 export const VendorHomeApi = (data) => api.get("vendor/home", data)
 export const VendorHostedEventsApi = (data) => api.get("vendor/events", data)
 export const getEventDataApi = (data) => api.get(`event/${data}`, data)
-export const getVendorNotification = (data) => api.get('notification', data)
 export const vendorProfileApi = (data) => api.get('vendor/profile', data)
 export const VendorUpdateProfileApi = (data) => api.patch('vendor/update-profile', data)
 export const VendorBookedTicketApi = (data) => api.get(`vendor/${data}/tickets`, data)
@@ -27,6 +26,8 @@ export const vendorLogout = (data) => api.post("auth/vendor/logout", data)
 export const VedorDetails = (data) => api.get(`vendor/details/${data}`, data)
 export const getAllVenues = (data) => api.get('venue/venues/all', data)
 export const VendorUpdateEvent = (data) => api.patch(`vendor/event/update-event`, data)
+export const GetVendorNotification = (data) => api.get(`notification/all`, data)
+export const VendorUpdateTicketStatus = (data) => api.patch(`ticket/update-payment-status`, data)
 
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)
@@ -45,6 +46,7 @@ export const clientLogout = (data) => api.post("auth/user/logout", data)
 export const addToFavorites = (data) => api.put(`event/like`, data)
 export const SendVerificationLink = (data) => api.patch('auth/user/forget-password/send-mail', data)
 export const resetUserPassword = (data) => api.patch('auth/user/reset-password', data)
+export const UpdateTicketStatusPayment = (data) => api.patch('ticket/update-payment-status', data)
 
 export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
@@ -106,7 +108,7 @@ api.interceptors.response.use(
                 });
 
                 const response = await refreshApi.post("auth/refresh");
-                if(response.response.status == 401){
+                if (response.response.status == 401) {
 
                 }
                 console.log(response);

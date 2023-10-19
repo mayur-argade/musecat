@@ -10,7 +10,7 @@ const Ticket = ({ event, ticket }) => {
         email: ticket.email,
         class: ticket.class,
         seats: ticket.seats,
-        row: ticket.row
+        status: ticket.status
     }
 
     const qrCodeValue = JSON.stringify(qrdata)
@@ -41,8 +41,8 @@ const Ticket = ({ event, ticket }) => {
                                     <p className='font-medium text-sm'>{ticket.seats}</p>
                                 </div>
                                 <div className='flex flex-col mr-5'>
-                                    <p className='font-light text-sm'>Rows</p>
-                                    <p className='font-medium text-sm'>{ticket.row}</p>
+                                    <p className='font-light text-sm'>Status</p>
+                                    <p className='font-medium text-sm'>{ticket.status}</p>
                                 </div>
                             </div>
                         </div>

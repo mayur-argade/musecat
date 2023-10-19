@@ -34,6 +34,7 @@ const events = require('./routes/EventRoutes')
 const categories = require('./routes/CategoryRoute')
 const venue = require('./routes/VenueRoute')
 const ticket = require('./routes/TicketRoute')
+const notification = require('./routes/NotificationRoutes')
 
 // Router middleware
 app.use('/api/v1/auth', auth);
@@ -42,6 +43,7 @@ app.use('/api/v1/', events);
 app.use('/api/v1/category', categories)
 app.use('/api/v1/venue', venue)
 app.use('/api/v1/', ticket)
+app.use('/api/v1/', notification)
 
 
 module.exports = app;

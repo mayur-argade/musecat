@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Table from '../../components/Table/Table';
 import Footer from '../../components/shared/Footer/Footer';
-import { VendorBookedTicketApi } from '../../http/index'
+import { VendorBookedTicketApi, VendorUpdateTicketStatus } from '../../http/index'
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 
@@ -12,6 +12,8 @@ const VendorBookedTickets = () => {
     const [response, setReponse] = useState({});
 
     const [serialNumbers, setSerialNumbers] = useState([]);
+    const [ticketId, setTicketId] = useState('')
+    const [status, setStatus] = useState('')
 
     let { eventid } = useParams();
 
@@ -32,6 +34,15 @@ const VendorBookedTickets = () => {
 
         fetchdata()
     }, []);
+
+    const updateStatus = async () => {
+        const data = {
+            ticketid: ticketId,
+            status: status
+        }
+        const updateStatus = await VendorUpdateTicketStatus(data)
+        console.log(updateStatus)
+    }
 
     const navigate = useNavigate();
     const handleBack = () => {
@@ -58,9 +69,6 @@ const VendorBookedTickets = () => {
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
-
-
-
 
     if (response.data == null) {
         <>
@@ -239,7 +247,7 @@ const VendorBookedTickets = () => {
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             <p className='text-xss'>
-                                                Row
+                                                Status
                                             </p>
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -249,13 +257,13 @@ const VendorBookedTickets = () => {
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             <p className='text-xss'>
-                                                Cancel Ticket
+                                                Action
                                             </p>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {response.data.tickets.map((ticket, index) => (
+                                    {response.data.map((ticket, index) => (
                                         <tr key={ticket._id} class="bg-[#EEEEEE] border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {index + 1}
@@ -292,7 +300,7 @@ const VendorBookedTickets = () => {
                                             </td>
                                             <td class="px-6 py-4">
                                                 <p className='text-xs text-black font-medium'>
-                                                    {ticket.row}
+                                                    {ticket.status}
                                                 </p>
                                             </td>
                                             <td class="px-6 py-4">
@@ -300,7 +308,10 @@ const VendorBookedTickets = () => {
                                                     {ticket.totalPrice}
                                                 </p>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 flex space-x-1">
+                                                <button>
+                                                    <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                </button>
                                                 <button>
                                                     <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
                                                 </button>
