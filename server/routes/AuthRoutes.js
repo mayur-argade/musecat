@@ -16,8 +16,8 @@ router.route('/user/googlelogin').get(passport.authenticate("google", {
 }), clientGoogleLogin)
 
 router.route('/refresh').post(refresh)
-router.route('/vendor/logout').post(isLoggedin, logout)
-router.route('/user/logout').post(isUserLoggedin, logout)
+router.route('/vendor/logout').post(logout)
+router.route('/user/logout').post(logout)
 router.route('/user/verify/:token').patch(verify)
 router.route('/user/forget-password/send-mail').patch(sendMailForgotPassword)
 router.route('/user/reset-password').patch(resetpassword)

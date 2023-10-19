@@ -36,6 +36,7 @@ const AdminEvents = () => {
     }
 
     const deleteEvent = async (eventid) => {
+        console.log(eventid)
         setLoading(true)
         try {
             console.log("eventid", eventid)
@@ -112,8 +113,8 @@ const AdminEvents = () => {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        events.data.map((event) => (
-                                                            <tr>
+                                                        events.data.map((event, index) => (
+                                                            <tr key={event._id}>
                                                                 <Link to={`/admin/event/${event._id}`}>
                                                                     <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                         {event.title}

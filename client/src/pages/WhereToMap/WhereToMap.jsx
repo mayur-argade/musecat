@@ -5,6 +5,7 @@ import WhereToMapCard from '../../components/WhereToMapCard.jsx/WhereToMapCard'
 import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import SubEventCard from '../../components/Cards/SubEventCard'
 import { useNavigate } from 'react-router-dom'
+import Tabbar from '../../components/shared/Tabbar/Tabbar'
 
 const WhereToMap = () => {
     document.title = 'Where To Map'
@@ -16,6 +17,7 @@ const WhereToMap = () => {
     return (
         <>
             <Navbar />
+            <Tabbar />
             <section className='md:mr-12 md:ml-12 '>
                 <div className="flex  align-middle items-center">
                     <button onClick={handleBack}>

@@ -1,0 +1,23 @@
+home -->
+1. event category counts
+2. upcoming events
+3. offers
+4. editors pick
+
+events --> 
+1. get category wise data
+2. get all events
+3. live search in events by name
+
+event description -->
+1. contact us handling
+2. fetched event description
+3. availble seats and starting price handled
+
+bookseats -->
+1. handling book seats form validation
+2. payment gateway redirection
+3. if no price no payment gateway redirection
+4. ticket status handling
+
+

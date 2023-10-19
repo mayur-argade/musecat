@@ -10,7 +10,7 @@ const moment = require('moment-timezone')
 
 // vendor side
 exports.createEvent = async (req, res) => {
-    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions, seatingMap,
         date, categories, eventCategory, whatsapp, instagram, facebook, email, discountOnApp
     } = req.body
 
@@ -45,6 +45,14 @@ exports.createEvent = async (req, res) => {
             // console.log(uploadedEventPhoto)
         }
 
+        let uploadedSeatingMap = ''
+
+        if (seatingMap) {
+            uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
+                folder: "muscat/events",
+            })
+        }
+
         let uploadedBanner = ''
         if (banner) {
             uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
@@ -65,6 +73,7 @@ exports.createEvent = async (req, res) => {
             type: 'event',
             banner: uploadedBanner.secure_url,
             video: uploadedVideo.secure_url,
+            seatingMap: uploadedSeatingMap.secure_url,
             shortDescription: shortDescription,
             description: description,
             location: location,
@@ -118,7 +127,7 @@ exports.createEvent = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
     let { eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
-        date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type
+        date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type, seatingMap
     } = req.body
 
     // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
@@ -166,6 +175,13 @@ exports.updateEvent = async (req, res) => {
             })
         }
 
+        let uploadedSeatingMap = '';
+        if (seatingMap) {
+            uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
+                folder: "muscat/events",
+            })
+        }
+
         const data = {
             _id: eventid,
             title: title,
@@ -173,6 +189,7 @@ exports.updateEvent = async (req, res) => {
             type: type,
             banner: uploadedBanner.secure_url,
             video: uploadedVideo.secure_url,
+            seatingMap: uploadedSeatingMap.secure_url,
             shortDescription: shortDescription,
             description: description,
             location: location,
@@ -637,35 +654,37 @@ module.exports.getUpcomingEvents = async (req, res) => {
         // Check if a date is provided in the request query
         const customDate = req.query.date
         console.log(customDate)
+        let query = {
+            // verified: true
+        };
         if (customDate) {
-
-            // Convert the input date to a moment object
-            const dateMoment = moment.utc(customDate, "YYYY-MM-DD")
-
-            // console.log(dateMoment)
-            // Get the epoch timestamp in milliseconds
-            const epochTimestamp = dateMoment.valueOf();
-            // console.log()
-            // Find events happening on the specified date
-            eventsOnDate = await eventService.findAllEvents({
-                date: {
-                    $eq: epochTimestamp,
-                },
-            });
+            const filterDate = new Date(customDate);
+            const currentDay = moment(filterDate).format('dddd').toLowerCase()
+            query['$or'] = [
+                {
+                    'date.dateRange.startDate': { $lte: filterDate },
+                    'date.dateRange.endDate': { $gte: filterDate }
+                }
+                ,
+                {
+                    'date.recurring': { $in: [currentDay] } // Replace with a function to get today's day
+                }
+            ];
+            eventsOnDate = await eventService.findAllEvents(query);
 
         } else {
-            const today = new Date
-            const convertedString = moment(today).format("YYYY-MM-DD");
-            const todayepoch = moment(convertedString)
-
-            // Get the epoch timestamp in milliseconds
-            const todaysEpochTimestamp = todayepoch.valueOf();
-
-            eventsOnDate = await eventService.findAllEvents({
-                date: {
-                    $gte: todaysEpochTimestamp,
-                },
-            });
+            const todayDate = new Date();
+            const day = moment(todayDate).format('dddd').toLowerCase()
+            query['$or'] = [
+                {
+                    'date.dateRange.endDate': { $gte: todayDate }
+                }
+                ,
+                {
+                    'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                }
+            ];
+            eventsOnDate = await eventService.findAllEvents(query);
         }
 
         // Send the events happening on the specified date as a response
@@ -692,18 +711,37 @@ exports.whereToMap = async (req, res) => {
 
 exports.getAllOffers = async (req, res) => {
 
-    const today = new Date
-    const todayepoch = moment(today);
-
-    // Get the epoch timestamp in milliseconds
-    const todaysEpochTimestamp = todayepoch.valueOf();
-
     try {
-        const offers = await offerService.findAllOffer({ expiry: { $gte: todaysEpochTimestamp } })
+
+        const today = new Date()
+
+        // const today = moment().utc()
+        // console.log(today)
+        // const currentDay = moment().format('dddd').toLowerCase()
+        // console.log(currentDay)
+        // const currentDay = "sunday"
+        offers = await eventService.findAllEvents(
+            {
+                // Assuming you pass the vendor id as a route parameter
+                type: 'event',
+                // verified: true,
+                $or: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.startDate': { $lte: today },
+                        'date.dateRange.endDate': { $gte: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                    },
+                ],
+            }
+        )
+
         return res.status(200).json({
             success: true,
             data: offers
         })
+
     } catch (error) {
         console.log(error)
     }

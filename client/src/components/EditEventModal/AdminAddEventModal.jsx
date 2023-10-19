@@ -53,8 +53,9 @@ const AdminAddEventModal = ({ onClose }) => {
     }
 
 
+    console.log(location)
     const handleSave = async () => {
-        if (!title || !date || !category || !description || !location || !photo || !banner || !video) {
+        if (!title || !date || !category || !description || !location) {
             return window.alert("All fields are mandatory")
         }
 
@@ -154,14 +155,15 @@ const AdminAddEventModal = ({ onClose }) => {
                                     </div>
 
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Location</label>
+                                        <label className='text-xs mt-1' htmlFor="location">Location</label>
                                         <select
                                             type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
+                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 text-sm font-medium text-gray-500'
+                                            value={location}  // Set the selected value to the 'location' state
                                             onChange={((e) => setLocation(e.target.value))}
-                                            placeholder='Theatre of Arts'
                                         >
-                                            <option className=' text-sm font-medium' value="crownplaza">Crown Plaza</option>
+                                            <option className='text-sm font-medium'>select Venue</option>
+                                            <option className='text-sm font-medium' value="crownplaza">Crown Plaza</option>
                                         </select>
                                     </div>
 

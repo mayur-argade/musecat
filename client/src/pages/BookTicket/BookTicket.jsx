@@ -2,28 +2,41 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Footer from '../../components/shared/Footer/Footer'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { ClientBookTicket } from '../../http/index'
+import { ClientEventDetailsApi, ClientBookTicket } from '../../http'
 import { setEvent } from '../../store/eventSlice'
 import toast, { Toaster } from 'react-hot-toast';
 
 const BookTicket = () => {
     document.title = 'Book Ticket'
-
-    const { event } = useSelector((state) => state.event);
+    let { eventid } = useParams();
     const { user, isAuth } = useSelector((state) => state.auth)
 
+    const [response, setReponse] = useState({});
+
     useEffect(() => {
-        console.log(event)
-        if (event == null || user == null || isAuth == false) {
+        if (user == null || isAuth == false) {
             navigate(-1)
         }
 
-    }, [])
+        const fetchdata = async () => {
+            try {
+                setLoading(true)
+                const { data } = await ClientEventDetailsApi(eventid)
+                // console.log(data.data.eventDetails)
+                setReponse(data)
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchdata()
+    }, [eventid]);
 
+    const [price, setPrice] = useState(
 
-    const [price, setPrice] = useState(false);
+    );
     const [basePrice, setBasePrice] = useState('')
     const [tax, setTax] = useState('')
     let navigate = useNavigate();
@@ -36,6 +49,7 @@ const BookTicket = () => {
     const closePrice = () => {
         setPrice(false)
     }
+
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
@@ -47,96 +61,154 @@ const BookTicket = () => {
     };
 
 
+    let hasPrice = [];
+    let hasSeats = [];
+    if (response.data != null) {
+        for (const category of response.data.eventDetails.categories) {
+            if (category.price != null) {
+                hasPrice.push(category.className)
+            }
+            if (category.seats != null) {
+                hasSeats.push(category.className)
+            }
+        }
+    }
 
     const handleBookNowClick = () => {
-        if (price) {
-            submit()
-            // // Redirect to the next page when clicked for the second time
-            // navigate('/ticketstatus/ticketid')
-        } else {
-            if (!firstname || !lastname || !ticketclass || !seats || !row) {
-                toast.error("All fields are mandatory")
-            } else if (seats <= 0) {
-                toast.error("Enter valid seat number")
+        if (hasPrice.length != 0) {
+            if (price) {
+                submit()
+                // // Redirect to the next page when clicked for the second time
+                // navigate('/ticketstatus/ticketid')
             } else {
-                const { basePrice, tax, totalPrice } = calculatePrice()
-                setTotalPrice(totalPrice)
-                setBasePrice(basePrice)
-                setTax(tax)
-                setPrice(true);
+                if (!firstname || !lastname || !ticketclass || !seats) {
+                    toast.error("All fields are mandatory")
+                } else if (seats <= 0) {
+                    toast.error("Enter valid seat number")
+                } else {
+                    // calculatePrice()
+                    const { basePrice, tax, totalPrice, baseTaxAmout } = calculatePrice()
+                    setPriceWithTax(baseTaxAmout)
+                    setTotalPrice(totalPrice)
+                    setBasePrice(basePrice)
+                    setTax(tax)
+                    setPrice(true);
+                }
             }
-
+        } else {
+            submit()
         }
     };
 
     function calculatePrice() {
-        let basePrice;
-        if (ticketclass == 'platinum') {
-            basePrice = event.platinumPrice
-        } else if (ticketclass == 'gold') {
-            basePrice = event.goldPrice
-        } else if (ticketclass == 'silver') {
-            basePrice = event.silverPrice
-        }
-        basePrice = basePrice * seats
+        console.log(ticketclass)
+        let category = response.data.eventDetails.categories.find(item => item.className == ticketclass)
+        // console.log("category", category)
 
-        var percentage = 18; // The percentage you want to calculate
-
-        var tax = (basePrice * percentage) / 100;
-
-        const totalPrice = basePrice + tax
+        const taxRate = 0.05
+        let basePrice1 = category.price
+        const taxAmout = basePrice1 * taxRate
+        const baseTaxAmout = basePrice1 + taxAmout
+        const tax = taxAmout * seats
+        const totalPrice = baseTaxAmout * seats
+        const basePrice = basePrice1 * seats
         return {
-            basePrice, tax, totalPrice
+            basePrice, tax, totalPrice, baseTaxAmout
         }
     }
+
     const [loading, setLoading] = useState(false)
     const [firstname, setFirstname] = useState()
     const [lastname, setLastname] = useState()
     const [email, setEmail] = useState()
     const [ticketclass, setTicketclass] = useState('')
     const [seats, setSeats] = useState('')
-    const [row, setRow] = useState('')
     const [totalPrice, setTotalPrice] = useState('')
+    const [priceWithTax, setPriceWithTax] = useState('')
 
     async function submit() {
-        if (!firstname || !lastname || !ticketclass || !seats || !row) {
-            toast.error("All fields are mandatory")
-        } else if (seats <= 0) {
-            toast.error("Enter valid seat number")
+        if (hasSeats.length != 0 || hasSeats.length != 0) {
+            if (!firstname || !lastname || !email || !ticketclass || !seats) {
+                toast.error("All fields are mandatory")
+            } else if (seats <= 0) {
+                toast.error("Enter valid seat number")
+            } else {
+                try {
+                    const ticketdata = {
+                        firstname: firstname,
+                        type: response.data.eventDetails.type,
+                        lastname: lastname,
+                        email: email,
+                        ticketclass: ticketclass,
+                        seats: seats,
+                        priceWithTax: priceWithTax,
+                        eventid: eventid,
+                    }
+                    setLoading(true)
+                    const { data } = await ClientBookTicket(ticketdata)
+                    // console.log("checking data for the 404 error",data)
+                    setLoading(false)
+                    toast.success("To book your Ticket proceed to payment page")
+                    if (data.session_id) {
+                        const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
+
+                        window.location.href = externalURL;
+                        // navigate him to the checkout page
+                        // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                    }
+                } catch (error) {
+                    setLoading(false)
+                    console.log(error)
+                    if (error.response.status == 401) {
+                        toast.error("Token Expired Kindly login again")
+                    }
+                    toast.error(error.response.data.data)
+                }
+            }
         } else {
             try {
                 const ticketdata = {
                     firstname: firstname,
+                    type: response.data.eventDetails.type,
                     lastname: lastname,
                     email: email,
-                    ticketclass: ticketclass,
-                    seats: seats,
-                    row: row,
-                    eventid: event._id,
-                    totalPrice: totalPrice,
-                    basePrice: basePrice
+                    eventid: eventid,
                 }
                 setLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
                 setLoading(false)
-                toast.success("Your ticket has been booked proceed to checkout page")
-                if (data.session_id) {
-                    const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
-
-                    window.location.href = externalURL;
-                    // navigate him to the checkout page
-                    // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                if (data.seatsbooked != null) {
+                    toast.success("Ticket Has been booked")
+                } else {
+                    toast.error("We are unable to book your ticket please try later")
                 }
+                // if (data.session_id) {
+                //     const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
+
+                //     window.location.href = externalURL;
+                //     // navigate him to the checkout page
+                //     // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                // }
             } catch (error) {
                 setLoading(false)
                 console.log(error)
+                if (error.response.status == 401) {
+                    toast.error("Token Expired Kindly login again")
+                }
                 toast.error(error.response.data.data)
             }
         }
     }
 
-    if (event != null && isAuth == true && user != null) {
+    // console.log()
+
+    if (response.data == null) {
+        return (
+            <>loading</>
+        )
+    }
+    else {
         return (
             <>
                 <div className='appmargine'>
@@ -162,9 +234,8 @@ const BookTicket = () => {
 
                         <div className="grid justify-items-center gap-4 grid-cols-1 md:grid-cols-2">
                             <div className="hidden  md:flex flex-col justify-end">
-                                <img src="/images/assets/theater.png" alt="" />
+                                <img className='w-96 h-auto' src={response.data.eventDetails.seatingMap} alt="" />
                             </div>
-
                             {isModalOpen && (
                                 <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
                                     <div className="bg-white p-4 rounded-lg relative  ml-3 mr-3">
@@ -237,23 +308,24 @@ const BookTicket = () => {
                                             />
                                         </div>
 
-                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Select class</label>
-                                            <select
-                                                className='font-medium w-full md:w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                onChange={(e) => setTicketclass(e.target.value)}
-                                                onClick={closePrice}
-                                                placeholder='Doe'
-                                            >
-                                                <option>Select Class</option>
-                                                <option value="platinum">Platinum</option>
-                                                <option value="gold">Gold</option>
-                                                <option value="silver">Silver</option>
-                                            </select>
-
-                                        </div>
-
                                         <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
+                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Select Class</label>
+                                                <select
+                                                    className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                    onChange={(e) => setTicketclass(e.target.value)}
+                                                    onClick={closePrice}
+                                                >
+                                                    <option>Select Class</option>
+                                                    {
+                                                        response.data.eventDetails.categories.map((category) => (
+                                                            <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
+                                                        ))
+                                                    }
+                                                </select>
+
+                                            </div>
+
                                             <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                                 <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
                                                 <input
@@ -264,30 +336,36 @@ const BookTicket = () => {
                                                     placeholder='5'
                                                 />
                                             </div>
-                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Select Row</label>
-                                                <select
-                                                    className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                    onChange={(e) => setRow(e.target.value)}
-                                                    onClick={closePrice}
-                                                    placeholder='Doe'
-                                                >
-                                                    <option>Select Row</option>
-                                                    <option value="platinum">Platinum</option>
-                                                    <option value="gold">Gold</option>
-                                                    <option value="silver">Silver</option>
-                                                </select>
 
-                                            </div>
                                         </div>
 
                                         <div className='flex flex-col justify-between mt-3'>
-                                            {event.custom.map((que) => (
+                                            {
+                                                response.data.eventDetails.custom.map((custom) => (
+                                                    <div className="check">
+                                                        <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+
+                                                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{custom}</label>
+                                                    </div>
+                                                ))
+                                            }
+                                            <div className="check">
+                                                <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+
+                                                <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                    <a href="http://" target="_blank" rel="noopener noreferrer">
+                                                        {response.data.eventDetails.termsAndConditions}
+                                                    </a>
+                                                </label>
+                                            </div>
+
+
+                                            {/* {event.custom.map((que) => (
                                                 <div class="flex items-center mb-4">
                                                     <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                     <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{que}</label>
                                                 </div>
-                                            ))}
+                                            ))} */}
                                         </div>
 
                                         {price && (
@@ -350,11 +428,6 @@ const BookTicket = () => {
             </>
         )
     }
-    else {
-        navigate('/login')
-
-    }
-
 }
 
 export default BookTicket

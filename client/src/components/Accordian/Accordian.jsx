@@ -8,20 +8,27 @@ const Accordian = ({ title, content, isOpened, onClick, color, textcol, contentf
             <div onClick={onClick} className={`cursor-pointer ${color}`}>
                 <div className="flex justify-between align-middle">
                     <p className={` ${textcol}`}>{title}</p>
-                    {/* {isOpened ? (
-                        <img src="/images/icons/minus.svg" alt="Minus Icon" />
+                    {isOpened ? (
+                        <p className="font-bold text-xl">
+                            -
+                        </p>
+                        // <img src="/images/icons/minus.svg" alt="Minus Icon" />
                     ) : (
-                        <img src="/images/icons/add.svg" alt="Add Icon" />
-                    )} */}
+                        <p className="font-bold text-xl">
+                            +
+                        </p>
+                        // <img src="/images/icons/add.svg" alt="Add Icon" />
+                    )}
                 </div>
             </div>
             {isOpened && (
                 <div className={`overflow-hidden transition-all duration-200 pl-3`}>
-                    <div className={`leading-relaxed ${contentfont}`}>
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                        {/* <HTMLviewer></HTMLviewer>
-                        {content} */}
-                    </div>
+                    {/* <div className={`leading-relaxed ${contentfont}`}> */}
+                    {/* <div dangerouslySetInnerHTML={{ __html: content }} />
+                        {/* <HTMLviewer></HTMLviewer> */}
+                    {content}
+                    {/* */}
+                    {/* </div>  */}
                 </div>
             )}
             <hr className='border-slate-300' />

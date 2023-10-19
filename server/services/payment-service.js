@@ -17,7 +17,7 @@ class PaymentService {
                 products: [{ name: paymentdata.name, quantity: paymentdata.quantity, unit_amount: paymentdata.unitAmout }],
                 success_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.name}`,
                 cancel_url: 'https://www.omanwhereto.com/',
-                metadata: { 'Customer name': 'user01', 'order id': paymentdata.name }
+                metadata: { 'Customer name': 'user01', 'order id': '1' }
             }
         };
         try {

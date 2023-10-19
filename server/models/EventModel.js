@@ -13,6 +13,9 @@ const eventSchema = new mongoose.Schema({
     Banner: {
         type: String,
     },
+    seatingMap: {
+        type: String,
+    },
     Video: {
         type: String,
     },

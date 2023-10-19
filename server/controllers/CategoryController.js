@@ -46,14 +46,11 @@ exports.createCategory = async (req, res) => {
 
 exports.getCategoriesWithEvents = async (req, res) => {
 
+
     const date = req.query.date
 
-
     // Convert the input date to a moment object
-    const dateMoment = moment.utc(date, "YYYY-MM-DD")
-    console.log(dateMoment)
-    var epochTimestamp = dateMoment.valueOf();
-    console.log(epochTimestamp)
+    const dateMoment = new Date(date)
 
     try {
         // console.log(filterDate)
@@ -70,29 +67,42 @@ exports.getCategoriesWithEvents = async (req, res) => {
                 validOfferCount: 0,
             };
 
-            const query = {
-                _id: { $in: category.events }, // Filter by offer IDs in the category
+            let query = {
+                _id: { $in: category.events },
+                // verified: true // Filter by offer IDs in the category
             };
 
             if (date) {
-                console.log("this is working")
-                query.date = {
-                    $eq: epochTimestamp,
-                }; // Filter for expiry dates greater than or equal to the specified date
+                const filterDate = new Date(date);
+                const currentDay = moment(filterDate).format('dddd').toLowerCase()
+                query['$or'] = [
+                    {
+                        'date.dateRange.startDate': { $lte: filterDate },
+                        'date.dateRange.endDate': { $gte: filterDate }
+                    }
+                    ,
+                    {
+                        'date.recurring': { $in: [currentDay] } // Replace with a function to get today's day
+                    },
+                ];
             } else {
-                const today = new Date
-                const convertedString = moment(today).format("YYYY-MM-DD");
-                const todayepoch = moment(convertedString)
-
-                // Get the epoch timestamp in milliseconds
-                const todaysEpochTimestamp = todayepoch.valueOf();
-
-                query.date = {
-                    $gte: todaysEpochTimestamp
-                }
+                // Calculate today's date and time
+                const todayDate = new Date();
+                const day = moment(todayDate).format('dddd').toLowerCase()
+                query['$or'] = [
+                    {
+                        'date.dateRange.endDate': { $gte: todayDate }
+                    }
+                    ,
+                    {
+                        'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                    }
+                ];
             }
 
+
             const validOfferCount = await Event.countDocuments(query);
+            // console.log(query)
 
             categoryCount.validOfferCount = validOfferCount;
 
@@ -169,38 +179,59 @@ module.exports.getCategories = async (req, res) => {
 
 module.exports.getCategoryAllEvents = async (req, res) => {
     let categoryDisplayName = req.params.categoryname
-    console.log(categoryDisplayName)
-
-    const today = new Date
-    const convertedString = moment(today).format("YYYY-MM-DD");
-    const todayepoch = moment(convertedString)
-
-    // Get the epoch timestamp in milliseconds
-    const todaysEpochTimestamp = todayepoch.valueOf();
-    // console.log(todaysEpochTimestamp)
     try {
         let events;
         if (categoryDisplayName != "events") {
-            const query = {
-                category: categoryDisplayName // Filter by offer IDs in the category
-            };
-
-            query.date = {
-                $gte: todaysEpochTimestamp,
-            };
-
-            events = await eventService.findAllEvents(query)
-
+            const today = new Date()
+            // const today = moment().utc()
+            console.log(today)
+            const currentDay = moment().format('dddd').toLowerCase()
+            console.log(currentDay)
+            // const currentDay = "sunday"
+            events = await eventService.findAllEvents(
+                {
+                    // type: 'event',
+                    // verified: true,
+                    eventCategory: categoryDisplayName,
+                    $or: [
+                        { // Events with start date greater than or equal to today
+                            'date.dateRange.endDate': { $gte: today }
+                        },
+                        { // Events with recurring field containing today's day
+                            'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                        },
+                    ],
+                }
+            )
         } else {
-            events = await eventService.findAllEvents({ date: { $gte: todaysEpochTimestamp } })
+            const today = new Date()
+            // const today = moment().utc()
+            console.log(today)
+            const currentDay = moment().format('dddd').toLowerCase()
+            console.log(currentDay)
+            // const currentDay = "sunday"
+            events = await eventService.findAllEvents(
+                {
+                    // type: 'event',
+                    // verified: true,
+                    $or: [
+                        { // Events with start date greater than or equal to today
+                            'date.dateRange.endDate': { $gte: today }
+                        },
+                        { // Events with recurring field containing today's day
+                            'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                        },
+                    ],
+                }
+            )
         }
 
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: events
         })
-
-    } catch (error) {
+    }
+    catch (error) {
         console.log(error)
     }
 

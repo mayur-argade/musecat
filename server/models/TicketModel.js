@@ -25,37 +25,31 @@ const ticketModel = new mongoose.Schema({
     },
     class: {
         type: String,
-        enum: {
-            values: ['platinum', 'silver', 'gold'],
-        }
     },
     seats: {
         type: Number,
-        required: true
+        // required: true
     },
     allotedSeats: {
         type: Array,
-        required: true
+        // required: true
     },
     totalPrice: {
         type: Number,
-        required: true
+        // required: true
     },
     status: {
         type: String,
-        enum: {
-            values: ['active', 'pending', 'refund']
-        },
-        default: 'pending'
     },
-    row: {
-        type: String,
-        required: true,
-        enum: {
-            values: ['platinum', 'silver', 'gold'],
-        }
-    }
-
+    basePrice: {
+        type: Number,
+    },
+    priceWithTax: {
+        type: Number
+    },
+    sessionId: {
+        type: String
+    },
 },
     {
         timestamp: true,

@@ -83,8 +83,8 @@ const AdminCategory = () => {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    category.data.map((cat) => (
-                                                        <tr>
+                                                    category.data.map((cat, index) => (
+                                                        <tr key={index}>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                 {cat.name}
                                                             </td>
