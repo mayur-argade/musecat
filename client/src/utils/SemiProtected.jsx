@@ -1,12 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux'
 
 
 const SemiProtected = (props) => {
     const { Component } = props;
+    const location = useLocation()
 
+    sessionStorage.setItem('prevLocation', location.pathname);
     const navigate = useNavigate();
 
     const { user, isAuth } = useSelector((state) => state.auth);
@@ -15,10 +17,7 @@ const SemiProtected = (props) => {
         function checkLogin() {
             if (isAuth == false) {
                 navigate('/login')
-            } if (isAuth === true) {
-
             }
-
         }
         checkLogin();
     }, [navigate]);

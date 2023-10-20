@@ -69,7 +69,7 @@ function App() {
                     <Route path="/whereto" exact element={<WhereToMap />} />
                     <Route path="/contactus" exact element={<Contactus />} />
                     <Route path="/events/:eventid" exact element={<EventDescription />} />
-                    <Route path="/bookticket/:eventid" element={<BookTicket />} />
+                    <Route path="/bookticket/:eventid" element={<SemiProtected Component={BookTicket} />} />
                     <Route path="/verifyaccount/:token" element={<VerifyUserAccount />} />
                     <Route path="/reset" element={<InputEmail />} />
                     <Route path="/user/reset-password/:token" element={<ResetPassword />} />

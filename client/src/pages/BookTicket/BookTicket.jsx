@@ -16,10 +16,6 @@ const BookTicket = () => {
     const [response, setReponse] = useState({});
 
     useEffect(() => {
-        if (user == null || isAuth == false) {
-            navigate(-1)
-        }
-
         const fetchdata = async () => {
             try {
                 setLoading(true)

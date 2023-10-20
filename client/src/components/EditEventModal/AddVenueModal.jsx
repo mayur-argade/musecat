@@ -1,80 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React, { useState } from 'react';
+import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
-
-const containerStyle = {
-    width: '400px',
-    height: '400px',
-};
-
-const center = {
-    lat: 0, // Initial latitude
-    lng: 0, // Initial longitude
-};
-
+const libraries = ['places'];
 
 const AddVenueModal = () => {
-    const [venueName, setVenueName] = useState('');
-    const [banner, setBanner] = useState('');
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey: 'AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY', // Replace with your Google Maps API key
+        libraries,
+    });
+
     const [address, setAddress] = useState('');
-    const [position, setPosition] = useState(center);
+    const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
 
+    const handleSelect = async (selectedAddress) => {
+        setAddress(selectedAddress);
 
-    const onMapClick = (e) => {
-        setPosition({
-            lat: e.latLng.lat(),
-            lng: e.latLng.lng(),
-        });
+        try {
+            const results = await geocodeByAddress(selectedAddress);
+            const latLng = await getLatLng(results[0]);
+            setCoordinates(latLng);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
-    const handleSubmit = () => {
-        // Handle form submission, including venueName, banner, address, and position (lat/lng).
-        console.log('Venue Name:', venueName);
-        console.log('Banner:', banner);
-        console.log('Address:', address);
-        console.log('Latitude:', position.lat);
-        console.log('Longitude:', position.lng);
+    const handleMapClick = (e) => {
+        setCoordinates({ lat: e.latLng.lat(), lng: e.latLng.lng() });
     };
 
     return (
         <div>
-            <h1>Create a Venue</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Venue Name:</label>
-                <input
-                    type="text"
-                    value={venueName}
-                    onChange={(e) => setVenueName(e.target.value)}
-                />
+            <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
+                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                    <div>
+                        <input
+                            {...getInputProps({
+                                placeholder: 'Search for an address',
+                            })}
+                        />
+                        <div>
+                            {loading && <div>Loading...</div>}
+                            {suggestions.map((suggestion) => {
+                                const style = {
+                                    backgroundColor: suggestion.active ? '#41b6e6' : '#fff',
+                                };
+                                return (
+                                    <div {...getSuggestionItemProps(suggestion, { style })}>
+                                        {suggestion.description}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+            </PlacesAutocomplete>
 
-                <label>Banner URL:</label>
-                <input
-                    type="text"
-                    value={banner}
-                    onChange={(e) => setBanner(e.target.value)}
-                />
-
-                <label>Address:</label>
-                <input
-                    type="text"
-                    id="location-search"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-                <div id="map" style={{ height: '400px', width: '100%' }}></div>
-                <LoadScript googleMapsApiKey="AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY">
+            {isLoaded ? (
+                <div style={{ height: '400px' }}>
                     <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={center}
-                        zoom={10}
-                        onClick={onMapClick}
+                        center={coordinates}
+                        zoom={15}
+                        onClick={handleMapClick}
                     >
-                        <Marker position={position} />
+                        <Marker position={coordinates} />
                     </GoogleMap>
-                </LoadScript>
-
-                <button type="submit">Submit</button>
-            </form>
+                </div>
+            ) : (
+                'Loading Google Maps...'
+            )}
         </div>
     );
 }

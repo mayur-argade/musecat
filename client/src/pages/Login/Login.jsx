@@ -14,7 +14,6 @@ const Login = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     async function submit() {
         if (!email || !password) {
             window.alert("both fields are required")
@@ -26,7 +25,8 @@ const Login = () => {
             setLoading(false)
             // console.log("this is logged in details",res.data)
             dispatch(setAuth(res.data));
-            navigate('/');
+            const prevLocation = sessionStorage.getItem('prevLocation') || '/dashboard';
+            navigate(prevLocation);
         } catch (error) {
             setLoading(false)
             toast.error(error.response.data.data)
