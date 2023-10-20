@@ -65,7 +65,7 @@ const AddEventModal = ({ onClose }) => {
     const [seatingMap, setSeatingMap] = useState('')
     const [banner, setBanner] = useState('')
     const [video, setVideo] = useState('')
-    const days = ['monday', 'tuesday', 'wednesday', 'Thursday', 'friday', 'saturday', 'sunday'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 
     function capturePhoto(e) {
@@ -354,6 +354,7 @@ const AddEventModal = ({ onClose }) => {
                                                         <label className='text-xs mt-1' htmlFor="first name">Date</label>
                                                         <input
                                                             type="datetime-local"
+                                                            min={minDateTime}
                                                             id="session-date"
                                                             onChange={((e) => setEndDate(e.target.value))}
                                                             className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'

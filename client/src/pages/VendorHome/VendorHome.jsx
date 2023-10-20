@@ -57,7 +57,7 @@ const VendorHome = () => {
         return (
             <div>
                 <Navbar />
-                <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
+                <section className='lg:mr-48 lg:ml-48 mt-5 ml-6 mr-6'>
                     <div className="grid md:grid-cols-2 header">
                         <div className='drop-shadow-xl'>
                             <div className='h-56 m-3 rounded-lg bg-white flex flex-col space-y-2 justify-center items-center align-middle pb-6 '>
@@ -83,7 +83,7 @@ const VendorHome = () => {
 
                     <div className='mt-5 flex flex-col'>
                         <span className='font-bold text-2xl'>Ongoing Events</span>
-                        <div className="carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide   justify-between">
+                        <div className="carousel p-4 flex items-center justify-start overflow-y-hidden overflow-x-auto scroll-smooth md:scrollbar-hide">
                             {response.data.ongoingEvents.lendth != 0 ?
                                 response.data.ongoingEvents.map((event) => (
                                     <Link to={`/vendor/event/${event._id}`}>

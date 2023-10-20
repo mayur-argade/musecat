@@ -22,7 +22,7 @@ const TicketStatusCard = ({data}) => {
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                            {data.description} <Link to='/venue/venueid'><span className='ml-0 text-[#C0A04C] underline'> {data.location}</span></Link>
+                            {data.description} <Link to='/venue/venueid'><span className='ml-0 text-[#C0A04C] underline'> crown plaza</span></Link>
                         </p>
                     </div>
                 </div>

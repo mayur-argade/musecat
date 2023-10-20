@@ -3,17 +3,30 @@ import moment from 'moment';
 
 const VendorOfferCard = ({ data }) => {
 
+    let status;
     const currentDate = moment(); // Current date
-    const offerDate = moment(data.date.dateRange.expiryDate); // Date from the API data
+    const startEventDate = moment(data.date.dateRange?.startDate ?? null)
+    const eventDate = moment(data.date.dateRange?.endDate ?? null);
 
-    // Compare the event date with today's date
-    const status = offerDate.isBefore(currentDate) ? 'Inactive' : 'Ongoing';
+    if (currentDate.isBetween(startEventDate, eventDate)) {
+        status = 'Ongoing'
+    } else if (eventDate.isBefore(currentDate)) {
+        status = 'Archived'
+    } else if (startEventDate.isAfter(currentDate)) {
+        status = 'Upcoming'
+    }
+
+    if (data.date.recurring.includes(moment().format('dddd'))) {
+        status = 'Ongoing'
+    } else {
+        status = 'Upcoming'
+    }
 
     return (
         <>
-            <div className="w-44 md:w-52  relative">
+            <div className="w-56 lg:w-60  relative">
                 <img
-                    className="h-52 md:h-64 w-52 snap-start"
+                    className="rounded-md h-80 md:h-64 w-60 snap-start"
                     src={data.displayPhoto}
                     alt=""
                 />

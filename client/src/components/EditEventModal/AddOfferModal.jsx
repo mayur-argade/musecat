@@ -67,7 +67,7 @@ const AddOfferModal = ({ onClose }) => {
     const [seatingMap, setSeatingMap] = useState('')
     const [banner, setBanner] = useState('')
     const [video, setVideo] = useState('')
-    const days = ['monday', 'tuesday', 'wednesday', 'Thursday', 'friday', 'saturday', 'sunday'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 
     function capturePhoto(e) {

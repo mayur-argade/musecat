@@ -31,14 +31,19 @@ const EventDescription = () => {
                 setReponse(data)
                 dispatch(setEvent(data.data));
                 setLoading(false)
+                let categoryprice = []
+                for(const category of data.data.eventDetails.categories){
+                    categoryprice.push(`${category.className} = ${category.price}`)
+                } 
                 setAccordions([
                     {
                         title: 'Event Information',
                         content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
                         isOpened: true
                     },
-                    { title: 'Venue Details', content: data.data.eventDetails.location, isOpened: false },
+                    { title: 'Venue Details', content: 'crown plaza', isOpened: false },
                     { title: 'Features', content: data.data.eventDetails.features, isOpened: false },
+                    { title: 'Categories', content: categoryprice.join(" | ") , isOpened: false },
                     {
                         title: 'Contact Us',
                         content: (
@@ -201,7 +206,7 @@ const EventDescription = () => {
                                     <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
                                         <Link to="/venue/venueid" className='text-[#C0A04C]'>
                                             <span className='ml-1 font-medium'>
-                                                {response.data.eventDetails.location}
+                                                 crown plaza
                                             </span>
                                         </Link></p>
                                     <div className='mt-4 flex justify-center space-x-2 text-center'>
@@ -217,7 +222,7 @@ const EventDescription = () => {
                                 </div>
 
                                 <div className="mt-8 grid grid-cols-4">
-                                    <div className="col-span-4 md:col-span-2  flex flex-col items-center justify-center">
+                                    <div className="col-span-4 md:col-span-2  flex flex-col ">
                                         <div className="w-full max-w-6xl rounded-lg relative">
                                             {/* Image */}
                                             <img className="h-96 w-full rounded" src={`${response.data.eventDetails.displayPhoto}`} alt="" />
@@ -270,7 +275,7 @@ const EventDescription = () => {
                                                 <Link to="/whereto">
                                                     <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
                                                         <img className='h-5' src="/images/icons/map-1.svg" alt="" />
-                                                        <p className='text-md'>{response.data.eventDetails.location}</p>
+                                                        <p className='text-md'> crown plaza</p>
                                                         <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                                     </div>
                                                 </Link>

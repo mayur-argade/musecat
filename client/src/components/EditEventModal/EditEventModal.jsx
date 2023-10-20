@@ -65,7 +65,7 @@ const EditEventModal = ({ onClose, data }) => {
     const [banner, setBanner] = useState(undefined)
     const [video, setVideo] = useState(undefined)
     const [discountOnApp, setDiscountOnApp] = useState(undefined)
-    const days = ['monday', 'tuesday', 'wednesday', 'Thursday', 'friday', 'saturday', 'sunday'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 
     function capturePhoto(e) {

@@ -129,7 +129,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     return (
         <>
-            <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 md:mr-48 md:ml-48">
+            <div class="bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 lg:mr-48 lg:ml-48">
                 <Toaster />
                 <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-1 pt-4 pb-4 shadow-md md:shadow-none">
 

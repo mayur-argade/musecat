@@ -26,11 +26,10 @@ const VendorEventDescripton = () => {
                 setAccordions([
                     {
                         title: 'Event Information',
-                        content:
-                            `${data.data.description}`,
+                        content:<div dangerouslySetInnerHTML={{ __html: data.data.description }} />,
                         isOpened: true
                     },
-                    { title: 'Venue Details', content: `${data.data.location}`, isOpened: false },
+                    { title: 'Venue Details', content: `crown plaza`, isOpened: false },
                     { title: 'Features', content: `${data.data.features}`, isOpened: false },
                 ]);
 
@@ -99,7 +98,7 @@ const VendorEventDescripton = () => {
                             <p className='text-sm md:text-md font-light'>{response.data.shortDescription} at
                                 <Link to="/venue/venueid" className='text-[#C0A04C]'>
                                     <span className='ml-1'>
-                                        {response.data.location}
+                                        crown plaza
                                     </span>
                                 </Link></p>
                             <div className='mt-4 flex justify-center text-center'>
@@ -175,7 +174,7 @@ const VendorEventDescripton = () => {
 
                                     <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
                                         <img className='h-5' src="/images/icons/map-1.svg" alt="" />
-                                        <p className='text-md'>{response.data.location}</p>
+                                        <p className='text-md'> crown plaza</p>
                                         <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                     </div>
 

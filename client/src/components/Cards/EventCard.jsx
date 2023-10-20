@@ -3,6 +3,8 @@ import moment from 'moment'
 
 const EventCard = ({ data }) => {
 
+
+
     return (
         <>
             <div >
@@ -19,11 +21,11 @@ const EventCard = ({ data }) => {
                                     <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd, Do MMMM YYYY")}</p>
                                     :
                                     <p className='text-xs mt-2 font-medium'>
-                                        {data.date.recurring.join(" ")}
+                                        {data.date.recurring.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
                                     </p>
                             }
                             <p className='text-xs mt-2 font-medium'>{data.title},</p>
-                            <p className='text-xs mt-2 font-medium'>{data.location}</p>
+                            <p className='text-xs mt-2 font-medium'> crown plaza</p>
                             <p className="mt-1 mb-1 text-xs font-light">{data.eventCategory}</p>
                         </div>
                     </div>

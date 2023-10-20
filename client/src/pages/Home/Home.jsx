@@ -518,7 +518,7 @@ const Home = () => {
                                                             </button>
                                                             <div className='flex flex-col p-2'>
                                                                 <p className='text-sm mt-2 font-medium'>{event.title},</p>
-                                                                <p className='text-sm mt-2 font-medium'>{event.location}</p>
+                                                                <p className='text-sm mt-2 font-medium'>crown plaza</p>
                                                                 <p className="mt-1 mb-1 text-xs font-light">Events</p>
                                                                 <div className='flex items-center justify-between space-x-2'>
                                                                     <Link className='button w-full' to={`/events/${event._id}`}>
