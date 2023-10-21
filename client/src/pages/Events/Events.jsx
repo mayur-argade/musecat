@@ -7,9 +7,10 @@ import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import Footer from '../../components/shared/Footer/Footer'
 import TrendingCard from '../../components/Cards/TrendingCard'
 import { getCategoryEvents, GetAllCategory } from '../../http/index'
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
+import queryString from 'query-string';
 
 const Events = () => {
 
@@ -73,7 +74,11 @@ const Events = () => {
             setSelectedCategories([...selectedCategories, categoryURL]);
         }
     };
+    const location = useLocation();
+    const queryParams = queryString.parse(location.search);
+    console.log(queryParams.search)
 
+    const [query, setQuery] = useState('')
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -90,8 +95,12 @@ const Events = () => {
 
         const fetchdata = async () => {
             setLoading(true)
+            const categorydata = {
+                category: category,
+                query: `?search=${queryParams.value}`
+            }
             try {
-                const { data } = await getCategoryEvents(category)
+                const { data } = await getCategoryEvents(categorydata, `?search=${queryParams.search}`)
                 // console.log(data.data)
                 setResponse(data)
                 setLoading(false)

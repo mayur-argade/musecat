@@ -25,9 +25,12 @@ const VendorSignup = () => {
     const [website, setWebsite] = useState('')
     const [logo, setLogo] = useState('')
     const [crImage, setCrImage] = useState('')
+    const [selectedLogo, setSelectedLogo] = useState(null)
+    const [selectedCrImage, setSelectedCrImage] = useState(null)
 
     function captureLogo(e) {
         const file = e.target.files[0];
+        setSelectedLogo(file)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function () {
@@ -38,6 +41,7 @@ const VendorSignup = () => {
 
     function captureImage(e) {
         const file = e.target.files[0];
+        setSelectedCrImage(file)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function () {
@@ -81,7 +85,7 @@ const VendorSignup = () => {
     return (
         <section className="relative h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
-            <img src="/images/icons/login-back.svg" alt="" />
+                <img src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
             <section className="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
@@ -176,7 +180,7 @@ const VendorSignup = () => {
                             <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">Upload Logo</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedLogo ? `Selected File: ${selectedLogo.name}` : 'Upload logo'}</p>
                                 </div>
                                 <input onChange={captureLogo}
                                     id="dropzone-file" type="file" className="hidden" />
@@ -193,7 +197,8 @@ const VendorSignup = () => {
                             <label for="crimage" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">Upload Image</p>
+
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload logo'}</p>
                                 </div>
                                 <input onChange={captureImage} id="crimage" type="file" className="hidden" />
                             </label>

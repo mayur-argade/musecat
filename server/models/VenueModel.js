@@ -5,13 +5,17 @@ const venueSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    displayPhoto: {
+    photo: {
         type: String,
         // required: true,
     },
     address: {
         type: String,
         required: true,
+    },
+    coordinates: {
+        lat: String,
+        lng: String
     },
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],

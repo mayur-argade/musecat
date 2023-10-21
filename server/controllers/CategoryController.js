@@ -179,7 +179,10 @@ module.exports.getCategories = async (req, res) => {
 
 module.exports.getCategoryAllEvents = async (req, res) => {
     let categoryDisplayName = req.params.categoryname
+    const search = req.query.search
+
     try {
+
         let events;
         if (categoryDisplayName != "events") {
             const today = new Date()
@@ -188,21 +191,23 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             const currentDay = moment().format('dddd').toLowerCase()
             console.log(currentDay)
             // const currentDay = "sunday"
-            events = await eventService.findAllEvents(
-                {
-                    // type: 'event',
-                    // verified: true,
-                    eventCategory: categoryDisplayName,
-                    $or: [
-                        { // Events with start date greater than or equal to today
-                            'date.dateRange.endDate': { $gte: today }
-                        },
-                        { // Events with recurring field containing today's day
-                            'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
-                        },
-                    ],
-                }
-            )
+            let query = {
+                // type: 'event',
+                // verified: true,
+                $and: [
+                    { eventCategory: categoryDisplayName },
+                ],
+                $or: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.endDate': { $gte: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                    },
+                ],
+            }
+
+            events = await eventService.findAllEvents(query)
         } else {
             const today = new Date()
             // const today = moment().utc()
@@ -210,20 +215,31 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             const currentDay = moment().format('dddd').toLowerCase()
             console.log(currentDay)
             // const currentDay = "sunday"
-            events = await eventService.findAllEvents(
-                {
-                    // type: 'event',
-                    // verified: true,
-                    $or: [
-                        { // Events with start date greater than or equal to today
-                            'date.dateRange.endDate': { $gte: today }
-                        },
-                        { // Events with recurring field containing today's day
-                            'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
-                        },
-                    ],
-                }
-            )
+            const query = {
+                // type: 'event',
+                $and: [
+                ],
+                $or: [
+                    { // Events with start date greater than or equal to today
+                        'date.dateRange.endDate': { $gte: today }
+                    },
+                    { // Events with recurring field containing today's day
+                        'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                    },
+                ],
+
+            }
+            if (search) {
+                // Add search conditions for category name, description, and title
+                query.$and.push(
+                    // Case-insensitive search
+                    { 'description': new RegExp(search, 'i') },
+                    { 'title': new RegExp(search, 'i') }
+                );
+            }
+
+            console.log(query)
+            events = await eventService.findAllEvents(query)
         }
 
         return res.status(statusCode.SUCCESS.code).json({
@@ -234,8 +250,5 @@ module.exports.getCategoryAllEvents = async (req, res) => {
     catch (error) {
         console.log(error)
     }
-
-
-
 }
 

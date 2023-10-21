@@ -3,9 +3,9 @@ const venueService = require('../services/venue-service')
 const cloudinary = require('cloudinary')
 
 module.exports.createVenue = async (req, res) => {
-    const { name, displayPhoto, address } = req.body
+    const { name, photo, address, mapAddress } = req.body
 
-    if (!name || !displayPhoto || !address) {
+    if (!name || !photo || !address || !mapAddress) {
         return res.status(400).json({
             success: false,
             data: "all field are mandatory"
@@ -15,8 +15,8 @@ module.exports.createVenue = async (req, res) => {
     try {
 
         let uploadedVenuePhoto = ''
-        if (displayPhoto) {
-            uploadedVenuePhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
+        if (photo) {
+            uploadedVenuePhoto = await cloudinary.v2.uploader.upload(photo, {
                 folder: "muscat/venue",
             })
             console.log(uploadedVenuePhoto)
@@ -24,8 +24,12 @@ module.exports.createVenue = async (req, res) => {
 
         const data = {
             name: name,
-            displayPhoto: uploadedVenuePhoto.secure_url,
-            address: address
+            photo: uploadedVenuePhoto.secure_url,
+            address: address,
+            coordinates: {
+                lat: mapAddress.lat,
+                lng: mapAddress.lng
+            }
         }
 
         const venue = await venueService.createVenue(data)

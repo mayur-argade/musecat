@@ -6,6 +6,7 @@ import Cropper from 'react-easy-crop'
 import getCroppedImg from '../../utils/cropper'
 import toast, { Toaster } from 'react-hot-toast';
 import './addeventmodal.css'
+import AddVenueModal from './AddVenueModal';
 
 const AddEventModal = ({ onClose }) => {
 
@@ -45,6 +46,7 @@ const AddEventModal = ({ onClose }) => {
         console.log("currentDate=", currentDate)
     }, []);
 
+    const [showVenuecreate, setShowVenuecreate] = useState(false)
     const [content, setContent] = useState('')
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState('')
@@ -438,6 +440,28 @@ const AddEventModal = ({ onClose }) => {
                                             }
                                         </select>
                                     </div>
+                                    <button onClick={(() => setShowVenuecreate(!showVenuecreate))}>
+                                        {
+                                            showVenuecreate
+                                                ?
+                                                <p>
+                                                    - hide Venue model
+                                                </p>
+                                                :
+                                                <p>
+                                                    + Add Venue
+                                                </p>
+
+                                        }
+                                    </button>
+
+                                    {
+                                        showVenuecreate
+                                            ?
+                                            <AddVenueModal />
+                                            :
+                                            <></>
+                                    }
 
                                     {/* <div>
                                     asdfsdadf
@@ -661,6 +685,8 @@ const AddEventModal = ({ onClose }) => {
                             <img src="/images/icons/loading.svg" alt="" />
                         </div>
                 }
+
+
             </div >
         )
     }

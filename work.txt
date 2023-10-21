@@ -1,6 +1,5 @@
-handle instgram
-
-home -->
+Things done
+vendor home -->
 1. event category counts
 2. upcoming events
 3. offers
@@ -15,12 +14,63 @@ event description -->
 1. contact us handling
 2. fetched event description
 3. availble seats and starting price handled
+4. Show category price and name in accordian
 
 bookseats -->
 1. handling book seats form validation
 2. payment gateway redirection
 3. if no price no payment gateway redirection
 4. ticket status handling
+
+Vendor Home -->
+1. Create Event/Offer
+2. Ongoing Events
+3. Ongoing Offer
+
+Vendor Notification -->
+1. Get All Notifications
+
+Vendor Hosted Events -->
+1. Get All hosted events
+2. Get archived Events
+3. Get all offers
+
+4. Vendor Events description
+1. Edit Events
+2. View sales
+
+5. Booked seats
+1. Get All tickets for vendor
+2. Export tickets in excel format
+3. Show Ticket status as (processing, pending, awaiting confirmation)
+
+
+Thing which Havent Pushed but completed 
+1. Vendor Create Venue
+2. Vendor show image name which is selected while signup form
+3. Vendor booked seats counts
+4. Vendor verify ticket status
+
+Things working on 
+1. Adding loading screen in all pages
+2. Adding Map-view in user side 
+3. showing Trending events
+4. User side past purchased events fetch data As model changed
+5. Show like button red unred
+
+Things Remaining
+1. Vendor searchbar 
+2. Change Image in About section
+3. Events page filter date option
+4. Event description fetch upcoming events and offers
+5. Venue page fetch data for events 
+6. Send Invoice for booked tickets
+7. Vendor Booked tickets Refund payment
+8. Notification center delete Notifications
+
+
+
+
 
 Ticket Booking
 event
