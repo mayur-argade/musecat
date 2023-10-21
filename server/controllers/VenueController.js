@@ -66,7 +66,7 @@ module.exports.getVenueDetails = async (req, res) => {
 
 exports.getAllVenues = async (req, res) => {
     try {
-        const venues = await venueService.findAllVenue()
+        const venues = await venueService.findAllVenue({name: 'Crown Plaza'})
         return res.status(200).json({
             success: true,
             data: venues
