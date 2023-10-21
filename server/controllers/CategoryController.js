@@ -180,7 +180,13 @@ module.exports.getCategories = async (req, res) => {
 module.exports.getCategoryAllEvents = async (req, res) => {
     let categoryDisplayName = req.params.categoryname
     const search = req.query.search
-
+    const categories = await categoryService.findAllCategory()
+    let categoryArray = [];
+    for (const category of categories) {
+        categoryArray.push(category.categoryURL)
+    }
+    console.log(categoryDisplayName)
+    console.log(categoryArray)
     try {
 
         let events;
@@ -194,9 +200,7 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             let query = {
                 // type: 'event',
                 // verified: true,
-                $and: [
-                    { eventCategory: categoryDisplayName },
-                ],
+                eventCategory: categoryDisplayName,
                 $or: [
                     { // Events with start date greater than or equal to today
                         'date.dateRange.endDate': { $gte: today }
@@ -214,10 +218,12 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             console.log(today)
             const currentDay = moment().format('dddd').toLowerCase()
             console.log(currentDay)
+
             // const currentDay = "sunday"
             const query = {
                 // type: 'event',
                 $and: [
+                    { 'eventCategory': { $in: categoryArray } }
                 ],
                 $or: [
                     { // Events with start date greater than or equal to today
@@ -229,8 +235,13 @@ module.exports.getCategoryAllEvents = async (req, res) => {
                 ],
 
             }
-            if (search) {
+            console.log("search before if block",search)
+            console.log("query before if block",query)
+            if (search == undefined || search == 'undefined' ) {
+                console.log("what")
+            }else{
                 // Add search conditions for category name, description, and title
+                console.log("search inside if block",search)
                 query.$and.push(
                     // Case-insensitive search
                     { 'description': new RegExp(search, 'i') },
@@ -238,7 +249,7 @@ module.exports.getCategoryAllEvents = async (req, res) => {
                 );
             }
 
-            console.log(query)
+            console.log("query after if block",query)
             events = await eventService.findAllEvents(query)
         }
 
