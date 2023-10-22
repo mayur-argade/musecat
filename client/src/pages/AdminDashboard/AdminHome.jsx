@@ -46,7 +46,7 @@ const AdminHome = () => {
         const fetchevents = async () => {
             setLoading(true)
             try {
-                const res = await getCategoryEvents('events')
+                const res = await getCategoryEvents('events', '?search=')
                 // console.log(data.data)
                 setResponse(res.data)
                 setLoading(false)

@@ -126,7 +126,7 @@ const VendorEventDescripton = () => {
                             <div className="col-span-4 md:col-span-2  flex flex-col items-stretch justify-center">
                                 <div className="w-full max-w-6xl rounded-lg relative">
                                     {/* Image */}
-                                    <img className="h-80 w-full rounded-lg" src={`${response.data.displayPhoto}`} alt="" />
+                                    <img className="h-full w-full rounded-lg" src={`${response.data.displayPhoto}`} alt="" />
 
                                     {/* Top-right Edit and View Sales */}
                                     <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">

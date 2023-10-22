@@ -29,6 +29,7 @@ export const VendorUpdateEvent = (data) => api.patch(`vendor/event/update-event`
 export const GetVendorNotification = (data) => api.get(`notification/all`, data)
 export const VendorUpdateTicketStatus = (data) => api.patch(`ticket/update-payment-status`, data)
 export const VendorCreateVenue = (data) => api.post('venue/create-venue', data)
+export const vendorUpdateTicketStatus = (data) => api.patch('update-ticket-status', data)
 
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)

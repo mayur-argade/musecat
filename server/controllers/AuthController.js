@@ -265,7 +265,7 @@ exports.register = async (req, res) => {
 
     const { email, username, password, mobilenumber } = req.body
 
-    if (!email || !username || !password || !mobilenumber) {
+    if (!email || !username || !password) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: statusCode.BAD_REQUEST.message
@@ -277,7 +277,7 @@ exports.register = async (req, res) => {
         if (user) {
             return res.status(statusCode.CONFLICT.code).json({
                 success: false,
-                data: "Account with this email Id already exist try signing in"
+                data: "Account with this email already exist try signing in"
             })
         }
 
@@ -522,7 +522,7 @@ exports.sendMailForgotPassword = async (req, res) => {
                     return res
                         .status(statusCode.SUCCESS.code).json({
                             success: true,
-                            data: `Email sent successFully Kindly check your email ${token}`
+                            data: `Email sent successFully Kindly check your email`
                         });
                 }
             });

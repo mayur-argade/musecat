@@ -587,28 +587,41 @@ exports.addToFavorites = async (req, res) => {
     // console.log(_id, eventid)
     try {
         // Find the user by ID
-        const user = await userService.findUser({ _id: _id });
+        let user = await userService.findUser({ _id: _id });
 
         // Find the event by ID
-        const event = await eventService.findEvent({ _id: eventid });
+        let event = await eventService.findEvent({ _id: eventid });
 
-        console.log(user, event)
+        // console.log(user, event)
 
         if (!user || !event) {
             return res.status(404).json({ success: false, message: 'User or Event not found' });
         }
 
         // Check if the user's ID is in the event's 'likes' array
-        const isLiked = event.likes.includes(_id);
 
-        if (isLiked) {
+        const idString = _id.toString();
+
+
+        if (event.likes.includes(user._id) && user.favorites.includes(event._id)) {
             // If the user's ID is in the 'likes' array, remove it
-            event.likes = event.likes.filter(userId => userId !== _id);
+            likes = event.likes.filter(userId => userId.toString() !== idString);
             // Remove the event ID from the user's 'favorites' array if present
-            user.favorites = user.favorites.filter(eventid => eventid !== event._id);
-            // Save the updated event and user data
-            await event.save();
-            await user.save();
+            favorites = user.favorites.filter(eventid => eventid.toString() !== event._id.toString());
+
+           
+            const eventdata = {
+                _id: event._id,
+                likes: likes
+            }
+            const updatedEvent = await eventService.updateEvent(eventdata)
+
+            const userData = {
+                _id: user._id,
+                favorites: favorites
+            }
+
+            const updatedUser = await userService.updateUser(userData)
 
             return res.status(200).json({ success: true, message: 'like has been removed' });
         } else {

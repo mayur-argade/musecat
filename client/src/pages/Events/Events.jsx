@@ -11,6 +11,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
+import './events.css'
 
 const Events = () => {
     let [selectedLocation, setSelectedLocation] = useState({
@@ -67,7 +68,11 @@ const Events = () => {
     const [search, setSearch] = useState('')
     const [categories, setCategories] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([])
+    const [selectedDistance, setSelectedDistance] = useState([])
+    const [filterDate, setFilterDate] = useState(null)
+
     const [trending, setTrending] = useState({})
+    console.log("selected distance", selectedDistance)
 
     const handleCategoryChange = (categoryURL) => {
         // console.log(categoryURL)
@@ -80,9 +85,54 @@ const Events = () => {
             setSelectedCategories([...selectedCategories, categoryURL]);
         }
     };
+    const handleDistanceChange = (distance) => {
+        getUserLocation()
+        if (selectedDistance.includes(distance)) {
+            setSelectedDistance(selectedDistance.filter((dis) => dis !== distance))
+        } else {
+            setSelectedDistance([...selectedDistance, distance])
+        }
+    }
+
+    const [userCord, setUserCord] = useState({})
+    async function getUserLocation() {
+        try {
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+
+            const userLocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            };
+
+            setUserCord(userLocation)
+            // Use userLocation for filtering.
+        } catch (error) {
+            console.error('Error getting user location:', error);
+        }
+    }
+
+    // console.log("userlocation", userLocation)
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        console.log(lat1, lon1, lat2, lon2)
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c; // Distance in kilometers
+        console.log("distance", distance)
+        return distance;
+    }
+
     const location = useLocation();
     const queryParams = queryString.parse(location.search);
-    console.log(queryParams.search)
+    // console.log(queryParams.search)
 
     const [query, setQuery] = useState('')
 
@@ -123,7 +173,7 @@ const Events = () => {
 
     }, [category]);
 
-    if(response.data != null ){
+    if (response.data != null) {
         response.data.map((event, index) => (
             coordinates.push(event.location.coordinates)
         ))
@@ -224,92 +274,80 @@ const Events = () => {
                                     </div>
                                 </div>
 
-                                <div class="filterbyfeature">
-                                    <div className="relative inline-block text-left">
-                                        <button
-                                            onClick={toggleDropdown}
-                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        >
-                                            <span className='hidden md:block text-gray-500'>Filter by Features</span>
-                                            <span className='md:hidden block text-gray-500'>Filter</span>
+                                {
+                                    category == 'events' && (
+                                        <div class="filterbyfeature">
+                                            <div className="relative inline-block text-left">
+                                                <button
+                                                    onClick={toggleDropdown}
+                                                    className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                >
+                                                    <span className='hidden md:block text-gray-500'>Filter by Features</span>
+                                                    <span className='md:hidden block text-gray-500'>Filter</span>
 
-                                            <img src="/images/icons/filter.svg" alt="" />
-                                        </button>
-                                        {isOpen && (
-                                            <div
-                                                className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
-                                                ref={dropdownRef}
-                                            >
-                                                <div className="p-5">
-                                                    <div className="popular">
-                                                        <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                        {
-                                                            categories.data.map((e) => (
+                                                    <img src="/images/icons/filter.svg" alt="" />
+                                                </button>
+                                                {isOpen && (
+                                                    <div
+                                                        className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
+                                                        ref={dropdownRef}
+                                                    >
+                                                        <div className="p-5">
+                                                            <div className="popular">
+                                                                <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
+                                                                {
+                                                                    categories.data.map((e) => (
+                                                                        <div class="flex items-center mb-1 mt-2">
+                                                                            <input id={e.categoryURL} type="checkbox"
+                                                                                onChange={() => handleCategoryChange(e.categoryURL)}
+                                                                                checked={selectedCategories.includes(e.categoryURL)}
+                                                                                value={e.categoryURL} class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                            <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                        </div>
+                                                                    ))
+                                                                }
+                                                            </div>
+
+                                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
+                                                            <div className="distance">
+                                                                <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
                                                                 <div class="flex items-center mb-1 mt-2">
-                                                                    <input id={e.categoryURL} type="checkbox"
-                                                                        onChange={() => handleCategoryChange(e.categoryURL)}
-                                                                        checked={selectedCategories.includes(e.categoryURL)}
-                                                                        value={e.categoryURL} class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                    <input onChange={() => handleDistanceChange(4)}
+                                                                        checked={selectedDistance.includes(4)} id="4km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
                                                                 </div>
-                                                            ))
-                                                        }
+
+                                                                <div class="flex items-center mb-1">
+                                                                    <input onChange={() => handleDistanceChange(10)}
+                                                                        checked={selectedDistance.includes(10)} id="10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
+                                                                </div>
+
+                                                                <div class="flex items-center mb-1">
+                                                                    <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
+                                                                </div>
+
+
+                                                            </div>
+
+                                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
+                                                           
+                                                        </div>
                                                     </div>
-
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                    <div className="distance">
-                                                        <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                                        <div class="flex items-center mb-1 mt-2">
-                                                            <input id="4km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
-                                                        </div>
-
-                                                        <div class="flex items-center mb-1">
-                                                            <input id="10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
-                                                        </div>
-
-                                                        <div class="flex items-center mb-1">
-                                                            <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                                        </div>
-
-
-                                                    </div>
-
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                    <div className="timings">
-                                                        <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                                        <div class="flex items-center mb-1 mt-2">
-                                                            <input id="slota" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="slota" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">8am to 12pm</label>
-                                                        </div>
-
-                                                        <div class="flex items-center mb-1">
-                                                            <input id="slotb" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="slotb" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">12pm to 8pm </label>
-                                                        </div>
-
-                                                        <div class="flex items-center mb-1">
-                                                            <input id="slotc" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="slotc" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                                        </div>
-
-
-                                                    </div>
-
-                                                </div>
+                                                )}
                                             </div>
-                                        )}
-                                    </div>
-                                </div>
+                                        </div>
+                                    )
+                                }
+
 
                                 <div className="datepicker">
                                     <div className="p-4">
                                         <label for="session-date"></label>
-                                        <input id="session-date" className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 md:w-40  p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
+                                        <input  id="session-date" className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 md:w-40  p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' for='date' type="date" />
                                     </div>
                                 </div>
                             </div>
@@ -332,15 +370,44 @@ const Events = () => {
                                                         <img className='h-60' src="/images/assets/nothing.png" alt="" />
                                                     </div>
                                                     :
-                                                    response.data.filter((item) => {
-                                                        return search.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(search)
-                                                    }).map((event) => (
-                                                        <div className=''>
-                                                            <Link className="" to={`/events/${event._id}`} >
-                                                                < EventCard data={event} />
-                                                            </Link>
-                                                        </div>
-                                                    ))
+                                                    response.data
+                                                        .filter((item) => {
+                                                            // Filter by category
+                                                            const categoryMatch =
+                                                                selectedCategories.length === 0 || selectedCategories.includes(item.eventCategory);
+
+                                                            if (selectedDistance.length > 0) {
+
+                                                                // Calculate the distance from the user's location to the event's location
+                                                                if (userCord != null) {
+                                                                    console.log("this is working")
+                                                                    const eventDistance = calculateDistance(
+                                                                        userCord.latitude,
+                                                                        userCord.longitude,
+                                                                        item.location.coordinates.lat,
+                                                                        item.location.coordinates.lng
+                                                                    );
+
+                                                                    // console.log("eventDistnace", eventDistance)
+                                                                    // Filter by distance (e.g., events within 4 km)
+                                                                    const distanceFilterMatch =
+                                                                        !selectedDistance || eventDistance <= selectedDistance;
+
+
+                                                                    // Return true if the event matches both the category and distance filter
+                                                                    return categoryMatch && distanceFilterMatch;
+                                                                }
+                                                            } else {
+                                                                console.log("this is not working")
+                                                                // If user location is not available, only filter by category
+                                                                return categoryMatch;
+                                                            }
+                                                        })
+                                                        .map((event) => (
+                                                            <div className='' key={event._id}>
+                                                                <EventCard data={event} />
+                                                            </div>
+                                                        ))
                                             }
                                         </div>
                                     </div>
@@ -349,7 +416,7 @@ const Events = () => {
                                 <div className="2 flex md:justify-center lg:justify-end ">
                                     <div className="relative mx-auto md:mx-0">
                                         <div>
-                                            <div className='w-full rounded-md'>
+                                            <div className='w-full h-9/12 rounded-md'>
                                                 <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} />
                                             </div>
                                         </div>
@@ -363,13 +430,13 @@ const Events = () => {
                                             <div className=''>
                                                 {
                                                     trending.data.map((event) => (
-                                                       <>
-                                                       {
-                                                        event != null && (
-                                                            <TrendingCard data={event} />
-                                                        )
-                                                       }
-                                                       </>
+                                                        <>
+                                                            {
+                                                                event != null && (
+                                                                    <TrendingCard data={event} />
+                                                                )
+                                                            }
+                                                        </>
                                                     ))
                                                 }
 

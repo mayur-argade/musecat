@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Table from '../../components/Table/Table';
 import Footer from '../../components/shared/Footer/Footer';
-import { VendorBookedTicketApi, VendorUpdateTicketStatus } from '../../http/index'
+import { VendorBookedTicketApi, VendorUpdateTicketStatus, vendorUpdateTicketStatus } from '../../http/index'
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 
@@ -14,7 +14,7 @@ const VendorBookedTickets = () => {
     const [serialNumbers, setSerialNumbers] = useState([]);
     const [ticketId, setTicketId] = useState('')
     const [status, setStatus] = useState('')
-
+    const [bookedSeatsLength, setBookedSeatsLength] = useState(0)
     let { eventid } = useParams();
 
     useEffect(() => {
@@ -23,6 +23,9 @@ const VendorBookedTickets = () => {
                 const { data } = await VendorBookedTicketApi(eventid)
                 console.log(data.data)
                 setReponse(data)
+                const filteredData = data.data.filter(item => item.status !== 'canceled' && item.status !== 'refunded');
+                const totalSeats =  filteredData.reduce((total, item) => total + item.allotedSeats.length, 0);
+                setBookedSeatsLength(totalSeats)
                 // Generate serial numbers based on the length of the data
                 const generatedSerialNumbers = Array.from({ length: data.data.tickets.length }, (_, index) => index + 1);
                 setSerialNumbers(generatedSerialNumbers);
@@ -34,7 +37,7 @@ const VendorBookedTickets = () => {
 
         fetchdata()
     }, []);
-
+    console.log("totalseats", bookedSeatsLength)
     const updateStatus = async () => {
         const data = {
             ticketid: ticketId,
@@ -69,6 +72,19 @@ const VendorBookedTickets = () => {
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
+
+    const changeStatus = async (ticketid, status) => {
+        try {
+            const { data } = await vendorUpdateTicketStatus({
+                ticketid: ticketid,
+                status: status
+            })
+
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     if (response.data == null) {
         <>
@@ -191,7 +207,7 @@ const VendorBookedTickets = () => {
 
                             <div className="flex align-middle justify-center items-center totalseats space-x-2">
                                 <p className='font-semibold text-sm'>total seats sold</p>
-                                <p className='text-white font-semibold bg-black px-4 py-2 rounded-lg text-sm'>{response.data.seatsBooked}</p>
+                                <p className='text-white font-semibold bg-black px-4 py-2 rounded-lg text-sm'>{bookedSeatsLength}</p>
                             </div>
 
                             <ReactHTMLTableToExcel
@@ -309,12 +325,32 @@ const VendorBookedTickets = () => {
                                                 </p>
                                             </td>
                                             <td class="px-6 py-4 flex space-x-1">
-                                                <button>
-                                                    <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
-                                                </button>
-                                                <button>
-                                                    <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
-                                                </button>
+                                                {
+                                                    ticket.status == 'verified'
+                                                        ?
+                                                        <div>
+                                                            <button onClick={() => changeStatus(ticket._id, 'canceled')}>
+                                                                <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                            </button>
+                                                        </div>
+                                                        :
+                                                        ticket.status == 'canceled'
+                                                            ?
+                                                            <>
+                                                                <button onClick={() => changeStatus(ticket._id, 'verified')}>
+                                                                    <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
+                                                                </button>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <button onClick={() => changeStatus(ticket._id, 'verified')}>
+                                                                    <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
+                                                                </button>
+                                                                <button onClick={() => changeStatus(ticket._id, 'canceled')}>
+                                                                    <img className='h-6 w-6 ml-1' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                                </button>
+                                                            </>
+                                                }
                                             </td>
                                         </tr>
                                     ))}

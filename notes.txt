@@ -1,265 +1,98 @@
-create a search query function route
+Add loading screen to all pages
 
-[x] create a category controllers
-[x] create a offer controllers
+login page
+1. Back button is working
+2. Invalid user response
+3. empty form submission handled
+4. incorrect password submission handled
+5. forget password link is working
+6. continue with email is working
+--> no google login
+--> no facebook login
 
-[Y] get max6 categories have the most offers in descending order 
-[Y] get eve and there offer count should be greater than equal to 1
-[Y] get datewise categories count data 
-[] get max 3 upcoming events date query
-[Y] upcoming view all link it to the events  
-[] createa a category of ediors pick
-[Y] link view all to the category/event page
-[] show active offer only in the get offers 
-[] scroll to top function
-[] need to talk button routing
-[] whatsapp no linking
+Signup page
+1. Form validation handled
+2. already existing user handled 
+3. password confirm password handled
+4. loading button added
 
-0. Clear database for events offers users (categories OK)
-1. loading screen to all pages
-2. Complete backend apis
-3. Complete vendor side with proper date and time
-4. correct event apis
-5. make better folder structure
-6. whatever you are showing make sure it should only have a incoming or current offers
-7. calender events
-8. filter option
-9. Add to Favorites
-10. QR code
-
-------------------------------------------------------------------------------------------
-
-Login screen --->
-1. Show back button to come on the Homepage
-2. google sign in
-3. facebook sign in 
-4. 
+Forgot password input form 
+1. Form validation handled
+2. already existing user handled 
+3. password confirm password handled
+4. loading button added
+5. send mail checked 
 
 
-Events Page --->
-Show no events available for categories having no events (done)
-give it a scroll option make it overflow after 3 lines 
-look for responsiveness (partially done)
-Trending in muscat
-Add filter 
-Add searching events datewise 
-Add to favorite option 
-show skeleton for events loading first time
+Homepage
+--> desktop
+1. Searchbar working in desktop 
+2. searchbar size adjusted
+3. popular categories routing working
+4. follow us button working
+5. Like option working
+6. calender highlight working
+7. popular category daywise working
+8. follow us button redirection working
+9. Navigation menu checked 
+10.
+---> Mobile and PWA
+
+Events 
+--> desktop
+1. like button working properly
+2. events on map are listing correctly
+3. filter option is working
+4. search option is working
+5. category wise events are getting listed
+6. location wise filtering is working
+--> date filtering is missing
+--> time filtering is missing
+
+Event Description
+--> desktop
+1. fetched event description
+2. show event location on map
+3. show upcoming events
+5. Add to Favorites
+8. Add to favorite
+11. Add like button
+13. show likes count
+10. Add OMR in front of starting price of ticket
+12. if event is expired then book now button is disable
+7. Call button
+6. contact us button
+4. show upcoming offers (pending)
+--> Add to calender missing
+--> there are two places to show the likes
+
+Venue Description
+--> desktop
+1. show banner 
+2. show upcoming events
+3. show venue address on map
+4. show events you might like = trending events 
+
+Book ticket
+1. Form validation
+2. terms and condition redirection
+3. 
+
+ticket status
+1. payment status check loading screen
+2. ticket qr code
 
 
-ADD PAYMENT GATEWAY
+pastpurchased
+1. pastpurchased redirect to ticket
+2. remove filter from the pastpurchased
 
-Ticket status page -->
-1. show like button neatly
-2. View ticket make it perfect use image if want 
-3. show neat qrcode in white
-
-
-steps: 
-create a book ticket controller (done)
-take all data from the frontend to that controller (done)
-create a session into that controller (done)
-give url as a response and also status and other things (done)
-from the frontend redirect it to the checkout page
-
-
-ADD CHAT engine
-
-event with no alloted seats
-
-events with no payment (price)
-event with optional time
-
-
----------------------------------------------------
-Contact us ---> 
-1. Create loading icon when we are submitting details
-2. Add validation correctly (done)
-3. Give a success response once msg has been sent (done)
-4. Link all the social media icons
-5. whatsapp linking
-
-Homepage -->
-changed date type to epoch timestamp
-1. Get searchbar working
-2. get categories data with the total active events (done)
-3. show all the upcoming events on the show on map 
-4. Modify upcoming events api such a way that it should show events of that day only (done)
-5. Create a new category of editors pick (done)
-6. show all the active offers (partially done)
-7. create a scroll to top (done)
-8. link whatsapp number 
-9. Start integrating chatbot
-10. Link footer to the site 
-11. Change offer to date (discussion)
-
-
-About Us --->
-1. scroll to top button
-
-Event Description page --->
-0. After time changed in vendor side change here also 
-1. Make alignment proper (done)
-2. Link view on map to the cordinates (partially done)
-3. Add to Favorites (done)
-4. add share option (not done)
-5. upcoming events in the crown plaza (partially done)
-6. offers on the crown plaza (partially done)
-7. like button (partially done)
-8. Contact us redirect to the whatsapp number of the vendor (done)
-9. make call option work for the vendor number
-10. make like option red and unred
-
-Book seat Page --->
-3. add validation (done)
-5. If any field is remaining dont show the ticket price (done)
-4. This values should be prefilled by getting user from the store (done)
-2. create a controller in the backend 
-1. fetch this page from the backend (no)
-
-
-Add ticketid into the user document when ticket is getting booked
-retrive that data when showing past purchase events
-add ticketid into it 
-redirect it there
+Favorites
+1. show all liked events
+2. like feature working
+3. after clicking on event event description page
 
 
 
 
-
-
-Admin login 
-- change login user api
-- give validation if role is user or not
-- check the work flow after done
-
-
-Home-->
-Login-logout issue resolve
-Searchbar working properly redirect it to the whereto events page
-Show daywise events and when I click on any day show all the events of that day
-Apply skeleton view for this
-Show calender option
-show like button
-show offers cards and when someone clicks on that card redirect him to the events page
-subscribe to out newsletter
-Make mobile view better (reduce card size, reduce banner, make proper searchbar)
-make proper settings in App view for bottom navbar 
-Add animations for skeleton view and searchbar
-
-About -->
-Change Image for about section
-
-Contact Us -->
-Add notification to the admin when someone fill info to the contact us
-
-Profile -->
-Show saved cards
-Show mobile view for profile
-clear saved cards 
-Update user profile
-Handle undefined values
-
-Events -->
-Show 3 events in a row 
-show 3 rows at max then scroll bar
-Add filter by category
-Add live search bar
-Add trending events
-Add datewise events
-Add to favorite 
-Show events on map
-Show in list view or in grid view
-
-Event Description -->
-Show Event photo size in a fixed manner
-Show Contact us option the way they said
-Show share option after clicking on share option link for this event should get copied
-after clicking on call icon number should get visible
-Add to calender option
-Add to favorites 
-Likes button
-Show location for the event
-Show upcoming events
-show upcoming offers
-show download banner 
-
-Venue Description -->
-Show the location of the vanue on the google map
-Show all the events happening on the venue
-Show the events which are of same categories which user have purchased earlieer if user haventt purchased anything then show the eents whose tickets are getting sold faster
-After clicking on show more button more events will get showed on the page
-
-Favorites -->
-Show all the favorite events of the user the upcoming event first and expired event should be at last
-user can also remove this events from favorites by clicking on the red heart
-
-Book Seat -->
-same form will be there for book seat 
-Create a backend api to get the data for the user and image of seating map
-prefill some field and also show only those options which vendor has created to do the same
-If event has no price then dont redirect him to the payment gateway
-If event has price then redirect him to the payment gateway and then after successfull payment allot seats which you want to allot
-Make a proper validation for the form 
-Same page will be there for the offers 
-Send invoice and mail about the event booked
-send notification to the vendor that your event has got booked
-send notification to the user that event has been successfully booked
-
-FAQ -->
-Create FAQ dynamic
-Give admin access to add and delete FAQ
-Chat with us button redirect to the chat screen
-
-Past-Purchased -->
-Show pastpurchased events first upcoming then expired
-after clicking on the event he can look his ticket which he booked
-Apply filter option 
-
-Help -->
-Chat bot integration
-Only logged in user can access this chatbot setting
-
-wheretomap -->
-Show all the upcoming events on the wheretomap
-
-Vendor Home -->
-Add Event 
-Add Offer 
-Ongoing events should be coursel view 
-if he clicks on view all then he will redirect to the hosted events page
-if he clicks on the event on the home page he will redirect to the event description
-Ongoing offers also having same functionality like events
-
-Booked Tickets -->
-Show all the booked tickets
-Apply filters 
-Show booked seats count
-Extract data into the excel or pdf 
-Cancel option for the tickets
-If he cancels the ticket then refund will get initiated 
-If he cancels the ticket user will get notification
-
-Hosted Events --> 
-Show all the ongoig upcoming events on the hosted events page
-show all the ongoging upcoming offers also on the hosted events page
-Add filter 
-
-Event description -->
-Same as client side
-Edit event modal
-redirect to the booked seats 
-
-Notification center -->
-Show all the notification in a decending order
-Clear notification button deleting offers
-Take confirmation from the user that he have to delete the offer or 
-
-Vendor profile -->
-same as client side profile page
-
-Ticket status -->
-show the ticket status as pending if no payment is done
-view ticket option show the ticket card for it 
-Configure it for mobile screens 
 

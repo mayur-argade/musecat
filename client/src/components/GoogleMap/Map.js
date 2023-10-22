@@ -45,10 +45,10 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
     // console.log("sekected location", selectedLocation)
     // console.log("address", address)
     return (
-        <div style={{ marginTop: "10px" }}>
+        <div style={{ marginTop: "px" }}>
             <GoogleMap
                 mapContainerStyle={{
-                    height: "300px",
+                    height: "500px",
                 }}
                 center={mapCenter}
                 zoom={10}

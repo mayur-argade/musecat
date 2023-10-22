@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ClientRegister } from '../../http'
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
 const Signup = () => {
@@ -13,14 +13,21 @@ const Signup = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [mobileNumber, setMobileNumber] = useState('')
-
+    const [cpassword, setCpassword] = useState('')
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
+
+    const isSignupPage = location.pathname === '/signup';
+
 
     async function submit() {
         try {
-            if (!email || !username || !password || !mobileNumber) {
-                alert("all fields are mandatory")
+            if (!email || !username || !password) {
+                return toast.error("Required Fields are missing")
+            }
+            if (password != cpassword) {
+                return toast.error("password and confirm password is different")
             }
             const clientdata = {
                 email: email,
@@ -46,9 +53,9 @@ const Signup = () => {
     return (
         <section class="relative h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
             <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
-            <img src="/images/icons/login-back.svg" alt="" />
+                <img src="/images/icons/login-back.svg" alt="" />
             </button>
-            
+
             <Toaster />
             <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10 ">
                 <div className="title mb-3">
@@ -78,7 +85,13 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" for="password" id='password' placeholder="Confirm Password" />
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md 
+                        text-gray-600" type="password" for="password" id='password'
+                            value={cpassword} onChange={(e) => setCpassword(e.target.value)}
+                            placeholder="Confirm Password" />
+
+
+
                     </div>
                     <div>
                         <p className='text-white text-xs font-light md:font-regular md:text-slate-400 md:text-xs'>
@@ -118,9 +131,3 @@ const Signup = () => {
 }
 
 export default Signup
-
-// email username password cpassword
-// (Optional) if you wish to receive updates on whatsapp
-// Mobile Number
-// Already have an account? Login
-// Signup

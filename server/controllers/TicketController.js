@@ -935,10 +935,27 @@ exports.updateStatusUsingSessionId = async (req, res) => {
 
 exports.updateStatusOfTicketbyVendor = async (req, res) => {
     try {
-        const { ticketid, status } = req.body
+        let { ticketid, status } = req.body
 
         let ticket = await ticketService.findTicket({ _id: ticketid })
+        console.log(ticket)
+        let event;
+        if (status == 'canceled') {
+            // delete seats 
+            event = await eventService.findEvent({ _id: ticket.eventid });
+            for (const category of event.categories) {
+                category.bookedSeats = category.bookedSeats.filter(seat => !ticket.allotedSeats.includes(seat));
+                console.log(category.bookedSeats);
+            }
+            console.log(event.categories);
 
+            // check for payment
+            if (ticket.sessionId) {
+                // go for refund process
+                // change the status to the refunded
+            }
+
+        }
         const ticketdata = {
             _id: ticket._id,
             status: status

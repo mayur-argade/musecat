@@ -14,7 +14,9 @@ const BookTicket = () => {
     const { user, isAuth } = useSelector((state) => state.auth)
 
     const [response, setReponse] = useState({});
-
+    const [checked, setChecked] = useState(null);
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    console.log("terms accepted", termsAccepted)
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -22,6 +24,7 @@ const BookTicket = () => {
                 const { data } = await ClientEventDetailsApi(eventid)
                 // console.log(data.data.eventDetails)
                 setReponse(data)
+                setChecked(Array(data.data.eventDetails.custom.length).fill(false))
                 setLoading(false)
             } catch (error) {
                 console.log(error)
@@ -40,6 +43,12 @@ const BookTicket = () => {
     // console.log(event)
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page
+    };
+
+    const handleCheckboxChange = (index) => {
+        const updatedChecked = [...checked];
+        updatedChecked[index] = !updatedChecked[index];
+        setChecked(updatedChecked);
     };
 
     const closePrice = () => {
@@ -79,9 +88,13 @@ const BookTicket = () => {
                 submit()
             } else {
                 if (!firstname || !lastname || !ticketclass || !seats) {
-                    toast.error("All fields are mandatory")
+                    return toast.error("All fields are mandatory")
                 } else if (seats <= 0) {
-                    toast.error("Enter valid seat number")
+                    return toast.error("Enter valid seat number")
+                } else if (!checked.every((isChecked) => isChecked)) {
+                    return toast.error("Tick all checkboxes")
+                } else if (!termsAccepted) {
+                    return toast.error("Check terms and conditions")
                 } else {
                     // calculatePrice()
                     const { basePrice, tax, totalPrice, baseTaxAmout } = calculatePrice()
@@ -124,6 +137,14 @@ const BookTicket = () => {
     const [priceWithTax, setPriceWithTax] = useState('')
 
     async function submit() {
+        if (!checked.every((isChecked) => isChecked)) {
+            return toast.error("Tick all checkboxes")
+        }
+
+        if (!termsAccepted) {
+            return toast.error("Check terms and conditions")
+        }
+
         if (hasPrice.length != 0 && hasClassName.length != 0) {
             if (!firstname || !lastname || !email || !ticketclass || !seats) {
                 toast.error("All fields are mandatory")
@@ -432,18 +453,22 @@ const BookTicket = () => {
 
                                         <div className='flex flex-col justify-between mt-3'>
                                             {
-                                                response.data.eventDetails.custom.map((custom) => (
+                                                response.data.eventDetails.custom.map((custom, index) => (
                                                     <div className="check">
-                                                        <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-
-                                                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{custom}</label>
+                                                        <input id="T&C"
+                                                            checked={checked[index]}
+                                                            onChange={() => handleCheckboxChange(index)}
+                                                            type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <label for="default-checkb" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{custom}</label>
                                                     </div>
                                                 ))
                                             }
                                             <div className="check">
-                                                <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                <input checked={termsAccepted}
+                                                    onChange={(() => setTermsAccepted(!termsAccepted))} id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
 
-                                                <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                <label
+                                                    for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                                     <a href={response.data.eventDetails.termsAndConditions} target="_blank" rel="noopener noreferrer">
                                                         Terms and Conditions
                                                     </a>

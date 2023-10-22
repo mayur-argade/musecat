@@ -16,7 +16,7 @@ const Login = () => {
     const dispatch = useDispatch();
     async function submit() {
         if (!email || !password) {
-            window.alert("both fields are required")
+            return toast.error("email and password is mandatory")
         }
         setLoading(true)
         try {
@@ -47,9 +47,9 @@ const Login = () => {
     }
 
     async function HandleBackClick() {
+        console.log("button clicked")
         if (sessionStorage.getItem('prevLocation')) {
             const prevLocation = sessionStorage.getItem('prevLocation');
-
             // Check if the URL of prevLocation starts with "/bookticket"
             if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/profile')) {
                 // Go back two pages (navigate -2)
@@ -58,14 +58,16 @@ const Login = () => {
                 // Go back one page (navigate -1)
                 navigate(-1);
             }
+        } else {
+            navigate('/')
         }
     }
 
 
     return (
         <section class="relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
-            <button onClick={HandleBackClick} className='absolute top-10 left-10'>
-                <img src="/images/icons/login-back.svg" alt="" />
+            <button className='absolute top-10 left-10'>
+                <img onClick={(() => HandleBackClick())} src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
             <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">

@@ -1,20 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
+import { Link, useNavigate } from 'react-router-dom'
+import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, getCategoryEvents } from '../../http/index'
+import toast, { Toaster } from 'react-hot-toast';
+import { useSelector } from 'react-redux'
 
 const EventCard = ({ data }) => {
 
 
+    const [isLiked, setIsLiked] = useState(false)
+
+    const { user, isAuth } = useSelector((state) => state.auth);
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        // Check if the user is logged in and the event.likes array includes the user's ID
+        setIsLiked(isAuth && data.likes.includes(user._id));
+    }, [data.likes, user, isAuth]);
+
+
+    const favoriteFeature = async (eventid) => {
+        // console.log(eventid)
+        setIsLiked(!isLiked)
+        try {
+            const eventdata = {
+                eventid: eventid
+            }
+            const { data } = await addToFavorites(eventdata)
+            console.log(data)
+            toast.success(data.message)
+        } catch (error) {
+            console.log(error)
+            if (error.response.status == 401) {
+                toast.error("Token Expired Login again")
+                navigate('/login')
+            }
+        }
+    }
+
 
     return (
         <>
-            <div >
+            <div className='cursor-pointer' onClick={(() => navigate(`/events/${data._id}`))}>
                 <div className="relative rounded-md mb-6 w-52 h-80 mx-3 max-h-96 bg-[#F3F3F3] top-0">
-                    <div className='absolute bottom-0 left-0 flex flex-col '>
+                    <div className='absolute bottom-0 left-0 flex flex-col'>
                         <img className="relative rounded-lg h-52 w-52 object-cover" src={`${data.displayPhoto}`} alt="" />
-                        <button className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
-                            <img src="/images/icons/heart.svg" alt="" />
+                        <button onClick={(e) => {
+                            e.stopPropagation(); // Prevent click event from propagating
+                            favoriteFeature(data._id);
+                        }} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
+                            {
+                                isLiked ?
+                                    <img className='' src="/images/icons/heart-fav.svg" alt="" />
+                                    :
+                                    <img src="/images/icons/heart.svg" alt="" />
+                            }
                         </button>
-                        <div className='flex flex-col p-2'>
+                        <div className='flex flex-col p-2' >
                             {
                                 data.date.type == 'dateRange'
                                     ?
@@ -25,13 +68,15 @@ const EventCard = ({ data }) => {
                                     </p>
                             }
                             <p className='text-xs mt-2 font-medium'>
-                            {data.title.length > 25 ? data.title.substring(0, 25) + '...' : data.title},</p>
+                                {data.title.length > 25 ? data.title.substring(0, 25) + '...' : data.title},
+                            </p>
                             <p className='text-xs mt-2 font-medium'>{data.location.name}</p>
                             <p className="mt-1 mb-1 text-xs font-light">{data.eventCategory}</p>
                         </div>
                     </div>
                 </div>
             </div>
+
         </>
     )
 }

@@ -151,18 +151,20 @@ const EventDescription = () => {
     let eventStart;
     let eventEnd;
     if (response.data != null) {
-        const availableTickets = response.data.eventDetails.categories
-        availableTickets.map((category) => {
-            totalSeats += category.seats;
-            bookedSeats += category.bookedSeats.length
-            category.price < startPrice ? startPrice = category.price : startPrice = startPrice
-        })
-        availableSeats = totalSeats - bookedSeats
-        // console.log("availableTickets", startPrice, availableSeats)
+        if (response.data.eventDetails && response.data.eventDetails.categories) {
+            const availableTickets = response.data.eventDetails.categories
+            availableTickets.map((category) => {
+                totalSeats += category.seats;
+                bookedSeats += category.bookedSeats.length
+                category.price < startPrice ? startPrice = category.price : startPrice = startPrice
+            })
+            availableSeats = totalSeats - bookedSeats
+            // console.log("availableTickets", startPrice, availableSeats)
 
-        console.log("date printing", response.data.eventDetails.data)
-        // eventStart = response.data.eventDetails.date.dateRange.startDate ; 
-        // eventEnd =  response.data.eventDetails.date.dateRange.endDate ;
+            console.log("date printing", response.data.eventDetails.data)
+            // eventStart = response.data.eventDetails.date.dateRange.startDate ; 
+            // eventEnd =  response.data.eventDetails.date.dateRange.endDate ;
+        }
     }
 
     const favoriteFeature = async () => {
@@ -237,16 +239,16 @@ const EventDescription = () => {
                         <div className="flex-shrink-0 pt-0.5">
                             <img
                                 className="h-10 w-10 rounded-full"
-                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=6GHAjsWpt9&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                src="/images/icons/call.svg"
                                 alt=""
                             />
                         </div>
                         <div className="ml-3 flex-1">
                             <p className="text-sm font-medium text-gray-900">
-                                Emilia Gates
+                                Mobile number
                             </p>
                             <p className="mt-1 text-sm text-gray-500">
-                                Sure! 8:30pm works great!
+                                {response.data.eventDetails.whatsapp}
                             </p>
                         </div>
                     </div>
@@ -322,7 +324,7 @@ const EventDescription = () => {
                                     <div className="col-span-4 md:col-span-2  flex flex-col ">
                                         <div className="w-full max-w-6xl rounded-lg relative">
                                             {/* Image */}
-                                            <img className="h-96 w-full rounded" src={`${response.data.eventDetails.displayPhoto}`} alt="" />
+                                            <img className="h-auto w-full rounded" src={`${response.data.eventDetails.displayPhoto}`} alt="" />
 
                                             {/* Top-right Edit and View Sales */}
                                             <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
@@ -342,7 +344,7 @@ const EventDescription = () => {
 
                                                     {/* Like Count */}
                                                     <div className="flex items-center">
-                                                        {/* <span>{response.data.eventDetails.likes.length} People liked this event</span> */}
+                                                        <span>{response.data.eventDetails.likes.length} People liked this event</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -382,7 +384,7 @@ const EventDescription = () => {
                                                 <div className='p-2 pb-0 flex justify-between '>
                                                     <div className='flex flex-col'>
                                                         <p className='text-xs'>Ticket price starting from</p>
-                                                        <p className='font-semibold text-xl'>{startPrice}</p>
+                                                        <p className='font-semibold text-xl'>OMR {startPrice}</p>
                                                     </div>
                                                     <div className='flex flex-col text-right'>
                                                         <p className='text-xs'>Available Tickets</p>
@@ -426,11 +428,29 @@ const EventDescription = () => {
                                         </div>
 
                                         <div className="">
-                                            <Link to={`/bookticket/${response.data.eventDetails._id}`}>
-                                                <div className="booknow">
-                                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                </div>
-                                            </Link>
+                                            {
+                                                response.data.eventDetails.date.type == 'dateRange'
+                                                    ?
+                                                    moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
+                                                        ?
+                                                        <div className="booknow">
+                                                            <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                        </div>
+                                                        :
+                                                        <Link to={`/bookticket/${response.data.eventDetails._id}`}>
+                                                            <div className="booknow">
+                                                                <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                            </div>
+                                                        </Link>
+                                                    :
+                                                    <Link to={`/bookticket/${response.data.eventDetails._id}`}>
+                                                        <div className="booknow">
+                                                            <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                        </div>
+                                                    </Link>
+
+                                            }
+
                                         </div>
                                     </div>
 
@@ -479,7 +499,7 @@ const EventDescription = () => {
                                                 {
                                                     clientOffers.data.map((offer) => (
                                                         <Link to={`/events/${offer._id}`}>
-                                                        <img className='h-64 w-52 snap-start' src={`${offer.displayPhoto}`} alt="" />
+                                                            <img className='h-64 w-52 snap-start' src={`${offer.displayPhoto}`} alt="" />
                                                         </Link>
                                                     ))
                                                 }

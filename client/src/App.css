@@ -53,3 +53,73 @@ body {
     align-items: center;
     z-index: 1000;
   }
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+  }
+  
+  .container {
+    width:auto;
+    height:auto;
+  }
+  
+  .cropper {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    /* box-shadow: 0px 10px 9px 0px rgba(0, 0, 0, 0.09); */
+  }
+
+  input[type='radio']{
+    accent-color: #1895B0;
+  }
+  
+  .btn {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: #1895B0;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.2rem;
+    border: 2px solid #1895B0;
+    cursor: pointer;
+    margin: 1rem;
+  }
+  
+  .btn-outline {
+    background: #ffffff;
+    color: #1895B0;
+    border: 2px solid #1895B0;
+  }
+  
+  .action-btns {
+    padding-bottom: 1rem;
+  }
+
+  .btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .cropped-img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+  }
+  
+  .aspect-ratios {
+    display: flex;
+    align-items: center;
+    gap:0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
