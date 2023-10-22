@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/react": "^6.1.9",
     "@react-google-maps/api": "^2.19.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -20,6 +23,7 @@
     "qrcode.react": "^3.1.0",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
+    "react-calendar": "^4.6.1",
     "react-datetime-picker": "^5.5.2",
     "react-dom": "^18.2.0",
     "react-easy-crop": "^5.0.2",

@@ -14,8 +14,8 @@ const venueSchema = new mongoose.Schema({
         required: true,
     },
     coordinates: {
-        lat: String,
-        lng: String
+        lat: Number,
+        lng: Number
     },
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],

@@ -1,3 +1,23 @@
+priority
+4. Trending events (done)
+5. Past purchased events (done)
+3. Adding map views for all events page (done)
+9. Event description fetch upcoming events and offers (done)
+2. vendor verify ticket status ()
+1. Vendor booked seats counts
+14. WheretoMap
+8. Events page filter date option
+11. Vendor Booked tickets Refund payment
+12. Notification center delete Notifications
+10. Send Invoice for booked tickets
+6. show like button red unred
+13. Outh 0 production deploy
+7. Change image in about section
+
+1. Homepage calender 
+2. change events routing for the wheretomap
+3.
+
 Things done
 vendor home -->
 1. event category counts

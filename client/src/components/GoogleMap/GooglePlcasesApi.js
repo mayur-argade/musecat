@@ -7,6 +7,7 @@ const loadScript = (url, callback) => {
     let script = document.createElement("script");
     script.type = "text/javascript";
 
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY&libraries=places"
     if (script.readyState) {
         script.onreadystatechange = function () {
             if (script.readyState === "loaded" || script.readyState === "complete") {
@@ -29,10 +30,6 @@ const SearchLocationInput = ({ setSelectedLocation }) => {
     const handleScriptLoad = (updateQuery, autoCompleteRef) => {
         autoComplete = new window.google.maps.places.Autocomplete(
             autoCompleteRef.current,
-            {
-                // types: ["(cities)"],
-                componentRestrictions: { country: "IN" },
-            }
         );
 
         autoComplete.addListener("place_changed", () => {

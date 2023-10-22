@@ -658,7 +658,9 @@ module.exports.getUpcomingEvents = async (req, res) => {
             // verified: true
         };
         if (customDate) {
-            const filterDate = new Date(customDate);
+            const filterdate1 = moment(customDate).format("YYYY-MM-DD")
+            const filterDate = new Date(filterdate1);
+            console.log(filterDate)
             const currentDay = moment(filterDate).format('dddd').toLowerCase()
             query['$or'] = [
                 {
@@ -693,13 +695,86 @@ module.exports.getUpcomingEvents = async (req, res) => {
             data: eventsOnDate,
         });
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         res.status(500).json({
             success: false,
             message: 'Internal server error',
         });
     }
 };
+
+exports.getTrendingEvents = async (req, res) => {
+
+
+    const categories = await categoryService.findAllCategory()
+    let categoryArray = [];
+    let events;
+    for (const category of categories) {
+        categoryArray.push(category.categoryURL)
+    }
+
+    const today = new Date()
+    // const today = moment().utc()
+    console.log(today)
+    const currentDay = moment().format('dddd').toLowerCase()
+    console.log(currentDay)
+
+    // const currentDay = "sunday"
+    const query = {
+        // type: 'event',
+        $and: [
+            { 'eventCategory': { $in: categoryArray } },
+        ],
+        $or: [
+            { // Events with start date greater than or equal to today
+                'date.dateRange.endDate': { $gte: today }
+            },
+            { // Events with recurring field containing today's day
+                'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+            },
+        ],
+
+    }
+
+    events = await eventService.findAllEvents(query)
+
+    let trendingEvents = []
+
+    for (const event of events) {
+        if (event.trending == true) {
+            trendingEvents.push(event)
+        }
+
+        for (const category of event.categories) {
+            if (category.bookedSeats.length / category.seats >= 0.8 && category.bookedSeats.length / category.seats < 1) {
+                trendingEvents.push(event)
+            }
+        }
+
+    }
+
+    if (trendingEvents.length < 4) {
+        let i = 0
+        while (trendingEvents.length < 4) {
+            trendingEvents.push(events[i])
+            i++
+        }
+
+    }
+
+    console.log(trendingEvents.length)
+
+    for (let i = 0; i < trendingEvents.length; i++) {
+        if (trendingEvents[i] == null) {
+            trendingEvents.pop(trendingEvents[i])
+        }
+    }
+
+    res.status(200).json({
+        success: true,
+        data: trendingEvents
+    })
+}
 
 // yet to done this is for map screen here you have to pass venue lat lon also
 exports.whereToMap = async (req, res) => {
@@ -723,7 +798,7 @@ exports.getAllOffers = async (req, res) => {
         offers = await eventService.findAllEvents(
             {
                 // Assuming you pass the vendor id as a route parameter
-                type: 'event',
+                type: 'offer',
                 // verified: true,
                 $or: [
                     { // Events with start date greater than or equal to today

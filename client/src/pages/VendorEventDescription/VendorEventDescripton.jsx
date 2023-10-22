@@ -7,12 +7,16 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import EditEventModal from '../../components/EditEventModal/EditEventModal'
 import moment from 'moment'
 import { toast, Toaster } from 'react-hot-toast'
+import MapComponent from '../../components/GoogleMap/Map'
 
 const VendorEventDescripton = () => {
     let { eventid } = useParams();
 
     console.log(eventid)
-
+    const [selectedLocation, setSelectedLocation] = useState({
+        lat: 23.58371305879854,
+        lng: 58.37132692337036,
+    });
     const [response, setReponse] = useState({});
 
     document.title = 'Vendor ~ Event Info'
@@ -23,13 +27,17 @@ const VendorEventDescripton = () => {
                 const { data } = await getEventDataApi(eventid)
                 console.log(data.data)
                 setReponse(data)
+                setSelectedLocation({
+                    lat: data.data.location.coordinates.lat,
+                    lng: data.data.location.coordinates.lng
+                })
                 setAccordions([
                     {
                         title: 'Event Information',
-                        content:<div dangerouslySetInnerHTML={{ __html: data.data.description }} />,
+                        content: <div dangerouslySetInnerHTML={{ __html: data.data.description }} />,
                         isOpened: true
                     },
-                    { title: 'Venue Details', content: `crown plaza`, isOpened: false },
+                    { title: 'Venue Details', content: `${data.data.location.name}`, isOpened: false },
                     { title: 'Features', content: `${data.data.features}`, isOpened: false },
                 ]);
 
@@ -96,11 +104,12 @@ const VendorEventDescripton = () => {
                         <div className='text-center'>
                             <p className='text-xl md:text-3xl font-bold'>{response.data.title}</p>
                             <p className='text-sm md:text-md font-light'>{response.data.shortDescription} at
-                                <Link to="/venue/venueid" className='text-[#C0A04C]'>
-                                    <span className='ml-1'>
-                                        crown plaza
+                                <Link to={`venue/${response.data.location._id}`} className='text-[#C0A04C]'>
+                                    <span className='ml-1 text-[#C0A04C]'>
+                                        {response.data.location.name}
                                     </span>
-                                </Link></p>
+                                </Link>
+                                </p>
                             <div className='mt-4 flex justify-center text-center'>
                                 <img src="/images/icons/calender.svg" alt="" />
                                 {
@@ -241,15 +250,8 @@ const VendorEventDescripton = () => {
                             <span className='text-xl font-bold'>
                                 Location
                             </span>
-                            <div>
-                                <div class="mapouter">
-                                    <div class="gmap_canvas">
-                                        <iframe
-                                            className={`rounded-xl h-48 w-80 md:h-[300px] md:w-[1000px]`}
-                                            id="gmap_canvas" src="https://maps.google.com/maps?q=Muscat&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-                                        </iframe>
-                                    </div>
-                                </div>
+                            <div className='md:w-11/12'>
+                                <MapComponent selectedLocation={selectedLocation} />
                             </div>
                         </div>
 

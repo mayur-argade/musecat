@@ -9,14 +9,16 @@ import EventCard from '../../components/Cards/EventCard'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import toast, { Toaster } from 'react-hot-toast';
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
-import PlainDateRangePicker from '../../components/Calender/PlainDateRangePicker '
-
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const Home = () => {
 
     document.title = 'Home'
 
     const navigate = useNavigate()
+
+    const [date, setDate] = useState('')
 
     const scrollLeft = () => {
         document.getElementById("content").scrollLeft -= 400;
@@ -25,8 +27,6 @@ const Home = () => {
         document.getElementById("content").scrollLeft += 400;
     }
 
-
-    const [showCalender, setShowCalender] = useState(false)
     const [selectedDate, setSelectedDate] = useState(null);
 
     // Define a callback function to receive the selected date
@@ -35,12 +35,34 @@ const Home = () => {
         // You can perform any actions with the selected date here
     };
 
-    const openCalender = () => {
+    const calendarRef = useRef(null);
+
+    // Close the calendar when clicking outside
+    const handleCalenderClickOutside = (e) => {
+        if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+            setShowCalender(false);
+        }
+    };
+    useEffect(() => {
+        document.addEventListener('mousedown', handleCalenderClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleCalenderClickOutside);
+        };
+    }, []);
+
+    // const [date, setDate] = useState(new Date()); // Initialize date with today's date
+
+    // console.log(date)
+    const highlightedDates = [new Date('2023-10-20'), new Date('2023-10-25')]; // Dates to highlight
+
+    const handleDateChange = (newDate) => {
+        setDate(`?date=${(moment(newDate).format('YYYY-MM-DD'))}`);
         setShowCalender(!showCalender)
-    }
-    const closeCalender = () => {
-        setShowCalender(!showCalender)
-    }
+        // You can do further processing with the selected date, such as sending it to the server or updating your state.
+    };
+
+
     const next7Days = [];
     const currentDate = moment();
 
@@ -75,14 +97,14 @@ const Home = () => {
     const [upcomingEvents, setUpcomingEvents] = useState('')
     const [editorpick, setEditorpick] = useState('')
     const [offers, setOffers] = useState([])
-    const [date, setDate] = useState('')
+
     const [showLinks, setShowLinks] = useState(false)
     const [day, SetDay] = useState('')
     const [categoryLoading, setCategoryLoading] = useState(false)
     const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false)
     const [offersLoading, setOffersLoading] = useState(false)
     const [editorpickLoading, setEditorpickLoading] = useState(false)
-
+    const [showCalender, setShowCalender] = useState(false)
 
     function setnewfilterdate(actualdate) {
         setDate(`?date=${actualdate}`)
@@ -136,6 +158,7 @@ const Home = () => {
     useEffect(() => {
         const fetchdata = async () => {
             setUpcomingEventsLoading(true)
+            console.log("this is date passing", date)
             try {
                 const { data } = await ClientUpcomingEvents(date)
                 console.log(data.data)
@@ -457,14 +480,40 @@ const Home = () => {
                             <div className='flex justify-between items-center '>
                                 <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
                                 <div className="flex items-center align-middle ">
-                                    <div className="calender date-picker ">
-                                        <img className="calender h-8 mr-2" onClick={openCalender} src="/images/assets/calender-icon.png" alt="" />
+                                    <div onClick={(() => setShowCalender(true))} className="calender date-picker ">
+                                        <img className="calender h-8 mr-2" src="/images/assets/calender-icon.png" alt="" />
                                     </div>
-                                    {/* {
+                                    {
                                         showCalender && (
-                                            <PlainDateRangePicker initialDate={null} returnData={handleDateSelection} />
+                                            <div >
+                                                <div ref={calendarRef}>
+                                                    <div className='calendar-overlay'>
+                                                        <div>
+                                                            <div className='absolute top-0 right-0' >cancel</div>
+                                                            <Calendar
+                                                                className='relative z-50 w-80 rounded-lg
+                     border-none drop-shadow-md text-xs'
+                                                                value={date}
+                                                                onChange={handleDateChange}
+                                                                tileContent={({ date, view }) =>
+                                                                    view === 'month' && highlightedDates.some((highlightedDate) =>
+                                                                        highlightedDate.getDate() === date.getDate() &&
+                                                                        highlightedDate.getMonth() === date.getMonth() &&
+                                                                        highlightedDate.getFullYear() === date.getFullYear()
+                                                                    ) ? (
+                                                                        <div className="highlighted-date">
+                                                                            <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
+                                                                        </div>
+                                                                    ) : null
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         )
-                                    } */}
+                                    }
                                     <div>
                                         <div className='hidden md:block flex space-x-1'>
                                             {next7Days.map((item) => (
@@ -524,7 +573,7 @@ const Home = () => {
                                                             </button>
                                                             <div className='flex flex-col p-2'>
                                                                 <p className='text-sm mt-2 font-medium'>{event.title},</p>
-                                                                <p className='text-sm mt-2 font-medium'>crown plaza</p>
+                                                                <p className='text-sm mt-2 font-medium'>{event.location.name}</p>
                                                                 <p className="mt-1 mb-1 text-xs font-light">Events</p>
                                                                 <div className='flex items-center justify-between space-x-2'>
                                                                     <Link className='button w-full' to={`/events/${event._id}`}>
@@ -639,7 +688,9 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                                 <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-10'>
                                     {
                                         offers.data.map((offer) => (
+                                            <Link key={offer._id} to={`events/${offer._id}`}>
                                             <img className='rounded-md h-64 w-52' src={`${offer.displayPhoto}`} alt="" />
+                                            </Link>
                                         ))
                                     }
                                 </div>
@@ -658,7 +709,7 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
 
                             <div className='grid md:grid-cols-3 gap-3 p-3'>
                                 <div className='grid md:grid-cols-1 grid-rows-2 gap-3'>
-                                    <Link to='/category/staycation'>
+                                    <Link to='/category/events'>
                                         <div className='relative'>
                                             <img className='h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-10' src='/images/assets/banner-events.jpeg' alt='' />
                                             <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>

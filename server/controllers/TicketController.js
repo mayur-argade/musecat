@@ -939,7 +939,6 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
 
         let ticket = await ticketService.findTicket({ _id: ticketid })
 
-
         const ticketdata = {
             _id: ticket._id,
             status: status

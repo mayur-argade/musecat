@@ -203,6 +203,7 @@ const AddEventModal = ({ onClose }) => {
             !termsAndConditions ||
             !eventCategory ||
             !photo ||
+            !banner ||
             !seatingMap
         ) {
             return toast.error("Required Fields are missing")

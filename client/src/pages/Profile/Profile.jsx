@@ -17,6 +17,7 @@ const Profile = () => {
     const [photo, setPhoto] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
+    const [selectedPhoto, setSelectedPhoto] = useState(null)
 
     useEffect(() => {
         const fetchdata = async () => {
@@ -64,6 +65,7 @@ const Profile = () => {
 
     function capturePhoto(e) {
         const file = e.target.files[0];
+        setSelectedPhoto(file)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function () {
@@ -91,7 +93,7 @@ const Profile = () => {
                                     <div className="left w-2/6 md:w-auto">
 
                                         <button onClick={ImageModal} className="profile">
-                                            <img className='h-20 rounded-full' src={response.data.photo} alt="" />
+                                            <img className='h-20 w-20 object-cover rounded-full' src={response.data.photo} alt="" />
                                         </button>
                                     </div>
 
@@ -198,7 +200,7 @@ const Profile = () => {
                                                         <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                                             <div className="flex flex-col items-center justify-center ">
                                                                 <img src="/images/icons/upload-image.svg" alt="" />
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">Upload profile Photo</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">{selectedPhoto ? `Selected File: ${selectedPhoto.name}` : 'Upload Profile Photo'}</p>
                                                             </div>
                                                             <input onChange={capturePhoto}
                                                                 id="dropzone-file" type="file" className="hidden" />

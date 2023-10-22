@@ -3,17 +3,22 @@ import { useState, useRef, useEffect } from 'react'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import EventCard from '../../components/Cards/EventCard'
-import GoogleMap from '../../components/GoogleMap/GoogleMap'
+import MapComponent from '../../components/GoogleMap/Map';
 import Footer from '../../components/shared/Footer/Footer'
 import TrendingCard from '../../components/Cards/TrendingCard'
-import { getCategoryEvents, GetAllCategory } from '../../http/index'
+import { getCategoryEvents, GetAllCategory, GetTrendingEvents } from '../../http/index'
 import { useParams, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
 
 const Events = () => {
+    let [selectedLocation, setSelectedLocation] = useState({
+        lat: 23.58371305879854,
+        lng: 58.37132692337036,
+    });
 
+    let coordinates = [];
     let { category } = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -62,6 +67,7 @@ const Events = () => {
     const [search, setSearch] = useState('')
     const [categories, setCategories] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([])
+    const [trending, setTrending] = useState({})
 
     const handleCategoryChange = (categoryURL) => {
         // console.log(categoryURL)
@@ -103,6 +109,9 @@ const Events = () => {
                 const { data } = await getCategoryEvents(categorydata, `?search=${queryParams.search}`)
                 // console.log(data.data)
                 setResponse(data)
+
+                const trendingResponse = await GetTrendingEvents()
+                setTrending(trendingResponse.data)
                 setLoading(false)
             } catch (error) {
                 // console.log(error)
@@ -111,9 +120,14 @@ const Events = () => {
         }
 
         fetchdata()
+
     }, [category]);
 
-
+    if(response.data != null ){
+        response.data.map((event, index) => (
+            coordinates.push(event.location.coordinates)
+        ))
+    }
 
     // Close the dropdown when clicking anywhere outside of it
     const handleClickOutside = (event) => {
@@ -134,7 +148,8 @@ const Events = () => {
     };
 
 
-    if (response.data == null) {
+    console.log("trending events", trending)
+    if (response.data == null || trending.data == null) {
         return (<div className='h-screen w-full flex justify-center align-middle items-center'>
             <img src="/images/icons/loadmain.svg" alt="" />
         </div>)
@@ -334,8 +349,8 @@ const Events = () => {
                                 <div className="2 flex md:justify-center lg:justify-end ">
                                     <div className="relative mx-auto md:mx-0">
                                         <div>
-                                            <div className='flex ml-3 md:ml-0'>
-                                                <GoogleMap className={'md:h-80 md:w-96 lg:w-full md:mt-0 mt-6 '} />
+                                            <div className='w-full rounded-md'>
+                                                <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} />
                                             </div>
                                         </div>
 
@@ -346,9 +361,18 @@ const Events = () => {
                                                 </p>
                                             </div>
                                             <div className=''>
-                                                <TrendingCard />
-                                                <TrendingCard />
-                                                <TrendingCard />
+                                                {
+                                                    trending.data.map((event) => (
+                                                       <>
+                                                       {
+                                                        event != null && (
+                                                            <TrendingCard data={event} />
+                                                        )
+                                                       }
+                                                       </>
+                                                    ))
+                                                }
+
                                             </div>
 
                                             <div className='hidden lg:flex justify-end flex-col absolute -right-32 bottom-0 lg:right-0 lg:-bottom-32'>
@@ -380,47 +404,5 @@ const Events = () => {
     }
 
 }
-
-// <div className='w-11/12 md:ml-36 md:mr-36 align-middle items-center flex flex-col md:flex-row'>
-//                     <div className='hidden md:flex flex-wrap'>
-//                         <Link to="/events/eventid" className='' >
-//                             <EventCard />
-//                         </Link>
-//                         <Link to="/events/eventid" >
-//                             <EventCard />
-//                         </Link>
-//                         <Link to="/events/eventid" >
-//                             <EventCard />
-//                         </Link>
-//                         <Link to="/events/eventid" >
-//                             <EventCard />
-//                         </Link>
-//                     </div>
-
-//                     <div>
-//                         <Carousel />
-//                     </div>
-
-//                     <div className='md:mr-40 mt-3 flex flex-col justify-center align-middle items-center'>
-//                         <div>
-//                             <GoogleMap className={"md:h-96 md:w-80"} />
-//                         </div>
-
-
-//                         <div className="flex flex-col justify-center items-center ">
-//                             <div className="mt-3 mx-auto">
-//                                 <span className="text-xl ml-8 font-bold mt-3">
-//                                     Trending in Muscat
-//                                 </span>
-//                             </div>
-//                             <SubEventCard />
-//                             <SubEventCard />
-//                             <SubEventCard />
-//                         </div>
-
-
-//                     </div>
-//                 </div>
-
 
 export default Events

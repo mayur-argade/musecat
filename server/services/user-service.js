@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 class UserService {
     async findUser(filter) {
-        const user = UserModel.findOne(filter);
+        const user = UserModel.findOne(filter)
         return user;
     }
 

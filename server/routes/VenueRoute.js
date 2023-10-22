@@ -5,7 +5,7 @@ const { createVenue, getVenueDetails, getAllVenues } = require('../controllers/V
 
 router.route('/create-venue').post(createVenue);
 router.route('/venues/all').get(getAllVenues)
-router.route('/:venue').get(getVenueDetails)
+router.route('/:venueid').get(getVenueDetails)
 
 
 module.exports = router;

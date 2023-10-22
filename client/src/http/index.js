@@ -48,6 +48,8 @@ export const addToFavorites = (data) => api.put(`event/like`, data)
 export const SendVerificationLink = (data) => api.patch('auth/user/forget-password/send-mail', data)
 export const resetUserPassword = (data) => api.patch('auth/user/reset-password', data)
 export const UpdateTicketStatusPayment = (data) => api.patch('ticket/update-payment-status', data)
+export const ClientVenueDetails = (data) => api.get(`venue/${data}`, data)
+export const GetTrendingEvents = (data) => api.get('/trending-events', data)
 
 export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)

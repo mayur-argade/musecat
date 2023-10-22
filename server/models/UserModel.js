@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     mobilenumber: {
         type: Number
     },
+    type: {
+        type: String,
+        default: 'user'
+    },
     favorites: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []

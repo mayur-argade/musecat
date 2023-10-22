@@ -26,7 +26,10 @@ const eventSchema = new mongoose.Schema({
         type: String,
         require: [true, "Please provide description for an event"]
     },
-
+    trending: {
+        type: Boolean,
+        default: false
+    },
     date: {
         type: {
             type: String,
@@ -86,7 +89,7 @@ const eventSchema = new mongoose.Schema({
 
     location: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Venues",
+        ref: "Venue",
         required: [true, "Please provide location details for the event"]
     },
 

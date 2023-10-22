@@ -1,6 +1,8 @@
 const eventService = require('../services/event-service')
+const categoryService = require('../services/category-service')
 const venueService = require('../services/venue-service')
 const cloudinary = require('cloudinary')
+const moment = require('moment')
 
 module.exports.createVenue = async (req, res) => {
     const { name, photo, address, mapAddress } = req.body
@@ -46,12 +48,46 @@ module.exports.createVenue = async (req, res) => {
 }
 
 module.exports.getVenueDetails = async (req, res) => {
-    const venue = req.params.venue
+    const venueid = req.params.venueid
+    console.log(venueid)
 
     try {
 
-        const venuedata = await venueService.findVenue({ _id: venue })
-        const events = await eventService.findAllEvents({ location: venuedata.name })
+        const venuedata = await venueService.findVenue({ _id: venueid })
+
+        const categories = await categoryService.findAllCategory()
+        let categoryArray = [];
+        let events;
+        for (const category of categories) {
+            categoryArray.push(category.categoryURL)
+        }
+
+        const today = new Date()
+        // const today = moment().utc()
+        console.log(today)
+        const currentDay = moment().format('dddd').toLowerCase()
+        console.log(currentDay)
+
+        // const currentDay = "sunday"
+        const query = {
+            // type: 'event',
+            $and: [
+                { 'eventCategory': { $in: categoryArray } },
+                { 'location': venuedata._id }
+            ],
+            $or: [
+                { // Events with start date greater than or equal to today
+                    'date.dateRange.endDate': { $gte: today }
+                },
+                { // Events with recurring field containing today's day
+                    'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                },
+            ],
+
+        }
+        
+        events = await eventService.findAllEvents(query)
+
         return res.status(200).json({
             success: true,
             data: {
@@ -66,7 +102,7 @@ module.exports.getVenueDetails = async (req, res) => {
 
 exports.getAllVenues = async (req, res) => {
     try {
-        const venues = await venueService.findAllVenue({name: 'Crown Plaza'})
+        const venues = await venueService.findAllVenue({ name: 'Crown Plaza' })
         return res.status(200).json({
             success: true,
             data: venues

@@ -6,8 +6,8 @@ import { VendorCreateVenue } from '../../http/index'
 
 const AddVenueModal = ({ onClose }) => {
     const [selectedLocation, setSelectedLocation] = useState({
-        lat: 28.7041,
-        lng: 77.1025,
+        lat: 23.58371305879854,
+        lng: 58.37132692337036,
     });
     const [selectedFile, setSelectedFile] = useState(null)
     const [loading, setLoading] = useState(false)

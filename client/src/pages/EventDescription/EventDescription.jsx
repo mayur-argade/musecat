@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import { ClientEventDetailsApi, addToFavorites, VedorDetails } from '../../http'
+import { ClientEventDetailsApi, addToFavorites, VedorDetails, ClientUpcomingEvents, ClientGetOffers } from '../../http'
 import EventCard from '../../components/Cards/EventCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
@@ -10,18 +10,27 @@ import { setEvent } from '../../store/eventSlice'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
 import toast, { Toaster } from 'react-hot-toast';
+import MapComponent from '../../components/GoogleMap/Map'
 
 const EventDescription = () => {
     let { eventid } = useParams();
 
     console.log(eventid)
-
+    const [selectedLocation, setSelectedLocation] = useState({
+        lat: 23.58371305879854,
+        lng: 58.37132692337036,
+    });
     const [loading, setLoading] = useState(false)
     const [response, setReponse] = useState({});
     const [accordions, setAccordions] = useState([])
 
+    // console.log("isMobile",isMobileDevice)
+
+    const [isMobile, setIsMobile] = useState(false);
+
     document.title = 'Event Info'
     const dispatch = useDispatch();
+
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -32,18 +41,22 @@ const EventDescription = () => {
                 dispatch(setEvent(data.data));
                 setLoading(false)
                 let categoryprice = []
-                for(const category of data.data.eventDetails.categories){
+                for (const category of data.data.eventDetails.categories) {
                     categoryprice.push(`${category.className} = ${category.price}`)
-                } 
+                }
+                setSelectedLocation({
+                    lat: data.data.eventDetails.location.coordinates.lat,
+                    lng: data.data.eventDetails.location.coordinates.lng
+                })
                 setAccordions([
                     {
                         title: 'Event Information',
                         content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
                         isOpened: true
                     },
-                    { title: 'Venue Details', content: 'crown plaza', isOpened: false },
+                    { title: 'Venue Details', content: data.data.eventDetails.location.address, isOpened: false },
                     { title: 'Features', content: data.data.eventDetails.features, isOpened: false },
-                    { title: 'Categories', content: categoryprice.join(" | ") , isOpened: false },
+                    { title: 'Categories', content: categoryprice.join(" | "), isOpened: false },
                     {
                         title: 'Contact Us',
                         content: (
@@ -54,6 +67,22 @@ const EventDescription = () => {
                                             <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
                                         </a>
                                     )}
+                                    {
+                                        data.data.eventDetails.whatsapp && (
+                                            <>
+                                                {
+                                                    isMobile
+                                                        ?
+                                                        <a href={`tel:+${data.data.eventDetails.whatsapp}`} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                            <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+                                                        </a>
+                                                        :
+                                                        <img onClick={customToaster} className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+
+                                                }
+                                            </>
+                                        )
+                                    }
                                     {data.data.eventDetails.facebook && (
                                         <a href={data.data.eventDetails.facebook} target="_blank" rel="noopener noreferrer">
                                             <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
@@ -82,7 +111,38 @@ const EventDescription = () => {
             }
         }
         fetchdata()
+
     }, [eventid]);
+
+    const [upcomingEvents, setUpcomingEvents] = useState({})
+    const [clientOffers, setClientOffers] = useState({})
+    const [date, setDate] = useState('')
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                setLoading(true)
+                const { data } = await ClientUpcomingEvents(date)
+                setUpcomingEvents(data)
+                setLoading(false)
+            }
+            fetchData()
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                setLoading(true)
+                const { data } = await ClientGetOffers()
+                setClientOffers(data)
+                setLoading(false)
+            }
+            fetchData()
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
 
     let totalSeats = 0;
     let startPrice = 1000000000;
@@ -166,6 +226,43 @@ const EventDescription = () => {
         }
     }
 
+    const customToaster = () => {
+        toast.custom((t) => (
+            <div
+                className={`${t.visible ? 'animate-enter' : 'animate-leave'
+                    } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            >
+                <div className="flex-1 w-0 p-4">
+                    <div className="flex items-start">
+                        <div className="flex-shrink-0 pt-0.5">
+                            <img
+                                className="h-10 w-10 rounded-full"
+                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=6GHAjsWpt9&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                alt=""
+                            />
+                        </div>
+                        <div className="ml-3 flex-1">
+                            <p className="text-sm font-medium text-gray-900">
+                                Emilia Gates
+                            </p>
+                            <p className="mt-1 text-sm text-gray-500">
+                                Sure! 8:30pm works great!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex border-l border-gray-200">
+                    <button
+                        onClick={() => toast.dismiss(t.id)}
+                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        ))
+    }
+
     const navigate = useNavigate();
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page
@@ -179,9 +276,9 @@ const EventDescription = () => {
         setAccordions(updatedAccordions);
     };
 
-    console.log("response", response)
+    console.log("response", upcomingEvents)
 
-    if (response.data == null) {
+    if (response.data == null || upcomingEvents.data == null || clientOffers.data == null) {
         <>Loading...
         </>
     } else {
@@ -204,17 +301,17 @@ const EventDescription = () => {
                                 <div className='text-center'>
                                     <p className='text-xl md:text-3xl font-bold'>{response.data.eventDetails.title}</p>
                                     <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
-                                        <Link to="/venue/venueid" className='text-[#C0A04C]'>
+                                        <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
                                             <span className='ml-1 font-medium'>
-                                                 crown plaza
+                                                {response.data.eventDetails.location.name}
                                             </span>
                                         </Link></p>
                                     <div className='mt-4 flex justify-center space-x-2 text-center'>
                                         <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
                                         {
-                                            response.data.date == 'dateRange'
+                                            response.data.eventDetails.date.type == 'dateRange'
                                                 ?
-                                                <p className='text-sm font-semibold'>{moment(response.data.date.eventDetails.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
+                                                <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
                                                 :
                                                 <p>{response.data.eventDetails.date.recurring.join(" ")}</p>
                                         }
@@ -345,16 +442,10 @@ const EventDescription = () => {
                                     <span className='text-xl font-bold'>
                                         Location
                                     </span>
-                                    <div>
-                                        <div class="mapouter">
-                                            <div class="gmap_canvas">
-                                                <iframe
-                                                    className={`rounded-xl h-48 w-80 md:h-[386px] md:w-[1000px]`}
-                                                    id="gmap_canvas" src="https://maps.google.com/maps?q=Muscat&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-                                                </iframe>
-                                            </div>
-                                        </div>
+                                    <div className='md:w-11/12'>
+                                        <MapComponent selectedLocation={selectedLocation} />
                                     </div>
+
                                 </div>
 
                                 <div className='flex flex-col justify-center items-center mt-5'>
@@ -365,7 +456,7 @@ const EventDescription = () => {
                                 </div>
                                 <div className='ml-2 mr-2'>
                                     <div className="md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-1 md:space-x-5">
-                                        {response.data.upcomingEvents.map((event) => (
+                                        {upcomingEvents.data.map((event) => (
                                             <div >
                                                 < EventCard data={event} />
                                             </div>
@@ -386,9 +477,10 @@ const EventDescription = () => {
                                         <div className="ml-1 mr-1">
                                             <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-12'>
                                                 {
-                                                    response.data.offers.map((offer) => (
-                                                        <img className='h-64 w-52 snap-start' src={`${offer.photo}`} alt="" />
-
+                                                    clientOffers.data.map((offer) => (
+                                                        <Link to={`/events/${offer._id}`}>
+                                                        <img className='h-64 w-52 snap-start' src={`${offer.displayPhoto}`} alt="" />
+                                                        </Link>
                                                     ))
                                                 }
                                             </div>

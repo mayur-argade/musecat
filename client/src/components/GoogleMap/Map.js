@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ selectedLocation, setMapAddress }) => {
+const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
+
+
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY',
     });
@@ -26,30 +29,51 @@ const MapComponent = ({ selectedLocation, setMapAddress }) => {
     if (loadError) return "Error";
     if (!isLoaded) return "Maps";
 
+    // Calculate the center of the map based on the coordinates
+    let mapCenter = selectedLocation; // Default to the selectedLocation
 
-    console.log("sekected location", selectedLocation)
+
+    if(coordinates){
+        if (coordinates.length > 1) {
+            // Calculate the center for multiple coordinates
+            const bounds = new window.google.maps.LatLngBounds();
+            coordinates.forEach((coordinate) => bounds.extend(coordinate));
+            mapCenter = bounds.getCenter();
+        }
+    }
+
+    // console.log("sekected location", selectedLocation)
     // console.log("address", address)
     return (
         <div style={{ marginTop: "10px" }}>
-            {/* <span>
-                latitude =  {address.lat}
-            </span>
-            <span>
-                longitude = {address.lng}
-            </span> */}
             <GoogleMap
                 mapContainerStyle={{
                     height: "300px",
                 }}
-                center={selectedLocation}
-                zoom={18}
+                center={mapCenter}
+                zoom={10}
                 onLoad={onMapLoad}
                 onClick={handleMapClick}
             >
-                <MarkerF
-                    position={selectedLocation}
-                    icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
-                />
+                {
+                    coordinates
+                        ? (
+                            coordinates.map((coordinate, index) => (
+                                <MarkerF
+                                    position={coordinate}
+                                    icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                                />
+                            ))
+                        )
+                        :
+                        (
+                            <MarkerF
+                                position={selectedLocation}
+                                icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                            />
+                        )
+                }
+
             </GoogleMap>
         </div>
     );

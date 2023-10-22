@@ -277,36 +277,39 @@ exports.getEventDetails = async (req, res) => {
 
 exports.getPastPurchase = async (req, res) => {
     try {
+
         const user = await userService.findUser({ _id: req.user.id });
+
+
         let pastpurchased = user.BookedTickets;
         const BookedTickets = await ticketService.findAllTickets({ _id: { $in: pastpurchased } });
 
-        // Iterate through BookedTickets and log specific properties
-        console.log("Logging BookedTickets:");
-        BookedTickets.forEach((ticket) => {
-            console.log("Ticket ID:", ticket._id);
-            console.log("Event ID:", ticket.eventid);
-            // Add more properties as needed
-        });
+
+        // // Iterate through BookedTickets and log specific properties
+        // console.log("Logging BookedTickets:");
+        // BookedTickets.forEach((ticket) => {
+        //     console.log("Ticket ID:", ticket._id);
+        //     console.log("Event ID:", ticket.eventid);
+        //     // Add more properties as needed
+        // });
 
         const response = [];
 
         for (const ticket of BookedTickets) {
             let event = await eventService.findEvent({ _id: ticket.eventid });
-            event.ticketid = ticket._id
-
-            console.log("ticket id in event", event.ticketid)
-
-            const eventobject = {
-                eventid: event._id,
-                title: event.title,
-                description: event.description,
-                displayPhoto: event.displayPhoto,
-                location: event.location,
-                ticketid: ticket._id
+            if (event != null) {
+                const eventobject = {
+                    eventid: event._id,
+                    title: event.title,
+                    shortDescription: event.shortDescription,
+                    displayPhoto: event.displayPhoto,
+                    location: event.location,
+                    ticketid: ticket._id,
+                    date: event.date
+                }
+                // console.log(event)
+                response.push(eventobject);
             }
-            // console.log(event)
-            response.push(eventobject);
         }
 
         return res.status(200).json({

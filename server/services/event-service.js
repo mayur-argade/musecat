@@ -2,12 +2,14 @@ const EventModel = require("../models/EventModel");
 
 class EventService {
     async findEvent(filter) {
-        const event = EventModel.findOne(filter);
+        const event = EventModel.findOne(filter).populate('location') // Populates the location data
+        .exec();;
         return event;
     }
 
     async findAllEvents(filter, limit) {
-        const events = EventModel.find(filter).limit(limit).sort({ date: 1 })
+        const events = EventModel.find(filter).limit(limit).sort({ date: 1 }).populate('location') // Populates the location data
+        .exec();
         return events
     }
 

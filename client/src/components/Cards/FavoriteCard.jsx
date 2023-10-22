@@ -18,7 +18,7 @@ const FavoriteCard = ({data}) => {
                         <p class="title text-md md:text-md font-bold text-left">
                             {data.title} at
                         </p>
-                        <p className='text-md md:text-md font-bold text-left mb-1  leading-loose'> crown plaza</p>
+                        <p className='text-md md:text-md font-bold text-left mb-1  leading-loose'>{data.location.name}</p>
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">

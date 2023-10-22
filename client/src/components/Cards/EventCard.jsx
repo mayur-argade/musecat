@@ -24,8 +24,9 @@ const EventCard = ({ data }) => {
                                         {data.date.recurring.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
                                     </p>
                             }
-                            <p className='text-xs mt-2 font-medium'>{data.title},</p>
-                            <p className='text-xs mt-2 font-medium'> crown plaza</p>
+                            <p className='text-xs mt-2 font-medium'>
+                            {data.title.length > 25 ? data.title.substring(0, 25) + '...' : data.title},</p>
+                            <p className='text-xs mt-2 font-medium'>{data.location.name}</p>
                             <p className="mt-1 mb-1 text-xs font-light">{data.eventCategory}</p>
                         </div>
                     </div>

@@ -73,7 +73,7 @@ function App() {
                     <Route path="/verifyaccount/:token" element={<VerifyUserAccount />} />
                     <Route path="/reset" element={<InputEmail />} />
                     <Route path="/user/reset-password/:token" element={<ResetPassword />} />
-                    <Route path="/venue/venueid" exact element={<VenueDescription />} />
+                    <Route path="/venue/:venueid" exact element={<VenueDescription />} />
                     <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
                     <Route path="/faq" exact element={<FAQ />} />
                     <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />

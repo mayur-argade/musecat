@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const PastPurchaseCard = ({ data }) => {
     let status;
-
+    console.log(data)
     const currentDate = moment(); // Current date
     const startEventDate = moment(data.date.dateRange?.startDate ?? null)
     const eventDate = moment(data.date.dateRange?.endDate ?? null);
@@ -45,7 +45,7 @@ const PastPurchaseCard = ({ data }) => {
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                        {data.shortDescription.length > 80 ? data.shortDescription.substring(0, 80) + '...' : data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'> crown plaza</span></Link>
+                        {data.shortDescription.length > 80 ? data.shortDescription.substring(0, 80) + '...' : data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'>{data.location.name}</span></Link>
                         </p>
                     </div>
                 </div>
