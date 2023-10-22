@@ -10,12 +10,10 @@ const Ticket = ({ event, ticket }) => {
         email: ticket.email,
         class: ticket.class,
         seats: ticket.seats,
-        status: ticket.status
+        row: ticket.status
     }
 
     const qrCodeValue = JSON.stringify(qrdata)
-
-    
 
     return (
         <>
@@ -46,17 +44,14 @@ const Ticket = ({ event, ticket }) => {
                                 </div>
                             </div>
                         </div>
-
-
                         <span class="tickets">Tickets</span>
                     </div>
                     <div class="item-right">
                         {/* <img className='h-60 mt-5' src="/images/assets/qrcode.png" alt="" /> */}
                         <QRCode value={qrCodeValue} className='mt-5'
-                         bgColor ="#C0A04C" fgColor="#ffff" level='L' size="240"/>
+                            bgColor="#C0A04C" fgColor="#ffff" level='L' size="240" />
                         <span class="up-border"></span>
                         <span class="down-border"></span>
-
                     </div>
                 </div>
 

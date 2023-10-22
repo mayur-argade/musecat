@@ -215,6 +215,7 @@ const BookTicket = () => {
                 setLoading(false)
                 if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
+                    navigate(`/ticketstatus/${data.seatsbooked._id}`)
                 } else {
                     toast.error("no price has classname has seatss We are unable to book your ticket please try later")
                 }
@@ -250,8 +251,9 @@ const BookTicket = () => {
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
                 setLoading(false)
-                if (data.ticket != null) {
+                if (data.seatsBooked != null) {
                     toast.success("Ticket Has been booked")
+                    navigate(`/ticketstatus/${data.seatsbooked._id}`)
                 } else {
                     toast.error("We are unable to book your ticket please try later")
                 }
@@ -287,8 +289,9 @@ const BookTicket = () => {
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
                 setLoading(false)
-                if (data.ticket != null) {
+                if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
+                    navigate(`/ticketstatus/${data.seatsbooked._id}`)
                 } else {
                     toast.error("no price no classname no seats We are unable to book your ticket please try later")
                 }
@@ -431,7 +434,17 @@ const BookTicket = () => {
                                                     <option>Select Class</option>
                                                     {
                                                         response.data.eventDetails.categories.map((category) => (
-                                                            <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
+                                                            category.className != null && category.seats == null
+                                                                ?
+                                                                response.data.eventDetails.categories.map((category) => (
+                                                                    <option value={category.className}>{category.className}</option>
+                                                                ))
+                                                                :
+                                                                category.className != null && category.seats != null
+                                                                && (
+                                                                    response.data.eventDetails.categories.map((category) => (
+                                                                        <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
+                                                                    )))
                                                         ))
                                                     }
                                                 </select>
@@ -522,7 +535,7 @@ const BookTicket = () => {
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div >
 
                         <div className='hidden md:flex justify-end flex-col absolute -right-4 bottom-5'>
                             <div className='flex justify-between mb-2'>
@@ -535,12 +548,12 @@ const BookTicket = () => {
                             </div>
                             <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                         </div>
-                    </section>
+                    </section >
 
                     <div className=''>
                         < Footer />
                     </div>
-                </div>
+                </div >
             </>
         )
     }
