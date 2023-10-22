@@ -25,7 +25,7 @@ const Login = () => {
             setLoading(false)
             // console.log("this is logged in details",res.data)
             dispatch(setAuth(res.data));
-            const prevLocation = sessionStorage.getItem('prevLocation') || '/dashboard';
+            const prevLocation = sessionStorage.getItem('prevLocation') || '/';
             navigate(prevLocation);
         } catch (error) {
             setLoading(false)
@@ -46,9 +46,25 @@ const Login = () => {
         }
     }
 
+    async function HandleBackClick() {
+        if (sessionStorage.getItem('prevLocation')) {
+            const prevLocation = sessionStorage.getItem('prevLocation');
+
+            // Check if the URL of prevLocation starts with "/bookticket"
+            if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/profile')) {
+                // Go back two pages (navigate -2)
+                navigate(-3);
+            } else {
+                // Go back one page (navigate -1)
+                navigate(-1);
+            }
+        }
+    }
+
+
     return (
         <section class="relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
-            <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
+            <button onClick={HandleBackClick} className='absolute top-10 left-10'>
                 <img src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
