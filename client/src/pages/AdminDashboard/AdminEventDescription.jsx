@@ -12,6 +12,7 @@ import moment from 'moment'
 import toast, { Toaster } from 'react-hot-toast';
 import MapComponent from '../../components/GoogleMap/Map'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
+import EditEventModal from '../../components/EditEventModal/EditEventModal'
 
 const AdminEventDescription = () => {
     let { eventid } = useParams();
