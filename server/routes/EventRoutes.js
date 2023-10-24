@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { createEvent, getEventById, getVendorAllEventsNOffers, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer , getTrendingEvents} = require('../controllers/EventController')
+const { createEvent, getEventById, getVendorAllEventsNOffers, getVendorAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent } = require('../controllers/EventController')
 
 router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
@@ -21,5 +21,8 @@ router.route('/admin/create-event').post(isUserLoggedin, requiredRole("admin"), 
 router.route('/admin/create-offer').post(isUserLoggedin, requiredRole("admin"), createOffer)
 router.route('/admin/delete-event').delete(deleteEvent)
 router.route('/admin/delete-offer').delete(deleteOffer)
-
+router.route('/admin/:vendorid/allevents').get(getVendorAllEvents)
+router.route('/admin/getAllEvents').get(getEventsForAdmin)
+router.route('/admin/getAlloffers').get(getOffersForAdmin)
+router.route('/admin/verify-event').patch(adminVerifyEvent)
 module.exports = router;

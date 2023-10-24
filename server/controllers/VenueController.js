@@ -102,7 +102,19 @@ module.exports.getVenueDetails = async (req, res) => {
 
 exports.getAllVenues = async (req, res) => {
     try {
-        const venues = await venueService.findAllVenue({ name: 'Crown Plaza' })
+        const venues = await venueService.findAllVenue({ verified: true })
+        return res.status(200).json({
+            success: true,
+            data: venues
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.getAllVenuesAdmin = async (req, res) => {
+    try {
+        const venues = await venueService.findAllVenue()
         return res.status(200).json({
             success: true,
             data: venues

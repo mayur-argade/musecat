@@ -17,6 +17,10 @@ const venueSchema = new mongoose.Schema({
         lat: Number,
         lng: Number
     },
+    verified: {
+        type: Boolean,
+        default: false
+    },
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []

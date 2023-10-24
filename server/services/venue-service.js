@@ -21,6 +21,11 @@ class VenueService {
         return venue;
     }
 
+    async countVenues() {
+        const venues = await VenueModel.countDocuments()
+        return venues
+    }
+
 }
 
 module.exports = new VenueService();

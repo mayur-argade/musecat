@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isVerified, isUserLoggedin, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser } = require('../controllers/UserController')
+const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser, getVendorsProfile } = require('../controllers/UserController')
 const { vendorHome } = require('../controllers/EventController')
 
 router.route('/vendor/update-profile').patch(isLoggedin, updateVendorProfile)
@@ -39,5 +39,6 @@ router.route('/admin/delete-user').delete(deleteUser)
 router.route('/admin/list-all-vendors').get(getAllVendorsList)
 
 router.route('/admin/verify-vendor').patch(verifyVendor)
+router.route('/admin/get-vendor-profile/:vendorid').get(getVendorsProfile)
 
 module.exports = router;

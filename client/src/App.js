@@ -41,6 +41,7 @@ import AdminOffers from './pages/AdminDashboard/AdminOffers';
 import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription';
 import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
 import SearchPWA from './pages/SearchPWA/SearchPWA';
+import AdminCheckProfile from './pages/AdminDashboard/AdminCheckProfile';
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -50,6 +51,7 @@ import SemiProtected from './utils/SemiProtected'
 import ScrollToTop from './utils/ScrollToTop';
 import InputEmail from './pages/ForgotPassword/InputEmail';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
+import AdminVenue from './pages/AdminDashboard/AdminVenue';
 
 
 function App() {
@@ -94,6 +96,7 @@ function App() {
                     <Route path="/vendor/notification" exact element={<VendorNotification />} />
 
                     {/* admin pages */}
+                    <Route path="/admin/profile/:userid" element={<AdminCheckProfile />} />
                     <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
                     <Route path="/admin/add" exact element={<AdminAdd />} />
                     <Route path="/admin/users" exact element={<AdminUsers />} />
@@ -103,7 +106,7 @@ function App() {
                     <Route path="/admin/event/:eventid" exact element={<AdminEventDescription />} />
                     <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
                     <Route path="/admin/categories" exact element={<AdminCategory />} />
-
+                    <Route path="/admin/venue" exact element={<AdminVenue />} />
                     <Route path="/demo" element={<Demo />} />
                 </Routes>
             </Router>

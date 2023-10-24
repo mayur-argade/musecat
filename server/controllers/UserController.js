@@ -7,7 +7,8 @@ const ContactUsModel = require('../models/ContactUsModel');
 const eventService = require('../services/event-service')
 const offerService = require('../services/offer-service');
 const ticketService = require('../services/ticket-service');
-const moment = require('moment')
+const moment = require('moment');
+const venueService = require('../services/venue-service');
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -457,26 +458,41 @@ exports.deleteVendor = async (req, res) => {
 exports.adminStats = async (req, res) => {
     try {
 
-        const today = new Date
-        const todayepoch = moment(today);
+        let query = {
+            // verified: true
+            type: 'offer'
+        };
+        const todayDate = new Date();
+        const day = moment(todayDate).format('dddd').toLowerCase()
+        const days = ['sunday', 'monday', 'tuesday', 'thursday', 'friday', 'saturday']
+        query['$or'] = [
+            {
+                'date.dateRange.endDate': { $gte: todayDate }
+            }
+            ,
+            {
+                'date.recurring': { $in: days } // Replace with a function to get today's day
+            }
+        ];
 
-        // Get the epoch timestamp in milliseconds
-        const todaysEpochTimestamp = todayepoch.valueOf();
-
+        let eventQuery = {
+            type: 'event'
+        }
+        eventQuery['$or'] = [
+            {
+                'date.dateRange.endDate': { $gte: todayDate }
+            }
+            ,
+            {
+                'date.recurring': { $in: [day] } // Replace with a function to get today's day
+            }
+        ]
         const users = await userService.countUsers()
-
-        const convertedString = moment(today).format("YYYY-MM-DD");
-        const todaysepoch = moment(convertedString)
-
-        // Get the epoch timestamp in milliseconds
-        const eventTimestamp = todaysepoch.valueOf();
-        // console.log(todaysEpochTimestamp)
-        console.log(users)
-
         const vendors = await vendorService.countVendors()
-        const offers = await offerService.countOffers({ expiry: { $gte: todaysEpochTimestamp } })
-        const events = await eventService.countEvents({ date: { $gte: eventTimestamp } })
+        const offers = await eventService.countEvents(query)
+        const events = await eventService.countEvents(eventQuery)
         const category = await categoryService.countCategory()
+        const venues = await venueService.countVenues()
         console.log(category)
         // const venue = await 
 
@@ -487,7 +503,8 @@ exports.adminStats = async (req, res) => {
                 vendors: vendors,
                 offers: offers,
                 events: events,
-                category: category
+                category: category,
+                venues: venues
             }
         })
     } catch (error) {
@@ -501,3 +518,29 @@ exports.adminStats = async (req, res) => {
 
 }
 
+exports.getVendorsProfile = async (req, res) => {
+
+    const { vendorid } = req.params
+
+    // console.log(req.params)
+    try {
+        const vendor = await vendorService.findVendor({ _id: vendorid })
+
+        if (!vendor) {
+            return res.status(404).json({
+                success: false,
+                data: "Vendor not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: vendor
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json("Internal server error")
+    }
+
+}

@@ -609,7 +609,7 @@ exports.addToFavorites = async (req, res) => {
             // Remove the event ID from the user's 'favorites' array if present
             favorites = user.favorites.filter(eventid => eventid.toString() !== event._id.toString());
 
-           
+
             const eventdata = {
                 _id: event._id,
                 likes: likes
@@ -888,5 +888,119 @@ exports.deleteEvent = async (req, res) => {
             success: false,
             data: error
         })
+    }
+}
+
+exports.getVendorAllEvents = async (req, res) => {
+
+    const { vendorid } = req.params
+
+    console.log(vendorid)
+    try {
+        const events = await eventService.findAllEvents({ vendorid: vendorid })
+
+        // if (!events) {
+        //     return res.status(404).json({
+        //         success: false,
+        //         data: "no events found"
+        //     })
+        // }
+
+        return res.status(200).json({
+            success: true,
+            data: events
+        })
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.getEventsForAdmin = async (req, res) => {
+    try {
+        let eventsOnDate;
+        let query = {
+            // verified: true
+            type: 'event'
+        };
+        const todayDate = new Date();
+        const day = moment(todayDate).format('dddd').toLowerCase()
+        query['$or'] = [
+            {
+                'date.dateRange.endDate': { $gte: todayDate }
+            }
+            ,
+            {
+                'date.recurring': { $in: [day] } // Replace with a function to get today's day
+            }
+        ];
+        eventsOnDate = await eventService.findAllEvents(query);
+        res.status(200).json({
+            success: true,
+            data: eventsOnDate,
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+exports.getOffersForAdmin = async (req, res) => {
+    try {
+        let eventsOnDate;
+        let query = {
+            // verified: true
+            type: 'offer'
+        };
+        const todayDate = new Date();
+        const day = moment(todayDate).format('dddd').toLowerCase()
+        query['$or'] = [
+            {
+                'date.dateRange.endDate': { $gte: todayDate }
+            }
+            ,
+            {
+                'date.recurring': { $in: [day] } // Replace with a function to get today's day
+            }
+        ];
+        eventsOnDate = await eventService.findAllEvents(query);
+        res.status(200).json({
+            success: true,
+            data: eventsOnDate,
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.adminVerifyEvent = async (req, res) => {
+
+    const { eventid } = req.body.data
+    console.log(req.body)
+
+    try {
+        let event = await eventService.findEvent({ _id: eventid })
+        console.log(event)
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                data: "Event not found"
+            })
+        }
+
+
+        const updatedData = {
+            _id: eventid,
+            verified: true
+        }
+
+        event = await eventService.updateEvent(updatedData)
+
+        return res.status(200).json({
+            success: true,
+            data: "Event Verified Successfully"
+        })
+    } catch (error) {
+        console.log(error)
     }
 }

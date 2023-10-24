@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import { AdminDeleteOffer, ClientGetOffers } from '../../http'
-import AddOfferModal from '../../components/EditEventModal/AdminAddOfferEventModal'
+import { getOffersForAdmin, AdminDeleteEvent, AdminVerifyEvent } from '../../http'
+import AddOfferModal from '../../components/EditEventModal/AddOfferModal'
 import moment from 'moment'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast, Toaster } from 'react-hot-toast'
 
 const AdminOffers = () => {
-
+    const navigate = useNavigate()
     const [offers, setOffers] = useState([])
     const [loading, setLoading] = useState(false)
     const [showAddOffer, setShowAddOffer] = useState(false)
@@ -14,9 +16,9 @@ const AdminOffers = () => {
         const fetchOffers = async () => {
             setLoading(true)
             try {
-                const res = await ClientGetOffers()
+                const res = await getOffersForAdmin()
                 setOffers(res.data)
-                
+
                 setLoading(false)
             } catch (error) {
                 setLoading(false)
@@ -36,17 +38,35 @@ const AdminOffers = () => {
     }
 
 
-    const deleteOffer = async (offerid) => {
+    const deleteEvent = async (eventid) => {
+        console.log(eventid)
         setLoading(true)
         try {
-            console.log("offerid", offerid)
+            console.log("eventid", eventid)
 
             const offerdata = {
-                offerid: offerid
+                eventid: eventid
             }
 
-            const res = await AdminDeleteOffer(offerdata)
-            window.alert(res.data.data)
+            const res = await AdminDeleteEvent(offerdata)
+            toast.success(res.data.data)
+            window.location.reload()
+        } catch (error) {
+
+        }
+    }
+
+    const verifyEvent = async (eventid) => {
+        setLoading(true)
+        try {
+            console.log("eventid", eventid)
+
+            const offerdata = {
+                eventid: eventid
+            }
+
+            const res = await AdminVerifyEvent(offerdata)
+            toast.success(res.data.data)
             window.location.reload()
         } catch (error) {
 
@@ -64,7 +84,7 @@ const AdminOffers = () => {
         return (
             <div>
                 <div className='flex '>
-
+                    <Toaster />
                     <div>
                         <Sidebar />
                     </div>
@@ -88,58 +108,79 @@ const AdminOffers = () => {
                                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                         <tr>
-                                                            <th scope="col" class="px-6 py-3">
+                                                            <th scope="col" class="text-center px-6 py-3">
                                                                 Event Name
                                                             </th>
-                                                            <th scope="col" class="px-6 py-3">
-                                                                Vendor Name
+                                                            <th scope="col" class="text-center px-6 py-3">
+                                                                Vendor
                                                             </th>
-                                                            <th scope="col" class="px-6 py-3">
+                                                            <th scope="col" class="text-center px-6 py-3">
                                                                 Category
                                                             </th>
-                                                            <th scope="col" class="px-6 py-3">
-                                                                Start Date
+                                                            <th scope="col" class="text-center px-6 py-3">
+                                                                Status
                                                             </th>
-                                                            <th scope="col" class="px-6 py-3">
+                                                            <th scope="col" class="text-center px-6 py-3">
                                                                 Venue
                                                             </th>
-                                                            <th scope="col" class="px-6 py-3">
-                                                                Offer expiry
+                                                            <th scope="col" class="text-center px-6 py-3">
+                                                                Created Date
                                                             </th>
-
-                                                            {/* <th scope="col" class="px-6 py-3">
+                                                            <th scope="col" class="text-center px-6 py-3">
                                                                 Action
-                                                            </th> */}
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            offers.data.map((offer) => (
-                                                                <tr>
-                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {offer.title}
+                                                            offers.data.map((offer, index) => (
+                                                                <tr key={offer._id}>
+                                                                    <Link to={`/admin/event/${offer._id}`}>
+                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                            {offer.title}
+                                                                        </td>
+                                                                    </Link>
+                                                                    <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.vendorid.firstname}
                                                                     </td>
-                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {offer.vendorid}
+                                                                    <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.eventCategory}
                                                                     </td>
-                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {offer.category}
+                                                                    <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.verified ?
+                                                                            <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
+                                                                                Verified
+                                                                            </span>
+                                                                            :
+                                                                            <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                                Unverified
+                                                                            </span>
+
+                                                                        }
                                                                     </td>
-                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {moment(offer.date).format("DD-MM-YYYY")}
+                                                                    <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.location.name}
                                                                     </td>
-                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {/* {offer.location} */}
-                                                                        Crown Plaza
+                                                                    <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {moment(offer.createdAt).format('DD-MM-YYYY')}
                                                                     </td>
-                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {moment(offer.expiry).format("DD-MM-YYYY")}
-                                                                    </td>
-                                                                    {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        <button onClick={() => deleteOffer(offer._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                            Delete
+                                                                    <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 space-x-2">
+                                                                        <button onClick={() => deleteEvent(offer._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                            delete
                                                                         </button>
-                                                                    </td> */}
+                                                                        {
+                                                                            offer.verified
+                                                                                ?
+                                                                                <></>
+                                                                                :
+                                                                                <button onClick={(() => verifyEvent(offer._id))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                                    Verify
+                                                                                </button>
+                                                                        }
+                                                                        <button onClick={(() => navigate(`/admin/event/${offer._id}`))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                            View
+                                                                        </button>
+                                                                    </td>
                                                                 </tr>
                                                             ))
                                                         }

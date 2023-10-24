@@ -8,7 +8,7 @@ class EventService {
     }
 
     async findAllEvents(filter, limit) {
-        const events = EventModel.find(filter).limit(limit).sort({ date: 1 }).populate('location') // Populates the location data
+        const events = EventModel.find(filter).limit(limit).sort({ date: 1 }).populate('location vendorid') // Populates the location data
         .exec();
         return events
     }

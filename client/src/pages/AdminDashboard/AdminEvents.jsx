@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import AddEventModal from '../../components/EditEventModal/AdminAddEventModal'
-import { AdminDeleteEvent, getCategoryEvents } from '../../http/index'
+import AddEventModal from '../../components/EditEventModal/AddEventModal'
+import { AdminDeleteEvent, getEventsForAdmin, AdminVerifyEvent } from '../../http/index'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const AdminEvents = () => {
 
     const [showAddEvent, setShowAddEvent] = useState(false)
     const [events, setEvents] = useState([])
     const [loading, setLoading] = useState(false)
-
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchEvents = async () => {
             setLoading(true)
             try {
-                const res = await getCategoryEvents('events')
+                const res = await getEventsForAdmin()
                 setEvents(res.data)
                 setLoading(false)
             } catch (error) {
@@ -35,6 +35,8 @@ const AdminEvents = () => {
         setShowAddEvent(true)
     }
 
+    
+
     const deleteEvent = async (eventid) => {
         console.log(eventid)
         setLoading(true)
@@ -46,6 +48,23 @@ const AdminEvents = () => {
             }
 
             const res = await AdminDeleteEvent(offerdata)
+            window.alert(res.data.data)
+            window.location.reload()
+        } catch (error) {
+
+        }
+    }
+
+    const verifyEvent = async (eventid) => {
+        setLoading(true)
+        try {
+            console.log("eventid", eventid)
+
+            const offerdata = {
+                eventid: eventid
+            }
+
+            const res = await AdminVerifyEvent(offerdata)
             window.alert(res.data.data)
             window.location.reload()
         } catch (error) {
@@ -87,26 +106,25 @@ const AdminEvents = () => {
                                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                     <tr>
-                                                        <th scope="col" class="px-6 py-3">
+                                                        <th scope="col" class="text-center px-6 py-3">
                                                             Event Name
                                                         </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Vendor ID
+                                                        <th scope="col" class="text-center px-6 py-3">
+                                                            Vendor
                                                         </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                        <th scope="col" class="text-center px-6 py-3">
                                                             Category
                                                         </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Date
+                                                        <th scope="col" class="text-center px-6 py-3">
+                                                            Status
                                                         </th>
-                                                        <th scope="col" class="px-6 py-3">
+                                                        <th scope="col" class="text-center px-6 py-3">
                                                             Venue
                                                         </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Price starts from
+                                                        <th scope="col" class="text-center px-6 py-3">
+                                                            Created Date
                                                         </th>
-
-                                                        <th scope="col" class="px-6 py-3">
+                                                        <th scope="col" class="text-center px-6 py-3">
                                                             Action
                                                         </th>
                                                     </tr>
@@ -120,24 +138,45 @@ const AdminEvents = () => {
                                                                         {event.title}
                                                                     </td>
                                                                 </Link>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.vendorid}
+                                                                <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {event.vendorid.firstname}
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.category}
+                                                                <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {event.eventCategory}
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(event.date).format("DD-MM-YYYY")}
+                                                                <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {event.verified ?
+                                                                        <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
+                                                                            Verified
+                                                                        </span>
+                                                                        :
+                                                                        <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                            Unverified
+                                                                        </span>
+
+                                                                    }
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.location}
+                                                                <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {event.location.name}
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.silverPrice}
+                                                                <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {moment(event.createdAt).format('DD-MM-YYYY')}
                                                                 </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    <button onClick={() => deleteEvent(event._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 space-x-2">
+                                                                    <button onClick={() => deleteEvent(event._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                         delete
+                                                                    </button>
+                                                                    {
+                                                                        event.verified
+                                                                            ?
+                                                                            <></>
+                                                                            :
+                                                                            <button onClick={(() => verifyEvent(event._id))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                                Verify
+                                                                            </button>
+                                                                    }
+                                                                    <button onClick={(() => navigate(`/admin/event/${event._id}`))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                        View
                                                                     </button>
                                                                 </td>
                                                             </tr>

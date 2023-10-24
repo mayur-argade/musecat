@@ -20,13 +20,13 @@ const VendorHome = () => {
         setShowAddEvent(false);
     };
 
+    const handleClick = () => {
+        setShowAddEvent(true)
+    }
     const closeOfferModal = () => {
         setShowAddOffer(false)
     }
 
-    const handleClick = () => {
-        setShowAddEvent(true)
-    }
 
     const handleOfferClick = () => {
         setShowAddOffer(true)

@@ -93,6 +93,34 @@ Favorites
 3. after clicking on event event description page
 
 
+Add error hadndling to the add event and add offer modal
 
+Admin Things
+1. Add user details page where he can see users details
+2. send notifications to the user.
 
+Vendor 
+1. Create Vendor (done) with autoverification
+2. Update Vendor
+3. delete Vendor (done)
+4. Verify Vendor (done)
+5. Notify Vendor (pending mail vendor on verification)
+6. Give notification to the Vendor
 
+Events 
+4. List Events/Offers (done)
+3. Delete Event/Offers (done)
+7. Verify Event (done)
+5. Event/Offers Description  (done)
+6. Sales of events (done)
+1. Create Event/Offers
+2. Update Event/Offers
+
+Venue 
+1. Create Venue done
+2. Update Venue 
+3. Delete Venue
+3. Delete Venue
+4. List Venue done
+5. Venue Description
+6. Venue Location  

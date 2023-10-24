@@ -76,6 +76,7 @@ export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor`, { 
 
 export const AdminGetAllEvents = (data) => api.get("/admin/getAllEvents", data)
 export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", { data: data })
+export const AdminVerifyEvent = (data) => api.patch("/admin/verify-event", { data: data })
 export const AdminEditEvent = (data) => api.patch("/admin/edit-event", data)
 
 export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
@@ -87,6 +88,11 @@ export const AdminVerifyVendor = (data) => api.patch(`/admin/verify-vendor`, dat
 
 export const AdminGetAllVendors = (data) => api.get("/admin/getUnverifiedVendors", data)
 export const AdminStats = (data) => api.get('/admin/stats', data)
+export const GetVendorData = (data) => api.get(`admin/get-vendor-profile/${data}`, data)
+export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`, data)
+export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)
+export const getOffersForAdmin = (data) => api.get('admin/getAllOffers', data)
+export const getAllVenuesAdmin = (data) => api.get('venue/admin/getAllVenues', data)
 
 api.interceptors.response.use(
     (config) => {

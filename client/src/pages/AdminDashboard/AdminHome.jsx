@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import Navbar from '../../components/shared/Navbar/Navbar'
-import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import { AdminGetUnverifiedVendors, AdminGetAllUsers, getCategoryEvents, ClientGetOffers, AdminStats, AdminVerifyVendor } from '../../http/index'
-import { Link } from 'react-router-dom'
+import { AdminGetUnverifiedVendors, AdminGetAllUsers, getEventsForAdmin, ClientGetOffers, AdminStats, AdminVerifyVendor } from '../../http/index'
+import { Link, useNavigate } from 'react-router-dom'
 
 import moment from 'moment'
 const AdminHome = () => {
     document.title = "Admin Dashboard"
 
+    const navigate = useNavigate()
     const [vendors, setVendors] = useState([])
     const [users, setUsers] = useState([])
     const [response, setResponse] = useState([])
@@ -46,7 +45,7 @@ const AdminHome = () => {
         const fetchevents = async () => {
             setLoading(true)
             try {
-                const res = await getCategoryEvents('events', '?search=')
+                const res = await getEventsForAdmin()
                 // console.log(data.data)
                 setResponse(res.data)
                 setLoading(false)
@@ -110,9 +109,9 @@ const AdminHome = () => {
 
     console.log("this is vendor", users)
     if (vendors.data == null || users.data == null || response.data == null || offers.data == null || stats.data == null) {
-        return (
-            "loading"
-        )
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <>
@@ -221,20 +220,20 @@ const AdminHome = () => {
                                         </div>
                                     </Link>
 
-                                    {/* <Link to='/admin/venue'>
+                                    <Link to='/admin/venue'>
                                         <div className="m-3 cards flex justify-between md:flex-row flex-col">
                                             <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                                 <div class="flex items-start justify-between">
                                                     <div class="flex flex-col space-y-2">
                                                         <span class="text-gray-400">Total Venues</span>
-                                                        <span class="text-lg font-semibold text-lg">4</span>
+                                                        <span class="text-lg font-semibold text-lg">{stats.data.venues}</span>
                                                     </div>
                                                     <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
                                                 </div>
                                             </div>
 
                                         </div>
-                                    </Link> */}
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +245,7 @@ const AdminHome = () => {
                                     <div className="title mb-2 flex justify-between">
                                         <p className='font-semibold text-lg'>Unverified Vendors</p>
                                         <Link to='/admin/vendors'>
-                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                         </Link>
                                     </div>
                                     <div className="overflow-x-auto">
@@ -299,7 +298,7 @@ const AdminHome = () => {
                                     <div className="title mb-2 flex justify-between">
                                         <p className='font-semibold text-lg'>Recently Registered Users</p>
                                         <Link to='/admin/users'>
-                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                         </Link>
                                     </div>
                                     <div className="overflow-x-auto">
@@ -352,7 +351,7 @@ const AdminHome = () => {
                                     <div className="mb-2 title flex justify-between">
                                         <p className='font-semibold text-lg'>Recently Added Events</p>
                                         <Link to='/admin/events'>
-                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                         </Link>
                                     </div>
                                     <div className="overflow-x-auto">
@@ -377,7 +376,7 @@ const AdminHome = () => {
                                                             Venue
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
-                                                            Price starts from
+                                                            Status
                                                         </th>
 
                                                     </tr>
@@ -390,19 +389,28 @@ const AdminHome = () => {
                                                                     {event.title}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.vendorid}
+                                                                    {event.vendorid.firstname}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.category}
+                                                                    {event.eventCategory}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(event.date).format("DD-MM-YYYY")}
+                                                                    {moment(event.createdAt).format("DD-MM-YYYY")}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.location}
+                                                                    {event.location.name}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.silverPrice}
+                                                                    {event.verified
+                                                                        ?
+                                                                        <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
+                                                                            Verified
+                                                                        </span>
+                                                                        :
+                                                                        <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                            Unverified
+                                                                        </span>
+                                                                    }
                                                                 </td>
                                                             </tr>
                                                         ))
@@ -419,7 +427,7 @@ const AdminHome = () => {
                                     <div className="title mb-2 flex justify-between">
                                         <p className='font-semibold text-lg'>Recently Added Offers</p>
                                         <Link to='/admin/offers'>
-                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
                                         </Link>
                                     </div>
                                     <div className="overflow-x-auto">
@@ -460,26 +468,26 @@ const AdminHome = () => {
                                                                     {offer.title}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.vendorid}
+                                                                    {offer.vendorid.firstname}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.category}
+                                                                    {offer.eventCategory}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(offer.date).format("DD-MM-YYYY")}
+                                                                    {moment(offer.createdAt).format("DD-MM-YYYY")}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {/* {offer.location} */}
-                                                                    Crown Plaza
+                                                                    {offer.location.name}
+
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(offer.expiry).format("DD-MM-YYYY")}
+                                                                    {moment(offer.createdAt).format("DD-MM-YYYY")}
                                                                 </td>
-                                                                {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                        Verify
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    <button onClick={(() => navigate(`/admin/event/${offer._id}`))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                        View
                                                                     </button>
-                                                                </td> */}
+                                                                </td>
                                                             </tr>
                                                         ))
                                                     }

@@ -3,6 +3,7 @@ import { AdminListVendors, AdminDeleteVendor, AdminVerifyVendor } from '../../ht
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
 import AddVendorModal from '../../components/EditEventModal/AddVendorModal'
 import toast, { Toaster } from 'react-hot-toast';
+import { Link } from 'react-router-dom'
 
 const AdminVendors = () => {
 
@@ -71,11 +72,9 @@ const AdminVendors = () => {
     console.log(users.data)
 
     if (users.data == null) {
-        return (
-            <>
-                "loading"
-            </>
-        )
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <div> <div>
@@ -130,9 +129,11 @@ const AdminVendors = () => {
                                                             {
                                                                 users.data.map((user) => (
                                                                     <tr>
-                                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                            {user.email}
-                                                                        </td>
+                                                                        <Link className='w-full' to={`/admin/profile/${user._id}`}>
+                                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                                {user.email}
+                                                                            </td>
+                                                                        </Link>
                                                                         <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                             {user.firstname}
                                                                         </td>
@@ -181,24 +182,25 @@ const AdminVendors = () => {
                 </div>
             </div>
 
-                {showAddVendor && (
-                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                        <div className="relative rounded-lg ">
-                            <AddVendorModal
-                                isOpen={showAddVendor}
-                                onClose={closeVendorModal} />
+                {
+                    showAddVendor && (
+                        <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                            <div className="relative rounded-lg ">
+                                <AddVendorModal
+                                    isOpen={showAddVendor}
+                                    onClose={closeVendorModal} />
 
-                            <button
-                                onClick={closeVendorModal}
-                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                            >
-                                <img src="/images/icons/cancel-icon.png" alt="" />
-                            </button>
+                                <button
+                                    onClick={closeVendorModal}
+                                    className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                                >
+                                    <img src="/images/icons/cancel-icon.png" alt="" />
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )
+                    )
                 }
-            </div>
+            </div >
         )
     }
 

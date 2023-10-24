@@ -9,7 +9,7 @@ class VendorService {
     }
 
     async findVendors(filter) {
-        const vendors = VendorModel.find(filter);
+        const vendors = VendorModel.find(filter).sort({ createdAt: 1 });
         return vendors
     }
 
@@ -29,7 +29,7 @@ class VendorService {
         return vendors
     }
 
-    async deleteVendor(filter){
+    async deleteVendor(filter) {
         const vendor = await VendorModel.deleteOne(filter)
         console.log(vendor)
         return vendor
