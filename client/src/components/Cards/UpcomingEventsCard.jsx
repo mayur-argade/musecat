@@ -41,10 +41,13 @@ const UpcomingEventsCard = ({ event }) => {
         <div>
             <div >
                 <Toaster />
-                <div className="relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-96 max-h-96 bg-[#F3F3F3] top-0 md:mt-5">
+                <div onClick={(() => navigate(`/events/${event._id}`))} className="relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-96 max-h-96 bg-[#F3F3F3] top-0 md:mt-5">
                     <div className='absolute bottom-0 left-0 flex flex-col rounded-lg'>
                         <img className="rounded-lg object-fill rounded-lg h-52 w-52 md:h-72 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
-                        <button onClick={() => favoriteFeature(event._id)} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
+                        <button onClick={(e) => {
+                            e.stopPropagation();
+                            favoriteFeature(event._id)
+                        }} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
                             {
                                 isLiked ?
                                     <img className='' src="/images/icons/heart-fav.svg" alt="" />
@@ -70,7 +73,7 @@ bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-30
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

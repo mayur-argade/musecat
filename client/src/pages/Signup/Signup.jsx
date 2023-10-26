@@ -42,6 +42,7 @@ const Signup = () => {
             setLoading(false)
             if (data.success == true) {
                 toast.success("Registration successfull Kindly check your email for verification")
+                return navigate('/login')
             }
         } catch (error) {
             setLoading(false)

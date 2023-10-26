@@ -74,31 +74,15 @@ const VenueDescription = () => {
                             <img className='rounded-xl h-40 md:h-80 w-full object-cover md:max-h-fit  md:' src={`${response.data.venue.displayPhoto}` || "/images/assets/IMAGE.png"} alt="" />
                         </div>
 
-                        <div className='mt-3'>
+
+
+                        <div className='mt-3 mb-5'>
                             <p className='md:ml-5 font-bold text-lg md:text-2xl '>
                                 {response.data.venue.name}
                             </p>
-                            {/* <div>
-                                <nav class="flex md:ml-5" aria-label="Breadcrumb">
-                                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                                        <li class="inline-flex items-center">
-                                            <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-black dark:text-gray-400 dark:hover:text-white">
-                                                oran
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <div class="flex items-center">
-                                                <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                                </svg>
-                                                <a href="#" class="ml-1 text-sm font-medium text-gray-700 md:ml-2 hover:text-black dark:text-gray-400 dark:hover:text-white">Muscat</a>
-                                            </div>
-                                        </li>
-                                    </ol>
-                                </nav>
-
-                            </div> */}
+                            <p className='md:ml-5 font-normal text-lg md:text-lg '>
+                                {response.data.venue.address}
+                            </p>
                         </div>
 
 
@@ -177,8 +161,6 @@ const VenueDescription = () => {
                                 </div>
                             </div>
                         </div>
-
-
 
                     </section>
                 </section >

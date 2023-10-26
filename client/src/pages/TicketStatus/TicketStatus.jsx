@@ -12,7 +12,7 @@ const TicketStatus = () => {
 
     document.title = 'TicketStatus'
     let { ticketid } = useParams()
-    console.log(ticketid)
+    // console.log(ticketid)
 
     const [response, setReponse] = useState('')
 
@@ -23,10 +23,14 @@ const TicketStatus = () => {
                     ticketid: ticketid
                 }
                 const res = await UpdateTicketStatusPayment(ticketdata)
+                console.log("response", res)
 
                 const { data } = await ClientTicketStatusApi(ticketid)
                 console.log(data.data)
                 setReponse(data)
+                if (data.success == 'true') {
+                    window.location.reload()
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -34,11 +38,11 @@ const TicketStatus = () => {
 
         fetchdata()
 
-
-
     }, [ticketid]);
 
-    console.log(response.data)
+
+
+    // console.log(response.data)
     const navigate = useNavigate();
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page

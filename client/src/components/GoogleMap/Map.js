@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
+const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClick }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
 
 
@@ -16,9 +16,11 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
     }, []);
 
     const handleMapClick = (event) => {
-        const lat = event.latLng.lat();
-        const lng = event.latLng.lng();
-        setMapAddress({ lat, lng });
+        if (enableClick) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+            setMapAddress({ lat, lng });
+        }
     };
 
     const handlePlaceSelect = (place) => {
@@ -33,7 +35,7 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
     let mapCenter = selectedLocation; // Default to the selectedLocation
 
 
-    if(coordinates){
+    if (coordinates) {
         if (coordinates.length > 1) {
             // Calculate the center for multiple coordinates
             const bounds = new window.google.maps.LatLngBounds();
@@ -48,7 +50,7 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
         <div style={{ marginTop: "px" }}>
             <GoogleMap
                 mapContainerStyle={{
-                    height: "500px",
+                    height: "300px",
                 }}
                 center={mapCenter}
                 zoom={10}
@@ -61,7 +63,10 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
                             coordinates.map((coordinate, index) => (
                                 <MarkerF
                                     position={coordinate}
-                                    icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                                    icon={{
+                                        url: "/images/icons/marker.png",
+                                        scaledSize: new window.google.maps.Size(35, 42)
+                                    }}
                                 />
                             ))
                         )
@@ -69,7 +74,10 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress }) => {
                         (
                             <MarkerF
                                 position={selectedLocation}
-                                icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                                icon={{
+                                    url: "/images/icons/marker.png",
+                                    scaledSize: new window.google.maps.Size(35, 42)
+                                }}
                             />
                         )
                 }

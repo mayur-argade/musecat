@@ -141,9 +141,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             <span className='capitalize md:hidden text-xl font-bold'>
                                 {categoryName}
                             </span>
-                            <a href="#" class="hidden md:block flex items-center">
+                            <Link to="/" class="hidden  ml-10 flex md:flex items-center">
+                                <img src="/images/logo/MWT_logo.png" class="h-6 md:mr-3" alt="MWT Logo" />
                                 <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
-                            </a>
+                            </Link>
                         </div>
                     ) : (
                         <div className='flex space-x-28 items-center md:space-x-0  align-middle'>
@@ -151,9 +152,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <img src="/images/icons/menu.svg" alt="" />
                             </button>
 
-                            <a href="#" class="md:flex items-center">
+                            <Link to="/" class="hidden flex md:flex items-center">
+                                <img src="/images/logo/MWT_logo.png" class="h-10 md:mr-3" alt="MWT Logo" />
                                 <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
-                            </a>
+                            </Link>
 
                         </div>
                     )}
@@ -317,31 +319,31 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                         onMouseLeave={() => closeDropdown()}
                                                     >
                                                         <div className=''>
-                                                            <Link  to='/category/events' >
+                                                            <Link to='/category/events' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Events </a>
                                                             </Link>
-                                                            <Link  to='/category/eat' >
+                                                            <Link to='/category/eat' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Eat </a>
                                                             </Link>
-                                                            <Link  to='/category/ladiesnight' >
+                                                            <Link to='/category/ladiesnight' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Ladies Night </a>
                                                             </Link>
-                                                            <Link  to='/category/weeklyoffers' >
+                                                            <Link to='/category/weeklyoffers' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Weekly Offers </a>
                                                             </Link>
-                                                            <Link  to='/category/thigstodo' >
+                                                            <Link to='/category/thigstodo' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Things To Do </a>
                                                             </Link>
-                                                            <Link  to='/category/staycation' >
+                                                            <Link to='/category/staycation' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Staycation </a>
                                                             </Link>
-                                                            <Link  to='/category/poolnbeach' >
+                                                            <Link to='/category/poolnbeach' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Pool & Beach </a>
                                                             </Link>
-                                                            <Link  to='/category/kidscorner' >
+                                                            <Link to='/category/kidscorner' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Kids Corner </a>
                                                             </Link>
-                                                            <Link  to='/category/spaoffers' >
+                                                            <Link to='/category/spaoffers' >
                                                                 <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Spa Offers </a>
                                                             </Link>
 
@@ -370,9 +372,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                         {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' ? (
                             <img className="hidden" src="/images/assets/search.svg" alt="" />
                         ) : (
-                            <img className="" src="/images/icons/search.svg" alt="" />
+                            <>
+                            </>
                         )}
-                        <img src="/images/icons/notification.svg" alt="" />
+                        <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification.svg" alt="" />
                     </div>
                 </div>
             </div >

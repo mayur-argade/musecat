@@ -11,11 +11,15 @@ import { useDispatch } from 'react-redux'
 import moment from 'moment'
 import toast, { Toaster } from 'react-hot-toast';
 import MapComponent from '../../components/GoogleMap/Map'
+import { useSelector } from 'react-redux'
 
 const EventDescription = () => {
     let { eventid } = useParams();
 
-    console.log(eventid)
+    const [isLiked, setIsLiked] = useState(false)
+
+    const { user, isAuth } = useSelector((state) => state.auth);
+
     const [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
         lng: 58.37132692337036,
@@ -32,12 +36,14 @@ const EventDescription = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+
         const fetchdata = async () => {
             try {
                 setLoading(true)
                 const { data } = await ClientEventDetailsApi(eventid)
                 // console.log(data.data.eventDetails)
                 setReponse(data)
+
                 dispatch(setEvent(data.data));
                 setLoading(false)
                 let categoryprice = []
@@ -48,6 +54,7 @@ const EventDescription = () => {
                     lat: data.data.eventDetails.location.coordinates.lat,
                     lng: data.data.eventDetails.location.coordinates.lng
                 })
+
                 setAccordions([
                     {
                         title: 'Event Information',
@@ -106,17 +113,20 @@ const EventDescription = () => {
                     },
                 ]);
 
+                setIsLiked(isAuth && data.data.eventDetails.likes.includes(user._id))
+
             } catch (error) {
                 console.log(error)
             }
         }
         fetchdata()
 
-    }, [eventid]);
+    }, [eventid, user, isAuth]);
 
     const [upcomingEvents, setUpcomingEvents] = useState({})
     const [clientOffers, setClientOffers] = useState({})
     const [date, setDate] = useState('')
+
     useEffect(() => {
         try {
             const fetchData = async () => {
@@ -151,6 +161,7 @@ const EventDescription = () => {
     let eventStart;
     let eventEnd;
     if (response.data != null) {
+
         if (response.data.eventDetails && response.data.eventDetails.categories) {
             const availableTickets = response.data.eventDetails.categories
             availableTickets.map((category) => {
@@ -169,6 +180,8 @@ const EventDescription = () => {
 
     const favoriteFeature = async () => {
         // console.log(eventid)
+        setIsLiked(!isLiked)
+
         try {
             const eventdata = {
                 eventid: eventid
@@ -182,7 +195,6 @@ const EventDescription = () => {
                 toast.error("Login to continue further")
                 navigate('/login')
             }
-            toast.error(error.message)
         }
 
     }
@@ -329,8 +341,15 @@ const EventDescription = () => {
                                             {/* Top-right Edit and View Sales */}
                                             <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
 
-                                                <button className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
-                                                    <img className="text-white " src="/images/icons/heart.svg" alt="" />
+                                                <button onClick={() => favoriteFeature(response.data._id)} className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
+                                                    {/* <img className='' src="/images/icons/heart-fav.svg" alt="" /> */}
+
+                                                    {
+                                                        isLiked ?
+                                                            <img className='' src="/images/icons/heart-fav.svg" alt="" />
+                                                            :
+                                                            <img src="/images/icons/heart.svg" alt="" />
+                                                    }
                                                 </button>
                                             </div>
 
@@ -399,7 +418,12 @@ const EventDescription = () => {
                                                 <button
                                                     onClick={favoriteFeature}
                                                     className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                                    <img className='h-4' src="/images/icons/heart.svg" alt="" />
+                                                    {
+                                                        isLiked ?
+                                                            <img className='h-4' src="/images/icons/heart-fav.svg" alt="" />
+                                                            :
+                                                            <img className='h-4' src="/images/icons/heart.svg" alt="" />
+                                                    }
                                                     <span>Add to Favorite</span>
                                                 </button>
                                                 {/* </Link> */}
@@ -433,21 +457,27 @@ const EventDescription = () => {
                                                     ?
                                                     moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
                                                         ?
-                                                        <div className="booknow">
-                                                            <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                        </div>
+                                                        <>
+                                                            <div className="booknow">
+                                                                <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                            </div>
+                                                        </>
                                                         :
+                                                        <>
+                                                            <Link to={`/bookticket/${response.data.eventDetails._id}`}>
+                                                                <div className="booknow">
+                                                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                </div>
+                                                            </Link>
+                                                        </>
+                                                    :
+                                                    <>
                                                         <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                             <div className="booknow">
                                                                 <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
                                                             </div>
                                                         </Link>
-                                                    :
-                                                    <Link to={`/bookticket/${response.data.eventDetails._id}`}>
-                                                        <div className="booknow">
-                                                            <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                        </div>
-                                                    </Link>
+                                                    </>
 
                                             }
 
@@ -535,7 +565,7 @@ const EventDescription = () => {
                 <div className=''>
                     < Footer />
                 </div>
-            </div>
+            </div >
         )
     }
 

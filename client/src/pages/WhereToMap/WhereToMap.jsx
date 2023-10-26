@@ -74,14 +74,14 @@ const WhereToMap = () => {
                     <span className='text-2xl font-bold'> Where To Map</span>
                 </div>
                 <div className="flex justify-around items-center align-middle md:flex-row flex-col ml-5 mr-5 ">
-                    <div className="md:drop-shadow-2xl map md:w-9/12 h-96 mb-10">
+                    <div className="md:drop-shadow-2xl map w-full md:w-9/12 h-auto ">
                         <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} />
                     </div>
 
-                    <div className=" md:mt-0 flex flex-col justify-center items-center align-middle ml-10 items-center h-128 md:h-128 snap-start overflow-y-auto events ml-2 mr-2 pl-2 pr-2">
+                    <div className="mt-0 md:mt-0 flex flex-col justify-center items-center align-middle ml-10 items-center h-128 md:h-128 snap-start overflow-y-auto events ml-2 mr-2 pl-2 pr-2">
                         {
                             response.data.map((event) => (
-                                <button onClick={() => setSelectedLocation(response.data.location.coordinates)}>
+                                <button onClick={() => setSelectedLocation(event.location.coordinates)}>
                                     <SubEventCard data={event} />
                                 </button>
                             ))

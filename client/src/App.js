@@ -42,6 +42,7 @@ import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription'
 import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
 import SearchPWA from './pages/SearchPWA/SearchPWA';
 import AdminCheckProfile from './pages/AdminDashboard/AdminCheckProfile';
+import UserNotification from './pages/UserNotification/UserNotification'
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -81,6 +82,7 @@ function App() {
                     <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
                     <Route path="/events" exact element={<EventsPWA />} />
                     <Route path="/searchpage" exact element={<SearchPWA />} />
+                    <Route path="/user/notification" exact element={<UserNotification />} />
 
 
 

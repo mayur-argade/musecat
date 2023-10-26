@@ -292,7 +292,7 @@ const Home = () => {
                                         <span>experience</span>
 
 
-                                        <div className='md:hidden absolute top-16 right-3'>
+                                        <div className='md:hidden absolute top-0 right-0'>
                                             <img className='h-12' src="/images/assets/download-banner.png" alt="" />
                                         </div>
 
@@ -715,14 +715,16 @@ const Home = () => {
                                 }
                             </div>
                             <div className='flex justify-end space-x-2 '>
-                                <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                                <Link to='/category/offers'>
+                                    <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                                </Link>
                             </div>
                         </div>
                     </section>
                 </section>
 
                 <section className='relative flex justify-center items-center align-middle mt-5'>
-                    <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                    <section className='w-full mx-5 md:mx-0 md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         <p className='ml-6 md:ml-0 text-xl font-bold md:text-2xl md:font-[700]  '>
                             Where to ?
                         </p>

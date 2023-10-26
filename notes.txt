@@ -37,6 +37,25 @@ Homepage
 9. Navigation menu checked 
 10.
 ---> Mobile and PWA
+1. searchbar working
+2. banner added
+3. like button working
+4. calender highlight working
+5. sidebar checked
+
+About page
+--> desktop
+done
+--> mobile and PWA
+done
+
+Contact page
+--> desktop
+1. contact us api working
+2. Responsive
+--> mobile and PWA
+1. contact us api working
+2. Responsive
 
 Events 
 --> desktop
@@ -65,6 +84,8 @@ Event Description
 4. show upcoming offers (pending)
 --> Add to calender missing
 --> there are two places to show the likes
+---> Mobile
+
 
 Venue Description
 --> desktop
@@ -124,3 +145,38 @@ Venue
 4. List Venue done
 5. Venue Description
 6. Venue Location  
+
+
+
+customer id --> list payment method -->
+customerid 
+card id
+
+next time -->card id --> 
+
+100 baisa --> 0.100 OMR
+
+5 riyal --> 5000 
+
+
+
+
+terminate
+--> C4DEE2C0757/terminate
+--> terminate
+--> terminate/<any_device_id>
+
+senosor_data
+--> C4DEE2C0757/sensor_data
+--> sensor_data
+--> sensor_data/<any_device_id>
+
+device status
+--> C4DEE2C0757/device_status
+--> device_status
+--> device_status/<any_device_id>
+
+Check response
+--> C4DEE2C0757/check_response
+--> check_response
+--> check_response/<any_device_id>
