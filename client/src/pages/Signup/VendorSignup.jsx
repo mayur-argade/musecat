@@ -55,6 +55,10 @@ const VendorSignup = () => {
             window.alert("all fields are mandatory")
         }
 
+        if (mobile.length !== 8) {
+            return toast.error("Please input valid phone number")
+        }
+
         const signupdata = {
             firstname: firstname,
             lastname: lastname,
@@ -128,6 +132,7 @@ const VendorSignup = () => {
                         <div>
                             <div>
                                 <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="number" for="text" id='text'
+                                    pattern="\d{8}"
                                     value={mobile} onChange={(e) => setMobile(e.target.value)}
                                     placeholder="Mobile Number" />
                             </div>

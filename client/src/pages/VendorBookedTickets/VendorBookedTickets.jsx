@@ -24,7 +24,7 @@ const VendorBookedTickets = () => {
                 console.log(data.data)
                 setReponse(data)
                 const filteredData = data.data.filter(item => item.status !== 'canceled' && item.status !== 'refunded');
-                const totalSeats =  filteredData.reduce((total, item) => total + item.allotedSeats.length, 0);
+                const totalSeats = filteredData.reduce((total, item) => total + item.allotedSeats.length, 0);
                 setBookedSeatsLength(totalSeats)
                 // Generate serial numbers based on the length of the data
                 const generatedSerialNumbers = Array.from({ length: data.data.tickets.length }, (_, index) => index + 1);
@@ -79,7 +79,10 @@ const VendorBookedTickets = () => {
                 ticketid: ticketid,
                 status: status
             })
-
+            if (data.success == true) {
+                // toast.success("Ticket status updated Successfully")
+                window.location.reload()
+            }
         }
         catch (error) {
             console.log(error)

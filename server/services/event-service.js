@@ -2,14 +2,13 @@ const EventModel = require("../models/EventModel");
 
 class EventService {
     async findEvent(filter) {
-        const event = EventModel.findOne(filter).populate('location') // Populates the location data
-        .exec();;
+        const event = EventModel.findOne(filter).populate('location').populate('vendorid').exec();
         return event;
     }
 
     async findAllEvents(filter, limit) {
         const events = EventModel.find(filter).limit(limit).sort({ date: 1 }).populate('location vendorid') // Populates the location data
-        .exec();
+            .exec();
         return events
     }
 
@@ -23,12 +22,12 @@ class EventService {
         return event;
     }
 
-    async deleteEvent(filter){
+    async deleteEvent(filter) {
         const event = await EventModel.deleteOne(filter)
         return event
     }
 
-    async countEvents(filter){
+    async countEvents(filter) {
         const events = await EventModel.countDocuments(filter)
         return events
     }

@@ -951,6 +951,7 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
 
             // check for payment
             if (ticket.sessionId) {
+                status = "refunded"
                 // go for refund process
                 // change the status to the refunded
             }
@@ -960,8 +961,8 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
             _id: ticket._id,
             status: status
         }
-        ticket = await ticketService.updateTicket(ticketdata)
 
+        ticket = await ticketService.updateTicket(ticketdata)
 
         res.status(200).json({
             success: true,

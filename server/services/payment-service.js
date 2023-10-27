@@ -51,6 +51,11 @@ class PaymentService {
             return error
         }
     }
+
+    async refundPayment(sessionId) {
+        
+    }
+    
 }
 
 module.exports = new PaymentService();

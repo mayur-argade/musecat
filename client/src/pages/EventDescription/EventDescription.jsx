@@ -302,7 +302,7 @@ const EventDescription = () => {
                 <Navbar />
                 <Tabbar />
                 <div className='w-full flex justify-center'>
-                    <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
+                    <section className='w-full mx-6 md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
                         <section className=''>
                             <section>
                                 <div className="hidden md:flex align-middle items-center">
@@ -354,7 +354,7 @@ const EventDescription = () => {
                                             </div>
 
                                             {/* Bottom Rectangle */}
-                                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-75 p-2 rounded-lg">
+                                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-25 p-2 rounded-lg">
                                                 <div className="flex items-center justify-between text-white">
                                                     {/* Like Button */}
                                                     <button className="text-white rounded-md px-3 py-1 hover:bg-red-700">
@@ -417,7 +417,7 @@ const EventDescription = () => {
                                                 {/* <Link to='/favorites' className='w-full'> */}
                                                 <button
                                                     onClick={favoriteFeature}
-                                                    className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                                    className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                                     {
                                                         isLiked ?
                                                             <img className='h-4' src="/images/icons/heart-fav.svg" alt="" />
@@ -427,9 +427,9 @@ const EventDescription = () => {
                                                     <span>Add to Favorite</span>
                                                 </button>
                                                 {/* </Link> */}
-                                                <button className='flex justify-center align-middle items-center w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                                <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                                     <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
-                                                    <span>Add to Calendar</span>
+                                                    <span >Add to Calendar</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -458,12 +458,26 @@ const EventDescription = () => {
                                                     moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
                                                         ?
                                                         <>
+                                                            <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                Call On Whatsapp
+                                                            </button>
                                                             <div className="booknow">
                                                                 <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
                                                             </div>
                                                         </>
                                                         :
                                                         <>
+                                                            <div className="flex">
+                                                                <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                                                                <img className='h-5 w-5 mr-2' src="/images/icons/call.svg" alt="" />
+                                                                    Call On Mobile
+                                                                </button>
+                                                                <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                    Chat On Whatsapp
+                                                                </button>
+                                                            </div>
                                                             <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                                 <div className="booknow">
                                                                     <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
@@ -472,6 +486,10 @@ const EventDescription = () => {
                                                         </>
                                                     :
                                                     <>
+                                                        <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                                                            <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                            Call On Whatsapp
+                                                        </button>
                                                         <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                             <div className="booknow">
                                                                 <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
@@ -492,7 +510,7 @@ const EventDescription = () => {
                                     <span className='text-xl font-bold'>
                                         Location
                                     </span>
-                                    <div className='md:w-11/12'>
+                                    <div className='w-full md:w-11/12'>
                                         <MapComponent selectedLocation={selectedLocation} />
                                     </div>
 
