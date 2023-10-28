@@ -189,7 +189,12 @@ module.exports.generateTicket = async (req, res) => {
 
                         const paymentIntent = await paymentService.createPaymentIntent(paymentintentdata)
 
-                        console.log("paymentintent---->", paymentIntent)
+                        const pendingTicketData = {
+                                _id: ticket._id,
+                                status: 'pending'
+                            }
+
+                            ticket = await ticketService.updateTicket(pendingTicketData)
 
                         const confirmPaymentIntent = await paymentService.confirmPaymentIntent({
                             paymet_intent_id: paymentIntent.data.id
