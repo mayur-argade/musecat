@@ -9,7 +9,7 @@ const notificationService = require('../services/notification-service')
 // 
 
 module.exports.generateTicket = async (req, res) => {
-    const { eventid, firstname, lastname, email, ticketclass, seats, priceWithTax, type } = req.body
+    const { eventid, firstname, lastname, email, ticketclass, seats, priceWithTax, type, cardid } = req.body
     let status;
     let selectedCategory;
     let totalPrice;
@@ -122,40 +122,83 @@ module.exports.generateTicket = async (req, res) => {
                 let payment;
 
                 if (finalBasePrice) {
-                    const paymentdata = {
-                        ticketid: ticket._id,
-                        client_ref_id: req.user._id,
-                        name: event.title,
-                        quantity: seats,
-                        unitAmout: Math.round(finalBasePrice)
-                    }
-                    payment = await paymentService.CreateSession(paymentdata)
+                    if (cardid == null || cardid == undefined || cardid == '') {
+                        if (req.user.payment_customer_id == null || req.user.payment_customer_id == undefined) {
+                            const createACustomer = await paymentService.createCustomer({
+                                userid: req.user._id,
+                                email: req.user.email
+                            })
 
-                    if (payment.data.code >= 4000 && payment.data.code <= 4301 || payment.data.success == false) {
-                        const pendingTicketData = {
-                            _id: ticket._id,
-                            status: 'pending'
-                        }
-
-                        ticket = await ticketService.updateTicket(pendingTicketData)
-
-                        return res.status(500).json({
-                            success: false,
-                            data: {
-                                seatsbooked: ticket,
-                                message: "Unable to start payment session"
+                            if (createACustomer.success != true) {
+                                return res.status(500).json({
+                                    success: false,
+                                    data: "Unable to create a customer"
+                                })
                             }
-                        })
-                    }
-
-                    if (payment.success == true || payment.data.session_id != null || payment.data.session_id != undefined) {
-                        const sessionTicketData = {
-                            _id: ticket._id,
-                            status: 'processing',
-                            sessionId: payment.data.session_id
                         }
 
-                        ticket = await ticketService.updateTicket(sessionTicketData)
+                        const paymentdata = {
+                            ticketid: ticket._id,
+                            customerId: req.user.payment_customer_id,
+                            client_ref_id: req.user._id,
+                            name: event.title,
+                            quantity: seats,
+                            unitAmout: Math.round(finalBasePrice)
+                        }
+
+                        payment = await paymentService.CreateSession(paymentdata)
+
+                        if (payment.data.code >= 4000 && payment.data.code <= 4301 || payment.data.success == false) {
+                            const pendingTicketData = {
+                                _id: ticket._id,
+                                status: 'pending'
+                            }
+
+                            ticket = await ticketService.updateTicket(pendingTicketData)
+
+                            return res.status(500).json({
+                                success: false,
+                                data: {
+                                    seatsbooked: ticket,
+                                    message: "Unable to start payment session"
+                                }
+                            })
+                        }
+
+                        if (payment.success == true || payment.data.session_id != null || payment.data.session_id != undefined) {
+                            const sessionTicketData = {
+                                _id: ticket._id,
+                                status: 'processing',
+                                sessionId: payment.data.session_id
+                            }
+
+                            ticket = await ticketService.updateTicket(sessionTicketData)
+
+                            return res.status(200).json({
+                                success: true,
+                                data: `https://uatcheckout.thawani.om/pay/${payment.data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`
+                            })
+                        }
+                    } else {
+                        const paymentintentdata = {
+                            cardid: cardid,
+                            ticketid: ticket._id,
+                            amount: totalPrice,
+                            email: email
+                        }
+
+                        const paymentIntent = await paymentService.createPaymentIntent(paymentintentdata)
+
+                        console.log("paymentintent---->", paymentIntent)
+
+                        const confirmPaymentIntent = await paymentService.confirmPaymentIntent({
+                            paymet_intent_id: paymentIntent.data.id
+                        })
+
+                        return res.status(200).json({
+                            success: true,
+                            data: confirmPaymentIntent.data.next_action.url
+                        })
                     }
                 }
 
@@ -166,9 +209,10 @@ module.exports.generateTicket = async (req, res) => {
                 }
 
                 const notification = await notificationService.createNotification(notificationData)
+
                 return res.status(200).json({
                     seatsbooked: ticket,
-                    session_id: payment?.data.session_id ?? null
+                    data: `https://uatcheckout.thawani.om/pay/${payment.data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`
                 })
 
             } catch (error) {
@@ -439,7 +483,7 @@ module.exports.generateTicket = async (req, res) => {
         }
     }
 
-
+    // no price
     if (hasPrice.length == 0 && hasSeats.length == 0 && hasClassName.length != 0) {
         try {
             if (ticketclass) {
@@ -500,18 +544,6 @@ module.exports.generateTicket = async (req, res) => {
             console.log(error)
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // try {
@@ -909,7 +941,7 @@ exports.updateStatusUsingSessionId = async (req, res) => {
 
     let ticket = await ticketService.findTicket({ _id: ticketid })
 
-    console.log(ticket)
+    // console.log(ticket)
 
     const sessionId = ticket.sessionId
 
@@ -929,7 +961,7 @@ exports.updateStatusUsingSessionId = async (req, res) => {
         data: ticket
     })
 
-    console.log(sessionInfo)
+    // console.log(sessionInfo)
 
 }
 
@@ -938,16 +970,17 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
         let { ticketid, status } = req.body
 
         let ticket = await ticketService.findTicket({ _id: ticketid })
-        console.log(ticket)
+        // console.log(ticket)
         let event;
         if (status == 'canceled') {
             // delete seats 
             event = await eventService.findEvent({ _id: ticket.eventid });
             for (const category of event.categories) {
                 category.bookedSeats = category.bookedSeats.filter(seat => !ticket.allotedSeats.includes(seat));
-                console.log(category.bookedSeats);
+                // console.log(category.bookedSeats);
             }
-            console.log(event.categories);
+            // console.log(event.categories);
+
 
             // check for payment
             if (ticket.sessionId) {

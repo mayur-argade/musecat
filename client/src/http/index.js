@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const api = axios.create({
     baseURL: "https://omanwhereto.com/api/v1/",
     // baseURL: "http://localhost:5000/api/v1/",
@@ -56,7 +55,7 @@ export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
 export const ClientGetOffers = (data) => api.get("/offers/", data)
 export const CategoryCount = (data) => api.get(`category/eventcounts${data}`, data)
-
+export const getCustomersSavedCards = (data) => api.get('user/get-payment-methods', data)
 
 export const AdminCreateEvent = (data) => api.post("/admin/create-event", data)
 export const AdminCreateOffer = (data) => api.post("/admin/create-offer", data)
@@ -82,10 +81,8 @@ export const AdminEditEvent = (data) => api.patch("/admin/edit-event", data)
 export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
 export const AdminDeleteOffer = (data) => api.delete("/admin/delete-offer", data)
 export const AdminEditOffer = (data) => api.patch("/admin/edit-offer", data)
-
 export const AdminGetUnverifiedVendors = (data) => api.get("admin/get-unverified-vendors", data)
 export const AdminVerifyVendor = (data) => api.patch(`/admin/verify-vendor`, data)
-
 export const AdminGetAllVendors = (data) => api.get("/admin/getUnverifiedVendors", data)
 export const AdminStats = (data) => api.get('/admin/stats', data)
 export const GetVendorData = (data) => api.get(`admin/get-vendor-profile/${data}`, data)

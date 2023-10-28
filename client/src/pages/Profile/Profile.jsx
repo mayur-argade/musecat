@@ -3,7 +3,7 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import DebitCard from '../../components/Debit-Card/DebitCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
-import { ClientProfileApi, ClientUpdateProfileApi } from '../../http/index'
+import { ClientProfileApi, ClientUpdateProfileApi, getCustomersSavedCards } from '../../http/index'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -18,13 +18,18 @@ const Profile = () => {
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
     const [selectedPhoto, setSelectedPhoto] = useState(null)
-
+    const [savedCard, setSavedCards] = useState([])
     useEffect(() => {
         const fetchdata = async () => {
             try {
                 const { data } = await ClientProfileApi()
                 console.log(data.data)
                 setReponse(data)
+
+                const { data: res } = await getCustomersSavedCards()
+
+                console.log(res)
+                setSavedCards(res.data)
                 setFirstname(data.data.firstname)
                 setLastname(data.data.lastname)
                 setEmail(data.data.email)
@@ -170,21 +175,29 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        {/* <div className="savedCards mt-10 ">
+                        <div className="savedCards mt-10 ">
                             <div className="text-2xl">Saved Cards</div>
                             <div className="flex md:flex-row space-y-5 flex-col items-center justify-center align-middle md:space-x-2">
-                                <div className='mt-5'>
-                                    <DebitCard />
-                                </div>
-                                <div>
-                                    <DebitCard />
-                                </div>
-                                <div>
-                                    <DebitCard />
-                                </div>
+                                {
+                                    savedCard != null
+                                        ?
+                                        savedCard.length > 0
+                                            ?
+                                            savedCard.map((card) => (
+                                                <div className='mt-5'>
+                                                    <DebitCard data={card}/>
+                                                </div>
+                                            ))
+                                            :
+                                            <></>
+                                        :
+                                        <>
+                                            loading
+                                        </>
+                                }
                             </div>
 
-                        </div> */}
+                        </div>
                     </section>
 
                     {

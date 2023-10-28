@@ -4,7 +4,7 @@ import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { ClientEventDetailsApi, ClientBookTicket } from '../../http'
+import { ClientEventDetailsApi, ClientBookTicket, getCustomersSavedCards } from '../../http'
 import { setEvent } from '../../store/eventSlice'
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -14,6 +14,7 @@ const BookTicket = () => {
     const { user, isAuth } = useSelector((state) => state.auth)
 
     const [response, setReponse] = useState({});
+    const [savedCard, setSavedCards] = useState([])
     const [checked, setChecked] = useState(null);
     const [termsAccepted, setTermsAccepted] = useState(false);
     console.log("terms accepted", termsAccepted)
@@ -25,6 +26,11 @@ const BookTicket = () => {
                 // console.log(data.data.eventDetails)
                 setReponse(data)
                 setChecked(Array(data.data.eventDetails.custom.length).fill(false))
+                const { data: res } = await getCustomersSavedCards()
+
+                console.log(res)
+                setSavedCards(res.data)
+
                 setLoading(false)
             } catch (error) {
                 console.log(error)
@@ -135,6 +141,7 @@ const BookTicket = () => {
     const [seats, setSeats] = useState('')
     const [totalPrice, setTotalPrice] = useState('')
     const [priceWithTax, setPriceWithTax] = useState('')
+    const [cardid, setCardid] = useState('')
 
     async function submit() {
         if (!checked.every((isChecked) => isChecked)) {
@@ -145,6 +152,7 @@ const BookTicket = () => {
             return toast.error("Check terms and conditions")
         }
 
+        // has price
         if (hasPrice.length != 0 && hasClassName.length != 0) {
             if (!firstname || !lastname || !email || !ticketclass || !seats) {
                 toast.error("All fields are mandatory")
@@ -161,6 +169,7 @@ const BookTicket = () => {
                         seats: seats,
                         priceWithTax: priceWithTax,
                         eventid: eventid,
+                        cardid: cardid
                     }
                     setLoading(true)
                     const { data } = await ClientBookTicket(ticketdata)
@@ -168,13 +177,9 @@ const BookTicket = () => {
                     setLoading(false)
                     toast.success("To book your Ticket proceed to payment page")
 
-                    if (data.session_id) {
-                        if (data.session_id) {
-                            const externalURL = `https://uatcheckout.thawani.om/pay/${data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`;
-
-                            window.location.href = externalURL;
-                            // navigate him to the checkout page
-                            // navigate(`/ticketstatus/${data.seatsbooked._id}`)
+                    if (data.data != null) {
+                        if (data.data) {
+                            window.location.href = data.data;
                         }
                     } else {
                         toast.error("Failed to initiate payment service")
@@ -235,7 +240,7 @@ const BookTicket = () => {
                 toast.error(error.response.data.data)
             }
         }
-
+        // no price
         else if (hasPrice.length == 0 && hasClassName.length != 0) {
             try {
                 const ticketdata = {
@@ -273,7 +278,6 @@ const BookTicket = () => {
                 toast.error(error.response.data.data)
             }
         }
-
         // no price no classname no seats
         else if (hasPrice.length == 0 && hasClassName.length == 0 && hasSeats.length == 0) {
             try {
@@ -343,12 +347,12 @@ const BookTicket = () => {
                                 onClick={openModal}
                                 className="bg-[#C0A04C] text-white px-4 py-2 rounded-lg text-sm"
                             >
-                                <img src="/images/icons/show.svg" alt="" />
+                                <img src={response.data.eventDetails.seatingMap} alt="" />
                             </button>
                         </div>
 
                         <div className="grid justify-items-center gap-4 grid-cols-1 md:grid-cols-2">
-                            <div className="hidden  md:flex flex-col justify-end">
+                            <div className="hidden  md:flex flex-col justify-center">
                                 <img className='w-96 h-auto' src={response.data.eventDetails.seatingMap} alt="" />
                             </div>
                             {isModalOpen && (
@@ -434,17 +438,11 @@ const BookTicket = () => {
                                                     <option>Select Class</option>
                                                     {
                                                         response.data.eventDetails.categories.map((category) => (
-                                                            category.className != null && category.seats == null
+                                                            category.className != null && category.seats != null
                                                                 ?
-                                                                response.data.eventDetails.categories.map((category) => (
-                                                                    <option value={category.className}>{category.className}</option>
-                                                                ))
+                                                                    <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
                                                                 :
-                                                                category.className != null && category.seats != null
-                                                                && (
-                                                                    response.data.eventDetails.categories.map((category) => (
-                                                                        <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
-                                                                    )))
+                                                                    <option value={category.className}>{category.className}</option>
                                                         ))
                                                     }
                                                 </select>
@@ -488,32 +486,53 @@ const BookTicket = () => {
                                                 </label>
                                             </div>
 
-
-                                            {/* {event.custom.map((que) => (
-                                                <div class="flex items-center mb-4">
-                                                    <input id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{que}</label>
-                                                </div>
-                                            ))} */}
                                         </div>
 
                                         {price && (
-                                            <div className="flex flex-col p-4 rounded">
+                                            <>
+                                                <div className="flex flex-col p-4 rounded">
 
-                                                <div className="w-full baseprice flex justify-between">
-                                                    <p className='font-semibold'>Base price x{seats}</p>
-                                                    <p className='font-semibold'>{basePrice}</p>
+                                                    <div className="w-full baseprice flex justify-between">
+                                                        <p className='font-semibold'>Base price x{seats}</p>
+                                                        <p className='font-semibold'>{basePrice} OMR</p>
+                                                    </div>
+                                                    <div className="w-full baseprice flex justify-between">
+                                                        <p className='font-semibold'>Taxes</p>
+                                                        <p className='font-semibold'>{tax} OMR</p>
+                                                    </div>
+                                                    <hr />
+                                                    <div className="w-full baseprice flex justify-between">
+                                                        <p className='font-semibold'>Total</p>
+                                                        <p className='font-semibold'>{totalPrice} OMR</p>
+                                                    </div>
                                                 </div>
-                                                <div className="w-full baseprice flex justify-between">
-                                                    <p className='font-semibold'>Taxes</p>
-                                                    <p className='font-semibold'>{tax}</p>
+
+                                                <div>
+                                                    Select Card
+                                                    {
+                                                        savedCard != null
+                                                            ?
+                                                            savedCard.length > 0
+                                                                ?
+                                                                savedCard.map((card) => (
+                                                                    <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                                                                        <input id={card.id} name={card.id} value={card.id} onChange={((e) => setCardid(e.target.value))} type="radio" />
+                                                                        <label htmlFor={card.id} class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{card.masked_card}</label>
+                                                                    </div>
+                                                                ))
+                                                                :
+                                                                <></>
+                                                            :
+                                                            <>
+                                                                loading
+                                                            </>
+                                                    }
+                                                    <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                                                        <input id="nocard" type="radio" name="bordered-radio" />
+                                                        <label htmlFor="nocard" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Proceed Without Selecting Card</label>
+                                                    </div>
                                                 </div>
-                                                <hr />
-                                                <div className="w-full baseprice flex justify-between">
-                                                    <p className='font-semibold'>Total</p>
-                                                    <p className='font-semibold'>{totalPrice}</p>
-                                                </div>
-                                            </div>
+                                            </>
                                         )}
 
                                         <div onClick={handleBookNowClick} className="flex justify-center w-full mt-3">

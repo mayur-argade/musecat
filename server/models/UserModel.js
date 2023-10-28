@@ -55,7 +55,11 @@ const userSchema = new mongoose.Schema({
     },
     passwordToken: {
         type: String
+    },
+    payment_customer_id: {
+        type: String
     }
+
 },
     {
         timestamp: true,

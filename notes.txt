@@ -1,5 +1,8 @@
 Add loading screen to all pages
 
+refund payment
+
+
 login page
 1. Back button is working
 2. Invalid user response
@@ -156,9 +159,10 @@ next time -->card id -->
 
 100 baisa --> 0.100 OMR
 
+
+1 riyal == 1000 baisa 
+0.1 riyal == 100 baisa
 5 riyal --> 5000 
-
-
 
 
 terminate
@@ -180,3 +184,17 @@ Check response
 --> C4DEE2C0757/check_response
 --> check_response
 --> check_response/<any_device_id>
+
+
+when customer going to click on the book now 
+1. list payment methods in the frontend
+2. choose one payment method or you can go without any card (create session)
+3. if he chooses the payment method then we will go with the saved card Things
+4. if he chooses to not go with the saved cards then we will go with create session
+
+
+0.100 
+
+1 OMR
+
+1000*

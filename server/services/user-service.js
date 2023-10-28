@@ -24,6 +24,8 @@ class UserService {
     }
 
     async updateUser(data) {
+
+        // console.log(data)
         if (data.password) {
             data.password = await bcrypt.hash(data.password, 10)
         }

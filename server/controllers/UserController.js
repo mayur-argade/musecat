@@ -9,6 +9,7 @@ const offerService = require('../services/offer-service');
 const ticketService = require('../services/ticket-service');
 const moment = require('moment');
 const venueService = require('../services/venue-service');
+const paymentService = require('../services/payment-service')
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -543,4 +544,12 @@ exports.getVendorsProfile = async (req, res) => {
         return res.status(500).json("Internal server error")
     }
 
+}
+
+exports.getPaymentMethods = async (req, res) => {
+    const user = req.user
+
+    console.log("user -------->", user)
+    const card = await paymentService.listCustomerPaymentMethods(req.user.payment_customer_id)
+    res.status(200).json(card)
 }

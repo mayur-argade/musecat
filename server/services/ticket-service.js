@@ -27,12 +27,12 @@ class TicketService {
     }
 
     async allotSeats(bookedSeats, className, seats) {
-        console.log("function is running")
+        // console.log("function is running")
         let allotedSeats = [];
         let seatNumber = 1;
         let newBookedSeats = bookedSeats
-        console.log(bookedSeats)
-        console.log(className)
+        // console.log(bookedSeats)
+        // console.log(className)
         while (allotedSeats.length < seats) {
             // console.log("entering loop")
             const seatId = `${className.charAt(0)}${seatNumber}`
