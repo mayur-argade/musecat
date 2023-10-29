@@ -35,7 +35,7 @@ const VendorLogin = () => {
     return (
         <section className="relative h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692776288/mwt/login_djjlaa.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
-            <img src="/images/icons/login-back.svg" alt="" />
+                <img src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
             <section className="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
@@ -79,7 +79,7 @@ const VendorLogin = () => {
                             Continue with Google
                         </span>
                     </button>
-                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                    <button onClick={() => navigate("/vendor/signup")} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                         <img src="/images/icons/email-icon.png" alt="" />
                         <span className='mx-auto text-center'>
                             Continue with Email

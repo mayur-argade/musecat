@@ -53,6 +53,9 @@ import ScrollToTop from './utils/ScrollToTop';
 import InputEmail from './pages/ForgotPassword/InputEmail';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
 import AdminVenue from './pages/AdminDashboard/AdminVenue';
+import Cookies from './pages/LegalCorner/Cookies';
+import PrivacyPolicy from './pages/LegalCorner/PrivacyPolicy';
+import TermsAndCondition from './pages/LegalCorner/TermsAndCondition';
 
 
 function App() {
@@ -83,6 +86,9 @@ function App() {
                     <Route path="/events" exact element={<EventsPWA />} />
                     <Route path="/searchpage" exact element={<SearchPWA />} />
                     <Route path="/user/notification" exact element={<UserNotification />} />
+                    <Route path="/user/cookies" exact element={<Cookies />} />
+                    <Route path="/user/privacypolicy" exact element={<PrivacyPolicy />} />
+                    <Route path="/user/termsandconditions" exact element={<TermsAndCondition />} />
 
 
 

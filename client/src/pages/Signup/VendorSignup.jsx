@@ -31,24 +31,29 @@ const VendorSignup = () => {
     function captureLogo(e) {
         const file = e.target.files[0];
         setSelectedLogo(file)
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = function () {
-            setLogo(reader.result);
-            console.log(reader.result);
-        };
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setLogo(reader.result);
+                console.log(reader.result);
+            };
+        }
     }
 
     function captureImage(e) {
         const file = e.target.files[0];
         setSelectedCrImage(file)
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = function () {
-            setCrImage(reader.result);
-            console.log(reader.result);
-        };
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setCrImage(reader.result);
+                console.log(reader.result);
+            };
+        }
     }
+    
     async function submit() {
 
         if (!firstname || !lastname || !email || !password || !mobile || !registerAddress || !accountType || !companyName || !companyDisplayName || !crNo || !website || !logo || !crImage) {
@@ -169,7 +174,7 @@ const VendorSignup = () => {
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyname" id='companyname'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="Number" for="companyname" id='companyname'
                                 value={companyName} onChange={(e) => setCompanyName(e.target.value)}
                                 placeholder="Company Name (as per CR)" />
                         </div>
@@ -187,13 +192,13 @@ const VendorSignup = () => {
                                     <img src="/images/icons/upload-image.svg" alt="" />
                                     <p className="text-xs text-gray-500 dark:text-gray-400">{selectedLogo ? `Selected File: ${selectedLogo.name}` : 'Upload logo'}</p>
                                 </div>
-                                <input onChange={captureLogo}
+                                <input onChange={captureLogo} accept="image/*"
                                     id="dropzone-file" type="file" className="hidden" />
                             </label>
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="crNo" id='crNo'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="number" for="crNo" id='crNo'
                                 value={crNo} onChange={(e) => setCrNo(e.target.value)}
                                 placeholder="CR. No" />
                         </div>
@@ -203,7 +208,7 @@ const VendorSignup = () => {
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
 
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload logo'}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload CR Image'}</p>
                                 </div>
                                 <input onChange={captureImage} id="crimage" type="file" className="hidden" />
                             </label>

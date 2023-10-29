@@ -668,7 +668,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
         const customDate = req.query.date
         console.log(customDate)
         let query = {
-            // verified: true
+            verified: true
         };
         if (customDate) {
             const filterdate1 = moment(customDate).format("YYYY-MM-DD")
@@ -734,6 +734,7 @@ exports.getTrendingEvents = async (req, res) => {
 
     // const currentDay = "sunday"
     const query = {
+        verified: true,
         // type: 'event',
         $and: [
             { 'eventCategory': { $in: categoryArray } },
@@ -812,7 +813,7 @@ exports.getAllOffers = async (req, res) => {
             {
                 // Assuming you pass the vendor id as a route parameter
                 type: 'offer',
-                // verified: true,
+                verified: true,
                 $or: [
                     { // Events with start date greater than or equal to today
                         'date.dateRange.startDate': { $lte: today },

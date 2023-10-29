@@ -69,7 +69,7 @@ exports.getCategoriesWithEvents = async (req, res) => {
 
             let query = {
                 _id: { $in: category.events },
-                // verified: true // Filter by offer IDs in the category
+                verified: true // Filter by offer IDs in the category
             };
 
             if (date) {
@@ -199,7 +199,7 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             // const currentDay = "sunday"
             let query = {
                 // type: 'event',
-                // verified: true,
+                verified: true,
                 eventCategory: categoryDisplayName,
                 $or: [
                     { // Events with start date greater than or equal to today
@@ -222,6 +222,7 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             // const currentDay = "sunday"
             const query = {
                 // type: 'event',
+                verified: true,
                 $and: [
                     { 'eventCategory': { $in: categoryArray } }
                 ],

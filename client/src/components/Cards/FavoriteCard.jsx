@@ -11,7 +11,7 @@ const FavoriteCard = ({data}) => {
                 </button>
 
                 <a href="#">
-                    <img class="h-48 w-40 md:w-44 md:h-80  w-full rounded-t-lg" src={`${data.displayPhoto}`} alt="" />
+                    <img class="h-48 w-40 md:w-full md:h-80 w-full rounded-t-lg" src={`${data.displayPhoto}`} alt="" />
                 </a>
                 <div class="p-1 pt-4 pb-2 mx-1">
                     <div class="">
@@ -22,7 +22,7 @@ const FavoriteCard = ({data}) => {
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                            {data.description} <Link to='/venue/venueid'><span className='ml-0 text-[#C0A04C] underline'> Crowne Plaza OCEC</span></Link>
+                            {data.shortDescription} <Link to='/venue/venueid'><span className='ml-0 text-[#C0A04C] underline'> Crowne Plaza OCEC</span></Link>
                         </p>
                     </div>
                 </div>

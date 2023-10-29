@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClick }) => {
+const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClick, mapSize, zoom }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
 
 
@@ -50,10 +50,10 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClic
         <div style={{ marginTop: "px" }}>
             <GoogleMap
                 mapContainerStyle={{
-                    height: "300px",
+                    height: `${mapSize}` ,
                 }}
                 center={mapCenter}
-                zoom={10}
+                zoom={zoom}
                 onLoad={onMapLoad}
                 onClick={handleMapClick}
             >

@@ -121,8 +121,11 @@ const VenueDescription = () => {
                                 <div className="relative mx-auto md:mx-0">
                                     <div>
                                         <div className='w-full rounded-md'>
-                                            <MapComponent selectedLocation={selectedLocation} />
+                                            <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13}/>
                                         </div>
+                                        <p>
+                                            {response.data.venue.address}
+                                        </p>
                                     </div>
 
                                     <div className="md:flex flex-col ">

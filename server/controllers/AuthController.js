@@ -7,7 +7,7 @@ const userService = require('../services/user-service');
 const crypto = require('crypto')
 const passport = require('passport')
 const { transporter } = require('../services/mail-service')
-
+const { OAuth2Client } = require('google-auth-library');
 
 exports.vendorRegister = async (req, res) => {
 
@@ -575,6 +575,38 @@ exports.resetpassword = async (req, res) => {
             success: true,
             data: "Password updated successfully"
         })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+exports.googleLogin = async (req, res) => {
+    // Create an instance of the Google OAuth2 client with your client ID
+    const client = new OAuth2Client('502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com');
+    const { credential } = req.body;
+    console.log(credential)
+    try {
+        // Verify the ID token
+        const ticket = await client.verifyIdToken({
+            credential,
+            audience: '502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com',
+        });
+
+        const payload = ticket.getPayload();
+        const userId = payload.sub;
+        const email = payload.email;
+        const name = payload.name;
+
+        // Handle user information as needed
+        const userData = {
+            userId,
+            email,
+            name,
+        };
+
+        console.log(userData)
+
     } catch (error) {
         console.log(error)
     }
