@@ -119,7 +119,7 @@ const Home = () => {
 
     // Loop from Sunday to Monday and add each date to the array
     for (let i = 0; i <= 6; i++) {
-        const day = startOfWeek.clone().add(i, 'days');
+        const day = moment().clone().add(i, 'days');
         daysAndDates.push({
             day: day.format('dddd'), // Get the day name (e.g., "Sunday")
             date: day.format('YYYY-MM-DD'), // Get the date (e.g., "2023-09-17")
@@ -586,7 +586,7 @@ const Home = () => {
 
                                 <div className='block md:hidden'>
                                     <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
-                                        <div className='flex flex-col'>
+                                        <div onClick={() => setnewfilterdate(next7Days[0].actualdate)}  className='flex flex-col'>
                                             <p>
                                                 {next7Days[0].day}
                                             </p>

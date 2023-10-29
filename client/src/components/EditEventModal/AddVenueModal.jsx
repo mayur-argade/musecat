@@ -113,7 +113,7 @@ const AddVenueModal = ({ onClose }) => {
 
                                     <div>
                                         <SearchLocationInput setSelectedLocation={setSelectedLocation} />
-                                        <MapComponent selectedLocation={selectedLocation} setMapAddress={setMapAddress} enableClick={true} />
+                                        <MapComponent selectedLocation={selectedLocation} setMapAddress={setMapAddress} enableClick={true} mapSize={"300px"} zoom={13}/>
                                     </div>
 
 

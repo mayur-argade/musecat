@@ -419,42 +419,42 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                             Events
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/eat">
                                         <p className='font-medium'>
                                             Eat and Drink
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/ladiesnight">
                                         <p className='font-medium'>
                                             Ladies Night
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/weeklyoffers">
                                         <p className='font-medium'>
                                             Weekly Offers
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/thingstodo">
                                         <p className='font-medium'>
                                             Things To Do
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/staycation">
                                         <p className='font-medium'>
                                             Staycation
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/poolandbeach">
                                         <p className='font-medium'>
                                             Pool & beach
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/kidscorner">
                                         <p className='font-medium'>
                                             Kids Corner
                                         </p>
                                     </Link>
-                                    <Link to="/category/events">
+                                    <Link to="/category/spaoffers">
                                         <p className='font-medium'>
                                             Spa Offers
                                         </p>

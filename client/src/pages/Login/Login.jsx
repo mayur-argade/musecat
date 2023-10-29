@@ -13,6 +13,17 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const screenWidth = window.innerWidth;
+
+    console.log("screenwidth-->", screenWidth)
+    let boxSize;
+
+    if(screenWidth < 500){
+        boxSize = "290px"
+    }else{
+        boxSize = "345px"
+    }
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     async function submit() {
@@ -48,7 +59,7 @@ const Login = () => {
         if (sessionStorage.getItem('prevLocation')) {
             const prevLocation = sessionStorage.getItem('prevLocation');
             // Check if the URL of prevLocation starts with "/bookticket"
-            if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/profile')) {
+            if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/favorites') || prevLocation.startsWith('/profile')) {
                 // Go back two pages (navigate -2)
                 navigate(-3);
             } else {
@@ -116,10 +127,11 @@ const Login = () => {
                         </span>
                     </button>
                     <GoogleLogin
-                        width={"345px"}
+                        width={boxSize}
                         clientId="502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com" // Replace with your Google OAuth client ID
                         onSuccess={login}
                         onError={login}
+                    // ux_mode="redirect"
                     />
                     {/* <button onClick={() => GoogleLoginButton} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                         <img src="/images/icons/google-icon.png" alt="" />

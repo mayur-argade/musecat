@@ -239,9 +239,9 @@ const Events = () => {
                                 </span>
                             </div>
 
-                            <div className='w-full flex justify-center lg:justify-end align-middle items-center'>
+                            <div className='mb-2 md:mb-0 md:py-2 w-full flex justify-center lg:justify-end align-middle items-center'>
                                 <div className="search">
-                                    <div class="p-4">
+                                    <div class="px-4">
                                         <div class="relative mt-1">
                                             <div class="absolute inset-y-0 right-4 flex items-center pl-3 pointer-events-none">
                                                 <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
@@ -254,9 +254,9 @@ const Events = () => {
                                             <input
                                                 type="text"
                                                 id="table-search"
-                                                className={`bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-5 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-14 md:w-44 focus:w-32 md:focus:w-44`}
+                                                className={`placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-5 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-14 md:w-44 focus:w-32 md:focus:w-44`}
                                                 onChange={(e) => setSearch(e.target.value)}
-                                                placeholder="Search event"
+                                                placeholder="Search "
                                             />
                                         </div>
                                     </div>
@@ -266,10 +266,10 @@ const Events = () => {
                                     <div className="relative inline-block text-left">
                                         <button
                                             onClick={toggleDropdown}
-                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
                                             <span className='hidden md:block text-gray-500'>Filter by Features</span>
-                                            <span className='md:hidden block text-gray-500'>Filter</span>
+                                            <span className='hidden block text-gray-500'>Filter</span>
 
                                             <img src="/images/icons/filter.svg" alt="" />
                                         </button>
@@ -332,9 +332,9 @@ const Events = () => {
 
 
                                 <div className="datepicker">
-                                    <div className="p-4">
+                                    <div className="px-4">
                                         <label for="session-date"></label>
-                                        <input id="session-date" className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-24 md:w-40' for='date' type="date" />
+                                        <input id="session-date" className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-32 md:w-40' for='date' type="date" />
                                     </div>
                                 </div>
                             </div>

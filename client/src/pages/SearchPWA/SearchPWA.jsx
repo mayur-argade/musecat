@@ -1,29 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 
 const SearchPWA = () => {
+
+    const navigate = useNavigate()
+    const [query, setQuery] = useState('')
+
+
     return (
         <>
-
             <div className='contactmargine'>
                 <div className='shadow-2xl'>
                     <Navbar />
                 </div>
 
-                <div class="mt-5 relative ml-9 mr-9 shadow-xl rounded-xl">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
+                    <div class="mt-5 relative ml-9 mr-9 shadow-xl rounded-xl">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input onChange={((e) => setQuery(e.target.value))} type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search around muscat" required />
+                        <button onClick={(() => navigate(`/Category/events?search=${query}`))} type="button" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-[#C0A04C] rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <img className='' src="/images/icons/home-search.svg" alt="" />
+                        <span class="sr-only">Search</span>
+                    </button>
                     </div>
-                    <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search around muscat" required />
-                </div>
+
 
                 <div className='mt-5 flex md:flex-row flex-col justify-center items-center md:space-x-3'>
                     <div className="flex flex-col md:space-y-7 space-y-3">
-                        <Link to='/category/staycation'>
+                        <Link to='/category/events'>
                             <div className="relative">
                                 <img className="h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/events.jpg" alt="" />
                                 <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Events</span>
@@ -38,7 +47,6 @@ const SearchPWA = () => {
 
 
                     </div>
-
                     <div className="my-3">
                         <Link to='/category/eat'>
                             <div className='relative'>
