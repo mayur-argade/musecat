@@ -100,9 +100,9 @@ const Footer = () => {
                                             The Legal Corner
                                         </p>
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
-                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Privacy policy </a>
-                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Terms and conditions </a>
-                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Cookies </a>
+                                            <a onClick={() => navigate("/user/privacypolicy")} class="hover:opacity-75 font-medium cursor-pointer" href> Privacy policy </a>
+                                            <a onClick={() => navigate("/user/termsandconditions")} class="hover:opacity-75 font-medium cursor-pointer" href> Terms and conditions </a>
+                                            <a onClick={() => navigate("/user/cookies")} class="hover:opacity-75 font-medium cursor-pointer" href> Cookies </a>
                                         </nav>
                                     </div>
                                 </div>

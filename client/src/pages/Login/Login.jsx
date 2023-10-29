@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
 import { setAuth } from "../../store/authSlice";
-import { ClientLogin, ClientGoogleLogin } from "../../http/index"
+import { ClientLogin, ClientGoogleLogin, googleLogin } from "../../http/index"
+import { useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 
 const Login = () => {
     document.title = 'Login'
@@ -33,19 +34,15 @@ const Login = () => {
         }
     }
 
-    async function signinWithGoogle() {
-        try {
-            setLoading(true)
-            const res = await ClientGoogleLogin()
-            console.log(res)
-            setLoading(false)
-        } catch (error) {
-            console.log(error)
-            setLoading(false)
-            toast.error(error.response)
-        }
-    }
+    const [user, setUser] = useState([]);
+    const [profile, setProfile] = useState([]);
 
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => setUser(codeResponse),
+        onError: (error) => console.log('Login Failed:', error)
+    });
+
+    console.log("user -->", user)
     async function HandleBackClick() {
         console.log("button clicked")
         if (sessionStorage.getItem('prevLocation')) {
@@ -118,12 +115,18 @@ const Login = () => {
                             Continue with Facebook
                         </span>
                     </button>
-                    <button onClick={signinWithGoogle} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                    <GoogleLogin
+                        width={"345px"}
+                        clientId="502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com" // Replace with your Google OAuth client ID
+                        onSuccess={login}
+                        onError={login}
+                    />
+                    {/* <button onClick={() => GoogleLoginButton} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                         <img src="/images/icons/google-icon.png" alt="" />
                         <span className='mx-auto text-center'>
                             Continue with Google
                         </span>
-                    </button>
+                    </button> */}
 
                     <button
                         onClick={() => navigate("/signup")}

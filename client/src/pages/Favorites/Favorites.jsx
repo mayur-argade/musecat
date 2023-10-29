@@ -51,7 +51,7 @@ const Favorites = () => {
                             <p className='text-2xl font-bold'>Favorites</p>
                         </div>
 
-                        <div className="grid  xs:grid-cols-2  justify-items-center md:flex-wrap gap-y-4 md:justify-center md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div className="grid  xs:grid-cols-2  justify-items-start md:flex-wrap gap-y-4 md:justify-start md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4">
                             {
                                 response.data.map((event) => (
                                     <FavoriteCard data={event} />

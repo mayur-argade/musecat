@@ -197,6 +197,25 @@ const Events = () => {
         setIsOpen(!isOpen);
     };
 
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                // Show the button when the user scrolls down 100 pixels
+                setVisible(true);
+            } else {
+                // Hide the button when the user scrolls up
+                setVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     console.log("trending events", trending)
     if (response.data == null || trending.data == null) {
@@ -386,7 +405,7 @@ const Events = () => {
                                     <div className="relative mx-auto md:mx-0">
                                         <div>
                                             <div className='w-full h-9/12 rounded-md'>
-                                                <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} />
+                                                <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={10}/>
                                             </div>
                                         </div>
 
@@ -411,17 +430,24 @@ const Events = () => {
 
                                             </div>
 
-                                            <div className='hidden lg:flex justify-end flex-col absolute -right-32 bottom-0 lg:right-0 lg:-bottom-32'>
-                                                <div className='flex justify-between mb-2'>
-                                                    <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                    </button>
-                                                    {/* // <img className='h-10 ml-16' src="/images/icons/whatsapp-color.svg" alt="" /> */}
-                                                    <button>
-                                                    </button>
-                                                </div>
-                                                <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-2 pr-3 pl-3 text-white font-semibold'>Need Help?</button>
-                                            </div>
+                                            <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
+                        <div className='flex justify-between mb-2'>
+                            {
+                                visible && (
+                                    <button onClick={() => window.scrollTo({
+                                        top: 0,
+                                        behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                    })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                    </button>
+                                )
+                            }
+
+                            <button>
+                            </button>
+                        </div>
+                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                    </div>
                                         </div>
 
                                     </div>

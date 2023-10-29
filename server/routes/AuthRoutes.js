@@ -4,7 +4,7 @@ const passport = require('passport')
 
 const { isLoggedin, isUserLoggedin, requiredRole } = require("../middleware/authMiddleware")
 
-const { vendorRegister, vendorLogin, register, clientLogin, refresh, logout, verify, clientGoogleLogin, sendMailForgotPassword, resetpassword } = require('../controllers/AuthController')
+const { vendorRegister, vendorLogin, register, clientLogin, refresh, logout, verify, clientGoogleLogin, sendMailForgotPassword, resetpassword, googleLogin } = require('../controllers/AuthController')
 
 router.route('/vendor/register').post(vendorRegister);
 router.route('/vendor/login').post(vendorLogin)
@@ -14,6 +14,7 @@ router.route('/user/login').post(clientLogin)
 router.route('/user/googlelogin').get(passport.authenticate("google", {
     scope: ["profile", "email"]
 }), clientGoogleLogin)
+router.route('/google/callback').post(googleLogin)
 
 router.route('/refresh').post(refresh)
 router.route('/vendor/logout').post(logout)

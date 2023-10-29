@@ -22,6 +22,27 @@ const Home = () => {
 
     const [date, setDate] = useState('')
 
+    const [visible, setVisible] = useState(false)
+
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                // Show the button when the user scrolls down 100 pixels
+                setVisible(true);
+            } else {
+                // Hide the button when the user scrolls up
+                setVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     const scrollLeft = () => {
         document.getElementById("content").scrollLeft -= 400;
     }
@@ -78,6 +99,7 @@ const Home = () => {
     const currentDate = moment();
 
 
+
     for (let i = 0; i < 7; i++) {
         const formattedDate = currentDate.format('D MMM'); // Format date as "9 Sep"
         const acutaldate = moment(currentDate).format("YYYY-MM-DD")
@@ -119,14 +141,17 @@ const Home = () => {
 
     function setnewfilterdate(actualdate) {
         setDate(`?date=${actualdate}`)
-        console.log(actualdate)
+        // console.log(actualdate)
     }
 
+    const [selectedDay, setSelectedDay] = useState('')
+
     function setDayforCategory(selectedDay) {
+        setSelectedDay(selectedDay)
         SetDay(`?date=${selectedDay}`)
         console.log(selectedDay)
     }
-
+    console.log("this is selected day",selectedDay)
     function displayLinks() {
         setShowLinks(true)
     }
@@ -153,7 +178,7 @@ const Home = () => {
             setCategoryLoading(true)
             try {
                 const { data } = await CategoryCount(day)
-                console.log("categorydata", data)
+                // console.log("categorydata", data)
                 setCategory(data)
 
                 setCategoryLoading(false)
@@ -169,10 +194,10 @@ const Home = () => {
     useEffect(() => {
         const fetchdata = async () => {
             setUpcomingEventsLoading(true)
-            console.log("this is date passing", date)
+            // console.log("this is date passing", date)
             try {
                 const { data } = await ClientUpcomingEvents(date)
-                console.log("upcoming events", data.data)
+                // console.log("upcoming events", data.data)
                 setUpcomingEvents(data)
                 setUpcomingEventsLoading(false)
             } catch (error) {
@@ -237,10 +262,10 @@ const Home = () => {
     }
 
 
-    console.log(highlightedDates)
+    // console.log(highlightedDates)
     return (
         <>
-            <div className='appmargine'>
+            <div className='appmargine '>
                 <Navbar />
                 <div
                     class="NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">
@@ -410,7 +435,7 @@ const Home = () => {
                                             onClick={() => setDayforCategory(e.date)} className='md:block hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border'>{e.day}</button>
                                     ))
                                 }
-
+                                
                                 <div className='selectoption pr-2 md:hidden'>
                                     <select
                                         id="countries"
@@ -419,8 +444,10 @@ const Home = () => {
                                         {daysAndDates.map((e) => (
                                             <option
                                                 key={e.date} // Make sure to add a unique key prop when mapping in React
+                                                value={e.date}
                                                 onClick={() => setDayforCategory(e.date)}
-                                                className="hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border"
+                                                className={`hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date ? 'bg-black text-white' : '' // Apply different styling for the selected option
+                                                    }`}
                                             >
                                                 {e.day}
                                             </option>
@@ -723,7 +750,7 @@ const Home = () => {
                     </section>
                 </section>
 
-                <section className='relative flex justify-center items-center align-middle mt-5'>
+                <section className='flex justify-center items-center align-middle mt-5'>
                     <section className='w-full mx-5 md:mx-0 md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         <p className='ml-6 md:ml-0 text-xl font-bold md:text-2xl md:font-[700]  '>
                             Where to ?
@@ -788,14 +815,18 @@ const Home = () => {
                             </div>
                         </Link>
                     </section>
-                    <div className='hidden lg:flex justify-end flex-col absolute right-5 bottom-10'>
+                    <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
                         <div className='flex justify-between mb-2'>
-                            <button onClick={() => window.scrollTo({
-                                top: 0,
-                                behavior: 'smooth', // You can use 'auto' for instant scrolling
-                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button>
+                            {
+                                visible && (
+                                    <button onClick={() => window.scrollTo({
+                                        top: 0,
+                                        behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                    })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                    </button>
+                                )
+                            }
 
                             <button>
                             </button>

@@ -322,6 +322,27 @@ const BookTicket = () => {
 
     // console.log()
 
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                // Show the button when the user scrolls down 100 pixels
+                setVisible(true);
+            } else {
+                // Hide the button when the user scrolls up
+                setVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+
     if (response.data == null) {
         return (
             <>loading</>
@@ -347,7 +368,7 @@ const BookTicket = () => {
                                 onClick={openModal}
                                 className="bg-[#C0A04C] text-white px-4 py-2 rounded-lg text-sm"
                             >
-                                <img src={response.data.eventDetails.seatingMap} alt="" />
+                                <img src="/images/icons/show.svg" alt="" />
                             </button>
                         </div>
 
@@ -380,7 +401,7 @@ const BookTicket = () => {
                                         </button>
 
 
-                                        <img className='pt-4' src="/images/assets/theater.png" alt="Theater" />
+                                        <img className='pt-4' src={response.data.eventDetails.seatingMap} alt="Theater" />
                                     </div>
                                 </div>
                             )}
@@ -440,9 +461,9 @@ const BookTicket = () => {
                                                         response.data.eventDetails.categories.map((category) => (
                                                             category.className != null && category.seats != null
                                                                 ?
-                                                                    <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
+                                                                <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
                                                                 :
-                                                                    <option value={category.className}>{category.className}</option>
+                                                                <option value={category.className}>{category.className}</option>
                                                         ))
                                                     }
                                                 </select>
@@ -556,12 +577,19 @@ const BookTicket = () => {
                             </div>
                         </div >
 
-                        <div className='hidden md:flex justify-end flex-col absolute -right-4 bottom-5'>
+                        <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
                             <div className='flex justify-between mb-2'>
-                                {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button> */}
-                                {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
+                                {
+                                    visible && (
+                                        <button onClick={() => window.scrollTo({
+                                            top: 0,
+                                            behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                        })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                        </button>
+                                    )
+                                }
+
                                 <button>
                                 </button>
                             </div>
