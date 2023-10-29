@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    // baseURL: "https://omanwhereto.com/api/v1/",
-    baseURL: "http://localhost:5000/api/v1/",
+    baseURL: "https://omanwhereto.com/api/v1/",
+    // baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     credentials: "include",
     headers: {
@@ -107,8 +107,8 @@ api.interceptors.response.use(
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    // baseURL: "https://omanwhereto.com/api/v1/",
-                    baseURL: "http://localhost:5000/api/v1/",
+                    baseURL: "https://omanwhereto.com/api/v1/",
+                    // baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",
