@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import { getAllVenuesAdmin } from '../../http/index'
+import { getAllVenuesAdmin, AdminVerifyVenue } from '../../http/index'
 import AddVenueModal from '../../components/EditEventModal/AddVenueModal'
 import moment from 'moment'
 import { Link, useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 const AdminVenue = () => {
     const [venues, setVenues] = useState([])
@@ -34,6 +35,19 @@ const AdminVenue = () => {
 
     }, []);
 
+    const verifyVenue = async (venueid) => {
+        const venuedata = {
+            venueid: venueid
+        }
+        const response = await AdminVerifyVenue(venuedata)
+
+        if (response.data.success == true) {
+            toast.success("Venue Verified Successfully")
+            window.location.reload()
+
+        }
+    }
+
     if (venues.data == null) {
         return (
             <>
@@ -48,6 +62,8 @@ const AdminVenue = () => {
                     <div>
                         <Sidebar />
                     </div>
+
+                    <Toaster />
 
                     <div className='pl-20 flex flex-col w-full'>
                         <div className="mt-7"></div>
@@ -94,7 +110,7 @@ const AdminVenue = () => {
                                                                 {cat.address}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <a href={cat.photo} target="_blank" rel="noopener noreferrer">Link</a>
+                                                                <a href={`${cat.photo}`} target="_blank" rel="noopener noreferrer">Link</a>
 
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
@@ -109,7 +125,7 @@ const AdminVenue = () => {
                                                                         ?
                                                                         <></>
                                                                         :
-                                                                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                        <button onClick={() => verifyVenue(cat._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                                             Verify
                                                                         </button>
                                                                 }

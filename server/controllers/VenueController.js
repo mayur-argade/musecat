@@ -85,7 +85,7 @@ module.exports.getVenueDetails = async (req, res) => {
             ],
 
         }
-        
+
         events = await eventService.findAllEvents(query)
 
         return res.status(200).json({
@@ -102,7 +102,7 @@ module.exports.getVenueDetails = async (req, res) => {
 
 exports.getAllVenues = async (req, res) => {
     try {
-        const venues = await venueService.findAllVenue({ name: 'Crown Plaza' })
+        const venues = await venueService.findAllVenue({ verified: true })
         return res.status(200).json({
             success: true,
             data: venues
@@ -122,4 +122,24 @@ exports.getAllVenuesAdmin = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+exports.AdminVerifyVenue = async (req, res) => {
+
+    const { venueid } = req.body
+
+    console.log(req.body)
+    
+    const venuedata = {
+        _id: venueid,
+        verified: true
+    }
+
+    const venue = await venueService.updateEvent(venuedata)
+
+    res.status(200).json({
+        success: true,
+        data: venue
+    })
+
 }

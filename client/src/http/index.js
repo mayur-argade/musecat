@@ -80,6 +80,8 @@ export const AdminDeleteEvent = (data) => api.delete("/admin/delete-event", { da
 export const AdminVerifyEvent = (data) => api.patch("/admin/verify-event", { data: data })
 export const AdminEditEvent = (data) => api.patch("/admin/edit-event", data)
 
+export const AdminVerifyVenue = (data) => api.patch(`venue/admin/verify-venue`, data)
+
 export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
 export const AdminDeleteOffer = (data) => api.delete("/admin/delete-offer", data)
 export const AdminEditOffer = (data) => api.patch("/admin/edit-offer", data)
@@ -92,6 +94,7 @@ export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`,
 export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)
 export const getOffersForAdmin = (data) => api.get('admin/getAllOffers', data)
 export const getAllVenuesAdmin = (data) => api.get('venue/admin/getAllVenues', data)
+
 
 api.interceptors.response.use(
     (config) => {
