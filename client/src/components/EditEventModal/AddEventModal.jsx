@@ -7,6 +7,7 @@ import getCroppedImg from '../../utils/cropper'
 import toast, { Toaster } from 'react-hot-toast';
 import './addeventmodal.css'
 import AddVenueModal from './AddVenueModal';
+import Features from '../../utils/Data'
 
 const AddEventModal = ({ onClose }) => {
 
@@ -111,6 +112,7 @@ const AddEventModal = ({ onClose }) => {
     }
 
     const handleDayClick = (day) => {
+        setDatetype(false)
         if (selectedDays.includes(day)) {
             // If the day is already selected, remove it from the array
             setSelectedDays(selectedDays.filter((selectedDay) => selectedDay !== day));
@@ -136,6 +138,8 @@ const AddEventModal = ({ onClose }) => {
             reader.readAsDataURL(file);
         }
     };
+
+    console.log("date type checkking", setDatetype)
 
     const onCropComplete = async (croppedArea, croppedAreaPixels) => {
         // croppedArea contains the x, y, width, and height of the cropped area
@@ -238,9 +242,9 @@ const AddEventModal = ({ onClose }) => {
             if (category.className != null && category.className.trim() == "") {
                 return toast.error("Classname cannot be an empty string if you want to add price")
             }
-            if (category.price != null && category.price < 100) {
-                return toast.error("price of ticket can not be less than 100")
-            }
+            // if (category.price != null && category.price < 100) {
+            //     return toast.error("price of ticket can not be less than 100")
+            // }
 
         }
 
@@ -301,29 +305,29 @@ const AddEventModal = ({ onClose }) => {
                                         <p className='text-md font-bold'>Event Details</p>
                                     </div>
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name *">Title  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name *">Title  *</label>
                                         <input
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                             onChange={((e) => setTitle(e.target.value))}
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='Breakfast and poolpass'
 
                                         />
                                     </div>
 
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Short Description</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Short Description *</label>
                                         <input
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Breakfast and poolpass at crown plaza'
+                                            placeholder='Breakfast and poolpass'
                                             onChange={((e) => setShortDesc(e.target.value))}
                                         />
                                     </div>
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Event Description  *</label>
-                                        <JoditEditor
 
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Event Description  *</label>
+                                        <JoditEditor
                                             ref={editor}
                                             value={content}
                                             config={config}
@@ -331,91 +335,78 @@ const AddEventModal = ({ onClose }) => {
                                             onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                                         />
                                     </div>
-                                    <div className="flex space-x-2 mt-3">
-                                        <button className="bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm" onClick={() => setDatetype(true)}>Date Range</button>
-                                        <button className="bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm" onClick={() => setDatetype(false)}>Recurring</button>
-                                    </div>
-                                    {
-                                        datetype
-                                            ?
-                                            <div className="flex align-middle items-center  w-full mt-2 space-x-4">
-                                                <div className="flex w-full row1 space-x-4 ">
-                                                    <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                        <label className='input-container text-xs mt-1' htmlFor="first name">Date</label>
-                                                        <input
-                                                            type="datetime-local"
-                                                            min={minDateTime}
-                                                            id="session-date"
-                                                            onChange={((e) => setStartDate(e.target.value))}
-                                                            className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <p className='text-center'>to</p>
-                                                <div className="flex w-full row1 space-x-4 ">
-                                                    <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                        <label className='text-xs mt-1' htmlFor="first name">Date</label>
-                                                        <input
-                                                            type="datetime-local"
-                                                            min={minDateTime}
-                                                            id="session-date"
-                                                            onChange={((e) => setEndDate(e.target.value))}
-                                                            className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            :
-                                            (
-                                                <div>
-                                                    <p className='text-sm mt-2'>Select Days of the Week:</p>
-                                                    <div className='flex'>
-                                                        {
-                                                            days.map((day, index) => (
-                                                                <>
-                                                                    <div className='mx-2'>
-                                                                        <label key={index} className="block">
-                                                                            <input
-                                                                                className='rounded-sm mr-1'
-                                                                                type="checkbox"
-                                                                                value={day}
-                                                                                checked={selectedDays.includes(day)}
-                                                                                onChange={() => handleDayClick(day)}
-                                                                            />
-                                                                            <span className='ml-0 text-sm '>
-                                                                                {day}
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </div>
-                                            )
-                                    }
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Category  *</label>
-                                        <select
-                                            type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
-                                            onChange={((e) => setEventCategory(e.target.value))}
 
-                                            placeholder='Theatre of Arts'
-                                        >
+                                    <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
+                                    <div className="flex align-middle items-center  w-full mt-2 space-x-4">
+                                        <div className="flex w-full row1 space-x-4 ">
+                                            <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='input-container text-xs mt-1' htmlFor="first name">Date</label>
+                                                <input
+                                                    type="datetime-local"
+                                                    min={minDateTime}
+                                                    id="session-date"
+                                                    onChange={((e) => setStartDate(e.target.value))}
+                                                    className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                                                />
+                                            </div>
+                                        </div>
+                                        <p className='text-center'>to</p>
+                                        <div className="flex w-full row1 space-x-4 ">
+                                            <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Date</label>
+                                                <input
+                                                    type="datetime-local"
+                                                    min={minDateTime}
+                                                    id="session-date"
+                                                    onChange={((e) => setEndDate(e.target.value))}
+                                                    className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <p className='text-sm mt-2'>Select Days of the Week For recurring event :</p>
+                                        <div className='flex space-x-4 align-middle items-center '>
                                             {
-                                                listCategory.map((category) => (
-                                                    <option className=' text-sm font-medium' key={category._id} value={category.categoryURL}>{category.name}</option>
+                                                days.map((day, index) => (
+                                                    <div className='mx-2'>
+                                                        <label key={index} className="block">
+                                                            <input
+                                                                className='rounded-sm mr-1'
+                                                                type="checkbox"
+                                                                value={day}
+                                                                checked={selectedDays.includes(day)}
+                                                                onChange={() => handleDayClick(day)}
+                                                            />
+                                                            <span className='ml-0 text-sm '>
+                                                                {day}
+                                                            </span>
+                                                        </label>
+                                                    </div>
                                                 ))
                                             }
+                                            <div className='flex'>
+                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
+                                                    <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
+                                                    <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time" />
+                                                </div>
+                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                    <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
+                                                    <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time" />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                            <option className=' text-sm font-medium' value="eat">Eat</option>
-                                            <option className=' text-sm font-medium' value="weeklyoffers">Weekly Offers</option>
-                                        </select>
                                     </div>
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Location  *</label>
+                                    <div className="flex space-x-2 mt-1 mb-3">
+                                        {/* <button className="bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm" onClick={() => }>Recurring</button> */}
+                                    </div>
+
+
+                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Select Location  *</label>
                                         <select
 
                                             type="text"
@@ -445,13 +436,15 @@ const AddEventModal = ({ onClose }) => {
                                         {
                                             showVenuecreate
                                                 ?
-                                                <p>
-                                                    - hide Venue model
+                                                <p className='mt-1'>
+                                                    <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Close Add Venue form</span>
                                                 </p>
                                                 :
-                                                <p>
-                                                    + Add Venue
-                                                </p>
+                                                <>
+                                                    <p className='mt-1'>
+                                                        <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Add Venue</span> <span className='ml-0 text-xs'>(If your Venue is NOT in the above list)</span>
+                                                    </p>
+                                                </>
 
                                         }
                                     </button>
@@ -463,6 +456,253 @@ const AddEventModal = ({ onClose }) => {
                                             :
                                             <></>
                                     }
+
+
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
+                                        <JoditEditor
+
+                                            ref={editor}
+                                            value={content}
+                                            config={config}
+                                            tabIndex={1} // tabIndex of textarea
+                                            onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        />
+                                    </div>
+
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Category  *</label>
+                                        <select
+                                            type="text"
+                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
+                                            onChange={((e) => setEventCategory(e.target.value))}
+
+                                            placeholder='Theatre of Arts'
+                                        >
+                                            {
+                                                listCategory.map((category) => (
+                                                    <option className=' text-sm font-medium' key={category._id} value={category.categoryURL}>{category.name}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
+
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">Features</h3>
+                                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                            {
+                                                Features.list.map((feature) => (
+                                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                                        <div class="flex items-center pl-3">
+                                                            <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 rounded" />
+                                                            <label for="vue-checkbox-list" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{feature}</label>
+                                                        </div>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+
+                                    </div>
+
+
+                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Contact</label>
+                                    <div className=' mb-3 flex flex-col justify-between'>
+                                        <div className='w-full flex justify-between'>
+                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                                <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
+                                                <input
+
+                                                    type="text"
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                    placeholder='Link for FB page'
+                                                    onChange={((e) => setFb(e.target.value))}
+                                                />
+                                            </div>
+                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
+                                                <input
+
+                                                    type="text"
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                    placeholder='Link for Instagram page'
+                                                    onChange={((e) => setInsta(e.target.value))}
+                                                />
+                                            </div>
+                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Email</label>
+                                                <input
+
+                                                    type="email"
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                    placeholder='Your email address'
+                                                    onChange={((e) => setMail(e.target.value))}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="w-full flex justify-between">
+                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Phone No.</label>
+                                                <input
+                                                    type='tel'
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                    placeholder='Phone number'
+                                                    onChange={((e) => setNumber(e.target.value))}
+                                                />
+                                            </div>
+
+                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
+                                                <input
+                                                    type="number"
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                    placeholder='Whatsapp number'
+                                                    onChange={((e) => setNumber(e.target.value))}
+                                                />
+                                            </div>
+
+                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">Website link</label>
+                                                <input
+                                                    type="link"
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                    placeholder='Website Link'
+                                                    onChange={((e) => setNumber(e.target.value))}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Ticket Sales</label>
+                                    <div>
+                                        {categories.map((category, index) => (
+                                            <div key={index} className='w-full flex flex-row  '>
+                                                <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                                    <label className='text-xs mt-3' >Class name</label>
+                                                    <input
+                                                        type='text'
+                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
+                                                        placeholder='Class Name'
+                                                        value={category.className}
+                                                        onChange={(e) => handleCategoryChange(index, 'className', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                                    <label className='text-xs mt-3' >No of seats</label>
+                                                    <input
+                                                        type='number'
+                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                                                        placeholder='No of Seats'
+                                                        value={category.seats}
+                                                        onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                                    <label className='text-xs mt-3' >Price</label>
+                                                    <input
+                                                        type='number'
+                                                        min="100"
+                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                                                        placeholder='Price'
+                                                        value={category.price}
+                                                        onChange={(e) => handleCategoryChange(index, 'price', e.target.value)}
+                                                    />
+                                                </div>
+                                                {index > 0 && (
+                                                    <button onClick={() => removeCategory(index)} className='mt-1 ml-2'>
+                                                        Delete
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+
+                                        <button onClick={addCategory} className='ml-2 mt-2'>
+                                            + Add Ticket Type
+                                        </button>
+                                    </div>
+
+                                    <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Terms And Condition  *</label>
+                                        <input
+
+                                            type="text"
+                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                            placeholder='Link for terms and condition'
+                                            onChange={((e) => setTermsAndConditions(e.target.value))}
+                                        />
+                                    </div>
+
+
+                                    <div>
+                                        <label className='ml-2 text-sm font-semibold mt-1' >Additional Terms & Conditions</label>
+
+                                        {inputFields.map((value, index) => (
+                                            <div
+                                                key={index}
+                                                className='flex mt-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'
+                                            >
+                                                <label className='text-xs mt-1' htmlFor={`field-${index}`}>
+                                                    Terms or condition {index + 1}
+                                                </label>
+                                                <div className="flex align-middle justify-between">
+
+                                                    <input
+                                                        type='text'
+                                                        id={`field-${index}`}
+                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium'
+                                                        placeholder={`Enter term or condition ${index + 1}`}
+                                                        value={value}
+                                                        onChange={(e) => handleInputChange(index, e.target.value)}
+                                                    />
+                                                    {
+                                                        index == 0
+                                                            ?
+                                                            <>
+                                                            </>
+                                                            :
+                                                            <button className="" onClick={() => removeInputField(index)}>
+                                                                Delete
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        {inputFields.length < 3 && (
+                                            <button onClick={addInputField} className='mt-3'>
+                                                + Add term and condition
+                                            </button>
+                                        )}
+                                    </div>
+
+
+                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
+                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+
+                                        onChange={capturePhoto}
+                                        id="photo" type="file" />
+
+                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
+                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                        multiple id="photo" type="file" />
+
+
+                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
+                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+
+                                        onChange={captureSeatingMap}
+                                        id="photo" type="file" />
+
+                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
+                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+
+                                        onChange={captureBanner}
+                                        type="file" />
+
+                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
+                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                        onChange={captureVideo}
+                                        type="file" />
 
                                     {/* <div>
                                     asdfsdadf
@@ -485,186 +725,6 @@ const AddEventModal = ({ onClose }) => {
                                         <img src={croppedImage} alt="Cropped" style={{ maxWidth: '100%' }} />
                                     )}
                                 </div> */}
-
-                                    <div>
-                                        <label className='text-xs mt-3' >Custom</label>
-
-                                        {inputFields.map((value, index) => (
-                                            <div
-                                                key={index}
-                                                className='flex mt-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'
-                                            >
-                                                <label className='text-xs mt-1' htmlFor={`field-${index}`}>
-                                                    Custom Question {index + 1}
-                                                </label>
-                                                <div className="flex align-middle justify-between">
-
-                                                    <input
-                                                        type='text'
-                                                        id={`field-${index}`}
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium'
-                                                        placeholder={`Enter question ${index + 1}`}
-                                                        value={value}
-                                                        onChange={(e) => handleInputChange(index, e.target.value)}
-                                                    />
-                                                    {
-                                                        index == 0
-                                                            ?
-                                                            <>
-                                                            </>
-                                                            :
-                                                            <button className="" onClick={() => removeInputField(index)}>
-                                                                Delete
-                                                            </button>
-                                                    }
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                        {inputFields.length < 3 && (
-                                            <button onClick={addInputField} className='mt-3'>
-                                                + Add Field
-                                            </button>
-                                        )}
-
-                                        {/* <button onClick={handleAddToArray} className='mt-3'>
-                                        Add to Array
-                                    </button> */}
-                                    </div>
-
-                                    <div>
-                                        {categories.map((category, index) => (
-                                            <div key={index} className='w-full mt-3 flex flex-row space-x-2 '>
-                                                <div className='w-full bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >Class name</label>
-                                                    <input
-                                                        type='text'
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
-                                                        placeholder='Class Name'
-                                                        value={category.className}
-                                                        onChange={(e) => handleCategoryChange(index, 'className', e.target.value)}
-                                                    />
-                                                </div>
-                                                <div className='w-full bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >No of seats</label>
-                                                    <input
-                                                        type='number'
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
-                                                        placeholder='No of Seats'
-                                                        value={category.seats}
-                                                        onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
-                                                    />
-                                                </div>
-                                                <div className='w-full bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >Price</label>
-                                                    <input
-                                                        type='number'
-                                                        min="100"
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
-                                                        placeholder='Price'
-                                                        value={category.price}
-                                                        onChange={(e) => handleCategoryChange(index, 'price', e.target.value)}
-                                                    />
-                                                </div>
-                                                {index > 0 && (
-                                                    <button onClick={() => removeCategory(index)} className='mt-1 ml-2'>
-                                                        Delete
-                                                    </button>
-                                                )}
-                                            </div>
-                                        ))}
-
-                                        <button onClick={addCategory} className='mt-2'>
-                                            + Add Class
-                                        </button>
-                                    </div>
-
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Features</label>
-                                        <input
-                                            type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Features'
-                                            onChange={((e) => setFeatures(e.target.value))}
-                                        />
-                                    </div>
-
-                                    <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Terms And Condition  *</label>
-                                        <input
-
-                                            type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Link for terms and condition'
-                                            onChange={((e) => setTermsAndConditions(e.target.value))}
-                                        />
-                                    </div>
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Contact</label>
-                                    <div className='flex justify-between'>
-                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
-                                            <input
-
-                                                type="text"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Link for FB page'
-                                                onChange={((e) => setFb(e.target.value))}
-                                            />
-                                        </div>
-                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
-                                            <input
-
-                                                type="text"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Link for Instagram page'
-                                                onChange={((e) => setInsta(e.target.value))}
-                                            />
-                                        </div>
-                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Email</label>
-                                            <input
-
-                                                type="email"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Your email address'
-                                                onChange={((e) => setMail(e.target.value))}
-                                            />
-                                        </div>
-                                        <div className=' flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
-                                            <input
-                                                type="number"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Whatsapp number'
-                                                onChange={((e) => setNumber(e.target.value))}
-                                            />
-                                        </div>
-                                    </div>
-
-
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Display Photo</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-
-                                        onChange={capturePhoto}
-                                        id="photo" type="file" />
-
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-
-                                        onChange={captureSeatingMap}
-                                        id="photo" type="file" />
-
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
-
-                                        onChange={captureBanner}
-                                        type="file" />
-
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
-                                        onChange={captureVideo}
-                                        type="file" />
 
                                     <div className="button flex justify-center items-center mt-5">
                                         <button

@@ -128,9 +128,9 @@ const Contactus = () => {
                                     <p className='text-sm font-normal'>
                                         If you have not heard from us, check your spam folder or contact us directly at
                                     </p>
-                                    <span className='font-bold text-sm'>
+                                    <a href="mailto:info@muscatwhereto.com" className='font-bold text-sm'>
                                         info@muscatwhereto.com
-                                    </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>

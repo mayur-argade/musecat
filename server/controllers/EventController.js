@@ -25,14 +25,14 @@ exports.createEvent = async (req, res) => {
 
     console.log(categories)
 
-    for (const category of categories) {
-        if (category.price != null && category.price < 100) {
-            return res.status(400).json({
-                success: false,
-                data: "Price should be greater than 100 baisa"
-            })
-        }
-    }
+    // for (const category of categories) {
+    //     if (category.price != null && category.price < 100) {
+    //         return res.status(400).json({
+    //             success: false,
+    //             data: "Price should be greater than 100 baisa"
+    //         })
+    //     }
+    // }
 
     let event = {}
 

@@ -70,7 +70,7 @@ const Signup = () => {
                     <div>
                         <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] focus:outline-none border border-gray-200 rounded-md text-gray-600"
                             value={email} onChange={(e) => setEmail(e.target.value)}
-                            type="email" for="email" id='email' placeholder="Email" />
+                            type="email" name='username' autocomplete="email" for="email" id='email' placeholder="Email" />
                     </div>
 
                     <div>
