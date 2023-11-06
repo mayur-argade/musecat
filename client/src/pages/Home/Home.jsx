@@ -139,19 +139,23 @@ const Home = () => {
     const [editorpickLoading, setEditorpickLoading] = useState(false)
     const [showCalender, setShowCalender] = useState(false)
 
+    const [useFullDate, setUseFullDate] = useState('')
     function setnewfilterdate(actualdate) {
+        setUseFullDate(actualdate)
         setDate(`?date=${actualdate}`)
         // console.log(actualdate)
     }
 
     const [selectedDay, setSelectedDay] = useState('')
+    const [chooseDate, setChooseDate] = useState('')
 
-    function setDayforCategory(selectedDay) {
-        setSelectedDay(selectedDay)
-        SetDay(`?date=${selectedDay}`)
-        console.log(selectedDay)
+    function setDayforCategory(passedDate) {
+        console.log("this is passed date", passedDate)
+        setSelectedDay(passedDate)
+        SetDay(`?date=${passedDate}`)
+        // console.log(selectedDay)
     }
-    console.log("this is selected day",selectedDay)
+    console.log("this is selected day", selectedDay)
     function displayLinks() {
         setShowLinks(true)
     }
@@ -428,15 +432,22 @@ const Home = () => {
                             <div className="left flex items-center align-middle ">
                                 <span className='text-xl font-bold md:text-2xl md:font-[700]'>Popular Category</span></div>
 
-                            <div className="hidden right lg:flex flex-wrap space-x-2">
+                            <div className="hidden right md:flex flex-wrap space-x-2">
                                 {
                                     daysAndDates.map((e) => (
                                         <button
-                                            onClick={() => setDayforCategory(e.date)} className='md:block hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border'>{e.day}</button>
+                                            onClick={() => setDayforCategory(e.date)}
+                                            className={`md:block hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date
+                                                ? 'bg-black text-white'
+                                                : ''
+                                                }`}
+                                        >
+                                            {e.day}
+                                        </button>
                                     ))
                                 }
-                                
-                                <div className='selectoption pr-2 md:hidden'>
+
+                                <div className='block selectoption pr-2 md:hidden'>
                                     <select
                                         id="countries"
                                         className="bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -570,7 +581,10 @@ const Home = () => {
                                 <div>
                                     <div className='hidden md:block flex space-x-1'>
                                         {next7Days.map((item) => (
-                                            <button onClick={() => setnewfilterdate(item.actualdate)} className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border'>
+                                            <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                                ? 'bg-black text-white'
+                                                : ''
+                                                }`}>
                                                 <div className='flex flex-col'>
                                                     <p>
                                                         {item.day}
@@ -586,7 +600,7 @@ const Home = () => {
 
                                 <div className='block md:hidden'>
                                     <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
-                                        <div onClick={() => setnewfilterdate(next7Days[0].actualdate)}  className='flex flex-col'>
+                                        <div onClick={() => setnewfilterdate(next7Days[0].actualdate)} className='flex flex-col'>
                                             <p>
                                                 {next7Days[0].day}
                                             </p>

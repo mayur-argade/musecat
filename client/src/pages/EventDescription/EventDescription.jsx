@@ -27,7 +27,7 @@ const EventDescription = () => {
     const [loading, setLoading] = useState(false)
     const [response, setReponse] = useState({});
     const [accordions, setAccordions] = useState([])
-
+    const [fetchLikes, setFetchLikes] = useState(false)
     // console.log("isMobile",isMobileDevice)
     const [visible, setVisible] = useState(false)
 
@@ -130,7 +130,7 @@ const EventDescription = () => {
         }
         fetchdata()
 
-    }, [eventid, user, isAuth]);
+    }, [eventid, user, isAuth, fetchLikes]);
 
     const [upcomingEvents, setUpcomingEvents] = useState({})
     const [clientOffers, setClientOffers] = useState({})
@@ -187,6 +187,7 @@ const EventDescription = () => {
         }
     }
 
+
     const favoriteFeature = async () => {
         // console.log(eventid)
         setIsLiked(!isLiked)
@@ -198,6 +199,7 @@ const EventDescription = () => {
             const { data } = await addToFavorites(eventdata)
             console.log("data", data)
             toast.success(data.message)
+            setFetchLikes(!fetchLikes)
         } catch (error) {
             console.log("error", error)
             if (error.response.status == 401) {
@@ -367,12 +369,12 @@ const EventDescription = () => {
                                                 <div className="flex items-center justify-between text-white">
                                                     {/* Like Button */}
                                                     <button className="text-white rounded-md px-3 py-1 hover:bg-red-700">
-                                                        <img className='h-7' src="/images/icons/like.svg" alt="" />
+
                                                     </button>
 
                                                     {/* Like Count */}
                                                     <div className="flex items-center">
-                                                        <span>{response.data.eventDetails.likes.length} People liked this event</span>
+                                                        <img className='h-4' src="/images/icons/like.svg" alt="" /> <span className='ml-1'>{response.data.eventDetails.likes.length} People liked this event</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -522,7 +524,7 @@ const EventDescription = () => {
                                         Location
                                     </span>
                                     <div className='w-full md:w-11/12'>
-                                        <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13}/>
+                                        <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                     </div>
 
                                 </div>

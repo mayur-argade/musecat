@@ -142,7 +142,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 {categoryName}
                             </span>
                             <Link to="/" class="hidden  ml-10 flex md:flex items-center">
-                                <img src="/images/logo/MWT_logo.png" class="h-6 md:mr-3" alt="MWT Logo" />
+                                <img src="/images/logo/logo-main.png" class="h-6 md:mr-3" alt="MWT Logo" />
                                 <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
                             </Link>
                         </div>
@@ -153,7 +153,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             </button>
 
                             <Link to="/" class="hidden flex md:flex items-center">
-                                <img src="/images/logo/MWT_logo.png" class="h-10 md:mr-3" alt="MWT Logo" />
+                                <img src="/images/logo/logo-main.png" class="h-10 md:mr-3" alt="MWT Logo" />
                                 <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
                             </Link>
 

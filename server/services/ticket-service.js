@@ -12,7 +12,12 @@ class TicketService {
     }
 
     async findAllTickets(filter, limit) {
-        const tickets = TicketModel.find(filter).limit(limit).sort({ date: 1 })
+        const tickets = TicketModel.find(filter).limit(limit).sort({ date: 1 }).populate({
+            path: 'eventid',
+            populate: {
+              path: 'location',
+            },
+          })
         return tickets
     }
 

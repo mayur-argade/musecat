@@ -286,29 +286,12 @@ exports.getPastPurchase = async (req, res) => {
         let pastpurchased = user.BookedTickets;
         const BookedTickets = await ticketService.findAllTickets({ _id: { $in: pastpurchased } });
 
-
-        // // Iterate through BookedTickets and log specific properties
-        // console.log("Logging BookedTickets:");
-        // BookedTickets.forEach((ticket) => {
-        //     console.log("Ticket ID:", ticket._id);
-        //     console.log("Event ID:", ticket.eventid);
-        //     // Add more properties as needed
-        // });
-
         const response = [];
 
         for (const ticket of BookedTickets) {
-            let event = await eventService.findEvent({ _id: ticket.eventid });
-            if (event != null) {
-                const eventobject = {
-                    eventid: event._id,
-                    title: event.title,
-                    shortDescription: event.shortDescription,
-                    displayPhoto: event.displayPhoto,
-                    location: event.location,
-                    ticketid: ticket._id,
-                    date: event.date
-                }
+            console.log(ticket)
+            if (ticket.eventid != null) {
+                const eventobject = ticket.eventid
                 // console.log(event)
                 response.push(eventobject);
             }
