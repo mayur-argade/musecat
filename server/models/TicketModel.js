@@ -26,6 +26,9 @@ const ticketModel = new mongoose.Schema({
     class: {
         type: String,
     },
+    date: {
+        type: Date,
+    },
     seats: {
         type: Number,
         // required: true

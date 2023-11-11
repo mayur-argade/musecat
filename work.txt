@@ -379,10 +379,26 @@ Configure it for mobile screens
 
 
 
-Filter-replace-prompts 
-master program 
-checkrequest 
-status fail ticket generate
+Changes I have to do 
+1. titile, shortdescription, description, 
+    date{
+        
+    }
 
 
 
+
+
+<h2>Category Selector</h2>
+<div>
+    <button onClick={openModal}>Open Category Selector</button>
+</div>
+<CategorySelectorModal
+    isOpen={isModalOpen}
+    categories={listCategory}
+    onClose={closeModal}
+    onCategoriesSelect={handleCategoriesSelect}
+/>
+<div>
+    <h3>Selected Categories:</h3>
+</div>

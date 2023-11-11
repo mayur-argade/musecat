@@ -1,4 +1,5 @@
 const TicketModel = require("../models/TicketModel");
+const moment = require('moment')
 
 class TicketService {
     async findTicket(filter) {
@@ -27,29 +28,42 @@ class TicketService {
     }
 
     async allotSeats(bookedSeats, className, seats) {
-        // console.log("function is running")
         let allotedSeats = [];
+        console.log(bookedSeats)
         let seatNumber = 1;
-        let newBookedSeats = bookedSeats
-        // console.log(bookedSeats)
-        // console.log(className)
+        let updatedBookedSeats = { ...bookedSeats, seats: bookedSeats.seats || [] }; // Ensure 'seats' is initialized
+    
         while (allotedSeats.length < seats) {
-            // console.log("entering loop")
-            const seatId = `${className.charAt(0)}${seatNumber}`
-            if (!bookedSeats.includes(seatId)) {
+            const seatId = `${className.charAt(0)}${seatNumber}`;
+    
+            if (!updatedBookedSeats.seats.includes(seatId)) {
                 allotedSeats.push(seatId);
-                newBookedSeats.push(seatId)
-                // console.log(allotedSeats)
+                updatedBookedSeats.seats.push(seatId);
             }
-
-            seatNumber++
-
+    
+            seatNumber++;
         }
+    
         return {
             allotedSeats,
-            newBookedSeats
+            updatedBookedSeats,
+        };
+    }
+    
+
+    async returnBookedSeatsbyDate(eventDetails, searchDate) {
+        const matchingEvent = eventDetails.find(event => event.date.toISOString() === searchDate.toISOString());
+
+        if (matchingEvent) {
+            return matchingEvent;
+        } else {
+            // If no matching date found, create an entry
+            const newEvent = { date: new Date(searchDate), seats: [] };
+            eventDetails.push(newEvent);
+            return newEvent;
         }
     }
+
 }
 
 module.exports = new TicketService();

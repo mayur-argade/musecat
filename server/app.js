@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const multer = require('multer');
 require('./middleware/passport')
 
 // Morgan middleware
@@ -21,6 +22,8 @@ app.use(cookieParser())
 //     credentials: true,
 //     optionSuccessStatus: 200,
 // }
+
+const upload = multer({ dest: 'uploads/' });
 
 app.use(cors({
     origin: ['https://www.omanwhereto.com', 'https://omanwhereto.com', "http://localhost:3000"],

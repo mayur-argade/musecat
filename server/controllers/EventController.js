@@ -10,29 +10,19 @@ const moment = require('moment-timezone')
 
 // vendor side
 exports.createEvent = async (req, res) => {
-    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions, seatingMap,
-        date, categories, eventCategory, whatsapp, instagram, facebook, email, discountOnApp
+    let { title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp
     } = req.body
 
-    // console.log(title, displayPhoto, banner, shortDescription, description, location, termsAndConditions, date, categories, eventCategory)
 
-    if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
-        return res.status(statusCode.BAD_REQUEST.code).json({
-            success: false,
-            data: "Required fields are missing"
-        })
-    }
 
-    console.log(categories)
-
-    // for (const category of categories) {
-    //     if (category.price != null && category.price < 100) {
-    //         return res.status(400).json({
-    //             success: false,
-    //             data: "Price should be greater than 100 baisa"
-    //         })
-    //     }
+    // if (!title || !displayPhoto || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
+    //     return res.status(statusCode.BAD_REQUEST.code).json({
+    //         success: false,
+    //         data: "Required fields are missing"
+    //     })
     // }
+
+    console.log(eventCategory)
 
     let event = {}
 
@@ -62,54 +52,95 @@ exports.createEvent = async (req, res) => {
 
         let uploadedVideo = ''
         if (video) {
+            // Convert base64 to buffer
             uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+                resource_type: 'video',
                 folder: "muscat/events",
             })
         }
 
+        console.log(uploadedVideo)
+
+        let uploadResult;
+        let additinalPhotos = []
+        // if (additinalImages && additinalImages.length != 0) {
+        //     for (let i = 0; i < additinalImages.length; i++) {
+        //         // console.log(additinalImages[i])
+        //         uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+        //             folder: "muscat/events",
+        //         })
+        //         additinalPhotos.push(uploadResult.secure_url)
+        //     }
+        // }
+
+        console.log(additinalPhotos)
+
         const data = {
             title: title,
-            displayPhoto: uploadedEventPhoto.secure_url,
-            type: 'event',
-            banner: uploadedBanner.secure_url,
-            video: uploadedVideo.secure_url,
-            seatingMap: uploadedSeatingMap.secure_url,
             shortDescription: shortDescription,
             description: description,
-            location: location,
-            custom: custom,
-            features: features,
-            termsAndConditions: termsAndConditions,
             date: date,
-            categories: categories,
+            location: location,
+            venueInfo: venueInfo,
+
             eventCategory: eventCategory,
-            vendorid: req.user._id,
+            features: features,
+
             whatsapp: whatsapp,
             email: email,
             facebook: facebook,
             intagram: instagram,
+            phoneNo: phone,
+            website: website,
+
+            categories: categories,
+
+            termsAndConditions: termsAndConditions,
+
+            custom: custom,
+
+            vendorid: req.user._id,
+
+            displayPhoto: uploadedEventPhoto.secure_url,
+            banner: uploadedBanner.secure_url,
+            // video: uploadedVideo.secure_url,
+            seatingMap: uploadedSeatingMap.secure_url,
+            AdditionalPhotos: additinalPhotos,
+            type: 'event',
+            showEndDate: showEndDate,
             discountOnApp: discountOnApp
-        }
-
-        // search for category which is selected
-        const categorydata = await categoryService.findCategory({
-            categoryURL: eventCategory
-        })
-
-        // if no category then return error
-        if (!categorydata) {
-            return res.status(404).json({
-                success: false,
-                data: "Category not found"
-            })
         }
 
         event = await eventService.createEvent(data)
 
-        // push event id into the category
-        categorydata.events.push(event._id)
+        let categoryData;
+        for (let i = 0; i < eventCategory.length; i++) {
+            const categoryURL = eventCategory[i].categoryURL;
 
-        categorydata.save()
+            // Check in main categories
+            categoryData = await categoryService.findCategory({
+                categoryURL: categoryURL
+            });
+
+
+
+            if (!categoryData) {
+                // If not found in main categories, search in subcategories of all categories
+                categoryData = await categoryService.findSubcategory(categoryURL);
+
+                if (!categoryData) {
+                    // If not found in subcategories either, return error
+                    return res.status(404).json({
+                        success: false,
+                        data: "Category not found"
+                    });
+                }
+            }
+
+            categoryData.events.push(event._id)
+            categoryData.save()
+        }
+
 
         res.status(statusCode.SUCCESS.code).json({
             success: true,
@@ -285,27 +316,19 @@ exports.updateEvent = async (req, res) => {
 }
 
 exports.createOffer = async (req, res) => {
-    let { title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
-        date, categories, eventCategory
+    let { title, description, shortDescription, showEndDate, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp
     } = req.body
 
-    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || eventCategory) {
+
+
+    // if (!title || !displayPhoto || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
     //     return res.status(statusCode.BAD_REQUEST.code).json({
     //         success: false,
     //         data: "Required fields are missing"
     //     })
     // }
 
-    console.log(categories)
-
-    for (const category of categories) {
-        if (category.price != null && category.price < 100) {
-            return res.status(400).json({
-                success: false,
-                data: "Price should be greater than 100 baisa"
-            })
-        }
-    }
+    console.log(eventCategory)
 
     let event = {}
 
@@ -318,6 +341,14 @@ exports.createOffer = async (req, res) => {
             // console.log(uploadedEventPhoto)
         }
 
+        let uploadedSeatingMap = ''
+
+        if (seatingMap) {
+            uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
+                folder: "muscat/events",
+            })
+        }
+
         let uploadedBanner = ''
         if (banner) {
             uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
@@ -327,58 +358,96 @@ exports.createOffer = async (req, res) => {
 
         let uploadedVideo = ''
         if (video) {
+            // Convert base64 to buffer
             uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+                resource_type: 'video',
                 folder: "muscat/events",
             })
         }
 
-        // if (date.type == 'dateRange') {
-        //     let { dateRange } = date
-        //     const userTimezone = 'Asia/Muscat'; // User's local timezone (optional)
-        //     let temp = dateRange.startDate
-        //     let temp2 = dateRange.endDate
+        console.log(uploadedVideo)
 
-        //     dateRange.startDate = moment(temp).tz(userTimezone).utc().format();
-        //     dateRange.endDate = moment(temp2).tz(userTimezone).utc().format();
+        let uploadResult;
+        let additinalPhotos = []
+        // if (additinalImages && additinalImages.length != 0) {
+        //     for (let i = 0; i < additinalImages.length; i++) {
+        //         // console.log(additinalImages[i])
+        //         uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+        //             folder: "muscat/events",
+        //         })
+        //         additinalPhotos.push(uploadResult.secure_url)
+        //     }
         // }
+
+        console.log(additinalPhotos)
 
         const data = {
             title: title,
-            type: 'offer',
-            displayPhoto: uploadedEventPhoto.secure_url,
-            banner: uploadedBanner.secure_url,
-            video: uploadedVideo.secure_url,
             shortDescription: shortDescription,
             description: description,
-            location: location,
-            custom: custom,
-            features: features,
-            termsAndConditions: termsAndConditions,
             date: date,
-            categories: categories,
+            location: location,
+            venueInfo: venueInfo,
+
             eventCategory: eventCategory,
-            vendorid: req.user._id
-        }
+            features: features,
 
-        // search for category which is selected
-        const categorydata = await categoryService.findCategory({
-            categoryURL: eventCategory
-        })
+            whatsapp: whatsapp,
+            email: email,
+            facebook: facebook,
+            intagram: instagram,
+            phoneNo: phone,
+            website: website,
 
-        // if no category then return error
-        if (!categorydata) {
-            return res.status(404).json({
-                success: false,
-                data: "Category not found"
-            })
+            categories: categories,
+
+            termsAndConditions: termsAndConditions,
+
+            custom: custom,
+
+            vendorid: req.user._id,
+
+            displayPhoto: uploadedEventPhoto.secure_url,
+            banner: uploadedBanner.secure_url,
+            // video: uploadedVideo.secure_url,
+            seatingMap: uploadedSeatingMap.secure_url,
+            AdditionalPhotos: additinalPhotos,
+            type: 'offer',
+
+            showEndDate: showEndDate,
+            discountOnApp: discountOnApp
         }
 
         event = await eventService.createEvent(data)
 
-        // push event id into the category
-        categorydata.events.push(event._id)
+        let categoryData;
+        for (let i = 0; i < eventCategory.length; i++) {
+            const categoryURL = eventCategory[i].categoryURL;
 
-        categorydata.save()
+            // Check in main categories
+            categoryData = await categoryService.findCategory({
+                categoryURL: categoryURL
+            });
+
+
+
+            if (!categoryData) {
+                // If not found in main categories, search in subcategories of all categories
+                categoryData = await categoryService.findSubcategory(categoryURL);
+
+                if (!categoryData) {
+                    // If not found in subcategories either, return error
+                    return res.status(404).json({
+                        success: false,
+                        data: "Category not found"
+                    });
+                }
+            }
+
+            categoryData.events.push(event._id)
+            categoryData.save()
+        }
+
 
         res.status(statusCode.SUCCESS.code).json({
             success: true,
@@ -534,9 +603,9 @@ exports.vendorHome = async (req, res) => {
                         'date.dateRange.startDate': { $lte: today },
                         'date.dateRange.endDate': { $gte: today }
                     },
-                    { // Events with recurring field containing today's day
-                        'date.recurring': { $in: currentDay },
-                    },
+                    // { // Events with recurring field containing today's day
+                    //     'date.recurring': { $in: currentDay },
+                    // },
                 ],
             }
         )
@@ -551,9 +620,9 @@ exports.vendorHome = async (req, res) => {
                         'date.dateRange.startDate': { $lte: today },
                         'date.dateRange.endDate': { $gte: today }
                     },
-                    { // Events with recurring field containing today's day
-                        'date.recurring': { $in: [currentDay] },
-                    },
+                    // { // Events with recurring field containing today's day
+                    //     'date.recurring': { $in: [currentDay] },
+                    // },
                 ],
             }
         )

@@ -16,6 +16,8 @@ import { useSelector } from 'react-redux'
 const EventDescription = () => {
     let { eventid } = useParams();
 
+    console.log(eventid)
+    
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
 
@@ -109,8 +111,8 @@ const EventDescription = () => {
                         content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
                         isOpened: true
                     },
-                    { title: 'Venue Details', content: data.data.eventDetails.location.address, isOpened: false },
-                    { title: 'Features', content: data.data.eventDetails.features, isOpened: false },
+                    { title: 'Venue Details', content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.venueInfo }} />, isOpened: false },
+                    { title: 'Features', content: data.data.eventDetails.features.join(" | "), isOpened: false },
                     { title: 'Categories', content: categoryprice.join(" | "), isOpened: false },
                     {
                         title: 'Contact Us',
@@ -252,6 +254,7 @@ const EventDescription = () => {
     }
     const location = useLocation();
 
+    console.log(response.data)
 
     const getVendorDetails = async () => {
         var data = response.data.eventDetails.vendorid
@@ -376,7 +379,7 @@ const EventDescription = () => {
                                                 ?
                                                 <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
                                                 :
-                                                <p>{response.data.eventDetails.date.recurring.join(" ")}</p>
+                                                <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
                                         }
                                     </div>
                                 </div>
@@ -591,7 +594,7 @@ const EventDescription = () => {
                                     </span>
 
                                 </div>
-                                <div className='ml-2 mr-2'>
+                                {/* <div className='ml-2 mr-2'>
                                     <div className="md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-1 md:space-x-5">
                                         {upcomingEvents.data.map((event) => (
                                             <div >
@@ -599,7 +602,7 @@ const EventDescription = () => {
                                             </div>
                                         ))}
                                     </div>
-                                </div>
+                                </div> */}
 
 
 

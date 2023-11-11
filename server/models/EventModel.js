@@ -10,6 +10,10 @@ const eventSchema = new mongoose.Schema({
         type: String,
         // required: [true, "Please provide event Display photo"]
     },
+    AdditionalPhotos: {
+        type: Array,
+        default: []
+    },
     Banner: {
         type: String,
     },
@@ -30,6 +34,7 @@ const eventSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+
     date: {
         type: {
             type: String,
@@ -42,10 +47,16 @@ const eventSchema = new mongoose.Schema({
             endDate: Date,   // End date of the event
         },
 
-        recurring: [{
-            type: String,
-            enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
-        }],
+        recurring: {
+            startDate: Date,
+            endDate: Date,
+            days: [{
+                type: String,
+                enum: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+            }],
+            startTime: String,
+            endTime: String,
+        },
     },
 
     categories: [
@@ -62,10 +73,10 @@ const eventSchema = new mongoose.Schema({
                 type: Number,
                 // required: true
             },
-            bookedSeats: {
-                type: Array,
-                default: []
-            }, // Add this field to track booked seats
+            bookedSeats: [{
+                date: Date,
+                seats: Array
+            }], // Add this field to track booked seats
         },
     ],
 
@@ -84,13 +95,18 @@ const eventSchema = new mongoose.Schema({
     },
 
     eventCategory: {
-        type: String,
+        type: Array,
+        default: [],
     },
 
     location: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Venue",
         required: [true, "Please provide location details for the event"]
+    },
+    venueInfo: {
+        type: String,
+        require: [true, "Please provide Venue description for an event"]
     },
 
     vendorid: {
@@ -109,7 +125,8 @@ const eventSchema = new mongoose.Schema({
     },
 
     features: {
-        type: String,
+        type: Array,
+        default: []
     },
 
     termsAndConditions: {
@@ -121,6 +138,14 @@ const eventSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+
+    phoneNo: {
+        type: Number
+    },
+    website: {
+        type: String
+    },
+
     whatsapp: {
         type: Number
     },
@@ -129,6 +154,10 @@ const eventSchema = new mongoose.Schema({
     },
     instagram: {
         type: String
+    },
+    showEndEvent: {
+        type: Boolean,
+        default: false
     },
     email: {
         type: String

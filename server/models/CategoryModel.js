@@ -16,6 +16,10 @@ const categoryModel = new mongoose.Schema({
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Offers" }],
         default: []
     },
+    subCategories: [{
+        name: String,
+        categoryUrl: String,
+    }],
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []

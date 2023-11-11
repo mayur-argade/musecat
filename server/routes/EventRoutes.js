@@ -1,11 +1,26 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+
+// Define the storage for uploaded files
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Set the destination folder
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); // Use the original filename
+    },
+});
+
+// Create the multer instance with the defined storage
+const upload = multer({ storage: storage });
+
 const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
 
 const { createEvent, getEventById, getVendorAllEventsNOffers, getVendorAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent } = require('../controllers/EventController')
 
-router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
+router.route('/vendor/create-event').post(upload.any(), isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
 router.route('/vendor/events').get(isLoggedin, isVerified, getVendorAllEventsNOffers)
 router.route('/vendor/create-offer').post(isLoggedin, isVerified, createOffer)

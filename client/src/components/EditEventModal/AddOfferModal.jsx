@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import JoditEditor from 'jodit-react';
-import Cropper from 'react-easy-crop'
-import getCroppedImg from '../../utils/cropper'
 import toast, { Toaster } from 'react-hot-toast';
 import { VendorCreateOffer, GetAllCategory, getAllVenues } from '../../http/index'
 import AddVenueModal from './AddVenueModal';
 import Features from '../../utils/Data'
+import CategorySelector from '../shared/CategorySelector/CategorySelector';
 
 
 const AddOfferModal = ({ onClose }) => {
@@ -24,6 +23,7 @@ const AddOfferModal = ({ onClose }) => {
     const [minDateTime, setMinDateTime] = useState('');
     const [listCategory, setListCategory] = useState([])
     const [listVenues, setListVenues] = useState([])
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -56,63 +56,122 @@ const AddOfferModal = ({ onClose }) => {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [selectedDays, setSelectedDays] = useState([]);
+    const [startTime, setStartTime] = useState('')
+    const [endTime, setEndTime] = useState('')
     const [eventCategory, setEventCategory] = useState('')
+    const [selectedCategories, setSelectedCategories] = useState([])
     const [location, setLocation] = useState('')
-    const [discountOnApp, setDiscountOnApp] = useState('')
-    const [features, setFeatures] = useState('')
+    const [venueDescription, setVenueDescription] = useState('')
+    const [selectedFeature, setSelectedFeatures] = useState([])
     const [termsAndConditions, setTermsAndConditions] = useState('')
     const [number, setNumber] = useState('')
     const [fb, setFb] = useState('')
     const [insta, setInsta] = useState('')
     const [mail, setMail] = useState('')
-    const [photo, setPhoto] = useState('')
-    const [seatingMap, setSeatingMap] = useState('')
-    const [banner, setBanner] = useState('')
-    const [video, setVideo] = useState('')
+    const [wpNumber, setWpNumber] = useState('')
+    const [website, setWebsite] = useState('')
+    const [photo, setPhoto] = useState(null)
+    const [additinalPhotos, setAdditionalPhotos] = useState([])
+    const [seatingMap, setSeatingMap] = useState(null)
+    const [banner, setBanner] = useState(null)
+    const [video, setVideo] = useState(null)
+    const [discountOnApp, setDiscountOnApp] = useState('')
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
+    const [showEndDate, setShowEndDate] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setShowEndDate(!showEndDate); // Toggle the state when the checkbox is changed
+    };
+
+
+    const handleEventCategoryChange = (selectedOptions) => {
+        // console.log("this is what getting selected", selectedOptions)
+        // Filter out any duplicate selections
+        const uniqueSelectedOptions = [...new Set(selectedOptions)];
+        // console.log(uniqueSelectedOptions)
+        // Update the state or perform other actions with the selected categories
+        setSelectedCategories(uniqueSelectedOptions);
+    };
 
     function capturePhoto(e) {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = function () {
-            setPhoto(reader.result);
-            // console.log(reader.result);
-        };
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setPhoto(reader.result);
+                // console.log(reader.result);
+            };
+        }
     }
 
     function captureSeatingMap(e) {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = function () {
-            setSeatingMap(reader.result);
-            // console.log(reader.result);
-        };
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setSeatingMap(reader.result);
+                // console.log(reader.result);
+            };
+        }
     }
 
     function captureBanner(e) {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = function () {
-            setBanner(reader.result);
-            // console.log(reader.result);
-        };
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setBanner(reader.result);
+                // console.log(reader.result);
+            };
+        }
     }
 
     function captureVideo(e) {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = function () {
-            setVideo(reader.result);
-            // console.log(reader.result);
-        };
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setVideo(reader.result);
+                // console.log(reader.result);
+            };
+        }
+    }
+
+    function captureAdditionalPhotos(e) {
+        const files = e.target.files;
+
+        if (files) {
+            const newImages = Array.from(files);
+            const imagePromises = newImages.map((file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        resolve(event.target.result);
+                    };
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(imagePromises)
+                .then((base64Images) => {
+                    setAdditionalPhotos([...additinalPhotos, ...base64Images]);
+                })
+                .catch((error) => {
+                    console.error("Error converting images to base64:", error);
+                });
+        }
     }
 
     const handleDayClick = (day) => {
+        setDatetype(false)
         if (selectedDays.includes(day)) {
             // If the day is already selected, remove it from the array
             setSelectedDays(selectedDays.filter((selectedDay) => selectedDay !== day));
@@ -122,30 +181,15 @@ const AddOfferModal = ({ onClose }) => {
         }
     };
 
-    const inputRef = useRef(null);
-    const [image, setImage] = useState(null);
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
-    const [croppedImage, setCroppedImage] = useState(null);
+    console.log(selectedDays)
 
-    const onFileChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setImage(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const onCropComplete = async (croppedArea, croppedAreaPixels) => {
-        // croppedArea contains the x, y, width, and height of the cropped area
-        try {
-            const base64Image = await getCroppedImg(image, croppedAreaPixels);
-            setCroppedImage(base64Image);
-        } catch (e) {
-            console.error('Error cropping image:', e);
+    const handleFeaturesClick = (feature) => {
+        if (selectedFeature.includes(feature)) {
+            // If the day is already selected, remove it from the array
+            setSelectedFeatures(selectedFeature.filter((selectedFeature) => selectedFeature !== feature));
+        } else {
+            // If the day is not selected, add it to the array
+            setSelectedFeatures([...selectedFeature, feature]);
         }
     };
 
@@ -197,17 +241,21 @@ const AddOfferModal = ({ onClose }) => {
     };
 
     const handleSave = async () => {
-        console.log(categories)
-        if (
-            !title ||
-            !content ||
-            !location ||
-            !termsAndConditions ||
-            !eventCategory ||
-            !photo ||
-            !seatingMap
-        ) {
-            return toast.error("Required Fields are missing")
+
+        if (!title) {
+            return toast.error("Title is Mandatory")
+        } else if (!content) {
+            return toast.error("Event Information is Mandatory")
+        } else if (!location) {
+            return toast.error("Location is Mandatory")
+        } else if (!termsAndConditions) {
+            return toast.error("Please add terms and conditions")
+        } else if (!photo) {
+            return toast.error("Featured Photo is missing")
+        } else if (selectedCategories.length <= 0) {
+            return toast.error("Please select Event Category")
+        } else if (!seatingMap) {
+            return toast.error("Seating Map is missing")
         }
 
         let dateType;
@@ -224,7 +272,16 @@ const AddOfferModal = ({ onClose }) => {
                 endDate: endDate
             }
         } else if (dateType == 'recurring') {
-            eventdate.recurring = selectedDays
+            eventdate = {
+                recurring: {
+                    days: []
+                }
+            }
+            eventdate.recurring.days = selectedDays
+            eventdate.recurring.startTime = startTime
+            eventdate.recurring.endTime = endTime
+            eventdate.recurring.startDate = startDate
+            eventdate.recurring.endDate = endDate
         }
 
         for (const category of categories) {
@@ -239,30 +296,38 @@ const AddOfferModal = ({ onClose }) => {
             if (category.className != null && category.className.trim() == "") {
                 return toast.error("Classname cannot be an empty string if you want to add price")
             }
-            if (category.price != null && category.price < 100) {
+            if (category.price != null && category.price < 0.1) {
                 return toast.error("price of ticket can not be less than 100")
             }
-
         }
+
+        console.log("categories of ticket", categories)
+        console.log("event categories", selectedCategories)
 
         const eventdata = {
             title: title,
             shortDescription: shortDesc,
             description: content,
             location: location,
+            venueInfo: venueDescription,
             custom: inputFields,
-            features: features,
+            features: selectedFeature,
             termsAndConditions: termsAndConditions,
             categories: categories,
-            eventCategory: eventCategory,
+            eventCategory: selectedCategories,
             displayPhoto: photo,
             banner: banner,
             date: eventdate,
+            additinalImages: additinalPhotos,
+            video: video,
             seatingMap: seatingMap,
             facebook: fb,
             instagram: insta,
             email: mail,
-            whatsapp: number,
+            whatsapp: wpNumber,
+            website: website,
+            phone: number,
+            showEndDate: showEndDate,
             discountOnApp: discountOnApp
         }
         setLoading(true)
@@ -281,8 +346,9 @@ const AddOfferModal = ({ onClose }) => {
         } catch (error) {
             console.log(error)
         }
-        onClose(); // This will close the modal
+        // onClose(); // This will close the modal
     };
+
     if (listCategory.length == 0 || listCategory == null || listVenues == null) {
         return (
             <div className="h-screen w-full flex justify-center align-middle items-center">
@@ -309,7 +375,6 @@ const AddOfferModal = ({ onClose }) => {
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                             onChange={((e) => setTitle(e.target.value))}
                                             placeholder='Breakfast and poolpass'
-
                                         />
                                     </div>
 
@@ -324,7 +389,7 @@ const AddOfferModal = ({ onClose }) => {
                                     </div>
 
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Offer Description  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Offer Information  *</label>
                                         <JoditEditor
                                             ref={editor}
                                             value={content}
@@ -338,7 +403,7 @@ const AddOfferModal = ({ onClose }) => {
                                     <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                         <div className="flex w-full row1 space-x-4 ">
                                             <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='input-container text-xs mt-1' htmlFor="first name">Date</label>
+                                                <label className='input-container text-xs mt-1' htmlFor="first name">Start Date</label>
                                                 <input
                                                     type="datetime-local"
                                                     min={minDateTime}
@@ -351,7 +416,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <p className='text-center'>to</p>
                                         <div className="flex w-full row1 space-x-4 ">
                                             <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Date</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">End Date</label>
                                                 <input
                                                     type="datetime-local"
                                                     min={minDateTime}
@@ -363,44 +428,73 @@ const AddOfferModal = ({ onClose }) => {
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <p className='text-sm mt-2'>Select Days of the Week For recurring offer :</p>
-                                        <div className='flex space-x-4 align-middle items-center '>
-                                            {
-                                                days.map((day, index) => (
-                                                    <div className='mx-2'>
-                                                        <label key={index} className="block">
-                                                            <input
-                                                                className='rounded-sm mr-1'
-                                                                type="checkbox"
-                                                                value={day}
-                                                                checked={selectedDays.includes(day)}
-                                                                onChange={() => handleDayClick(day)}
+                                    <div className="flex space-x-2 align-middle ml-2 mt-1 mb-3">
+                                        <label className="block">
+                                            <input type="checkbox" className="w-4 h-4 rounded" name="recurring" id="recurring" onChange={((e) => setDatetype(!e.target.checked))} />
+                                            <span className='ml-1 text-sm '>
+                                                Recurring Offer ?
+                                            </span>
+                                        </label>
+
+                                        {/* <label htmlFor="recurring">Recurring Offer ?</label> */}
+                                    </div>
+                                    {
+                                        datetype
+                                            ?
+                                            <></>
+                                            :
+                                            <div>
+                                                <p className='text-sm mt-2'>Select Days of the Week For recurring offer :</p>
+                                                <div className='flex space-x-4 align-middle items-center '>
+                                                    {
+                                                        days.map((day, index) => (
+                                                            <div className='mx-2'>
+                                                                <label key={index} className="block">
+                                                                    <input
+                                                                        className='rounded-sm mr-1'
+                                                                        type="checkbox"
+                                                                        value={day}
+                                                                        checked={selectedDays.includes(day)}
+                                                                        onChange={() => handleDayClick(day)}
+                                                                    />
+                                                                    <span className='ml-0 text-sm '>
+                                                                        {day}
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        ))
+                                                    }
+
+                                                    <div className='flex'>
+                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
+                                                            <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
+                                                            <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
+                                                                onChange={((e) => setStartTime(e.target.value))}
                                                             />
-                                                            <span className='ml-0 text-sm '>
-                                                                {day}
-                                                            </span>
-                                                        </label>
+                                                        </div>
+                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                            <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
+                                                            <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
+                                                                onChange={((e) => setEndTime(e.target.value))}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                ))
-                                            }
-                                            <div className='flex'>
-                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
-                                                    <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
-                                                    <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time" />
                                                 </div>
-                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                    <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
-                                                    <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time" />
-                                                </div>
+
                                             </div>
-                                        </div>
+                                    }
 
-                                    </div>
-
-                                    <div className="flex space-x-2 mt-1 mb-3">
-                                        {/* <button className="bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm" onClick={() => }>Recurring</button> */}
-                                    </div>
+                                    <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            value=""
+                                            className="sr-only peer"
+                                            onChange={handleCheckboxChange}
+                                            checked={showEndDate} // Bind the checked state to the showEndDate state
+                                        />
+                                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
+                                    </label>
 
 
                                     <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -459,48 +553,43 @@ const AddOfferModal = ({ onClose }) => {
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
                                         <JoditEditor
-
                                             ref={editor}
-                                            value={content}
+                                            value={venueDescription}
                                             config={config}
                                             tabIndex={1} // tabIndex of textarea
-                                            onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                            onBlur={newContent => setVenueDescription(newContent)} // preferred to use only this option to update the content for performance reasons
                                         />
                                     </div>
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <div className='mt-3 flex flex-col  pl-2 pr-2 rounded-lg'>
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">Category  *</label>
-                                        <select
-                                            type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
-                                            onChange={((e) => setEventCategory(e.target.value))}
-
-                                            placeholder='Theatre of Arts'
-                                        >
-                                            {
-                                                listCategory.map((category) => (
-                                                    <option className=' text-sm font-medium' key={category._id} value={category.categoryURL}>{category.name}</option>
-                                                ))
-                                            }
-                                        </select>
+                                        <CategorySelector
+                                            categories={listCategory}
+                                            selectedCategories={selectedCategories}
+                                            onChange={handleEventCategoryChange}
+                                        />
                                     </div>
 
                                     <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
 
                                         <h3 class="font-semibold text-gray-900 dark:text-white">Features</h3>
-                                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <ul class="w-full flex flex-wrap">
                                             {
                                                 Features.list.map((feature) => (
-                                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                        <div class="flex items-center pl-3">
-                                                            <input id={feature} type="checkbox" value="" class="w-4 h-4 rounded" />
+                                                    <li class="w-auto border-b border-gray-200 sm:border-b-0 dark:border-gray-600">
+                                                        <div class="flex  items-center pl-3">
+                                                            <input id={feature}
+                                                                type="checkbox"
+                                                                value={feature}
+                                                                checked={selectedFeature.includes(feature)}
+                                                                onChange={() => handleFeaturesClick(feature)}
+                                                                class="w-4 h-4 rounded" />
                                                             <label for={feature} class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{feature}</label>
                                                         </div>
                                                     </li>
                                                 ))
                                             }
                                         </ul>
-
                                     </div>
 
 
@@ -555,7 +644,7 @@ const AddOfferModal = ({ onClose }) => {
                                                     type="number"
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                                     placeholder='Whatsapp number'
-                                                    onChange={((e) => setNumber(e.target.value))}
+                                                    onChange={((e) => setWpNumber(e.target.value))}
                                                 />
                                             </div>
 
@@ -565,13 +654,13 @@ const AddOfferModal = ({ onClose }) => {
                                                     type="link"
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                                     placeholder='Website Link'
-                                                    onChange={((e) => setNumber(e.target.value))}
+                                                    onChange={((e) => setWebsite(e.target.value))}
                                                 />
                                             </div>
                                         </div>
                                     </div>
 
-                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Voucher Sales</label>
+                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Ticket Sales</label>
                                     <div>
                                         {categories.map((category, index) => (
                                             <div key={index} className='w-full flex flex-row  '>
@@ -586,11 +675,11 @@ const AddOfferModal = ({ onClose }) => {
                                                     />
                                                 </div>
                                                 <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >No of Vouchers</label>
+                                                    <label className='text-xs mt-3' >No of seats</label>
                                                     <input
                                                         type='number'
                                                         className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
-                                                        placeholder='No of Vouchers'
+                                                        placeholder='No of Seats'
                                                         value={category.seats}
                                                         onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
                                                     />
@@ -686,12 +775,14 @@ const AddOfferModal = ({ onClose }) => {
 
                                     <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-
                                         onChange={capturePhoto}
+                                        accept="image/*"
                                         id="photo" type="file" />
 
                                     <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                        onChange={captureAdditionalPhotos}
+                                        accept="image/*"
                                         multiple id="photo" type="file" />
 
 
@@ -699,40 +790,21 @@ const AddOfferModal = ({ onClose }) => {
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
 
                                         onChange={captureSeatingMap}
+                                        accept="image/*"
                                         id="photo" type="file" />
 
                                     <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
 
                                         onChange={captureBanner}
+                                        accept="image/*"
                                         type="file" />
 
                                     <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                        accept="video/*"
                                         onChange={captureVideo}
                                         type="file" />
-
-                                    {/* <div>
-                                    asdfsdadf
-                                    <input type="file" onChange={onFileChange} ref={inputRef} accept="image/*" />
-                                    {image && (
-                                        <div>
-                                            <Cropper
-                                                image={image}
-                                                crop={crop}
-                                                zoom={zoom}
-                                                aspect={4 / 3} // Set the aspect ratio as needed
-                                                onCropChange={setCrop}
-                                                onCropComplete={onCropComplete}
-                                                onZoomChange={setZoom}
-                                            />
-                                            <button className="" onClick={onCropComplete}>yes</button>
-                                        </div>
-                                    )}
-                                    {croppedImage && (
-                                        <img src={croppedImage} alt="Cropped" style={{ maxWidth: '100%' }} />
-                                    )}
-                                </div> */}
 
                                     <div className="button flex justify-center items-center mt-5">
                                         <button
@@ -743,10 +815,460 @@ const AddOfferModal = ({ onClose }) => {
                                             Save
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </section>
+                        // <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
+                        //     <div className='w-96 md:w-[1000px]'>
+                        //         <div className="modal bg-white px-3 py-4">
+                        //             <div className='text-left flex justify-start items-start align-middle'>
+                        //                 <p className='text-md font-bold'>Offer Details</p>
+                        //             </div>
+                        //             <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name *">Title  *</label>
+                        //                 <input
+                        //                     type="text"
+                        //                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                     onChange={((e) => setTitle(e.target.value))}
+                        //                     placeholder='Breakfast and poolpass'
+
+                        //                 />
+                        //             </div>
+
+                        //             <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name">Short Description *</label>
+                        //                 <input
+                        //                     type="text"
+                        //                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                     placeholder='Breakfast and poolpass'
+                        //                     onChange={((e) => setShortDesc(e.target.value))}
+                        //                 />
+                        //             </div>
+
+                        //             <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name">Offer Description  *</label>
+                        //                 <JoditEditor
+                        //                     ref={editor}
+                        //                     value={content}
+                        //                     config={config}
+                        //                     tabIndex={1} // tabIndex of textarea
+                        //                     onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                        //                 />
+                        //             </div>
+
+                        //             <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
+                        //             <div className="flex align-middle items-center  w-full mt-2 space-x-4">
+                        //                 <div className="flex w-full row1 space-x-4 ">
+                        //                     <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='input-container text-xs mt-1' htmlFor="first name">Date</label>
+                        //                         <input
+                        //                             type="datetime-local"
+                        //                             min={minDateTime}
+                        //                             id="session-date"
+                        //                             onChange={((e) => setStartDate(e.target.value))}
+                        //                             className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                        //                         />
+                        //                     </div>
+                        //                 </div>
+                        //                 <p className='text-center'>to</p>
+                        //                 <div className="flex w-full row1 space-x-4 ">
+                        //                     <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Date</label>
+                        //                         <input
+                        //                             type="datetime-local"
+                        //                             min={minDateTime}
+                        //                             id="session-date"
+                        //                             onChange={((e) => setEndDate(e.target.value))}
+                        //                             className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                        //                         />
+                        //                     </div>
+                        //                 </div>
+                        //             </div>
+
+                        //             <div>
+                        //                 <p className='text-sm mt-2'>Select Days of the Week For recurring offer :</p>
+                        //                 <div className='flex space-x-4 align-middle items-center '>
+                        //                     {
+                        //                         days.map((day, index) => (
+                        //                             <div className='mx-2'>
+                        //                                 <label key={index} className="block">
+                        //                                     <input
+                        //                                         className='rounded-sm mr-1'
+                        //                                         type="checkbox"
+                        //                                         value={day}
+                        //                                         checked={selectedDays.includes(day)}
+                        //                                         onChange={() => handleDayClick(day)}
+                        //                                     />
+                        //                                     <span className='ml-0 text-sm '>
+                        //                                         {day}
+                        //                                     </span>
+                        //                                 </label>
+                        //                             </div>
+                        //                         ))
+                        //                     }
+                        //                     <div className='flex'>
+                        //                         <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
+                        //                             <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
+                        //                             <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time" />
+                        //                         </div>
+                        //                         <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                             <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
+                        //                             <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time" />
+                        //                         </div>
+                        //                     </div>
+                        //                 </div>
+
+                        //             </div>
+
+                        //             <div className="flex space-x-2 mt-1 mb-3">
+                        //                 {/* <button className="bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm" onClick={() => }>Recurring</button> */}
+                        //             </div>
+
+
+                        //             <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name">Select Location  *</label>
+                        //                 <select
+
+                        //                     type="text"
+                        //                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
+                        //                     onChange={((e) => setLocation(e.target.value))}
+                        //                     placeholder='Theatre of Arts'
+                        //                 >
+                        //                     {
+                        //                         listVenues.length == 0
+                        //                             ?
+                        //                             <option className=' text-sm font-medium' >Select Venue
+                        //                             </option>
+                        //                             :
+                        //                             <>
+                        //                                 <option className=' text-sm font-medium' >Select Venue
+                        //                                 </option>
+                        //                                 {
+                        //                                     listVenues.map((venue) => (
+                        //                                         <option className=' text-sm font-medium' key={venue._id} value={venue._id}>{venue.name}</option>
+                        //                                     ))
+                        //                                 }
+                        //                             </>
+                        //                     }
+                        //                 </select>
+                        //             </div>
+                        //             <button onClick={(() => setShowVenuecreate(!showVenuecreate))}>
+                        //                 {
+                        //                     showVenuecreate
+                        //                         ?
+                        //                         <p className='mt-1'>
+                        //                             <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Close Add Venue form</span>
+                        //                         </p>
+                        //                         :
+                        //                         <>
+                        //                             <p className='mt-1'>
+                        //                                 <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Add Venue</span> <span className='ml-0 text-xs'>(If your Venue is NOT in the above list)</span>
+                        //                             </p>
+                        //                         </>
+
+                        //                 }
+                        //             </button>
+
+                        //             {
+                        //                 showVenuecreate
+                        //                     ?
+                        //                     <AddVenueModal />
+                        //                     :
+                        //                     <></>
+                        //             }
+
+
+                        //             <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
+                        //                 <JoditEditor
+
+                        //                     ref={editor}
+                        //                     value={content}
+                        //                     config={config}
+                        //                     tabIndex={1} // tabIndex of textarea
+                        //                     onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                        //                 />
+                        //             </div>
+
+                        //             <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name">Category  *</label>
+                        //                 <select
+                        //                     type="text"
+                        //                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
+                        //                     onChange={((e) => setEventCategory(e.target.value))}
+
+                        //                     placeholder='Theatre of Arts'
+                        //                 >
+                        //                     {
+                        //                         listCategory.map((category) => (
+                        //                             <option className=' text-sm font-medium' key={category._id} value={category.categoryURL}>{category.name}</option>
+                        //                         ))
+                        //                     }
+                        //                 </select>
+                        //             </div>
+
+                        //             <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
+
+                        //                 <h3 class="font-semibold text-gray-900 dark:text-white">Features</h3>
+                        //                 <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        //                     {
+                        //                         Features.list.map((feature) => (
+                        //                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                        //                                 <div class="flex items-center pl-3">
+                        //                                     <input id={feature} type="checkbox" value="" class="w-4 h-4 rounded" />
+                        //                                     <label for={feature} class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{feature}</label>
+                        //                                 </div>
+                        //                             </li>
+                        //                         ))
+                        //                     }
+                        //                 </ul>
+
+                        //             </div>
+
+
+                        //             <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Contact</label>
+                        //             <div className=' mb-3 flex flex-col justify-between'>
+                        //                 <div className='w-full flex justify-between'>
+                        //                     <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
+                        //                         <input
+
+                        //                             type="text"
+                        //                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                             placeholder='Link for FB page'
+                        //                             onChange={((e) => setFb(e.target.value))}
+                        //                         />
+                        //                     </div>
+                        //                     <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
+                        //                         <input
+
+                        //                             type="text"
+                        //                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                             placeholder='Link for Instagram page'
+                        //                             onChange={((e) => setInsta(e.target.value))}
+                        //                         />
+                        //                     </div>
+                        //                     <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Email</label>
+                        //                         <input
+
+                        //                             type="email"
+                        //                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                             placeholder='Your email address'
+                        //                             onChange={((e) => setMail(e.target.value))}
+                        //                         />
+                        //                     </div>
+                        //                 </div>
+                        //                 <div className="w-full flex justify-between">
+                        //                     <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Phone No.</label>
+                        //                         <input
+                        //                             type='tel'
+                        //                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                             placeholder='Phone number'
+                        //                             onChange={((e) => setNumber(e.target.value))}
+                        //                         />
+                        //                     </div>
+
+                        //                     <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
+                        //                         <input
+                        //                             type="number"
+                        //                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                             placeholder='Whatsapp number'
+                        //                             onChange={((e) => setNumber(e.target.value))}
+                        //                         />
+                        //                     </div>
+
+                        //                     <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                         <label className='text-xs mt-1' htmlFor="first name">Website link</label>
+                        //                         <input
+                        //                             type="link"
+                        //                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                             placeholder='Website Link'
+                        //                             onChange={((e) => setNumber(e.target.value))}
+                        //                         />
+                        //                     </div>
+                        //                 </div>
+                        //             </div>
+
+                        //             <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Voucher Sales</label>
+                        //             <div>
+                        //                 {categories.map((category, index) => (
+                        //                     <div key={index} className='w-full flex flex-row  '>
+                        //                         <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                        //                             <label className='text-xs mt-3' >Class name</label>
+                        //                             <input
+                        //                                 type='text'
+                        //                                 className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
+                        //                                 placeholder='Class Name'
+                        //                                 value={category.className}
+                        //                                 onChange={(e) => handleCategoryChange(index, 'className', e.target.value)}
+                        //                             />
+                        //                         </div>
+                        //                         <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                        //                             <label className='text-xs mt-3' >No of Vouchers</label>
+                        //                             <input
+                        //                                 type='number'
+                        //                                 className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                        //                                 placeholder='No of Vouchers'
+                        //                                 value={category.seats}
+                        //                                 onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
+                        //                             />
+                        //                         </div>
+                        //                         <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                        //                             <label className='text-xs mt-3' >Price</label>
+                        //                             <input
+                        //                                 type='number'
+                        //                                 min="100"
+                        //                                 className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                        //                                 placeholder='Price'
+                        //                                 value={category.price}
+                        //                                 onChange={(e) => handleCategoryChange(index, 'price', e.target.value)}
+                        //                             />
+                        //                         </div>
+                        //                         {index > 0 && (
+                        //                             <button onClick={() => removeCategory(index)} className='mt-1 ml-2'>
+                        //                                 Delete
+                        //                             </button>
+                        //                         )}
+                        //                     </div>
+                        //                 ))}
+
+                        //                 <button onClick={addCategory} className='ml-2 mt-2'>
+                        //                     + Add Ticket Type
+                        //                 </button>
+                        //             </div>
+
+                        //             <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-xs mt-1' htmlFor="first name">Dicount Percentage on Muscat Whereto App</label>
+                        //                 <input
+                        //                     type="number"
+                        //                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                     placeholder='10'
+                        //                     onChange={((e) => setDiscountOnApp(e.target.value))}
+                        //                 />
+                        //             </div>
+
+                        //             <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                        //                 <label className='text-sm font-semibold mt-1' htmlFor="first name">Terms And Condition  *</label>
+                        //                 <input
+
+                        //                     type="text"
+                        //                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                        //                     placeholder='Link for terms and condition'
+                        //                     onChange={((e) => setTermsAndConditions(e.target.value))}
+                        //                 />
+                        //             </div>
+
+
+                        //             <div>
+                        //                 <label className='ml-2 text-sm font-semibold mt-1' >Additional Terms & Conditions</label>
+
+                        //                 {inputFields.map((value, index) => (
+                        //                     <div
+                        //                         key={index}
+                        //                         className='flex mt-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'
+                        //                     >
+                        //                         <label className='text-xs mt-1' htmlFor={`field-${index}`}>
+                        //                             Terms or condition {index + 1}
+                        //                         </label>
+                        //                         <div className="flex align-middle justify-between">
+
+                        //                             <input
+                        //                                 type='text'
+                        //                                 id={`field-${index}`}
+                        //                                 className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium'
+                        //                                 placeholder={`Enter term or condition ${index + 1}`}
+                        //                                 value={value}
+                        //                                 onChange={(e) => handleInputChange(index, e.target.value)}
+                        //                             />
+                        //                             {
+                        //                                 index == 0
+                        //                                     ?
+                        //                                     <>
+                        //                                     </>
+                        //                                     :
+                        //                                     <button className="" onClick={() => removeInputField(index)}>
+                        //                                         Delete
+                        //                                     </button>
+                        //                             }
+                        //                         </div>
+                        //                     </div>
+                        //                 ))}
+
+                        //                 {inputFields.length < 3 && (
+                        //                     <button onClick={addInputField} className='mt-3'>
+                        //                         + Add term and condition
+                        //                     </button>
+                        //                 )}
+                        //             </div>
+
+
+                        //             <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
+                        //             <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+
+                        //                 onChange={capturePhoto}
+                        //                 id="photo" type="file" />
+
+                        //             <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
+                        //             <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                        //                 multiple id="photo" type="file" />
+
+
+                        //             <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
+                        //             <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+
+                        //                 onChange={captureSeatingMap}
+                        //                 id="photo" type="file" />
+
+                        //             <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
+                        //             <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+
+                        //                 onChange={captureBanner}
+                        //                 type="file" />
+
+                        //             <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
+                        //             <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                        //                 onChange={captureVideo}
+                        //                 type="file" />
+
+                        //             {/* <div>
+                        //             asdfsdadf
+                        //             <input type="file" onChange={onFileChange} ref={inputRef} accept="image/*" />
+                        //             {image && (
+                        //                 <div>
+                        //                     <Cropper
+                        //                         image={image}
+                        //                         crop={crop}
+                        //                         zoom={zoom}
+                        //                         aspect={4 / 3} // Set the aspect ratio as needed
+                        //                         onCropChange={setCrop}
+                        //                         onCropComplete={onCropComplete}
+                        //                         onZoomChange={setZoom}
+                        //                     />
+                        //                     <button className="" onClick={onCropComplete}>yes</button>
+                        //                 </div>
+                        //             )}
+                        //             {croppedImage && (
+                        //                 <img src={croppedImage} alt="Cropped" style={{ maxWidth: '100%' }} />
+                        //             )}
+                        //         </div> */}
+
+                        //             <div className="button flex justify-center items-center mt-5">
+                        //                 <button
+                        //                     type="button"
+                        //                     onClick={handleSave}
+                        //                     className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                        //                 >
+                        //                     Save
+                        //                 </button>
+                        //             </div>
+
+                        //         </div>
+                        //     </div>
+                        // </section>
                         // <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
                         //     <div className='w-96 md:w-[1000px]'>
                         //         <div className="modal bg-white px-3 py-4">

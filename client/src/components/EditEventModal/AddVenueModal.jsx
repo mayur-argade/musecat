@@ -89,7 +89,7 @@ const AddVenueModal = ({ onClose }) => {
                                     <div>
                                         <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
                                             value={address} onChange={(e) => setAddress(e.target.value)}
-                                            placeholder="Venue Address" />
+                                            placeholder="Venue short description" />
                                     </div>
 
                                     <div className="flex items-center justify-center w-full">

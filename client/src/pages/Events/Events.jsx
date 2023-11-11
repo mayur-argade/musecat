@@ -358,39 +358,39 @@ const Events = () => {
                                                     </div>
                                                     :
                                                     response.data
-                                                        .filter((item) => {
-                                                            const searchResults = search.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(search)
-                                                            // Filter by category
-                                                            const categoryMatch =
-                                                                selectedCategories.length === 0 || selectedCategories.includes(item.eventCategory);
+                                                        // .filter((item) => {
+                                                        //     const searchResults = search.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(search)
+                                                        //     // Filter by category
+                                                        //     const categoryMatch =
+                                                        //         selectedCategories.length === 0 || selectedCategories.includes(item.eventCategory);
 
-                                                            if (selectedDistance.length > 0) {
+                                                        //     if (selectedDistance.length > 0) {
 
-                                                                // Calculate the distance from the user's location to the event's location
-                                                                if (userCord != null) {
-                                                                    console.log("this is working")
-                                                                    const eventDistance = calculateDistance(
-                                                                        userCord.latitude,
-                                                                        userCord.longitude,
-                                                                        item.location.coordinates.lat,
-                                                                        item.location.coordinates.lng
-                                                                    );
+                                                        //         // Calculate the distance from the user's location to the event's location
+                                                        //         if (userCord != null) {
+                                                        //             console.log("this is working")
+                                                        //             const eventDistance = calculateDistance(
+                                                        //                 userCord.latitude,
+                                                        //                 userCord.longitude,
+                                                        //                 item.location.coordinates.lat,
+                                                        //                 item.location.coordinates.lng
+                                                        //             );
 
-                                                                    // console.log("eventDistnace", eventDistance)
-                                                                    // Filter by distance (e.g., events within 4 km)
-                                                                    const distanceFilterMatch =
-                                                                        !selectedDistance || eventDistance <= selectedDistance;
+                                                        //             // console.log("eventDistnace", eventDistance)
+                                                        //             // Filter by distance (e.g., events within 4 km)
+                                                        //             const distanceFilterMatch =
+                                                        //                 !selectedDistance || eventDistance <= selectedDistance;
 
 
-                                                                    // Return true if the event matches both the category and distance filter
-                                                                    return categoryMatch && distanceFilterMatch && searchResults;
-                                                                }
-                                                            } else {
-                                                                console.log("this is not working")
-                                                                // If user location is not available, only filter by category
-                                                                return categoryMatch && searchResults;
-                                                            }
-                                                        })
+                                                        //             // Return true if the event matches both the category and distance filter
+                                                        //             return categoryMatch && distanceFilterMatch && searchResults;
+                                                        //         }
+                                                        //     } else {
+                                                        //         console.log("this is not working")
+                                                        //         // If user location is not available, only filter by category
+                                                        //         return categoryMatch && searchResults;
+                                                        //     }
+                                                        // })
                                                         .map((event) => (
                                                             <div className='' key={event._id}>
                                                                 <EventCard data={event} />

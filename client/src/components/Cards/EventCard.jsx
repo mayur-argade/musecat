@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 
 const EventCard = ({ data }) => {
 
+    console.log(data)
 
     const [isLiked, setIsLiked] = useState(false)
 
@@ -64,14 +65,14 @@ const EventCard = ({ data }) => {
                                     <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd, Do MMMM YYYY")}</p>
                                     :
                                     <p className='text-xs mt-2 font-medium'>
-                                        {data.date.recurring.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
+                                        {data.date.recurring.days.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
                                     </p>
                             }
                             <p className='text-xs mt-2 font-medium'>
                                 {data.title.length > 25 ? data.title.substring(0, 25) + '...' : data.title},
                             </p>
                             <p className='text-xs mt-2 font-medium'>{data.location.name}</p>
-                            <p className="mt-1 mb-1 text-xs font-light">{data.eventCategory}</p>
+                            <p className="mt-1 mb-1 text-xs font-light">{data.type}</p>
                         </div>
                     </div>
                 </div>
