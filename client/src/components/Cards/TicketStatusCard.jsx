@@ -14,6 +14,7 @@ const TicketStatusCard = ({data}) => {
                     <img class="h-70 w-full rounded-t-lg" src={`${data.displayPhoto}`} alt="" />
                 </a>
                 <div class="p-1 pt-4 pb-2 mx-1">
+                    
                     <div class="">
                     <p class="title text-md md:text-md font-bold text-left">
                             {data.title}

@@ -113,11 +113,11 @@ const VendorEventDescripton = () => {
                             <div className='mt-4 flex justify-center text-center'>
                                 <img src="/images/icons/calender.svg" alt="" />
                                 {
-                                    response.data.date == 'dateRange'
+                                    response.data.date.type == 'dateRange'
                                         ?
-                                        <p className='text-sm font-semibold'>{moment(response.data.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
+                                        <p className='text-sm font-semibold'>{moment(response.data.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} - {moment(response.data.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
                                         :
-                                        <p>{response.data.date.recurring.join(" ")}</p>
+                                        <p>{response.data.date.recurring.days.join(" ")}</p>
                                 }
                             </div>
                         </div>

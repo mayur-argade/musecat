@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { ClientEventDetailsApi, ClientBookTicket, getCustomersSavedCards } from '../../http'
 import { setEvent } from '../../store/eventSlice'
 import toast, { Toaster } from 'react-hot-toast';
+import moment from 'moment'
 
 const BookTicket = () => {
     document.title = 'Book Ticket'
@@ -17,6 +18,8 @@ const BookTicket = () => {
     const [savedCard, setSavedCards] = useState([])
     const [checked, setChecked] = useState(null);
     const [termsAccepted, setTermsAccepted] = useState(false);
+    const [dateList, setDateList] = useState([])
+    const [ticketDate, setTicketDate] = useState('')
     console.log("terms accepted", termsAccepted)
     useEffect(() => {
         const fetchdata = async () => {
@@ -25,6 +28,29 @@ const BookTicket = () => {
                 const { data } = await ClientEventDetailsApi(eventid)
                 // console.log(data.data.eventDetails)
                 setReponse(data)
+
+                const today = moment();
+
+                let endMoment;
+                if(data.data.eventDetails.date.dateRange){
+                    if (data.data.eventDetails.date.dateRange.endDate != null || data.data.eventDetails.date.dateRange.endDate != undefined) {
+                        endMoment = moment(data.data.eventDetails.date.dateRange.endDate);
+                    } else {
+                        // If no end date, generate dates for the next 7 days
+                        endMoment = today.clone().add(7, 'days');
+                    }
+                }
+
+                const dateList = [];
+                let currentMoment = today.clone();
+
+                while (currentMoment.isSameOrBefore(endMoment, 'day')) {
+                    dateList.push(currentMoment.format('YYYY-MM-DD'));
+                    currentMoment.add(1, 'day');
+                }
+
+                setDateList(dateList);
+
                 setChecked(Array(data.data.eventDetails.custom.length).fill(false))
                 const { data: res } = await getCustomersSavedCards()
 
@@ -39,6 +65,7 @@ const BookTicket = () => {
         fetchdata()
     }, [eventid]);
 
+    console.log("dates we are going to show", dateList)
     const [price, setPrice] = useState(
 
     );
@@ -97,9 +124,11 @@ const BookTicket = () => {
                     return toast.error("All fields are mandatory")
                 } else if (seats <= 0) {
                     return toast.error("Enter valid seat number")
-                } else if (!checked.every((isChecked) => isChecked)) {
-                    return toast.error("Tick all checkboxes")
-                } else if (!termsAccepted) {
+                }
+                //  else if (!checked.every((isChecked) => isChecked)) {
+                //     return toast.error("Tick all checkboxes")
+                // }
+                 else if (!termsAccepted) {
                     return toast.error("Check terms and conditions")
                 } else {
                     // calculatePrice()
@@ -144,9 +173,9 @@ const BookTicket = () => {
     const [cardid, setCardid] = useState('')
 
     async function submit() {
-        if (!checked.every((isChecked) => isChecked)) {
-            return toast.error("Tick all checkboxes")
-        }
+        // if (!checked.every((isChecked) => isChecked)) {
+        //     return toast.error("Tick all checkboxes")
+        // }
 
         if (!termsAccepted) {
             return toast.error("Check terms and conditions")
@@ -169,8 +198,10 @@ const BookTicket = () => {
                         seats: seats,
                         priceWithTax: priceWithTax,
                         eventid: eventid,
-                        cardid: cardid
+                        cardid: cardid,
+                        date: ticketDate
                     }
+
                     setLoading(true)
                     const { data } = await ClientBookTicket(ticketdata)
                     console.log("checking data for the 404 error", data)
@@ -213,6 +244,7 @@ const BookTicket = () => {
                     ticketclass: ticketclass,
                     seats: seats,
                     eventid: eventid,
+                    date: ticketDate
                 }
                 setLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
@@ -240,6 +272,7 @@ const BookTicket = () => {
                 toast.error(error.response.data.data)
             }
         }
+
         // no price
         else if (hasPrice.length == 0 && hasClassName.length != 0) {
             try {
@@ -250,7 +283,8 @@ const BookTicket = () => {
                     email: email,
                     seats: seats,
                     eventid: eventid,
-                    ticketclass: ticketclass
+                    ticketclass: ticketclass,
+                    date: ticketDate
                 }
                 setLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
@@ -278,6 +312,7 @@ const BookTicket = () => {
                 toast.error(error.response.data.data)
             }
         }
+
         // no price no classname no seats
         else if (hasPrice.length == 0 && hasClassName.length == 0 && hasSeats.length == 0) {
             try {
@@ -288,6 +323,7 @@ const BookTicket = () => {
                     email: email,
                     seats: seats,
                     eventid: eventid,
+                    date: ticketDate
                 }
                 setLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
@@ -316,11 +352,7 @@ const BookTicket = () => {
             }
         }
 
-
-
     }
-
-    // console.log()
 
     const [visible, setVisible] = useState(false)
 
@@ -448,6 +480,24 @@ const BookTicket = () => {
                                             />
                                         </div>
 
+                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Select Date</label>
+                                            <select
+                                                className='font-medium w-full md:w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                onChange={(e) => setTicketDate(e.target.value)}
+                                                onClick={closePrice}
+                                            >
+                                                <option>Select Date</option>
+                                                {
+                                                    dateList.map((date) => (
+                                                        <option value={date}>
+                                                            {date}
+                                                        </option>
+                                                    ))
+                                                }
+                                            </select>
+
+                                        </div>
                                         <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
                                             <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                                 <label className='text-xs mt-1' htmlFor="first name">Select Class</label>
@@ -461,7 +511,9 @@ const BookTicket = () => {
                                                         response.data.eventDetails.categories.map((category) => (
                                                             category.className != null && category.seats != null
                                                                 ?
-                                                                <option value={category.className}>{category.className} ({category.seats - category.bookedSeats.length})</option>
+                                                                <option value={category.className}>
+                                                                    {category.className}
+                                                                </option>
                                                                 :
                                                                 <option value={category.className}>{category.className}</option>
                                                         ))
@@ -484,17 +536,28 @@ const BookTicket = () => {
                                         </div>
 
                                         <div className='flex flex-col justify-between mt-3'>
-                                            {
+                                            {/* {
+                                                response.data.eventDetails.custom &&
                                                 response.data.eventDetails.custom.map((custom, index) => (
-                                                    <div className="check">
-                                                        <input id="T&C"
+                                                    <div className="check" key={index}>
+                                                        <input
+                                                            id={`custom-check-${index}`}
                                                             checked={checked[index]}
                                                             onChange={() => handleCheckboxChange(index)}
-                                                            type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="default-checkb" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{custom}</label>
+                                                            type="checkbox"
+                                                            value=""
+                                                            className="w-4 h-4 text-bg-[#A48533] border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        />
+                                                        <label
+                                                            htmlFor={`custom-check-${index}`}
+                                                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                        >
+                                                            {custom}
+                                                        </label>
                                                     </div>
                                                 ))
-                                            }
+                                            } */}
+
                                             <div className="check">
                                                 <input checked={termsAccepted}
                                                     onChange={(() => setTermsAccepted(!termsAccepted))} id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />

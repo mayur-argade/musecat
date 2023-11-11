@@ -188,7 +188,6 @@ module.exports.getCategoryAllEvents = async (req, res) => {
     console.log(categoryDisplayName)
     console.log(categoryArray)
     try {
-
         let events;
         if (categoryDisplayName != "events") {
             const today = new Date()
@@ -199,7 +198,7 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             // const currentDay = "sunday"
             let query = {
                 // type: 'event',
-                verified: true,
+                // verified: true,
                 eventCategory: categoryDisplayName,
                 $or: [
                     { // Events with start date greater than or equal to today
@@ -222,16 +221,13 @@ module.exports.getCategoryAllEvents = async (req, res) => {
             // const currentDay = "sunday"
             const query = {
                 // type: 'event',
-                verified: true,
-                $and: [
-                    { 'eventCategory': { $in: categoryArray } }
-                ],
+                // verified: true,
                 $or: [
                     { // Events with start date greater than or equal to today
                         'date.dateRange.endDate': { $gte: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
                     },
                 ],
 

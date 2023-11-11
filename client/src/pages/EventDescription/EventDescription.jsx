@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
@@ -15,6 +15,16 @@ import { useSelector } from 'react-redux'
 
 const EventDescription = () => {
     let { eventid } = useParams();
+
+    console.log(eventid)
+    
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+
+    const dropdownRef = useRef(null);
+    const toggleDropdown = () => {
+        setDropdownOpen(!isDropdownOpen);
+    };
 
     const [isLiked, setIsLiked] = useState(false)
 
@@ -48,10 +58,32 @@ const EventDescription = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-    const [isMobile, setIsMobile] = useState(false);
+
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Set an initial value based on the screen width
+
+    // Function to update screen size and isMobile when the window is resized
+    const handleResize = () => {
+        const width = window.innerWidth;
+        setScreenWidth(width);
+        setIsMobile(width <= 768);
+    };
+
+    // Add event listener for window resize
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     document.title = 'Event Info'
     const dispatch = useDispatch();
+
+    console.log("isMobile", isMobile)
+
 
     useEffect(() => {
 
@@ -79,8 +111,8 @@ const EventDescription = () => {
                         content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
                         isOpened: true
                     },
-                    { title: 'Venue Details', content: data.data.eventDetails.location.address, isOpened: false },
-                    { title: 'Features', content: data.data.eventDetails.features, isOpened: false },
+                    { title: 'Venue Details', content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.venueInfo }} />, isOpened: false },
+                    { title: 'Features', content: data.data.eventDetails.features.join(" | "), isOpened: false },
                     { title: 'Categories', content: categoryprice.join(" | "), isOpened: false },
                     {
                         title: 'Contact Us',
@@ -94,9 +126,21 @@ const EventDescription = () => {
                                     )}
                                     {
                                         data.data.eventDetails.whatsapp && (
-                                            <a href={`tel:+${data.data.eventDetails.whatsapp}`} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
-                                            </a>
+                                            <>
+                                                {
+                                                    isMobile
+                                                        ?
+                                                        <a href={`tel:+${data.data.eventDetails.whatsapp}`} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                            <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+                                                        </a>
+                                                        :
+                                                        <>
+                                                            <a onClick={() => customToaster()} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                                <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+                                                            </a>
+                                                        </>
+                                                }
+                                            </>
                                         )
                                     }
                                     {data.data.eventDetails.facebook && (
@@ -149,6 +193,7 @@ const EventDescription = () => {
             console.log(error)
         }
     }, [])
+
     useEffect(() => {
         try {
             const fetchData = async () => {
@@ -181,7 +226,7 @@ const EventDescription = () => {
             availableSeats = totalSeats - bookedSeats
             // console.log("availableTickets", startPrice, availableSeats)
 
-            console.log("date printing", response.data.eventDetails.data)
+            // console.log("date printing", response.data.eventDetails.data)
             // eventStart = response.data.eventDetails.date.dateRange.startDate ; 
             // eventEnd =  response.data.eventDetails.date.dateRange.endDate ;
         }
@@ -197,7 +242,7 @@ const EventDescription = () => {
                 eventid: eventid
             }
             const { data } = await addToFavorites(eventdata)
-            console.log("data", data)
+            // console.log("data", data)
             toast.success(data.message)
             setFetchLikes(!fetchLikes)
         } catch (error) {
@@ -211,30 +256,7 @@ const EventDescription = () => {
     }
     const location = useLocation();
 
-    const copyCurrentPageURL = () => {
-        const urlToCopy = window.location.origin + location.pathname;
-
-        // Create a temporary input element
-        const input = document.createElement('input');
-        input.style.position = 'fixed';
-        input.style.opacity = 0;
-        input.value = urlToCopy;
-
-        // Append the input element to the DOM
-        document.body.appendChild(input);
-
-        // Select the URL text in the input field
-        input.select();
-        input.setSelectionRange(0, 99999); // For mobile devices
-
-        // Copy the URL to the clipboard
-        document.execCommand('copy');
-
-        // Remove the input element
-        document.body.removeChild(input);
-
-        toast.success("Link copied to clipboard")
-    };
+    console.log(response.data)
 
     const getVendorDetails = async () => {
         var data = response.data.eventDetails.vendorid
@@ -243,7 +265,7 @@ const EventDescription = () => {
         try {
             const response = await VedorDetails(data)
             const externalURL = `https://wa.me/${response.data.data.mobilenumber}/?text=Interested%20in%20${eventname}.%20Can%20you%20share%20details%20and%20the%20event%20link,%20please%3F`;
-            console.log("response",)
+            // console.log("response",)
             // Use window.location.href to redirect
             window.location.href = externalURL;
         } catch (error) {
@@ -301,7 +323,28 @@ const EventDescription = () => {
         setAccordions(updatedAccordions);
     };
 
-    console.log("response", upcomingEvents)
+    const shareonFacebook = () => {
+        const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${window.location.origin + location.pathname}`;
+        window.open(facebookShareURL, '_blank');
+    }
+
+    const shareonMail = () => {
+        const subject = 'Check out this link';
+        const emailBody = `I thought you might find this interesting: ${window.location.origin + location.pathname}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    }
+
+    const shareonInstagram = () => {
+        const instashareurl = `https://www.instagram.com/sharer/sharer.php?u=${window.location.origin + location.pathname}`;
+        window.open(instashareurl, '_blank');
+    }
+
+    const shareonWhatsapp = () => {
+        const shareonwhatsapp = `https://api.whatsapp.com/send?text=${window.location.origin + location.pathname}`;
+        window.open(shareonwhatsapp, '_blank');
+    }
+
+    // console.log("response", upcomingEvents)
 
     if (response.data == null || upcomingEvents.data == null || clientOffers.data == null) {
         <>Loading...
@@ -313,7 +356,7 @@ const EventDescription = () => {
                 <Navbar />
                 <Tabbar />
                 <div className='w-full flex justify-center'>
-                    <section className='w-full mx-6 md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
+                    <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
                         <section className=''>
                             <section>
                                 <div className="hidden md:flex align-middle items-center">
@@ -338,7 +381,7 @@ const EventDescription = () => {
                                                 ?
                                                 <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
                                                 :
-                                                <p>{response.data.eventDetails.date.recurring.join(" ")}</p>
+                                                <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
                                         }
                                     </div>
                                 </div>
@@ -389,13 +432,31 @@ const EventDescription = () => {
                                                 <p className='font-light text-wrap text-xs'>Get exclusive updates on events, artists, offers and things to do</p>
                                             </div>
 
-                                            <div>
-                                                <button onClick={copyCurrentPageURL} className='flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                                            <div className="dropdown-container reltive">
+                                                <button
+                                                    onClick={toggleDropdown}
+                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
                                                     <img className='md:h-5 h-8' src="/images/icons/share.svg" alt="" />
                                                 </button>
+                                                {isDropdownOpen && (
+                                                    <div
+                                                        className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
+                                                        ref={dropdownRef}
+                                                    >
+                                                        <div className="flex space-x-3 socialmedia">
 
+                                                            <img onClick={shareonWhatsapp} className='cursor-pointer h-7' src="/images/icons/wp-a.svg" alt="" />
+
+                                                            <img onClick={shareonFacebook} className='cursor-pointer h-7' src="/images/icons/fb-a.svg" alt="" />
+
+
+                                                            <img onClick={shareonInstagram} className='cursor-pointer h-7' src="/images/icons/ig-a.svg" alt="" />
+
+                                                            <img onClick={shareonMail} className='cursor-pointer h-7' src="/images/icons/emal-a.svg" alt="" />
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-
                                         </div>
 
 
@@ -404,7 +465,7 @@ const EventDescription = () => {
                                                 <Link to="/whereto">
                                                     <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
                                                         <img className='h-5' src="/images/icons/map-1.svg" alt="" />
-                                                        <p className='text-md'> crown plaza</p>
+                                                        <p className='text-md'>{response.data.eventDetails.location.name}</p>
                                                         <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                                     </div>
                                                 </Link>
@@ -535,7 +596,7 @@ const EventDescription = () => {
                                     </span>
 
                                 </div>
-                                <div className='ml-2 mr-2'>
+                                {/* <div className='ml-2 mr-2'>
                                     <div className="md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-1 md:space-x-5">
                                         {upcomingEvents.data.map((event) => (
                                             <div >
@@ -543,7 +604,7 @@ const EventDescription = () => {
                                             </div>
                                         ))}
                                     </div>
-                                </div>
+                                </div> */}
 
 
 

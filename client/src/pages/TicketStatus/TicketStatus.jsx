@@ -73,7 +73,7 @@ const TicketStatus = () => {
                         <button onClick={handleBack} className=' mt-1'>
                             <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                         </button>
-                        <p className='text-2xl font-bold'>Ticket Status</p>
+                        <p className='text-2xl font-bold'>{response.data.event.type == 'event' ? "Ticket" : "Voucher"} Status</p>
                     </div>
 
                     <div className='flex flex-col justify-start align-middle items-stretch md:flex-row '>
