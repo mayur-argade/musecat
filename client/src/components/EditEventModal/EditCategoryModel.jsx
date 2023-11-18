@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AdminCreateCategory } from '../../http/index'
+import { AdminEditCategory } from '../../http/index'
 import toast, { Toaster } from 'react-hot-toast';
 
 
@@ -29,10 +29,6 @@ const EditCategoryModel = ({ onClose, data }) => {
 
     async function submit() {
 
-        if (!name || !photo) {
-            return toast.error("Category name and Photo are mandatory")
-        }
-
         let subCategoriesArray = []
         if (subCategories.trim() === "") {
             subCategoriesArray = []
@@ -42,6 +38,7 @@ const EditCategoryModel = ({ onClose, data }) => {
             subCategoriesArray = subCategories.split(',').map(subcategory => subcategory.trim())
         }
         const categorydata = {
+            categoryId: data._id,
             name: name,
             photo: photo,
             subCategories: subCategoriesArray
@@ -50,7 +47,7 @@ const EditCategoryModel = ({ onClose, data }) => {
         // console.log(signupdata)
         try {
             setLoading(true)
-            const { data } = await AdminCreateCategory(categorydata)
+            const { data } = await AdminEditCategory(categorydata)
 
             console.log(data)
 

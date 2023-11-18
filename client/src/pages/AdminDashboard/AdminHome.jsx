@@ -386,7 +386,7 @@ const AdminHome = () => {
                                                                     {event.title}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.vendorid.firstname}
+                                                                    {event.vendorid.firstname || null}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {moment(event.createdAt).format("DD-MM-YYYY")}

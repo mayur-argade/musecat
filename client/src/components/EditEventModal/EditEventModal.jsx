@@ -285,9 +285,6 @@ const EditEventModal = ({ onClose, data }) => {
             if (category.className != null && category.className.trim() == "") {
                 return toast.error("Classname cannot be an empty string if you want to add price")
             }
-            if (category.price != null && category.price < 100) {
-                return toast.error("price of ticket can not be less than 100")
-            }
 
         }
 
