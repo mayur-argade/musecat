@@ -470,7 +470,7 @@ exports.adminStats = async (req, res) => {
             }
             ,
             {
-                'date.recurring': { $in: days } // Replace with a function to get today's day
+                'date.recurring.days': { $in: days } // Replace with a function to get today's day
             }
         ];
 
@@ -483,7 +483,7 @@ exports.adminStats = async (req, res) => {
             }
             ,
             {
-                'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                'date.recurring.days': { $in: [day] } // Replace with a function to get today's day
             }
         ]
         const users = await userService.countUsers()

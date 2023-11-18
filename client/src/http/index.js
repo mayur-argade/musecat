@@ -10,6 +10,7 @@ const api = axios.create({
         Accept: "application/json",
     },
 });
+
 export const vendorLogin = (data) => api.post("auth/vendor/login", data);
 export const VendorRegister = (data) => api.post("auth/vendor/register", data)
 export const vendorProfileApi = (data) => api.get('vendor/profile', data)

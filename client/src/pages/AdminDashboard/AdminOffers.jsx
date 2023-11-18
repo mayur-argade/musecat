@@ -144,7 +144,7 @@ const AdminOffers = () => {
                                                                         {offer.vendorid.firstname}
                                                                     </td>
                                                                     <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {offer.eventCategory}
+                                                                    {offer.eventCategory.map(subcategory => subcategory.name).join(', ')}
                                                                     </td>
                                                                     <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                         {offer.verified ?

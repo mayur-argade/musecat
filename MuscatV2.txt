@@ -1,1 +1,10 @@
-1. Create Category
+Vendor Home
+1. Create event
+2. Create Offer
+3. Show ongoing events
+4. Show ongoing offers
+
+Vendor Hosted events
+1. Show events
+2. Show offers
+ 

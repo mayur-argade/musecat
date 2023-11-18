@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AdminGetUnverifiedVendors, AdminGetAllUsers, getEventsForAdmin, ClientGetOffers, AdminStats, AdminVerifyVendor } from '../../http/index'
+import { AdminGetUnverifiedVendors, AdminGetAllUsers, getEventsForAdmin, getOffersForAdmin, AdminStats, AdminVerifyVendor } from '../../http/index'
 import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment'
@@ -61,7 +61,7 @@ const AdminHome = () => {
         const fetchOffers = async () => {
             setLoading(true)
             try {
-                const res = await ClientGetOffers()
+                const res = await getOffersForAdmin()
                 // console.log(data.data)
                 setOffers(res.data)
                 setLoading(false)
@@ -367,9 +367,6 @@ const AdminHome = () => {
                                                             Vendor ID
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
-                                                            Category
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
                                                             Date
                                                         </th>
                                                         <th scope="col" class="px-6 py-3">
@@ -390,9 +387,6 @@ const AdminHome = () => {
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {event.vendorid.firstname}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.eventCategory.categoryURL}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {moment(event.createdAt).format("DD-MM-YYYY")}
@@ -442,9 +436,7 @@ const AdminHome = () => {
                                                         <th scope="col" class="px-6 py-3">
                                                             Vendor Name
                                                         </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Category
-                                                        </th>
+                                                        
                                                         <th scope="col" class="px-6 py-3">
                                                             Start Date
                                                         </th>
@@ -455,9 +447,9 @@ const AdminHome = () => {
                                                             Offer expiry
                                                         </th>
 
-                                                        {/* <th scope="col" class="px-6 py-3">
+                                                        <th scope="col" class="px-6 py-3">
                                                             Action
-                                                        </th> */}
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -469,9 +461,6 @@ const AdminHome = () => {
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {offer.vendorid.firstname}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.eventCategory}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {moment(offer.createdAt).format("DD-MM-YYYY")}

@@ -155,7 +155,7 @@ const VendorHostedEvents = () => {
                             </div>
                         </div>
 
-                        <div className='mb-7 grid xs:grid-cols-2 justify-items-center md:flex-wrap gap-y-4 lg:justify-start md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4'>
+                        <div className='mb-7 mx-5 grid xs:grid-cols-2 justify-items-center md:flex-wrap gap-y-4 lg:justify-start md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4'>
                             {
                                 showArchived
                                     ?

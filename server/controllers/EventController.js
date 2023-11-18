@@ -527,6 +527,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                 },
             ],
         })
+
         const offers = await eventService.findAllEvents(
             {
                 vendorid: vendor, // Assuming you pass the vendor id as a route parameter
@@ -538,7 +539,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                         'date.dateRange.endDate': { $gte: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring': { $in: currentDay },
+                        'date.recurring.days': { $in: currentDay },
                     },
                 ],
             }
@@ -1118,16 +1119,31 @@ exports.getOffersForAdmin = async (req, res) => {
             type: 'offer'
         };
         const todayDate = new Date();
-        const day = moment(todayDate).format('dddd').toLowerCase()
+
         query['$or'] = [
             {
                 'date.dateRange.endDate': { $gte: todayDate }
             }
             ,
             {
-                'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                $and: [
+                    {
+                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
+                    },
+                    {
+                        $or: [
+                            {
+                                'date.recurring.endDate': { $gte: todayDate }
+                            },
+                            {
+                                'date.recurring.endDate': null
+                            }
+                        ]
+                    }
+                ]
             }
         ];
+
         eventsOnDate = await eventService.findAllEvents(query);
         res.status(200).json({
             success: true,
