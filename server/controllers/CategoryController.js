@@ -8,8 +8,9 @@ const Offer = require("../models/OfferModel")
 const Event = require("../models/EventModel")
 const moment = require('moment')
 
+//  Create Category
 exports.createCategory = async (req, res) => {
-    const { photo, name } = req.body
+    const { photo, name, subCategories } = req.body
 
     if (!photo || !name) {
         return res.status(401).json({
@@ -17,6 +18,23 @@ exports.createCategory = async (req, res) => {
             data: "All fields are required"
         })
     }
+
+    const subCategoriesArray = []
+
+    if (subCategories.length > 0) {
+        for (let i = 0; i < subCategories.length; i++) {
+
+            let subUrl = subCategories[i].replace(/\s+/g, "").toLowerCase();
+            console.log(subUrl)
+            const data = {
+                name: subCategories[i],
+                categoryURL: subUrl
+            }
+
+            subCategoriesArray.push(data)
+        }
+    }
+
     const url = name.replace(/\s+/g, "").toLowerCase();
 
     try {
@@ -30,21 +48,216 @@ exports.createCategory = async (req, res) => {
         let categoryData = {
             name: name,
             photo: uploadedCategoryPhoto.secure_url,
-            categoryURL: url
+            categoryURL: url,
+            subCategories: subCategoriesArray
         }
 
         const category = await categoryService.createCategories(categoryData)
+
         return res.status(200).json({
             success: true,
             data: category
         })
+
     } catch (error) {
         console.log(error)
+        return res.status(500).json("Internal Server Error")
     }
 
 }
 
+// Update Category
+exports.updateCategory = async (req, res) => {
+    const { categoryId, name, subCategories } = req.body
+    try {
+        const category = await categoryService.findCategory({ _id: categoryId })
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                data: "Category Not Found"
+            })
+        }
+
+        const subCategoriesArray = []
+
+        if (subCategories && subCategories.length > 0) {
+            for (let i = 0; i < subCategories.length; i++) {
+
+                let subUrl = subCategories[i].replace(/\s+/g, "").toLowerCase();
+                console.log(subUrl)
+                const data = {
+                    name: subCategories[i],
+                    categoryURL: subUrl
+                }
+
+                subCategoriesArray.push(data)
+            }
+        }
+        const categoryData = {
+            _id: category._id,
+            name: name,
+            subCategories: subCategoriesArray
+        }
+
+        await categoryService.updateCategory(categoryData)
+
+        return res.status(200).json({
+            success: true,
+            data: "Category Updated"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            data: "Internal Server error"
+        })
+    }
+
+
+}
+
+// delete Category
+exports.deleteCategory = async (req, res) => {
+    const { categoryId } = req.body
+
+    // console.log(req.body)
+
+    try {
+
+        const category = await categoryService.findCategory({ _id: categoryId })
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                data: "Category Not Found"
+            })
+        }
+
+        const deletedCategory = await categoryService.deleteCategory({ _id: categoryId })
+
+        if (deletedCategory.value != null) {
+            return res.status(500).json({
+                success: false,
+                data: "Category unable to delete"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Category Deleted successfully"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal Server error"
+        })
+    }
+
+}
+
+// get All Categories
+exports.getAllCategories = async (req, res) => {
+    try {
+        const categories = await categoryService.findAllCategory()
+        return res.status(200).json({
+            success: true,
+            data: categories
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Get Event Count for each category
 exports.getCategoriesWithEvents = async (req, res) => {
+
+
+    // const date = req.query.date;
+
+    // try {
+    //     const filterDate = date ? new Date(date) : new Date();
+
+    //     const pipeline = [
+    //         {
+    //             $unwind: "$events"
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: "Events",
+    //                 localField: "events",
+    //                 foreignField: "_id",
+    //                 as: "eventDetails"
+    //             }
+    //         },
+    //         {
+    //             $project: {
+    //                 events: 1,
+    //                 eventDetails: 1
+    //             }
+    //         }
+    //         // {
+    //         //     $unwind: "$eventDetails"
+    //         // },
+    //         // {
+    //         //     $match: {
+    //         //         $or: [
+    //         //             {
+    //         //                 'eventDetails.date.dateRange.startDate': { $lte: filterDate },
+    //         //                 'eventDetails.date.dateRange.endDate': { $gte: filterDate }
+    //         //             },
+    //         //             {
+    //         //                 'eventDetails.date.recurring.days': { $in: [moment(filterDate).format('dddd').toLowerCase()] }
+    //         //             },
+    //         //             {
+    //         //                 'eventDetails.date.dateRange.endDate': { $gte: filterDate }
+    //         //             },
+    //         //             {
+    //         //                 'eventDetails.date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
+    //         //             }
+    //         //         ]
+    //         //     }
+    //         // },
+    //         // {
+    //         //     $group: {
+    //         //         _id: {
+    //         //             _id: "$_id",
+    //         //             categoryName: "$name",
+    //         //             categoryURL: "$categoryURL",
+    //         //             photo: "$photo"
+    //         //         },
+    //         //         validOfferCount: { $sum: 1 }
+    //         //     }
+    //         // },
+    //         // {
+    //         //     $match: {
+    //         //         validOfferCount: { $gte: 1 }
+    //         //     }
+    //         // },
+    //         // {
+    //         //     $project: {
+    //         //         _id: 0,
+    //         //         categoryName: "$_id.name",
+    //         //         categoryURL: "$_id.categoryURL",
+    //         //         photo: "$_id.photo",
+    //         //         validOfferCount: 1
+    //         //     }
+    //         // }
+    //     ];
+
+    //     const result = await CategoryModel.aggregate(pipeline);
+
+    //     return res.status(200).json({
+    //         success: true,
+    //         data: result
+    //     });
+    // } catch (error) {
+    //     console.error('Error:', error);
+    //     throw error;
+    // }
 
 
     const date = req.query.date
@@ -88,14 +301,14 @@ exports.getCategoriesWithEvents = async (req, res) => {
             } else {
                 // Calculate today's date and time
                 const todayDate = new Date();
-                const day = moment(todayDate).format('dddd').toLowerCase()
+                const day = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
                 query['$or'] = [
                     {
                         'date.dateRange.endDate': { $gte: todayDate }
                     }
                     ,
                     {
-                        'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                        'date.recurring': { $in: day } // Replace with a function to get today's day
                     }
                 ];
             }
@@ -116,68 +329,15 @@ exports.getCategoriesWithEvents = async (req, res) => {
             success: true,
             data: filteredCategoryCounts
         })
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error:', error);
         throw error;
     }
 }
 
-exports.getAllCategories = async (req, res) => {
-    try {
-        const categories = await categoryService.findAllCategory()
-        return res.status(200).json({
-            success: true,
-            data: categories
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
 
-module.exports.getCategories = async (req, res) => {
-    try {
-        // Query the categories from the database
-        const categories = await CategoryModel.find();
-
-        console.log(categories)
-
-        // Query the offers from the database
-        const offers = await offerService.findAllOffer();
-        console.log(offers)
-
-        // Calculate the offer counts for each category
-        const categoryCounts = {};
-
-        offers.forEach((offer) => {
-            const categoryName = offer.category; // Assuming you have a 'category' field in your offer schema
-            if (!categoryCounts[categoryName]) {
-                categoryCounts[categoryName] = 0;
-            }
-            categoryCounts[categoryName]++;
-        });
-
-        // Create a response object that includes both category data and offer counts
-        const response = categories.map((category) => ({
-            category: category.name, // Assuming you have a 'categoryName' field in your category schema
-            count: categoryCounts[category.name] || 0, // Default to 0 if no offers for the category
-        }));
-
-        // Send the response to the frontend
-        res.status(200).json({
-            success: true,
-            data: response,
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: 'Internal server error',
-        });
-    }
-}
-
-module.exports.getCategoryAllEvents = async (req, res) => {
+exports.getCategoryAllEvents = async (req, res) => {
     let categoryDisplayName = req.params.categoryname
     const search = req.query.search
     const categories = await categoryService.findAllCategory()
@@ -232,13 +392,13 @@ module.exports.getCategoryAllEvents = async (req, res) => {
                 ],
 
             }
-            console.log("search before if block",search)
-            console.log("query before if block",query)
-            if (search == undefined || search == 'undefined' ) {
+            console.log("search before if block", search)
+            console.log("query before if block", query)
+            if (search == undefined || search == 'undefined') {
                 console.log("what")
-            }else{
+            } else {
                 // Add search conditions for category name, description, and title
-                console.log("search inside if block",search)
+                console.log("search inside if block", search)
                 query.$and.push(
                     // Case-insensitive search
                     { 'description': new RegExp(search, 'i') },
@@ -246,7 +406,7 @@ module.exports.getCategoryAllEvents = async (req, res) => {
                 );
             }
 
-            console.log("query after if block",query)
+            console.log("query after if block", query)
             events = await eventService.findAllEvents(query)
         }
 

@@ -3,13 +3,13 @@ const tokenService = require("./token-service");
 const bcrypt = require('bcrypt')
 
 class UserService {
-    async findUser(filter) {
+    async findUser(filter, select) {
         const user = UserModel.findOne(filter)
         return user;
     }
 
-    async findUsers(filter) {
-        const users = UserModel.find(filter).sort({ createdAt: -1 }).limit(3)
+    async findUsers(filter, limit) {
+        const users = UserModel.find(filter).sort({ createdAt: -1 }).limit(limit)
         return users
     }
 

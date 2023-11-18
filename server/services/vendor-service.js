@@ -8,8 +8,8 @@ class VendorService {
         return vendor;
     }
 
-    async findVendors(filter) {
-        const vendors = VendorModel.find(filter).sort({ createdAt: 1 });
+    async findVendors(filter, limit) {
+        const vendors = VendorModel.find(filter).limit(limit).sort({ createdAt: -1 });
         return vendors
     }
 

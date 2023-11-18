@@ -33,6 +33,21 @@ const AdminEventDescription = () => {
     document.title = 'Event Info'
     const dispatch = useDispatch();
 
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const [showModal, setShowModal] = useState(false)
+
+
+    const handleShowModal = () => {
+        setShowModal(true)
+    }
+
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -274,7 +289,7 @@ const AdminEventDescription = () => {
                                                                         ?
                                                                         <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
                                                                         :
-                                                                        <p>{response.data.eventDetails.date.recurring.join(" ")}</p>
+                                                                        <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
                                                                 }
                                                             </div>
                                                         </div>
@@ -291,7 +306,7 @@ const AdminEventDescription = () => {
                                                                             View Sales
                                                                         </button>
 
-                                                                        <button  className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
+                                                                        <button onClick={handleShowModal} className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
                                                                             <img className="text-white " src="/images/icons/edit.svg" alt="" />
                                                                         </button>
                                                                     </div>
@@ -433,6 +448,22 @@ const AdminEventDescription = () => {
                                                         <div className="standalone:hidden relative mt-8 ml-6 mr-6">
                                                             <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />
                                                         </div>
+                                                        {showModal && (
+                                                            <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                                                                <div className="relative rounded-lg ">
+                                                                    <EditEventModal
+                                                                        data={response.data.eventDetails}
+                                                                        isOpen={showModal}
+                                                                        onClose={closeModal} />
+                                                                    {/* Close button */}
+                                                                    <button
+                                                                        onClick={closeModal} className="absolute top-5 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                                                                    >
+                                                                        <img src="/images/icons/cancel-icon.png" alt="" />
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </section>
                                                 </section>
                                             </section>

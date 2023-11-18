@@ -55,7 +55,7 @@ const ticketModel = new mongoose.Schema({
     },
 },
     {
-        timestamp: true,
+        timestamps: true,
     }
 )
 

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    // baseURL: "https://omanwhereto.com/api/v1/",
-    baseURL: "http://localhost:5000/api/v1/",
+    baseURL: "https://omanwhereto.com/api/v1/",
+    // baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     credentials: "include",
     headers: {
@@ -42,6 +42,7 @@ export const VendorUpdateTicketStatus = (data) => api.patch(`ticket/update-payme
 export const VendorCreateVenue = (data) => api.post('venue/create-venue', data)
 export const vendorUpdateTicketStatus = (data) => api.patch('update-ticket-status', data)
 export const ClientContactUs = (data) => api.post("user/write-contactmsg", data)
+export const VendorUnverifiedEvents = (data) => api.get("/vendor/listing/unverified", data)
 
 export const ClientEventDetailsApi = (data) => api.get(`user/eventDetails/${data}`, data)
 export const ClientFavEventApi = (data) => api.get("user/favorites", data)
@@ -76,10 +77,11 @@ export const AdminGetAllOffers = (data) => api.get("/admin/getAllOffers", data)
 export const AdminDeleteOffer = (data) => api.delete("/admin/delete-offer", data)
 export const AdminEditOffer = (data) => api.patch("/admin/edit-offer", data)
 export const AdminStats = (data) => api.get('/admin/stats', data)
-
+export const AdminDeleteVenue = (data) => api.delete("venue/admin/delete-venue", { data: data })
 
 export const AdminVerifyVendor = (data) => api.patch(`/admin/verify-vendor`, data)
 export const AdminGetAllVendors = (data) => api.get("/admin/getUnverifiedVendors", data)
+export const AdminDeleteCategory = (data) => api.delete("/category/delete-category", { data: data })
 export const GetVendorData = (data) => api.get(`admin/get-vendor-profile/${data}`, data)
 export const AdminGetAllUsers = (data) => api.get("/admin/getAllUsers", data)
 export const AdminGetUnverifiedVendors = (data) => api.get("admin/get-unverified-vendors", data)
@@ -103,8 +105,8 @@ api.interceptors.response.use(
             try {
                 // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
-                    // baseURL: "https://omanwhereto.com/api/v1/",
-                    baseURL: "http://localhost:5000/api/v1/",
+                    baseURL: "https://omanwhereto.com/api/v1/",
+                    // baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
                         "Content-Type": "application/json",

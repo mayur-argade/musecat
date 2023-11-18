@@ -129,7 +129,7 @@ exports.AdminVerifyVenue = async (req, res) => {
     const { venueid } = req.body
 
     console.log(req.body)
-    
+
     const venuedata = {
         _id: venueid,
         verified: true
@@ -141,5 +141,45 @@ exports.AdminVerifyVenue = async (req, res) => {
         success: true,
         data: venue
     })
+
+}
+
+exports.deleteVenue = async (req, res) => {
+    const { venueId } = req.body
+
+    // console.log(req.body)
+
+    try {
+
+        const venue = await venueService.findVenue({ _id: venueId })
+
+        if (!venue) {
+            return res.status(404).json({
+                success: false,
+                data: "Venue Not Found"
+            })
+        }
+
+        const deletedVenue = await venueService.deleteVenue({ _id: venueId })
+
+        if (deletedVenue.value != null) {
+            return res.status(500).json({
+                success: false,
+                data: "Venue unable to delete"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Venue Deleted successfully"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal Server error"
+        })
+    }
 
 }

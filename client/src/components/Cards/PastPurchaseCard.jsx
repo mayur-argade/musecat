@@ -10,20 +10,24 @@ const PastPurchaseCard = ({ data }) => {
     const startEventDate = data.date.dateRange?.startDate ? DateTime.fromISO(data.date.dateRange.startDate) : null;
     const eventDate = data.date.dateRange?.endDate ? DateTime.fromISO(data.date.dateRange.endDate) : null;
 
-    if (startEventDate && eventDate) {
-        if (currentDate >= startEventDate && currentDate <= eventDate) {
-            status = 'Ongoing';
-        } else if (currentDate > eventDate) {
-            status = 'Archived';
-        } else if (currentDate < startEventDate) {
-            status = 'Upcoming';
-        }
+    if (data.verified == false) {
+        status = "Unverified"
     } else {
-        if (data.date.recurring.includes(moment().format('dddd').toLowerCase())) {
-            status = 'Ongoing'
+        if (startEventDate && eventDate) {
+            if (currentDate >= startEventDate && currentDate <= eventDate) {
+                status = 'Ongoing';
+            } else if (currentDate > eventDate) {
+                status = 'Archived';
+            } else if (currentDate < startEventDate) {
+                status = 'Upcoming';
+            }
         } else {
-            status = 'Upcoming'
-        } // Handle cases where the date values are missing or invalid
+            if (data.date.recurring.days.includes(moment().format('dddd').toLowerCase())) {
+                status = 'Ongoing'
+            } else {
+                status = 'Upcoming'
+            } // Handle cases where the date values are missing or invalid
+        }
     }
 
     return (
@@ -31,7 +35,7 @@ const PastPurchaseCard = ({ data }) => {
             <div class="relative mx-2 h-auto lg:h-96 w-64 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <button class="absolute top-2 right-2 py-3.5 bg-white rounded-md w-24 h-5 flex items-center justify-center align-middle text-white">
-                    <p className={`text-sm font-semibold ${status == 'Expired' || status == 'Archived' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
+                    <p className={`text-sm font-semibold ${status == 'Expired' || status == 'Archived' || status == 'Unverified' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
                 </button>
 
                 <a href="#">

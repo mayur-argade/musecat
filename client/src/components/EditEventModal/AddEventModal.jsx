@@ -241,19 +241,34 @@ const AddEventModal = ({ onClose }) => {
     const handleSave = async () => {
 
         if (!title) {
-            return toast.error("Title is Mandatory")
-        } else if (!content) {
-            return toast.error("Event Information is Mandatory")
-        } else if (!location) {
-            return toast.error("Location is Mandatory")
-        } else if (!termsAndConditions) {
+            return toast.error("Title is missing")
+        }
+        else if(!shortDesc){
+            return toast.error("Short Description is missing")
+        }
+        else if (!content) {
+            return toast.error("Event Information is missing")
+        }
+        else if(!venueDescription) {
+            return toast.error("Venue Information is missing")
+        }
+        else if (!location) {
+            return toast.error("Location is missing")
+        }
+        else if (!termsAndConditions) {
             return toast.error("Please add terms and conditions")
-        } else if (!photo) {
+        }
+        else if (!photo) {
             return toast.error("Featured Photo is missing")
-        } else if (selectedCategories.length <= 0) {
+        }
+        else if (selectedFeature.length <= 0){
+            return toast.error("Please select applicatble features")
+        }
+        else if (selectedCategories.length <= 0) {
             return toast.error("Please select Event Category")
-        } else if (!seatingMap) {
-            return toast.error("Seating Map is missing")
+        }
+        else if(!number){
+            return toast.error("Phone number is missing")
         }
 
         let dateType;
@@ -298,9 +313,6 @@ const AddEventModal = ({ onClose }) => {
             }
         }
 
-        console.log("categories of ticket", categories)
-        console.log("event categories", selectedCategories)
-
         const eventdata = {
             title: title,
             shortDescription: shortDesc,
@@ -325,7 +337,6 @@ const AddEventModal = ({ onClose }) => {
             website: website,
             phone: number,
             showEndDate: showEndDate
-
         }
         setLoading(true)
         try {
@@ -335,17 +346,18 @@ const AddEventModal = ({ onClose }) => {
             console.log(data)
             if (data.success == true) {
                 toast.success("Event is successfully added")
-                navigate(`/vendor/event/${data.data._id}`)
+                setTimeout(() => {
+                    navigate(`/vendor/event/${data.data._id}`)
+                }, 5000);
             } else if (data.success == false) {
                 toast.error(data.data)
-                window.alert(data.data)
             }
         } catch (error) {
             console.log(error)
         }
         // onClose(); // This will close the modal
     };
-    if (listCategory.length == 0 || listCategory == null || listVenues == null) {
+    if ( listCategory == null || listVenues == null) {
         return (
             <div className="h-screen w-full flex justify-center align-middle items-center">
                 <img src="/images/icons/loading.svg" alt="" />
@@ -568,7 +580,7 @@ const AddEventModal = ({ onClose }) => {
 
                                     <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
 
-                                        <h3 class="font-semibold text-gray-900 dark:text-white">Features</h3>
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">Features *</h3>
                                         <ul class="w-full flex flex-wrap">
                                             {
                                                 Features.list.map((feature) => (
@@ -625,7 +637,7 @@ const AddEventModal = ({ onClose }) => {
                                         </div>
                                         <div className="w-full flex justify-between">
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Phone No.</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Phone No. *</label>
                                                 <input
                                                     type='tel'
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '

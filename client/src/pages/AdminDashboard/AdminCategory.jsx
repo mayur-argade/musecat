@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import { GetAllCategory } from '../../http'
+import { GetAllCategory, AdminDeleteCategory } from '../../http'
 import { Link } from 'react-router-dom'
 import AddCategoryModel from '../../components/EditEventModal/AddCategoryModel'
+import EditCategoryModel from '../../components/EditEventModal/EditCategoryModel'
 
 
 const AdminCategory = () => {
@@ -10,6 +11,16 @@ const AdminCategory = () => {
     const [category, setCategory] = useState([])
     const [loading, setLoading] = useState(false)
     const [showAddCategory, setShowAddCategory] = useState(false)
+    const [showEditCategory, setShowEditCategory] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState(null)
+
+    const handleEditCategoryClick = (category) => {
+        setSelectedCategory(category)
+        setShowEditCategory(true)
+    }
+    const closeEditCategoryModel = () => {
+        setShowEditCategory(false)
+    }
 
     const handleCategoryClick = () => {
         setShowAddCategory(true)
@@ -34,6 +45,21 @@ const AdminCategory = () => {
         fetchCategory()
 
     }, []);
+
+    const DeleteCategory = async (categoryId) => {
+        try {
+            const body = {
+                categoryId: categoryId
+            }
+            const { data } = await AdminDeleteCategory(body)
+            if (data.success == true) {
+                window.location.reload()
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     if (category.data == null) {
         return (
@@ -71,10 +97,10 @@ const AdminCategory = () => {
                                                         category URL
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        No of Offers
+                                                        Sub Categories
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        No of Events
+                                                        Photo
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
                                                         Action
@@ -93,14 +119,17 @@ const AdminCategory = () => {
                                                                 {cat.categoryURL}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {cat.events.length}
+                                                                {cat.subCategories.map(subcategory => subcategory.name).join(', ')}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {cat.offers.length}
+                                                                <a href={cat.photo} target="_blank" rel="noopener noreferrer">Link</a>
                                                             </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                    Delete
+                                                            <td className="flex space-x-2 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <button onClick={() => DeleteCategory(cat._id)} className="h-6 w-6">
+                                                                    <img src="/images/icons/delete.png" alt="" />
+                                                                </button>
+                                                                <button onClick={() => handleEditCategoryClick(cat)} className="h-6 w-6">
+                                                                    <img src="/images/icons/adminEdit.png" alt="" />
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -119,7 +148,7 @@ const AdminCategory = () => {
 
                 {showAddCategory && (
                     <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                        <div className="relative rounded-lg ">
+                        <div className="relative my-auto w-11/12 xl:w-1/2">
                             <AddCategoryModel
                                 isOpen={showAddCategory}
                                 onClose={closeCategoryModel} />
@@ -134,6 +163,26 @@ const AdminCategory = () => {
                     </div>
                 )
                 }
+
+                {showEditCategory && (
+                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                        <div className="relative my-auto w-11/12 xl:w-1/2">
+                            <EditCategoryModel
+                                isOpen={showEditCategory}
+                                onClose={closeEditCategoryModel}
+                                data={selectedCategory}
+                            />
+                            {/* Close button */}
+                            <button
+                                onClick={closeEditCategoryModel}
+                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            >
+                                <img src="/images/icons/cancel-icon.png" alt="" />
+                            </button>
+                        </div>
+                    </div>
+
+                )}
             </div>
         )
     }

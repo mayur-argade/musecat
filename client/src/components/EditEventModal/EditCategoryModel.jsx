@@ -3,12 +3,15 @@ import { AdminCreateCategory } from '../../http/index'
 import toast, { Toaster } from 'react-hot-toast';
 
 
-const AddCategoryModel = ({ onClose }) => {
+const EditCategoryModel = ({ onClose, data }) => {
 
-    const [name, setName] = useState('')
+    console.log(data)
+    const subcategoryNames = data.subCategories.map(subcategory => subcategory.name);
+    const result = subcategoryNames.join(', ');
+    const [name, setName] = useState(data.name)
     const [selectedFile, setSelectedFile] = useState(null)
     const [photo, setPhoto] = useState('')
-    const [subCategories, setSubCategories] = useState('')
+    const [subCategories, setSubCategories] = useState(result)
     const [loading, setLoading] = useState(false)
     const [done, setDone] = useState(false)
     function capturePhoto(e) {
@@ -23,7 +26,6 @@ const AddCategoryModel = ({ onClose }) => {
             };
         }
     }
-
 
     async function submit() {
 
@@ -85,7 +87,7 @@ const AddCategoryModel = ({ onClose }) => {
 
                                             <div>
                                                 <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
-                                                    value={name} onChange={(e) => setName(e.target.value)}
+                                                    defaultValue={data.name} value={name} onChange={(e) => setName(e.target.value)}
                                                     placeholder="Category Name" />
                                             </div>
                                             <div>
@@ -133,4 +135,4 @@ const AddCategoryModel = ({ onClose }) => {
     )
 }
 
-export default AddCategoryModel
+export default EditCategoryModel

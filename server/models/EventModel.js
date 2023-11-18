@@ -155,7 +155,7 @@ const eventSchema = new mongoose.Schema({
     instagram: {
         type: String
     },
-    showEndEvent: {
+    showEndDate: {
         type: Boolean,
         default: false
     },

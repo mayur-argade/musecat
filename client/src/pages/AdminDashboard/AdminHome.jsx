@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { AdminGetUnverifiedVendors, AdminGetAllUsers, getEventsForAdmin, ClientGetOffers, AdminStats, AdminVerifyVendor } from '../../http/index'
 import { Link, useNavigate } from 'react-router-dom'
-
+import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment'
+
 const AdminHome = () => {
     document.title = "Admin Dashboard"
 
@@ -122,11 +123,8 @@ const AdminHome = () => {
                                 <img src="/images/logo/logo.png" alt="" />
                             </div>
                             <div className='space-x-8'>
-                                <button >
-                                    <img src="/images/icons/notification.svg" alt="" />
-                                </button>
                                 <button>
-                                    <img src="/images/icons/setting.svg" alt="" />
+                                    <img className='h-5 w-5' src="/images/icons/logout.png" alt="" />
                                 </button>
                             </div>
                         </div>
@@ -228,7 +226,9 @@ const AdminHome = () => {
                                                         <span class="text-gray-400">Total Venues</span>
                                                         <span class="text-lg font-semibold text-lg">{stats.data.venues}</span>
                                                     </div>
-                                                    <div class="ml-2 p-10 bg-gray-200 rounded-md"></div>
+                                                    <div class="ml-2">
+                                                        <img className="h-14" src="/images/icons/location.png" alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -392,7 +392,7 @@ const AdminHome = () => {
                                                                     {event.vendorid.firstname}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.eventCategory}
+                                                                    {event.eventCategory.categoryURL}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {moment(event.createdAt).format("DD-MM-YYYY")}

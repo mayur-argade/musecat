@@ -1,25 +1,27 @@
 import React from 'react'
 import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const VendorOfferCard = ({ data }) => {
-
     let status;
-    const currentDate = moment(); // Current date
-    const startEventDate = moment(data.date.dateRange?.startDate ?? null)
-    const eventDate = moment(data.date.dateRange?.endDate ?? null);
+    const currentDate = DateTime.now();
+    const startEventDate = data.date.dateRange?.startDate ? DateTime.fromISO(data.date.dateRange.startDate) : null;
+    const eventDate = data.date.dateRange?.endDate ? DateTime.fromISO(data.date.dateRange.endDate) : null;
 
-    if (currentDate.isBetween(startEventDate, eventDate)) {
-        status = 'Ongoing'
-    } else if (eventDate.isBefore(currentDate)) {
-        status = 'Archived'
-    } else if (startEventDate.isAfter(currentDate)) {
-        status = 'Upcoming'
-    }
-
-    if (data.date.recurring.includes(moment().format('dddd'))) {
-        status = 'Ongoing'
+    if (startEventDate && eventDate) {
+        if (currentDate >= startEventDate && currentDate <= eventDate) {
+            status = 'Ongoing';
+        } else if (currentDate > eventDate) {
+            status = 'Archived';
+        } else if (currentDate < startEventDate) {
+            status = 'Upcoming';
+        }
     } else {
-        status = 'Upcoming'
+        if (data.date.recurring.days.includes(moment().format('dddd').toLowerCase())) {
+            status = 'Ongoing'
+        } else {
+            status = 'Upcoming'
+        } // Handle cases where the date values are missing or invalid
     }
 
     return (

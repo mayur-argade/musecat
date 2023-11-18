@@ -4,9 +4,10 @@ import PastPurchaseCard from '../../components/Cards/PastPurchaseCard'
 import VendorOfferCard from '../../components/Cards/VendorOfferCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
-import { VendorHomeApi } from '../../http'
+import { VendorHomeApi, VendorUnverifiedEvents } from '../../http'
 import AddEventModal from '../../components/EditEventModal/AddEventModal'
 import AddOfferModal from '../../components/EditEventModal/AddOfferModal'
+import VendorUnverifedCard from '../../components/Cards/VendorUnverifedCard'
 
 const VendorHome = () => {
 
@@ -15,7 +16,8 @@ const VendorHome = () => {
     const [response, setReponse] = useState({});
     const [showAddEvent, setShowAddEvent] = useState(false)
     const [showAddOffer, setShowAddOffer] = useState(false)
-
+    const [unverifiedEvents, setUnverifiedEvents] = useState({})
+    const [eventsLoading, setEventsLoading] = useState(false)
     const closeModal = () => {
         setShowAddEvent(false);
     };
@@ -44,6 +46,19 @@ const VendorHome = () => {
         }
 
         fetchdata()
+
+        const fetchEvents = async () => {
+            try {
+                setEventsLoading(true)
+                const { data } = await VendorUnverifiedEvents()
+                setUnverifiedEvents(data)
+                setEventsLoading(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchEvents()
     }, []);
 
     // console.log(response)
@@ -108,7 +123,7 @@ const VendorHome = () => {
                             {response.data.ongoingOffers.map((offer) => (
                                 <div key={offer._id} className=" flex-shrink-0">
                                     <Link to={`/vendor/event/${offer._id}`}>
-                                    <VendorOfferCard data={offer} />
+                                        <VendorOfferCard data={offer} />
                                     </Link>
                                 </div>
                             ))
@@ -116,6 +131,29 @@ const VendorHome = () => {
                         </div>
                         <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span>
                     </div>
+
+                    {/* <div className='mt-5 flex flex-col'>
+                        <span className='font-bold text-2xl'>Unverified Lisitings</span>
+                        <div className="ml-3 md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scrollbar-hide space-x-3 md:space-x-5">
+                            {
+                                eventsLoading 
+                                ?
+                                <>
+                                loading
+                                </>
+                                :
+                                unverifiedEvents.data.map((offer) => (
+                                    <div key={offer._id} className=" flex-shrink-0">
+                                        <Link to={`/vendor/event/${offer._id}`}>
+                                            <VendorUnverifedCard data={offer} />
+                                        </Link>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span>
+                    </div> */}
+                    
                 </section >
 
                 {showAddEvent && (

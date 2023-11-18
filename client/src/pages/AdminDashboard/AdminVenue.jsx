@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
-import { getAllVenuesAdmin, AdminVerifyVenue } from '../../http/index'
+import { getAllVenuesAdmin, AdminVerifyVenue, AdminDeleteVenue } from '../../http/index'
 import AddVenueModal from '../../components/EditEventModal/AddVenueModal'
 import moment from 'moment'
 import { Link, useNavigate } from 'react-router-dom'
@@ -48,6 +48,21 @@ const AdminVenue = () => {
         }
     }
 
+    const deleteVenue = async (venueId) => {
+        try {
+            const body = {
+                venueId: venueId
+            }
+            const { data } = await AdminDeleteVenue(body)
+            if (data.success == true) {
+                window.location.reload()
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     if (venues.data == null) {
         return (
             <>
@@ -85,7 +100,7 @@ const AdminVenue = () => {
                                                         Name
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        Venue Address
+                                                        Venue Short Description
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
                                                         Venue Banner
@@ -106,7 +121,7 @@ const AdminVenue = () => {
                                                                 {cat.name}
                                                             </td>
                                                             {/* </Link> */}
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
                                                                 {cat.address}
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
@@ -114,19 +129,19 @@ const AdminVenue = () => {
 
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {cat.verified}
+                                                                {cat.verified ? "Verified" : "Unverified"}
                                                             </td>
-                                                            <td className="space-x-2 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                    delete
+                                                            <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <button onClick={() => deleteVenue(cat._id)} className="h-6 w-6">
+                                                                    <img src="/images/icons/delete.png" alt="" />
                                                                 </button>
                                                                 {
                                                                     cat.verified
                                                                         ?
                                                                         <></>
                                                                         :
-                                                                        <button onClick={() => verifyVenue(cat._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                            Verify
+                                                                        <button onClick={() => verifyVenue(cat._id)} className="text-white rounded-md h-6 w-6">
+                                                                            <img src="/images/icons/done.png" alt="" />
                                                                         </button>
                                                                 }
                                                             </td>

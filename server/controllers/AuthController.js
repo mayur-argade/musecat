@@ -9,6 +9,179 @@ const passport = require('passport')
 const { transporter } = require('../services/mail-service')
 const { OAuth2Client } = require('google-auth-library');
 
+// ##client 
+exports.clientLogin = async (req, res) => {
+    // get email and password from the user
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({
+            success: false,
+            data: "All field are manadatory"
+        })
+    }
+
+
+    let updatedUser;
+    try {
+        let user = await userService.findUser({ email: email })
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                data: "User does not found"
+            })
+        } else {
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+            if (!isPasswordMatch) {
+                return res.status(404).json({
+                    success: false,
+                    data: "Incorrect password"
+                });
+            }
+
+            if (user.isVerified == false) {
+                return res.status(statusCode.BAD_REQUEST.code).json({
+                    success: false,
+                    data: "Kindly verify your account for signing in"
+                }
+                )
+            }
+
+            const { accessToken, refreshToken } = tokenService.generateTokens({
+                _id: user._id,
+                activated: false,
+            });
+
+            await tokenService.storeRefreshToken(refreshToken, user._id);
+
+            const UserDto = {
+                _id: user._id,
+                email: user.email,
+                username: user.username,
+                isVerified: user.isVerified,
+                mobilenumber: user.mobilenumber,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                photo: user.photo,
+                type: user.type
+            }
+
+            res
+                .status(200)
+                .cookie("refreshtoken", refreshToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .cookie("accessToken", accessToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .json({ user: UserDto });
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+}
+
+exports.register = async (req, res) => {
+
+    const { email, username, password, mobilenumber } = req.body
+
+    if (!email || !username || !password) {
+        return res.status(statusCode.BAD_REQUEST.code).json({
+            success: false,
+            data: statusCode.BAD_REQUEST.message
+        })
+    }
+
+    try {
+        let user = await userService.findUser({ email: email })
+        if (user) {
+            return res.status(statusCode.CONFLICT.code).json({
+                success: false,
+                data: "Account with this email already exist try signing in"
+            })
+        }
+
+        let usernameExist = await userService.findUser({ username: username })
+
+        if (usernameExist) {
+            return res.status(statusCode.CONFLICT.code).json({
+                success: false,
+                data: "Username Already Exists"
+            })
+        }
+
+        const token = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+
+        const data = {
+            email: email,
+            username: username,
+            password: password,
+            verificationToken: token,
+            mobilenumber: mobilenumber
+        }
+
+        const newUser = await userService.createUser(data)
+
+        newUser.password = null
+
+        // console.log(accessToken)
+
+        const mailOptions = {
+            from: 'argademayur2002@gmail.com',
+            to: email,
+            subject: 'Account Verification for Muscat',
+            html: `
+              <html>
+              <body>
+                <p>Dear ${username},</p>
+                <p>Thank you for registering with omanwhereto.com. To complete your registration and activate your account, please click on the following link:</p>
+                <p><a href="https://www.omanwhereto.com/user/verify-account/${token}" target="_blank">Verify Your Account</a></p>
+                <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
+                <p>If you did not create this account, please ignore this email.</p>
+                <p>Thank you for choosing omanwhereto.com.</p>
+                <p>Best regards,<br>The omanwhereto Team</p>
+              </body>
+              </html>
+            `,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+                return res
+                    .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                        success: false,
+                        data: "failed to send email try again"
+                    });
+            } else {
+                return res
+                    .status(statusCode.SUCCESS.code).json({
+                        success: true,
+                        data: `Email sent successFully Kindly Verify your account ${token}`
+                    });
+            }
+        });
+
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+            success: false,
+            data: error
+        })
+    }
+
+}
+
 exports.vendorRegister = async (req, res) => {
 
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage, role, isVerified } = req.body
@@ -190,169 +363,12 @@ exports.vendorLogin = async (req, res) => {
     }
 }
 
-exports.clientLogin = async (req, res) => {
-    // get email and password from the user
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({
-            success: false,
-            data: "All field are manadatory"
-        })
-    }
-
-
-    let updatedUser;
-    try {
-        let user = await userService.findUser({ email: email })
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                data: "User does not found"
-            })
-        } else {
-            const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-            if (!isPasswordMatch) {
-                return res.status(404).json({
-                    success: false,
-                    data: "Incorrect password"
-                });
-            }
-
-            if (user.isVerified == false) {
-                return res.status(statusCode.BAD_REQUEST.code).json({
-                    success: false,
-                    data: "Kindly verify your account for signing in"
-                }
-                )
-            }
-
-            const { accessToken, refreshToken } = tokenService.generateTokens({
-                _id: user._id,
-                activated: false,
-            });
-
-            await tokenService.storeRefreshToken(refreshToken, user._id);
-
-            res
-                .status(200)
-                .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
-                    httpOnly: true,
-                })
-                .cookie("accessToken", accessToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
-                    httpOnly: true,
-                })
-                .json({ user: user });
-        }
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            success: false,
-            data: "Internal server error"
-        })
-    }
-}
 
 exports.clientGoogleLogin = async (req, res) => {
     return res.status(200).json("ok google")
 }
 
-exports.register = async (req, res) => {
 
-    const { email, username, password, mobilenumber } = req.body
-
-    if (!email || !username || !password) {
-        return res.status(statusCode.BAD_REQUEST.code).json({
-            success: false,
-            data: statusCode.BAD_REQUEST.message
-        })
-    }
-
-    try {
-        let user = await userService.findUser({ email: email })
-        if (user) {
-            return res.status(statusCode.CONFLICT.code).json({
-                success: false,
-                data: "Account with this email already exist try signing in"
-            })
-        }
-
-        let usernameExist = await userService.findUser({ username: username })
-
-        if (usernameExist) {
-            return res.status(statusCode.CONFLICT.code).json({
-                success: false,
-                data: "Username Already Exists"
-            })
-        }
-
-        const token = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
-
-        const data = {
-            email: email,
-            username: username,
-            password: password,
-            verificationToken: token,
-            mobilenumber: mobilenumber
-        }
-
-        const newUser = await userService.createUser(data)
-
-        newUser.password = null
-
-        // console.log(accessToken)
-
-        const mailOptions = {
-            from: 'argademayur2002@gmail.com',
-            to: email,
-            subject: 'Account Verification for Muscat',
-            html: `
-              <html>
-              <body>
-                <p>Dear ${username},</p>
-                <p>Thank you for registering with omanwhereto.com. To complete your registration and activate your account, please click on the following link:</p>
-                <p><a href="https://www.omanwhereto.com/user/verify-account/${token}" target="_blank">Verify Your Account</a></p>
-                <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
-                <p>If you did not create this account, please ignore this email.</p>
-                <p>Thank you for choosing omanwhereto.com.</p>
-                <p>Best regards,<br>The omanwhereto Team</p>
-              </body>
-              </html>
-            `,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log(error)
-                return res
-                    .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
-                        success: false,
-                        data: "failed to send email try again"
-                    });
-            } else {
-                return res
-                    .status(statusCode.SUCCESS.code).json({
-                        success: true,
-                        data: `Email sent successFully Kindly Verify your account ${token}`
-                    });
-            }
-        });
-
-
-
-    } catch (error) {
-        console.log(error)
-        return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
-            success: false,
-            data: error
-        })
-    }
-
-}
 
 exports.refresh = async (req, res) => {
     // Get refresh token from the request cookies

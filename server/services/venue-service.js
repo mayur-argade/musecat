@@ -26,6 +26,10 @@ class VenueService {
         return venues
     }
 
+    async deleteVenue(filter) {
+        const result = await VenueModel.deleteOne(filter)
+        return result
+    }
 }
 
 module.exports = new VenueService();

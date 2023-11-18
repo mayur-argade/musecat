@@ -18,13 +18,14 @@ const upload = multer({ storage: storage });
 const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { createEvent, getEventById, getVendorAllEventsNOffers, getVendorAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent } = require('../controllers/EventController')
+const { createEvent, getEventById, getVendorAllEventsNOffers, getVendorAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent, VendorUnverifiedListings } = require('../controllers/EventController')
 
 router.route('/vendor/create-event').post(upload.any(), isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
 router.route('/vendor/events').get(isLoggedin, isVerified, getVendorAllEventsNOffers)
 router.route('/vendor/create-offer').post(isLoggedin, isVerified, createOffer)
 router.route('/vendor/event/update-event').patch(isLoggedin, isVerified, updateEvent)
+router.route('/vendor/listing/unverified').get(isLoggedin, isVerified, VendorUnverifiedListings)
 
 router.route('/event/like').put(isUserLoggedin, addToFavorites)
 router.route('/events/upcoming-events').get(getUpcomingEvents)

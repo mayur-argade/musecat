@@ -18,7 +18,7 @@ const categoryModel = new mongoose.Schema({
     },
     subCategories: [{
         name: String,
-        categoryUrl: String,
+        categoryURL: String,
     }],
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
@@ -26,7 +26,7 @@ const categoryModel = new mongoose.Schema({
     }
 },
     {
-        timestamp: true,
+        timestamps: true,
     }
 )
 

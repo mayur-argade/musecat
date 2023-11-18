@@ -14,15 +14,13 @@ exports.createEvent = async (req, res) => {
     } = req.body
 
 
+    if (!title || !displayPhoto || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
+        return res.status(statusCode.BAD_REQUEST.code).json({
+            success: false,
+            data: "Required fields are missing"
+        })
+    }
 
-    // if (!title || !displayPhoto || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
-    //     return res.status(statusCode.BAD_REQUEST.code).json({
-    //         success: false,
-    //         data: "Required fields are missing"
-    //     })
-    // }
-
-    console.log(eventCategory)
 
     let event = {}
 
@@ -63,17 +61,17 @@ exports.createEvent = async (req, res) => {
 
         let uploadResult;
         let additinalPhotos = []
-        // if (additinalImages && additinalImages.length != 0) {
-        //     for (let i = 0; i < additinalImages.length; i++) {
-        //         // console.log(additinalImages[i])
-        //         uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
-        //             folder: "muscat/events",
-        //         })
-        //         additinalPhotos.push(uploadResult.secure_url)
-        //     }
-        // }
+        if (additinalImages && additinalImages.length != 0) {
+            for (let i = 0; i < additinalImages.length; i++) {
+                // console.log(additinalImages[i])
+                uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+                    folder: "muscat/events",
+                })
+                additinalPhotos.push(uploadResult.secure_url)
+            }
+        }
 
-        console.log(additinalPhotos)
+        // console.log(additinalPhotos)
 
         const data = {
             title: title,
@@ -168,19 +166,6 @@ exports.updateEvent = async (req, res) => {
     //     })
     // }
 
-    console.log(categories)
-    if (categories) {
-
-        for (const category of categories) {
-            if (category.price != null && category.price < 100) {
-                return res.status(400).json({
-                    success: false,
-                    data: "Price should be greater than 100 baisa"
-                })
-            }
-        }
-    }
-
     let event = {}
 
     try {
@@ -238,28 +223,41 @@ exports.updateEvent = async (req, res) => {
             discountOnApp: discountOnApp
         }
 
-        // search for category which is selected
-        let categorydata;
-        if (eventCategory) {
-            categorydata = await categoryService.findCategory({
-                categoryURL: eventCategory
-            })
-            // if no category then return error
-            if (!categorydata) {
-                return res.status(404).json({
-                    success: false,
-                    data: "Category not found"
-                })
+        let categoryData;
+        for (let i = 0; i < eventCategory.length; i++) {
+            const categoryURL = eventCategory[i].categoryURL;
+
+            // Check in main categories
+            categoryData = await categoryService.findCategory({
+                categoryURL: categoryURL
+            });
+
+
+
+            if (!categoryData) {
+                // If not found in main categories, search in subcategories of all categories
+                categoryData = await categoryService.findSubcategory(categoryURL);
+
+                if (!categoryData) {
+                    // If not found in subcategories either, return error
+                    return res.status(404).json({
+                        success: false,
+                        data: "Category not found"
+                    });
+                }
             }
+
+            categoryData.events.push(event._id)
+            categoryData.save()
         }
 
 
         event = await eventService.updateEvent(data)
 
         // push event id into the category
-        if (categorydata) {
-            categorydata.events.push(event._id)
-            categorydata.save()
+        if (categoryData) {
+            categoryData.events.push(event._id)
+            categoryData.save()
         }
 
 
@@ -596,33 +594,69 @@ exports.vendorHome = async (req, res) => {
         const events = await eventService.findAllEvents(
             {
                 vendorid: _id, // Assuming you pass the vendor id as a route parameter
-                // type: 'event',
-                // verified: true,
+                type: 'event',
+                verified: true,
                 $or: [
-                    { // Events with start date greater than or equal to today
+                    {
                         'date.dateRange.startDate': { $lte: today },
                         'date.dateRange.endDate': { $gte: today }
-                    },
-                    // { // Events with recurring field containing today's day
-                    //     'date.recurring': { $in: currentDay },
-                    // },
+                    }
+                    ,
+                    {
+                        $and: [
+                            {
+                                'date.recurring.days': { $in: currentDay }
+                            },
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.startDate': { $lte: today },
+                                        'date.recurring.endDate': { $gte: today }
+                                    },
+                                    {
+                                        'date.recurring.startDate': null,
+                                        'date.recurring.endDate': null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 ],
             }
         )
+
+
 
         const offers = await eventService.findAllEvents(
             {
                 vendorid: _id, // Assuming you pass the vendor id as a route parameter
                 type: 'offer',
-                // verified: true,
+                verified: true,
                 $or: [
-                    { // Events with start date greater than or equal to today
+                    {
                         'date.dateRange.startDate': { $lte: today },
                         'date.dateRange.endDate': { $gte: today }
-                    },
-                    // { // Events with recurring field containing today's day
-                    //     'date.recurring': { $in: [currentDay] },
-                    // },
+                    }
+                    ,
+                    {
+                        $and: [
+                            {
+                                'date.recurring.days': { $in: currentDay }
+                            },
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.startDate': { $lte: today },
+                                        'date.recurring.endDate': { $gte: today }
+                                    },
+                                    {
+                                        'date.recurring.startDate': null,
+                                        'date.recurring.endDate': null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 ],
             }
         )
@@ -639,6 +673,52 @@ exports.vendorHome = async (req, res) => {
 
     }
 
+}
+
+exports.VendorUnverifiedListings = async (req, res) => {
+    const { _id } = req.user
+
+    try {
+        const today = new Date()
+        const currentDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        const events = await eventService.findAllEvents(
+            {
+                vendorid: _id, // Assuming you pass the vendor id as a route parameter
+                verified: false,
+                $or: [
+                    {
+                        'date.dateRange.endDate': { $gte: today }
+                    }
+                    ,
+                    {
+                        $and: [
+                            {
+                                'date.recurring.days': { $in: currentDay }
+                            },
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.endDate': { $gte: today }
+                                    },
+                                    {
+                                        'date.recurring.startDate': null,
+                                        'date.recurring.endDate': null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+            }
+        )
+        return res.status(200).json({
+            success: true,
+            data: events
+        })
+    }
+    catch (error) {
+        console.log(error)
+    }
 }
 
 exports.addToFavorites = async (req, res) => {
@@ -994,16 +1074,31 @@ exports.getEventsForAdmin = async (req, res) => {
             type: 'event'
         };
         const todayDate = new Date();
-        const day = moment(todayDate).format('dddd').toLowerCase()
+
         query['$or'] = [
             {
                 'date.dateRange.endDate': { $gte: todayDate }
             }
             ,
             {
-                'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                $and: [
+                    {
+                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
+                    },
+                    {
+                        $or: [
+                            {
+                                'date.recurring.endDate': { $gte: todayDate }
+                            },
+                            {
+                                'date.recurring.endDate': null
+                            }
+                        ]
+                    }
+                ]
             }
         ];
+
         eventsOnDate = await eventService.findAllEvents(query);
         res.status(200).json({
             success: true,

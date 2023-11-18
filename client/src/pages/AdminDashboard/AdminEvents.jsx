@@ -4,6 +4,8 @@ import AddEventModal from '../../components/EditEventModal/AddEventModal'
 import { AdminDeleteEvent, getEventsForAdmin, AdminVerifyEvent } from '../../http/index'
 import moment from 'moment'
 import { Link, useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const AdminEvents = () => {
 
@@ -35,7 +37,7 @@ const AdminEvents = () => {
         setShowAddEvent(true)
     }
 
-    
+
 
     const deleteEvent = async (eventid) => {
         console.log(eventid)
@@ -48,7 +50,7 @@ const AdminEvents = () => {
             }
 
             const res = await AdminDeleteEvent(offerdata)
-            window.alert(res.data.data)
+            toast.success(res.data.data)
             window.location.reload()
         } catch (error) {
 
@@ -88,7 +90,7 @@ const AdminEvents = () => {
                     <div>
                         <Sidebar />
                     </div>
-
+                    <Toaster />
                     <div className='pl-20 flex flex-col w-full'>
                         <div className="mt-7"></div>
                         <div className="headline ">
@@ -142,7 +144,7 @@ const AdminEvents = () => {
                                                                     {event.vendorid.firstname}
                                                                 </td>
                                                                 <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.eventCategory}
+                                                                    {event.eventCategory.map(subcategory => subcategory.name).join(', ')}
                                                                 </td>
                                                                 <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {event.verified ?
@@ -163,20 +165,20 @@ const AdminEvents = () => {
                                                                     {moment(event.createdAt).format('DD-MM-YYYY')}
                                                                 </td>
                                                                 <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 space-x-2">
-                                                                    <button onClick={() => deleteEvent(event._id)} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                        delete
+                                                                    <button onClick={() => deleteEvent(event._id)} className="h-6 w-6">
+                                                                        <img src="/images/icons/delete.png" alt="" />
                                                                     </button>
                                                                     {
                                                                         event.verified
                                                                             ?
                                                                             <></>
                                                                             :
-                                                                            <button onClick={(() => verifyEvent(event._id))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                                Verify
+                                                                            <button onClick={(() => verifyEvent(event._id))} className=" h-6 w-6">
+                                                                                <img src="/images/icons/done.png" alt="" />
                                                                             </button>
                                                                     }
-                                                                    <button onClick={(() => navigate(`/admin/event/${event._id}`))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                        View
+                                                                    <button onClick={(() => navigate(`/admin/event/${event._id}`))} className="h-6 w-6">
+                                                                        <img src="/images/icons/eye.png" alt="" />
                                                                     </button>
                                                                 </td>
                                                             </tr>

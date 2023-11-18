@@ -345,23 +345,38 @@ exports.verifyVendor = async (req, res) => {
 
 exports.getAllUnverifiedVendors = async (req, res) => {
 
-    const vendors = await vendorService.findVendors({ isVerified: false })
+    try {
+        const vendors = await vendorService.findVendors({ isVerified: false }, 5)
 
-    return res.status(200).json({
-        success: true,
-        data: vendors
-    })
+        return res.status(200).json({
+            success: true,
+            data: vendors
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal Server Error"
+        })
+    }
 
 }
 
 exports.getAllUsers = async (req, res) => {
 
-    const users = await userService.findUsers()
+    try {
+        const users = await userService.findUsers({ isVerified: true }, 3)
 
-    return res.status(200).json({
-        success: true,
-        data: users
-    })
+        return res.status(200).json({
+            success: true,
+            data: users
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            data: "Internal Server Error"
+        })
+    }
 }
 
 exports.getAllUsersList = async (req, res) => {
