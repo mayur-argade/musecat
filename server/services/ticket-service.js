@@ -109,8 +109,11 @@ class TicketService {
 
     async returnBookedSeatsbyDate(eventDetails, searchDate) {
         // check the bookedSeats array date field and match this date with something
-        let newEvent;
-        newEvent = eventDetails.find(event => event.date.toISOString() === searchDate.toISOString());
+        // let newEvent;
+        let newEvent = eventDetails.find(event =>
+            moment(event.date).startOf('day').isSame(searchDate)
+        );
+        // newEvent = eventDetails.find(event => event.date.toISOString() === searchDate.toISOString());
 
         // if got then use that object
         if (newEvent != undefined) {
