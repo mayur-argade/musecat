@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 const EventCard = ({ data }) => {
 
-    console.log(data)
+    // console.log(data)
 
     const [isLiked, setIsLiked] = useState(false)
 

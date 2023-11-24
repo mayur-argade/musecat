@@ -6,7 +6,7 @@ import { VendorCreateOffer, GetAllCategory, getAllVenues } from '../../http/inde
 import AddVenueModal from './AddVenueModal';
 import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
-
+import Tooltip from '../shared/Tooltip/Tooltip'
 
 const AddOfferModal = ({ onClose }) => {
 
@@ -364,32 +364,52 @@ const AddOfferModal = ({ onClose }) => {
                         ?
                         <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
                             <div className='w-96 md:w-[1000px]'>
-                                <div className="modal bg-white px-3 py-4">
+                                <div className="modal bg-white px-10 py-5">
                                     <div className='text-left flex justify-start items-start align-middle'>
-                                        <p className='text-md font-bold'>Offer Details</p>
+                                        <p className='text-xl font-bold'>Offer Details</p>
                                     </div>
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name *">Title  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name *">
+                                            <div className="flex w-full">
+                                                <span className='text-sm font-semibold mt-1 ml-0'>
+                                                    Title  *
+                                                </span>
+                                                <Tooltip data={"Offer Title"} />
+                                            </div>
+                                        </label>
                                         <input
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                             onChange={((e) => setTitle(e.target.value))}
-                                            placeholder='Breakfast and poolpass'
+                                            placeholder='Please enter the title for your event here'
                                         />
                                     </div>
 
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Short Description *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Short Description *
+                                                </span>
+                                                <Tooltip data={"Short Description for offer in one line"} />
+                                            </div>
+                                        </label>
                                         <input
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Breakfast and poolpass'
+                                            placeholder='Enter a short description to let the users know about your event in a summary.'
                                             onChange={((e) => setShortDesc(e.target.value))}
                                         />
                                     </div>
 
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Offer Information  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Offer Information  *                                                </span>
+                                                <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
+                                            </div>
+                                        </label>
                                         <JoditEditor
                                             ref={editor}
                                             value={content}
@@ -399,7 +419,14 @@ const AddOfferModal = ({ onClose }) => {
                                         />
                                     </div>
 
-                                    <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
+                                    <p className='ml-2 text-sm font-semibold mt-2'>
+                                        <div className="flex w-full">
+                                            <span className='ml-0'>
+                                                Select Start Date-time and End Date-time:
+                                            </span>
+                                            <Tooltip data={"Select dates on which your offer is going to happen if offer is of type recurring then you can tick recurring and select Days, If you want clients to show Ending date for the offer toggle the show ending date button"} />
+                                        </div>
+                                    </p>
                                     <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                         <div className="flex w-full row1 space-x-4 ">
                                             <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -498,7 +525,14 @@ const AddOfferModal = ({ onClose }) => {
 
 
                                     <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Select Location  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Select Location  *
+                                                </span>
+                                                <Tooltip data={"Select Venue for your offer from the list. If your venue is not there in the list you can fill Add Venue form and request Admin to add your venue"} />
+                                            </div>
+                                        </label>
                                         <select
 
                                             type="text"
@@ -551,7 +585,14 @@ const AddOfferModal = ({ onClose }) => {
 
 
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Venue Information  *
+                                                </span>
+                                                <Tooltip data={"Add specific information about venue, This information is offer Specific"} />
+                                            </div>
+                                        </label>
                                         <JoditEditor
                                             ref={editor}
                                             value={venueDescription}
@@ -562,7 +603,14 @@ const AddOfferModal = ({ onClose }) => {
                                     </div>
 
                                     <div className='mt-3 flex flex-col  pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Category  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Category  *
+                                                </span>
+                                                <Tooltip data={"Select All the applicable categories, you can select multiple categories also"} />
+                                            </div>
+                                        </label>
                                         <CategorySelector
                                             categories={listCategory}
                                             selectedCategories={selectedCategories}
@@ -572,7 +620,14 @@ const AddOfferModal = ({ onClose }) => {
 
                                     <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
 
-                                        <h3 class="font-semibold text-gray-900 dark:text-white">Features</h3>
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Features *
+                                                </span>
+                                                <Tooltip data={"Select All the applicable features, you can select multiple features also"} />
+                                            </div>
+                                        </h3>
                                         <ul class="w-full flex flex-wrap">
                                             {
                                                 Features.list.map((feature) => (
@@ -593,7 +648,12 @@ const AddOfferModal = ({ onClose }) => {
                                     </div>
 
 
-                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Contact</label>
+                                    <div className="flex w-full">
+                                        <span className='ml-2 text-sm font-semibold  dark:text-white ml-0'>
+                                            Contact
+                                        </span>
+                                        <Tooltip data={"Provide Contact details"} />
+                                    </div>
                                     <div className=' mb-3 flex flex-col justify-between'>
                                         <div className='w-full flex justify-between'>
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
@@ -660,7 +720,12 @@ const AddOfferModal = ({ onClose }) => {
                                         </div>
                                     </div>
 
-                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Ticket Sales</label>
+                                    <div className="flex w-full">
+                                        <span className='ml-2 text-sm font-semibold  dark:text-white ml-0'>
+                                            Ticket Sales
+                                        </span>
+                                        <Tooltip data={"If your offer has tickets you can specify Ticket class, No. of Seats, and price. You can add multiple ticket classes"} />
+                                    </div>
                                     <div>
                                         {categories.map((category, index) => (
                                             <div key={index} className='w-full flex flex-row  '>
@@ -719,9 +784,15 @@ const AddOfferModal = ({ onClose }) => {
                                     </div>
 
                                     <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Terms And Condition  *</label>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0'>
+                                                    Link for Terms And Condition  *
+                                                </span>
+                                                <Tooltip data={"Give link to your terms and conditions page, if have pdf you can give accessable drive link"} />
+                                            </div>
+                                        </label>
                                         <input
-
                                             type="text"
                                             className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                             placeholder='Link for terms and condition'
@@ -731,8 +802,12 @@ const AddOfferModal = ({ onClose }) => {
 
 
                                     <div>
-                                        <label className='ml-2 text-sm font-semibold mt-1' >Additional Terms & Conditions</label>
-
+                                        <div className="flex w-full">
+                                            <span className='ml-2 text-sm font-semibold mt-1 ml-0'>
+                                                Additional Terms & Conditions
+                                            </span>
+                                            <Tooltip data={"You can add max 3 custom terms and conditions which will be displayed on the book ticket page, example ~ Are you 18+ "} />
+                                        </div>
                                         {inputFields.map((value, index) => (
                                             <div
                                                 key={index}
@@ -773,35 +848,58 @@ const AddOfferModal = ({ onClose }) => {
                                     </div>
 
 
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                    <div className="mt-4 flex w-full items-center align-middle">
+                                        <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
+                                            Featured Image *
+                                        </span>
+                                        <Tooltip data={"Featured Image is Main Poster of your offer which will be visible to the clients "} />
+                                    </div>                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
                                         onChange={capturePhoto}
                                         accept="image/*"
                                         id="photo" type="file" />
 
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
+                                    <div className="mt-2 flex w-full items-center align-middle">
+                                        <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
+                                            Additional Images
+                                        </span>
+                                        <Tooltip data={"You can add multiple images about your offer which will be visible on offer Description page"} />
+                                    </div>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
                                         onChange={captureAdditionalPhotos}
                                         accept="image/*"
                                         multiple id="photo" type="file" />
 
 
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
+                                    <div className="flex w-full items-center align-middle">
+                                        <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
+                                            Seating Map
+                                        </span>
+                                        <Tooltip data={"Add seating map image for your venue"} />
+                                    </div>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
 
                                         onChange={captureSeatingMap}
                                         accept="image/*"
                                         id="photo" type="file" />
 
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
+                                    <div className="flex w-full items-center align-middle">
+                                        <span className='ml-2 h-auto text-xs font-medium  dark:text-white ml-0'>
+                                            Banner
+                                        </span>
+                                        <Tooltip data={"Add Banner image for your offer"} />
+                                    </div>
                                     <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
 
                                         onChange={captureBanner}
                                         accept="image/*"
                                         type="file" />
 
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                    <div className="flex w-full items-center align-middle">
+                                        <span className='ml-2 text-xs font-medium  dark:text-white ml-0'>
+                                            Video
+                                        </span>
+                                        <Tooltip data={"Add sample video of the offer"} />
+                                    </div>                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
                                         accept="video/*"
                                         onChange={captureVideo}
                                         type="file" />

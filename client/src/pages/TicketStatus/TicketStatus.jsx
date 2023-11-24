@@ -5,8 +5,9 @@ import Footer from '../../components/shared/Footer/Footer'
 import FavoriteCard from '../../components/Cards/FavoriteCard'
 import TicketStatusCard from '../../components/Cards/TicketStatusCard'
 import Ticket from '../../components/Ticket/Ticket'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { ClientTicketStatusApi, UpdateTicketStatusPayment } from '../../http/index'
+import queryString from 'query-string';
 
 const TicketStatus = () => {
 
@@ -15,6 +16,10 @@ const TicketStatus = () => {
     // console.log(ticketid)
 
     const [response, setReponse] = useState('')
+    const [download, setDownload] = useState(false)
+
+    const location = useLocation();
+
 
     useEffect(() => {
         const fetchdata = async () => {
@@ -24,7 +29,15 @@ const TicketStatus = () => {
                 }
                 const res = await UpdateTicketStatusPayment(ticketdata)
                 console.log("response", res)
-
+                const queryParams = new URLSearchParams(location.search);
+                const downloadParam = queryParams.get('download');
+                if (downloadParam === 'true') {
+                    setIsModalOpen(true);
+                    // setTimeout(() => {
+                    //     setDownload(true)
+                    // }, 1000);
+                    queryParams.delete('download');
+                }
                 const { data } = await ClientTicketStatusApi(ticketid)
                 console.log(data.data)
                 setReponse(data)
@@ -59,9 +72,9 @@ const TicketStatus = () => {
     };
 
     if (response.data == null) {
-        <>
-            loading..
-        </>
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <>
@@ -174,7 +187,7 @@ const TicketStatus = () => {
                 {isModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
                         <div className="relative rounded-lg ">
-                            <Ticket event={response.data.event} ticket={response.data.ticket} />
+                            <Ticket download={download} event={response.data.event} ticket={response.data.ticket} />
                             {/* Close button */}
                             <button
                                 onClick={closeModal}

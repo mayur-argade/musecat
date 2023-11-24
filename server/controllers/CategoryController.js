@@ -174,92 +174,6 @@ exports.getAllCategories = async (req, res) => {
 
 // Get Event Count for each category
 exports.getCategoriesWithEvents = async (req, res) => {
-
-
-    // const date = req.query.date;
-
-    // try {
-    //     const filterDate = date ? new Date(date) : new Date();
-
-    //     const pipeline = [
-    //         {
-    //             $unwind: "$events"
-    //         },
-    //         {
-    //             $lookup: {
-    //                 from: "Events",
-    //                 localField: "events",
-    //                 foreignField: "_id",
-    //                 as: "eventDetails"
-    //             }
-    //         },
-    //         {
-    //             $project: {
-    //                 events: 1,
-    //                 eventDetails: 1
-    //             }
-    //         }
-    //         // {
-    //         //     $unwind: "$eventDetails"
-    //         // },
-    //         // {
-    //         //     $match: {
-    //         //         $or: [
-    //         //             {
-    //         //                 'eventDetails.date.dateRange.startDate': { $lte: filterDate },
-    //         //                 'eventDetails.date.dateRange.endDate': { $gte: filterDate }
-    //         //             },
-    //         //             {
-    //         //                 'eventDetails.date.recurring.days': { $in: [moment(filterDate).format('dddd').toLowerCase()] }
-    //         //             },
-    //         //             {
-    //         //                 'eventDetails.date.dateRange.endDate': { $gte: filterDate }
-    //         //             },
-    //         //             {
-    //         //                 'eventDetails.date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
-    //         //             }
-    //         //         ]
-    //         //     }
-    //         // },
-    //         // {
-    //         //     $group: {
-    //         //         _id: {
-    //         //             _id: "$_id",
-    //         //             categoryName: "$name",
-    //         //             categoryURL: "$categoryURL",
-    //         //             photo: "$photo"
-    //         //         },
-    //         //         validOfferCount: { $sum: 1 }
-    //         //     }
-    //         // },
-    //         // {
-    //         //     $match: {
-    //         //         validOfferCount: { $gte: 1 }
-    //         //     }
-    //         // },
-    //         // {
-    //         //     $project: {
-    //         //         _id: 0,
-    //         //         categoryName: "$_id.name",
-    //         //         categoryURL: "$_id.categoryURL",
-    //         //         photo: "$_id.photo",
-    //         //         validOfferCount: 1
-    //         //     }
-    //         // }
-    //     ];
-
-    //     const result = await CategoryModel.aggregate(pipeline);
-
-    //     return res.status(200).json({
-    //         success: true,
-    //         data: result
-    //     });
-    // } catch (error) {
-    //     console.error('Error:', error);
-    //     throw error;
-    // }
-
-
     const date = req.query.date
 
     // Convert the input date to a moment object
@@ -338,39 +252,96 @@ exports.getCategoriesWithEvents = async (req, res) => {
 
 
 exports.getCategoryAllEvents = async (req, res) => {
+    // taking parameters like categoryname, searchquery, date
     let categoryDisplayName = req.params.categoryname
     const search = req.query.search
-    const categories = await categoryService.findAllCategory()
-    let categoryArray = [];
-    for (const category of categories) {
-        categoryArray.push(category.categoryURL)
-    }
-    console.log(categoryDisplayName)
-    console.log(categoryArray)
+    // console.log("filterdate", req.query.filterdate)
+    const filterdate = req.query.filterdate
     try {
         let events;
         if (categoryDisplayName != "events") {
+            let query
             const today = new Date()
-            // const today = moment().utc()
-            console.log(today)
             const currentDay = moment().format('dddd').toLowerCase()
-            console.log(currentDay)
-            // const currentDay = "sunday"
-            let query = {
-                // type: 'event',
-                // verified: true,
-                eventCategory: categoryDisplayName,
-                $or: [
-                    { // Events with start date greater than or equal to today
-                        'date.dateRange.endDate': { $gte: today }
-                    },
-                    { // Events with recurring field containing today's day
-                        'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
-                    },
-                ],
+            const filterday = moment(filterdate).format("dddd").toLowerCase()
+
+            if (filterdate != undefined || filterdate != null) {
+                query = {
+                    // type: 'event',
+                    verified: true,
+                    $or: [
+                        {
+                            'date.dateRange.startDate': { $lte: filterdate },
+                            'date.dateRange.endDate': { $gte: filterdate }
+                        },
+                        {
+                            'date.dateRange.startDate': { $lte: filterdate },
+                            'date.dateRange.endDate': null
+                        },
+                        { // Events with recurring field containing today's day
+                            $and: [
+                                {
+                                    $or: [
+                                        {
+                                            'date.recurring.endDate': null
+                                        },
+                                        {
+                                            'date.recurring.endDate': { $gte: filterdate }
+
+                                        }
+                                    ]
+                                },
+                                {
+                                    'date.recurring.days': { $in: [filterday] },
+                                }
+                            ]
+                        },
+                    ],
+                }
+            }
+            else {
+                query = {
+                    // type: 'event',
+                    verified: true,
+                    $or: [
+                        { // Events with start date greater than or equal to today
+                            'date.dateRange.endDate': { $gte: today }
+                        },
+                        { // Events with recurring field containing today's day
+                            $and: [
+                                {
+                                    $or: [
+                                        {
+                                            'date.recurring.endDate': null
+                                        },
+                                        {
+                                            'date.recurring.endDate': { $gte: today }
+
+                                        }
+                                    ]
+                                },
+                                {
+                                    'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                                }
+                            ]
+                        },
+                    ],
+                }
             }
 
-            events = await eventService.findAllEvents(query)
+            let categoriesWithEvents = await CategoryModel.find({ categoryURL: categoryDisplayName }).populate({
+                path: 'events',
+                populate: {
+                    path: 'location',
+                },
+                match: query,
+            })
+
+            events = categoriesWithEvents.reduce((acc, category) => {
+                acc.push(...category.events);
+                return acc;
+            }, [])
+
         } else {
             const today = new Date()
             // const today = moment().utc()
@@ -379,26 +350,40 @@ exports.getCategoryAllEvents = async (req, res) => {
             console.log(currentDay)
 
             // const currentDay = "sunday"
-            const query = {
+            let query = {
                 // type: 'event',
-                // verified: true,
+                verified: true,
                 $or: [
                     { // Events with start date greater than or equal to today
                         'date.dateRange.endDate': { $gte: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.endDate': null
+                                    },
+                                    {
+                                        'date.recurring.endDate': { $gte: today }
+
+                                    }
+                                ]
+                            },
+                            {
+                                'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                            }
+                        ]
                     },
                 ],
-
             }
-            console.log("search before if block", search)
-            console.log("query before if block", query)
+            // console.log("search before if block", search)
+            // console.log("query before if block", query)
             if (search == undefined || search == 'undefined') {
                 console.log("what")
             } else {
                 // Add search conditions for category name, description, and title
-                console.log("search inside if block", search)
+                // console.log("search inside if block", search)
                 query.$and.push(
                     // Case-insensitive search
                     { 'description': new RegExp(search, 'i') },

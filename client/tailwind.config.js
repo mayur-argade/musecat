@@ -39,6 +39,7 @@ module.exports = {
             },
             screens: {
                 'xs': '390px',
+                'large': '2230px',
                 // => @media (min-width: 390px) { ... }
             },
             grayscale: {
@@ -47,10 +48,6 @@ module.exports = {
             margin: {
                 '175px': '175px',
             },
-            screens: {
-                'large': '2230px',
-                // => @media (min-width: 1280px) { ... }
-              },
         },
     },
     plugins: [

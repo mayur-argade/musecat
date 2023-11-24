@@ -53,9 +53,12 @@ const VendorLogin = () => {
                     <div>
                         <input className="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                     </div>
-                    <div className='flex justify-items-end justify-end'>
-                        <a className="justify-self-end text-sm text-white md:text-black hover:underline" href="#">Forgot password?</a>
-                    </div>
+                    <Link to='/vendor/reset'>
+                        <div className='flex justify-items-end justify-end'>
+                            <span className="justify-self-end text-sm text-white md:text-black hover:underline" href="#">Forgot password?</span>
+                        </div>
+                    </Link>
+
                     <div>
                         {/* <Link to='/vendor/home'> */}
                         <button className="w-full p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Login</button>

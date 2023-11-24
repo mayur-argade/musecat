@@ -16,9 +16,9 @@ class TicketService {
         const tickets = TicketModel.find(filter).limit(limit).sort({ date: 1 }).populate({
             path: 'eventid',
             populate: {
-              path: 'location',
+                path: 'location',
             },
-          })
+        })
         return tickets
     }
 
@@ -32,40 +32,100 @@ class TicketService {
         return ticket;
     }
 
-    async allotSeats(bookedSeats, className, seats) {
-        let allotedSeats = [];
-        console.log(bookedSeats)
-        let seatNumber = 1;
-        let updatedBookedSeats = { ...bookedSeats, seats: bookedSeats.seats || [] }; // Ensure 'seats' is initialized
-    
-        while (allotedSeats.length < seats) {
-            const seatId = `${className.charAt(0)}${seatNumber}`;
-    
-            if (!updatedBookedSeats.seats.includes(seatId)) {
-                allotedSeats.push(seatId);
-                updatedBookedSeats.seats.push(seatId);
+    async allotSeats(eventDetails, searchDate, className, seats, selectedCategory) {
+        const searchMoment = moment(searchDate);
+        const searchDateWithTimeZero = searchMoment.startOf('day'); // Set time to 00:00:00
+
+        let newEvent = eventDetails.find(event =>
+            moment(event.date).startOf('day').isSame(searchDateWithTimeZero)
+        );
+
+        if (newEvent !== undefined) {
+            let allotedSeats = [];
+            let seatNumber = 1;
+            let updatedBookedSeats = { ...newEvent, seats: newEvent.seats || [] };
+
+            while (allotedSeats.length < seats) {
+                const seatId = `${className.charAt(0)}${seatNumber}`;
+
+                if (!updatedBookedSeats.seats.includes(seatId)) {
+                    allotedSeats.push(seatId);
+                    updatedBookedSeats.seats.push(seatId);
+                }
+
+                seatNumber++;
             }
-    
-            seatNumber++;
+
+            // Update eventDetails array
+            const updatedEventDetails = eventDetails.map(event => {
+                if (moment(event.date).startOf('day').isSame(searchDateWithTimeZero)) {
+                    return updatedBookedSeats;
+                }
+                return event;
+            });
+
+            selectedCategory.bookedSeats = updatedEventDetails
+            const updatedCategory = selectedCategory
+
+            return {
+                eventDetails: updatedCategory,
+                newAssignedSeats: {
+                    date: updatedBookedSeats.date,
+                    seats: updatedBookedSeats.seats
+                }
+            };
+        } else {
+            newEvent = { date: searchDateWithTimeZero.toDate(), seats: [] };
+
+            // Allocate seats for the new event
+            let allotedSeats = [];
+            let seatNumber = 1;
+
+            while (allotedSeats.length < seats) {
+                const seatId = `${className.charAt(0)}${seatNumber}`;
+
+                if (!newEvent.seats.includes(seatId)) {
+                    allotedSeats.push(seatId);
+                    newEvent.seats.push(seatId);
+                }
+
+                seatNumber++;
+            }
+
+            // Update eventDetails array
+            const updatedEventDetails = [...eventDetails, newEvent];
+            selectedCategory.bookedSeats = updatedEventDetails
+            const updatedCategory = selectedCategory
+            return {
+                eventDetails: updatedCategory,
+                newAssignedSeats: {
+                    date: newEvent.date,
+                    seats: allotedSeats
+                }
+            };
         }
-    
-        return {
-            allotedSeats,
-            updatedBookedSeats,
-        };
     }
-    
+
 
     async returnBookedSeatsbyDate(eventDetails, searchDate) {
-        const matchingEvent = eventDetails.find(event => event.date.toISOString() === searchDate.toISOString());
+        // check the bookedSeats array date field and match this date with something
+        let newEvent;
+        newEvent = eventDetails.find(event => event.date.toISOString() === searchDate.toISOString());
 
-        if (matchingEvent) {
-            return matchingEvent;
+        // if got then use that object
+        if (newEvent != undefined) {
+            return {
+                eventDetails,
+                newEvent
+            };
         } else {
-            // If no matching date found, create an entry
-            const newEvent = { date: new Date(searchDate), seats: [] };
+            // if not then create a object where date = given date and seats = []
+            newEvent = { date: new Date(searchDate), seats: [] };
             eventDetails.push(newEvent);
-            return newEvent;
+            return {
+                eventDetails,
+                newEvent
+            };
         }
     }
 

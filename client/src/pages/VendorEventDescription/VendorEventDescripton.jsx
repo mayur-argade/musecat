@@ -108,7 +108,7 @@ const VendorEventDescripton = () => {
     document.title = 'Event Info'
     const dispatch = useDispatch();
 
-    console.log("isMobile", isMobile)
+    // console.log("isMobile", isMobile)
 
 
     useEffect(() => {
@@ -137,6 +137,7 @@ const VendorEventDescripton = () => {
                 setImages((prevImages) => [
                     ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
                     ...(data.data.eventDetails.AdditionalPhotos || []),
+                    ...(data.data.eventDetails.video ? [data.data.eventDetails.video] : []),
                     ...prevImages,
                 ]);
 
@@ -252,38 +253,29 @@ const VendorEventDescripton = () => {
 
     }, [eventid, user, isAuth, fetchLikes]);
 
+
+    const ContentDisplay = ({ currentContent }) => {
+        console.log(currentContent)
+        if (isVideo(currentContent)) {
+            return (
+                <video className="h-auto w-full rounded" controls>
+                    <source src={currentContent} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            );
+        } else {
+            return <img className="h-auto w-full rounded" src={currentContent} alt="" />;
+        }
+    };
+
+    // Helper functions to check content type
+    const isImage = (url) => /\.(jpeg|jpg|gif|png)$/.test(url);
+    const isVideo = (url) => /\.(mp4|webm|ogg)$/.test(url);
+
     console.log(images)
-    const [upcomingEvents, setUpcomingEvents] = useState({})
-    const [clientOffers, setClientOffers] = useState({})
+
     const [date, setDate] = useState('')
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                setLoading(true)
-                const { data } = await ClientUpcomingEvents(date)
-                setUpcomingEvents(data)
-                setLoading(false)
-            }
-            fetchData()
-        } catch (error) {
-            console.log(error)
-        }
-    }, [])
-
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                setLoading(true)
-                const { data } = await ClientGetOffers()
-                setClientOffers(data)
-                setLoading(false)
-            }
-            fetchData()
-        } catch (error) {
-            console.log(error)
-        }
-    }, [])
 
     let totalSeats = 0;
     let startPrice = 1000000000;
@@ -305,7 +297,7 @@ const VendorEventDescripton = () => {
                 }
                 if (category.price != null) {
                     category.price < startPrice ? startPrice = category.price : startPrice = startPrice
-                }else{
+                } else {
                     startPrice = 0
                 }
             })
@@ -317,46 +309,9 @@ const VendorEventDescripton = () => {
         }
     }
 
-
-    const favoriteFeature = async () => {
-        // console.log(eventid)
-        setIsLiked(!isLiked)
-
-        try {
-            const eventdata = {
-                eventid: eventid
-            }
-            const { data } = await addToFavorites(eventdata)
-            // console.log("data", data)
-            toast.success(data.message)
-            setFetchLikes(!fetchLikes)
-        } catch (error) {
-            console.log("error", error)
-            if (error.response.status == 401) {
-                toast.error("Login to continue further")
-                navigate('/login')
-            }
-        }
-
-    }
     const location = useLocation();
 
     console.log(response.data)
-
-    const getVendorDetails = async () => {
-        var data = response.data.eventDetails.vendorid
-        var eventname = response.data.eventDetails.title
-
-        try {
-            const response = await VedorDetails(data)
-            const externalURL = `https://wa.me/${response.data.data.mobilenumber}/?text=Interested%20in%20${eventname}.%20Can%20you%20share%20details%20and%20the%20event%20link,%20please%3F`;
-            // console.log("response",)
-            // Use window.location.href to redirect
-            window.location.href = externalURL;
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const navigate = useNavigate();
     const handleBack = () => {
@@ -450,7 +405,7 @@ const VendorEventDescripton = () => {
                                     <div className="col-span-4 md:col-span-2  flex flex-col ">
                                         <div className="w-full max-w-6xl rounded-lg relative">
                                             {/* Image */}
-                                            <img className="h-auto w-full rounded" src={images[currentImageIndex]} alt="" />
+                                            <ContentDisplay currentContent={images[currentImageIndex]} />
 
                                             {/* Top-right Edit and View Sales */}
                                             <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
@@ -548,7 +503,7 @@ const VendorEventDescripton = () => {
 
                                             <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
                                                 {/* <Link to='/favorites' className='w-full'> */}
-                                                
+
                                                 {/* </Link> */}
                                                 <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                                     <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
@@ -615,9 +570,9 @@ const VendorEventDescripton = () => {
                                                                         <></>
                                                                 }
                                                             </div>
-                                                                <div className="booknow">
-                                                                    <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                                </div>
+                                                            <div className="booknow">
+                                                                <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                            </div>
                                                         </>
                                                     :
                                                     <>
@@ -636,9 +591,9 @@ const VendorEventDescripton = () => {
                                                                 <></>
                                                         }
 
-                                                            <div className="booknow">
-                                                                <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                            </div>
+                                                        <div className="booknow">
+                                                            <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                        </div>
                                                     </>
 
                                             }
@@ -659,7 +614,7 @@ const VendorEventDescripton = () => {
 
                                 </div>
 
-                                
+
                                 <div className="standalone:hidden relative mt-8 ml-6 mr-6">
                                     {/* <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" /> */}
 

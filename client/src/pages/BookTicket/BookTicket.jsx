@@ -20,7 +20,8 @@ const BookTicket = () => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [dateList, setDateList] = useState([])
     const [ticketDate, setTicketDate] = useState('')
-    console.log("terms accepted", termsAccepted)
+
+
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -32,27 +33,46 @@ const BookTicket = () => {
                 const today = moment();
 
                 let endMoment;
-                if(data.data.eventDetails.date.dateRange){
+
+                const dateList = [];
+                if (data.data.eventDetails.date.dateRange) {
                     if (data.data.eventDetails.date.dateRange.endDate != null || data.data.eventDetails.date.dateRange.endDate != undefined) {
                         endMoment = moment(data.data.eventDetails.date.dateRange.endDate);
                     } else {
                         // If no end date, generate dates for the next 7 days
                         endMoment = today.clone().add(7, 'days');
                     }
+                } else {
+                    // Add dates for the current week based on recurring days to dateList array
+                    const recurringDays = data.data.eventDetails.date.recurring.days;
+                    const today = moment();
+
+                    for (let i = 0; i < 7; i++) {
+                        const currentDay = today.clone().add(i, 'days');
+
+                        // Check if the current day is in the recurring days
+                        if (recurringDays.includes(currentDay.format('dddd').toLowerCase())) {
+                            dateList.push(currentDay.format('YYYY-MM-DD'));
+                        }
+                    }
+
+                    console.log(dateList);
+
                 }
-
-                const dateList = [];
                 let currentMoment = today.clone();
-
-                while (currentMoment.isSameOrBefore(endMoment, 'day')) {
-                    dateList.push(currentMoment.format('YYYY-MM-DD'));
-                    currentMoment.add(1, 'day');
+                if (endMoment != null || endMoment != undefined) {
+                    while (currentMoment.isSameOrBefore(endMoment, 'day')) {
+                        dateList.push(currentMoment.format('YYYY-MM-DD'));
+                        currentMoment.add(1, 'day');
+                    }
                 }
 
                 setDateList(dateList);
 
                 setChecked(Array(data.data.eventDetails.custom.length).fill(false))
                 const { data: res } = await getCustomersSavedCards()
+
+
 
                 console.log(res)
                 setSavedCards(res.data)
@@ -128,7 +148,7 @@ const BookTicket = () => {
                 //  else if (!checked.every((isChecked) => isChecked)) {
                 //     return toast.error("Tick all checkboxes")
                 // }
-                 else if (!termsAccepted) {
+                else if (!termsAccepted) {
                     return toast.error("Check terms and conditions")
                 } else {
                     // calculatePrice()
@@ -183,9 +203,25 @@ const BookTicket = () => {
 
         // has price
         if (hasPrice.length != 0 && hasClassName.length != 0) {
-            if (!firstname || !lastname || !email || !ticketclass || !seats) {
-                toast.error("All fields are mandatory")
-            } else if (seats <= 0) {
+            if (!ticketDate) {
+                return toast.error("Select date")
+            }
+            else if (!firstname) {
+                return toast.error("Firstname is missing")
+            }
+            else if (!lastname) {
+                return toast.error("Lastname is missing")
+            }
+            else if (!email) {
+                return toast.error("Email is missing")
+            }
+            else if (!ticketclass) {
+                return toast.error("Please select ticket class")
+            }
+            else if (!seats) {
+                return toast.error("Enter seats number")
+            }
+            else if (seats <= 0) {
                 toast.error("Enter valid seats number")
             } else {
                 try {
@@ -498,42 +534,53 @@ const BookTicket = () => {
                                             </select>
 
                                         </div>
-                                        <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
-                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Select Class</label>
-                                                <select
-                                                    className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                    onChange={(e) => setTicketclass(e.target.value)}
-                                                    onClick={closePrice}
-                                                >
-                                                    <option>Select Class</option>
-                                                    {
-                                                        response.data.eventDetails.categories.map((category) => (
-                                                            category.className != null && category.seats != null
-                                                                ?
-                                                                <option value={category.className}>
-                                                                    {category.className}
-                                                                </option>
-                                                                :
-                                                                <option value={category.className}>{category.className}</option>
-                                                        ))
-                                                    }
-                                                </select>
 
-                                            </div>
+                                        {
+                                            response.data.eventDetails.categories.map((category) => (
+                                                category.className != null && category.seats != null
+                                                    ?
+                                                    <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
+                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                            <label className='text-xs mt-1' htmlFor="first name">Select Class</label>
+                                                            <select
+                                                                className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                                onChange={(e) => setTicketclass(e.target.value)}
+                                                                onClick={closePrice}
+                                                            >
+                                                                <option>Select Class</option>
+                                                                {
+                                                                    response.data.eventDetails.categories.map((category) => (
+                                                                        category.className != null && category.seats != null
+                                                                            ?
+                                                                            <option value={category.className}>
+                                                                                {category.className}
+                                                                            </option>
+                                                                            :
+                                                                            <option value="">No ticket categories found</option>
+                                                                    ))
+                                                                }
+                                                            </select>
 
-                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
-                                                <input
-                                                    type="number"
-                                                    className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                    onChange={(e) => setSeats(e.target.value)}
-                                                    onClick={closePrice}
-                                                    placeholder='5'
-                                                />
-                                            </div>
+                                                        </div>
 
-                                        </div>
+                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                            <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
+                                                            <input
+                                                                type="number"
+                                                                className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                                onChange={(e) => setSeats(e.target.value)}
+                                                                onClick={closePrice}
+                                                                placeholder='5'
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                    :
+                                                    <></>
+                                            ))
+                                        }
+
+
 
                                         <div className='flex flex-col justify-between mt-3'>
                                             {/* {

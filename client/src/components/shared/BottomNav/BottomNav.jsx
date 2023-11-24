@@ -25,7 +25,7 @@ const BottomNav = () => {
         };
     }, []);
 
-    console.log(isStandalone)
+    // console.log(isStandalone)
 
 
     return (

@@ -32,14 +32,14 @@ const PastPurchaseCard = ({ data }) => {
 
     return (
         <>
-            <div class="relative mx-2 h-auto lg:h-96 w-64 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="relative my-3 h-auto lg:h-96 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <button class="absolute top-2 right-2 py-3.5 bg-white rounded-md w-24 h-5 flex items-center justify-center align-middle text-white">
                     <p className={`text-sm font-semibold ${status == 'Expired' || status == 'Archived' || status == 'Unverified' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
                 </button>
 
                 <a href="#">
-                    <img class="h-72 w-full rounded-md" src={`${data.displayPhoto}`} alt="" />
+                    <img class="h-72 w-full rounded-md object-fit" src={`${data.displayPhoto}`} alt="" />
                 </a>
 
                 <div class="p-1 pt-2 pb-2 mx-1">
@@ -56,10 +56,26 @@ const PastPurchaseCard = ({ data }) => {
                     </div>
                 </div>
             </div>
-
-
         </>
     )
 }
 
 export default PastPurchaseCard
+
+// {/* <div className="my-8 rounded shadow-lg shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800 duration-300 hover:-translate-y-1">
+//                 {/* Clickable Area */}
+//                 <a href="link" className="cursor-pointer">
+//                     <figure>
+//                         {/* Image */}
+//                         <img src={`${data.displayPhoto}`} className="rounded-t h-72 w-full" alt="Post" />
+
+//                         <figcaption className="p-4">
+//                             {/* Title */}
+//                             <p className="text-lg mb-4 font-bold leading-relaxed text-gray-800 dark:text-gray-300">{data.title}</p>
+
+//                             {/* Description */}
+//                             <small className="leading-5 text-gray-500 dark:text-gray-400">{data.description}</small>
+//                         </figcaption>
+//                     </figure>
+//                 </a>
+//             </div> */}

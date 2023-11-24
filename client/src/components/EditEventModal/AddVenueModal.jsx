@@ -3,6 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import SearchLocationInput from '../GoogleMap/GooglePlcasesApi';
 import MapComponent from '../GoogleMap/Map';
 import { VendorCreateVenue } from '../../http/index'
+import Tooltip from '../shared/Tooltip/Tooltip'
 
 const AddVenueModal = ({ onClose }) => {
     const [selectedLocation, setSelectedLocation] = useState({
@@ -113,7 +114,7 @@ const AddVenueModal = ({ onClose }) => {
 
                                     <div>
                                         <SearchLocationInput setSelectedLocation={setSelectedLocation} />
-                                        <MapComponent selectedLocation={selectedLocation} setMapAddress={setMapAddress} enableClick={true} mapSize={"300px"} zoom={13}/>
+                                        <MapComponent selectedLocation={selectedLocation} setMapAddress={setMapAddress} enableClick={true} mapSize={"300px"} zoom={13} />
                                     </div>
 
 

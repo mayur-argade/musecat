@@ -43,8 +43,8 @@ const AdminCheckProfile = () => {
     // console.log(events)
     if (response.data == null || events.data == null) {
         return (<div className='h-screen w-full flex justify-center align-middle items-center'>
-            <img src="/images/icons/loadmain.svg" alt="" />
-        </div>)
+        <img src="/images/icons/loadmain.svg" alt="" />
+    </div>)
     } else {
         return (
             <div>

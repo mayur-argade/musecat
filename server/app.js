@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const morgan = require('morgan');
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const multer = require('multer');
-require('./middleware/passport')
 
 // Morgan middleware
 app.use(morgan('tiny'));
@@ -16,14 +16,27 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // cookie parser
 app.use(cookieParser())
 
-// cors middleware
-// const corsOptions = {
-//     origin: 'http://localhost:3000',
-//     credentials: true,
-//     optionSuccessStatus: 200,
-// }
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Set the destination folder where files will be stored
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const originalname = file.originalname;
+        const extension = originalname.split('.').pop(); // Get the file extension
 
-const upload = multer({ dest: 'uploads/' });
+        const fileName = uniqueSuffix + '.' + extension;
+        cb(null, fileName);
+
+        // After saving the file, you can construct the file URL
+        const fileURL = `${req.protocol}://${req.get('host')}/uploads/${fileName}`;
+        req.fileURL = fileURL;
+    },
+});
+
+
+// Create the multer instance with the defined storage
+const upload = multer({ storage: storage });
 
 app.use(cors({
     origin: ['https://www.omanwhereto.com', 'https://omanwhereto.com', "http://localhost:3000"],
@@ -48,5 +61,15 @@ app.use('/api/v1/venue', venue)
 app.use('/api/v1/', ticket)
 app.use('/api/v1/', notification)
 
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.post('/api/v1/upload', upload.single('file'), (req, res) => {
+    return res.status(200).json({
+        success: true,
+        data: req.fileURL
+    })
+    // res.send('File uploaded!');
+});
 
 module.exports = app;

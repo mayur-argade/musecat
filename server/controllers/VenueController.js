@@ -47,7 +47,7 @@ module.exports.createVenue = async (req, res) => {
 
 }
 
-module.exports.getVenueDetails = async (req, res) => {
+exports.getVenueDetails = async (req, res) => {
     const venueid = req.params.venueid
     console.log(venueid)
 
@@ -55,35 +55,42 @@ module.exports.getVenueDetails = async (req, res) => {
 
         const venuedata = await venueService.findVenue({ _id: venueid })
 
-        const categories = await categoryService.findAllCategory()
-        let categoryArray = [];
-        let events;
-        for (const category of categories) {
-            categoryArray.push(category.categoryURL)
+        if (!venuedata) {
+            return res.status(404).json({
+                success: false,
+                data: "Venue Not Found"
+            })
         }
 
         const today = new Date()
-        // const today = moment().utc()
-        console.log(today)
-        const currentDay = moment().format('dddd').toLowerCase()
-        console.log(currentDay)
 
-        // const currentDay = "sunday"
-        const query = {
+        let query = {
             // type: 'event',
-            $and: [
-                { 'eventCategory': { $in: categoryArray } },
-                { 'location': venuedata._id }
-            ],
+            verified: true,
+            'location': venueid,
             $or: [
                 { // Events with start date greater than or equal to today
                     'date.dateRange.endDate': { $gte: today }
                 },
                 { // Events with recurring field containing today's day
-                    'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                    $and: [
+                        {
+                            $or: [
+                                {
+                                    'date.recurring.endDate': null
+                                },
+                                {
+                                    'date.recurring.endDate': { $gte: today }
+
+                                }
+                            ]
+                        },
+                        {
+                            'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                        }
+                    ]
                 },
             ],
-
         }
 
         events = await eventService.findAllEvents(query)

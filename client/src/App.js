@@ -43,6 +43,7 @@ import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
 import SearchPWA from './pages/SearchPWA/SearchPWA';
 import AdminCheckProfile from './pages/AdminDashboard/AdminCheckProfile';
 import UserNotification from './pages/UserNotification/UserNotification'
+import VerifyVendorAccount from './pages/VerifyUserAccount/VerifyVendorAccount'
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -56,6 +57,8 @@ import AdminVenue from './pages/AdminDashboard/AdminVenue';
 import Cookies from './pages/LegalCorner/Cookies';
 import PrivacyPolicy from './pages/LegalCorner/PrivacyPolicy';
 import TermsAndCondition from './pages/LegalCorner/TermsAndCondition';
+import InputEmailVendor from './pages/ForgotPasswordVendor/InputEmailVendor';
+import ResetPasswordVendor from './pages/ForgotPasswordVendor/ResetPasswordVendor';
 
 
 function App() {
@@ -102,7 +105,9 @@ function App() {
                     <Route path="/vendor/profile" exact element={<GuestRoute Component={VendorProfile} />} />
                     <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
                     <Route path="/vendor/notification" exact element={<VendorNotification />} />
-
+                    <Route path="/vendor/verify-account/:token" exact element={<VerifyVendorAccount />} />
+                    <Route path="/vendor/reset" element={<InputEmailVendor />} />
+                    <Route path="/vendor/reset-password/:token" element={<ResetPasswordVendor />} />
                     {/* admin pages */}
                     <Route path="/admin/profile/:userid" element={<AdminCheckProfile />} />
                     <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />

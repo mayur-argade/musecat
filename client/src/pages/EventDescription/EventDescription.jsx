@@ -16,8 +16,16 @@ import { useSelector } from 'react-redux'
 const EventDescription = () => {
     let { eventid } = useParams();
 
-    console.log(eventid)
-    
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [images, setImages] = useState([]);
+    const handleShowNextImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    };
+
+    const handleShowPrevImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    };
+
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
 
@@ -105,16 +113,62 @@ const EventDescription = () => {
                     lng: data.data.eventDetails.location.coordinates.lng
                 })
 
-                setAccordions([
-                    {
-                        title: 'Event Information',
+                setImages((prevImages) => [
+                    ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
+                    ...(data.data.eventDetails.AdditionalPhotos || []),
+                    ...(data.data.eventDetails.banner || []),
+                    ...(data.data.eventDetails.video || []),
+                    ...prevImages,
+                ]);
+
+                // Assuming setAccordions is a state update function
+                const newAccordions = [];
+
+                // Event Details
+                if (data.data.eventDetails.description) {
+                    newAccordions.push({
+                        title: 'Event Details',
                         content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
-                        isOpened: true
-                    },
-                    { title: 'Venue Details', content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.venueInfo }} />, isOpened: false },
-                    { title: 'Features', content: data.data.eventDetails.features.join(" | "), isOpened: false },
-                    { title: 'Categories', content: categoryprice.join(" | "), isOpened: false },
-                    {
+                        isOpened: true,
+                    });
+                }
+
+                // Venue Details
+                if (data.data.eventDetails.venueInfo) {
+                    newAccordions.push({
+                        title: 'Venue Details',
+                        content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.venueInfo }} />,
+                        isOpened: false,
+                    });
+                }
+
+                // Features
+                if (data.data.eventDetails.features && data.data.eventDetails.features.length > 0) {
+                    newAccordions.push({
+                        title: 'Features',
+                        content: data.data.eventDetails.features.join(" | "),
+                        isOpened: false,
+                    });
+                }
+
+                // Categories
+                if (categoryprice.length > 0) {
+                    newAccordions.push({
+                        title: 'Categories',
+                        content: categoryprice.join(" | "),
+                        isOpened: false,
+                    });
+                }
+
+                // Contact Us
+                if (
+                    data.data.eventDetails.whatsapp ||
+                    data.data.eventDetails.facebook ||
+                    data.data.eventDetails.instagram ||
+                    data.data.eventDetails.email ||
+                    data.data.eventDetails.phoneNo
+                ) {
+                    newAccordions.push({
                         title: 'Contact Us',
                         content: (
                             <>
@@ -125,18 +179,18 @@ const EventDescription = () => {
                                         </a>
                                     )}
                                     {
-                                        data.data.eventDetails.whatsapp && (
+                                        data.data.eventDetails.phoneNo && (
                                             <>
                                                 {
                                                     isMobile
                                                         ?
-                                                        <a href={`tel:+${data.data.eventDetails.whatsapp}`} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                            <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+                                                        <a href={`tel:+${data.data.eventDetails.phoneNo}`} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                            <img className='h-5 w-5 cursor-pointer' src="/images/icons/telephone.png" alt="" />
                                                         </a>
                                                         :
                                                         <>
-                                                            <a onClick={() => customToaster()} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                                <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+                                                            <a onClick={() => toast(data.data.eventDetails.phoneNo)} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                                <img className='h-5 w-5 cursor-pointer' src="/images/icons/telephone.png" alt="" />
                                                             </a>
                                                         </>
                                                 }
@@ -158,13 +212,15 @@ const EventDescription = () => {
                                             <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
                                         </a>
                                     )}
-
                                 </div>
                             </>
                         ),
-                        isOpened: false
-                    },
-                ]);
+                        isOpened: false,
+                    });
+                }
+
+                // Update the state with the new accordions
+                setAccordions(newAccordions);
 
                 setIsLiked(isAuth && data.data.eventDetails.likes.includes(user._id))
 
@@ -176,37 +232,8 @@ const EventDescription = () => {
 
     }, [eventid, user, isAuth, fetchLikes]);
 
-    const [upcomingEvents, setUpcomingEvents] = useState({})
-    const [clientOffers, setClientOffers] = useState({})
-    const [date, setDate] = useState('')
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                setLoading(true)
-                const { data } = await ClientUpcomingEvents(date)
-                setUpcomingEvents(data)
-                setLoading(false)
-            }
-            fetchData()
-        } catch (error) {
-            console.log(error)
-        }
-    }, [])
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                setLoading(true)
-                const { data } = await ClientGetOffers()
-                setClientOffers(data)
-                setLoading(false)
-            }
-            fetchData()
-        } catch (error) {
-            console.log(error)
-        }
-    }, [])
 
     let totalSeats = 0;
     let startPrice = 1000000000;
@@ -219,11 +246,19 @@ const EventDescription = () => {
         if (response.data.eventDetails && response.data.eventDetails.categories) {
             const availableTickets = response.data.eventDetails.categories
             availableTickets.map((category) => {
-                totalSeats += category.seats;
-                bookedSeats += category.bookedSeats.length
-                category.price < startPrice ? startPrice = category.price : startPrice = startPrice
+                if (category.seats != null) {
+                    totalSeats += category.seats;
+                    bookedSeats += category.bookedSeats.length
+                    availableSeats = totalSeats - bookedSeats
+                } else {
+                    availableSeats = "∞"
+                }
+                if (category.price != null) {
+                    category.price < startPrice ? startPrice = category.price : startPrice = startPrice
+                } else {
+                    startPrice = 0
+                }
             })
-            availableSeats = totalSeats - bookedSeats
             // console.log("availableTickets", startPrice, availableSeats)
 
             // console.log("date printing", response.data.eventDetails.data)
@@ -254,61 +289,8 @@ const EventDescription = () => {
         }
 
     }
+
     const location = useLocation();
-
-    console.log(response.data)
-
-    const getVendorDetails = async () => {
-        var data = response.data.eventDetails.vendorid
-        var eventname = response.data.eventDetails.title
-
-        try {
-            const response = await VedorDetails(data)
-            const externalURL = `https://wa.me/${response.data.data.mobilenumber}/?text=Interested%20in%20${eventname}.%20Can%20you%20share%20details%20and%20the%20event%20link,%20please%3F`;
-            // console.log("response",)
-            // Use window.location.href to redirect
-            window.location.href = externalURL;
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const customToaster = () => {
-        toast.custom((t) => (
-            <div
-                className={`${t.visible ? 'animate-enter' : 'animate-leave'
-                    } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-            >
-                <div className="flex-1 w-0 p-4">
-                    <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5">
-                            <img
-                                className="h-10 w-10 rounded-full"
-                                src="/images/icons/call.svg"
-                                alt=""
-                            />
-                        </div>
-                        <div className="ml-3 flex-1">
-                            <p className="text-sm font-medium text-gray-900">
-                                Mobile number
-                            </p>
-                            <p className="mt-1 text-sm text-gray-500">
-                                {response.data.eventDetails.whatsapp}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex border-l border-gray-200">
-                    <button
-                        onClick={() => toast.dismiss(t.id)}
-                        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-                        Close
-                    </button>
-                </div>
-            </div>
-        ))
-    }
 
     const navigate = useNavigate();
     const handleBack = () => {
@@ -346,9 +328,10 @@ const EventDescription = () => {
 
     // console.log("response", upcomingEvents)
 
-    if (response.data == null || upcomingEvents.data == null || clientOffers.data == null) {
-        <>Loading...
-        </>
+    if (response.data == null) {
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     } else {
         return (
             <div className='appmargine'>
@@ -379,7 +362,17 @@ const EventDescription = () => {
                                         {
                                             response.data.eventDetails.date.type == 'dateRange'
                                                 ?
-                                                <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY | HH:mm")} to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}</p>
+                                                <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
+                                                    {response.data.eventDetails.showEndDate
+                                                        ?
+                                                        <>
+                                                            to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
+                                                        </>
+                                                        :
+                                                        <>
+                                                        </>
+                                                    }
+                                                </p>
                                                 :
                                                 <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
                                         }
@@ -421,6 +414,21 @@ const EventDescription = () => {
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            {
+                                                images.length > 1
+                                                    ?
+                                                    <div className="absolute flex items-center -bottom-10 left-1/2 transform -translate-x-1/2 space-x-2">
+                                                        <button onClick={handleShowPrevImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                            Prev
+                                                        </button>
+                                                        <button onClick={handleShowNextImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                            Next
+                                                        </button>
+                                                    </div>
+                                                    :
+                                                    <></>
+                                            }
                                         </div>
 
                                         <div className='flex mt-3 w-full align-middle justify-between items-center space-x-2'>
@@ -429,7 +437,7 @@ const EventDescription = () => {
                                             </div>
 
                                             <div>
-                                                <p className='font-light text-wrap text-xs'>Get exclusive updates on events, artists, offers and things to do</p>
+                                                <p className='font-light text-wrap text-xs'></p>
                                             </div>
 
                                             <div className="dropdown-container reltive">
@@ -530,12 +538,20 @@ const EventDescription = () => {
                                                     moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
                                                         ?
                                                         <>
-                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                                                {/* <button type="button" class=""> */}
-                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                Call On Whatsapp
-                                                                {/* </button> */}
-                                                            </a>
+                                                            {
+                                                                response.data.eventDetails.whatsapp
+                                                                    ?
+
+                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                        {/* <button type="button" class=""> */}
+                                                                        <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                        Call On Whatsapp
+                                                                        {/* </button> */}
+                                                                    </a>
+
+                                                                    :
+                                                                    <></>
+                                                            }
                                                             <div className="booknow">
                                                                 <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
                                                             </div>
@@ -543,12 +559,20 @@ const EventDescription = () => {
                                                         :
                                                         <>
                                                             <div className="flex">
-                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                                                    {/* <button type="button" class=""> */}
-                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                    Call On Whatsapp
-                                                                    {/* </button> */}
-                                                                </a>
+                                                                {
+                                                                    response.data.eventDetails.whatsapp
+                                                                        ?
+
+                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                            {/* <button type="button" class=""> */}
+                                                                            <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                            Call On Whatsapp
+                                                                            {/* </button> */}
+                                                                        </a>
+
+                                                                        :
+                                                                        <></>
+                                                                }
                                                             </div>
                                                             <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                                 <div className="booknow">
@@ -558,12 +582,20 @@ const EventDescription = () => {
                                                         </>
                                                     :
                                                     <>
-                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                                            {/* <button type="button" class=""> */}
-                                                            <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                            Call On Whatsapp
-                                                            {/* </button> */}
-                                                        </a>
+                                                        {
+                                                            response.data.eventDetails.whatsapp
+                                                                ?
+
+                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                    {/* <button type="button" class=""> */}
+                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                    Call On Whatsapp
+                                                                    {/* </button> */}
+                                                                </a>
+
+                                                                :
+                                                                <></>
+                                                        }
                                                         <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                             <div className="booknow">
                                                                 <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
@@ -580,58 +612,63 @@ const EventDescription = () => {
 
 
 
-                                <div className='flex flex-col justify-center items-center mt-5'>
-                                    <span className='text-xl font-bold'>
+                                <div className='flex flex-col justify-center items-center mt-10'>
+                                    <span className='text-2xl font-bold'>
                                         Location
                                     </span>
-                                    <div className='w-full md:w-11/12'>
+                                    <div className='w-full mt-5'>
                                         <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                     </div>
 
                                 </div>
 
-                                <div className='flex flex-col justify-center items-center mt-5'>
-                                    <span className='text-xl font-bold'>
+                                <div className='flex justify-center items-center mt-10'>
+                                    <span className='text-2xl font-bold'>
                                         Upcoming Events
                                     </span>
-
                                 </div>
-                                {/* <div className='ml-2 mr-2'>
-                                    <div className="md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-1 md:space-x-5">
-                                        {upcomingEvents.data.map((event) => (
+                                <div className='ml-2 mr-2 mt-5'>
+                                    <div className="mx-2 place-items-center grid grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
+                                        {response.data.upcomingEvents.map((event) => (
                                             <div >
                                                 < EventCard data={event} />
                                             </div>
                                         ))}
                                     </div>
-                                </div> */}
+                                </div>
 
 
+                                {
+                                    response.data.offers.length > 0
+                                        ?
+                                        <section>
+                                            <section className='mt-3 ml-3 mr-3'>
+                                                <div className='flex justify-center items-center mt-5'>
+                                                    <span className='text-2xl font-bold'>
+                                                        Offers
+                                                    </span>
+                                                </div>
 
-                                <section>
-                                    <section className='mt-3 ml-3 mr-3'>
-                                        <div className='flex justify-between '>
-                                            <div className="left"><span className='text-xl font-bold'>Offers</span></div>
-                                            <div className="right"></div>
+                                                <div className="ml-1 mr-1">
+                                                    <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-12'>
+                                                        {
+                                                            response.data.offers.map((offer) => (
+                                                                <Link to={`/events/${offer._id}`}>
+                                                                    <img className='h-64 w-52 snap-start' src={`${offer.displayPhoto}`} alt="" />
+                                                                </Link>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                    <div className='flex justify-end space-x-2 '>
+                                                        <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </section>
+                                        :
+                                        <></>
+                                }
 
-                                        </div>
-
-                                        <div className="ml-1 mr-1">
-                                            <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-12'>
-                                                {
-                                                    clientOffers.data.map((offer) => (
-                                                        <Link to={`/events/${offer._id}`}>
-                                                            <img className='h-64 w-52 snap-start' src={`${offer.displayPhoto}`} alt="" />
-                                                        </Link>
-                                                    ))
-                                                }
-                                            </div>
-                                            <div className='flex justify-end space-x-2 '>
-                                                <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </section>
 
                                 <div className="standalone:hidden relative mt-8 ml-6 mr-6">
                                     <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />

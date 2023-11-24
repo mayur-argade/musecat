@@ -25,6 +25,10 @@ const AddVendorModal = ({ onClose }) => {
     const [crImage, setCrImage] = useState('')
     const [selectedLogo, setSelectedLogo] = useState(null)
     const [selectedCrImage, setSelectedCrImage] = useState(null)
+    const [showBusinessInfo, setShowBusinessInfo] = useState(false)
+    const [Baddress, setBaddress] = useState('')
+    const [poBox, setPoBox] = useState('')
+    const [postcode, setPostcode] = useState('')
 
     function captureLogo(e) {
         const file = e.target.files[0];
@@ -144,7 +148,10 @@ const AddVendorModal = ({ onClose }) => {
                                             <input
                                                 type="radio"
                                                 value="business"
-                                                onChange={(e) => setAccountType(e.target.value)}
+                                                onChange={(e) => {
+                                                    setAccountType(e.target.value);
+                                                    setShowBusinessInfo(true)
+                                                }}
                                                 checked={accountType === "business"} // Check if "Business" is selected
                                                 id="business"
                                             />
@@ -164,6 +171,32 @@ const AddVendorModal = ({ onClose }) => {
                                                 Individual
                                             </label>
                                         </div>
+
+                                        {
+                                            showBusinessInfo
+                                                ?
+                                                <div className="business">
+                                                    <div>
+                                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                                            value={Baddress} onChange={(e) => setBaddress(e.target.value)}
+                                                            placeholder="Address" />
+                                                    </div>
+                                                    <div>
+                                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                                            value={poBox} onChange={(e) => setPoBox(e.target.value)}
+                                                            placeholder="P.O. Box" />
+                                                    </div>
+                                                    <div>
+                                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                                            value={postcode} onChange={(e) => setPostcode(e.target.value)}
+                                                            placeholder="Post code" />
+                                                    </div>
+                                                </div>
+                                                :
+                                                <></>
+                                        }
+
+
 
                                         <div>
                                             <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyname" id='companyname'

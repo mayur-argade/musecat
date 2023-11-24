@@ -368,8 +368,6 @@ exports.clientGoogleLogin = async (req, res) => {
     return res.status(200).json("ok google")
 }
 
-
-
 exports.refresh = async (req, res) => {
     // Get refresh token from the request cookies
     const { refreshtoken: refreshTokenFromCookie } = req.cookies;
@@ -551,8 +549,132 @@ exports.sendMailForgotPassword = async (req, res) => {
 
 
     } catch (error) {
-
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
+}
+
+exports.sendForgetMailToVendor = async (req, res) => {
+    try {
+
+        const { email } = req.body
+
+        const vendor = await vendorService.findVendor({ email: email })
+
+        if (!vendor) {
+            return res.status(404).json({
+                success: true,
+                data: "vendor not found kindly register"
+            })
+        }
+
+        const token = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+
+        const data = {
+            _id: vendor._id,
+            passwordToken: token
+        }
+
+        const updatedUser = vendorService.updateVendor(data)
+        if (updatedUser) {
+            const mailOptions = {
+                from: 'argademayur2002@gmail.com',
+                to: email,
+                subject: 'Reset Password for Muscat',
+                html: `
+                  <html>
+                  <body>
+                    <p>Dear ${vendor.firstname},</p>
+                    <p><a href="https://www.omanwhereto.com/vendor/reset-password/${token}" target="_blank">Reset Your Password</a></p>
+                    <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
+                    <p>Thank you for choosing omanwhereto.com.</p>
+                    <p>Best regards,<br>The omanwhereto Team</p>
+                  </body>
+                  </html>
+                `,
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res
+                        .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                            success: false,
+                            data: "failed to send email try again"
+                        });
+                } else {
+                    return res
+                        .status(statusCode.SUCCESS.code).json({
+                            success: true,
+                            data: `Email sent successFully Kindly check your email`
+                        });
+                }
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                data: "failed to generate a token"
+            })
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+
+}
+
+exports.resetVendorPassword = async (req, res) => {
+    try {
+
+        const { token, password } = req.body
+
+        const user = await vendorService.findVendor({ passwordToken: token })
+
+        console.log(user)
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                data: "reset request not found for password for this vendor"
+            })
+        }
+
+        const data = {
+            _id: user._id,
+            password: password,
+            passwordToken: null
+        }
+
+        const updatedUser = await vendorService.updateVendor(data)
+        console.log(updatedUser)
+
+        if (!updatedUser) {
+            return res.status(500).json({
+                success: false,
+                data: "failed to update password try again after some time"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Password updated successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+
 }
 
 exports.resetpassword = async (req, res) => {
@@ -593,6 +715,10 @@ exports.resetpassword = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
 
 }

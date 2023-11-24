@@ -20,7 +20,7 @@ const eventSchema = new mongoose.Schema({
     seatingMap: {
         type: String,
     },
-    Video: {
+    video: {
         type: String,
     },
     shortDescription: {
@@ -75,7 +75,7 @@ const eventSchema = new mongoose.Schema({
             },
             bookedSeats: [{
                 date: Date,
-                seats: Array
+                seats: [String]
             }], // Add this field to track booked seats
         },
     ],

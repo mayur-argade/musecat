@@ -1,23 +1,46 @@
-import React from 'react'
+import React from 'react';
+import QRCode from 'qrcode.react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import moment from 'moment';
 import './ticket.css'
-import QRCode from 'qrcode.react'
-import moment from 'moment'
-const Ticket = ({ event, ticket }) => {
+
+const Ticket = ({ event, ticket, download }) => {
+
+    const baseUrl = "http://omanwhereto.com/"
+
+    const pageUrl = `${baseUrl}/${ticket._id}?download=true`;
 
     const qrdata = {
-        title: event.title,
-        name: `${ticket.firstname} ${ticket.lastname}`,
-        email: ticket.email,
-        class: ticket.class,
-        seats: ticket.seats,
-        row: ticket.status
+        link: pageUrl, // Add the link to the page
+    };
+
+    const qrCodeValue = JSON.stringify(qrdata);
+
+    const handleDownloadPDF = () => {
+        const element = document.getElementById('ticketContent');
+
+        html2canvas(element).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save(`${ticket.firstname}_${event.title}_ticket.pdf`);
+        });
+    };
+
+    console.log(download)
+
+    if (download === true) {
+        handleDownloadPDF()
     }
-
-    const qrCodeValue = JSON.stringify(qrdata)
-
+    const handleQRCodeScan = () => {
+        // Redirect to the specified URL
+        window.location.href = pageUrl;
+    };
     return (
         <>
-            <div class="container bg-white rounded-lg">
+            <div id="ticketContent" class="container bg-white rounded-lg">
                 <div class="item rounded-2xl">
                     <div class="item-left">
                         <div className='flex justify-between items-center align-middle '>
@@ -58,12 +81,21 @@ const Ticket = ({ event, ticket }) => {
                     <div class="item-right">
                         {/* <img className='h-60 mt-5' src="/images/assets/qrcode.png" alt="" /> */}
                         <QRCode value={qrCodeValue} className='mt-5'
-                            bgColor="#C0A04C" fgColor="#ffff" level='L' size="240" />
+                            bgColor="#C0A04C" fgColor="#ffff" level='L' size="240" onScan={handleQRCodeScan} />
                         <span class="up-border"></span>
                         <span class="down-border"></span>
                     </div>
                 </div>
 
+            </div>
+
+            <div className='flex justify-end'>
+                <button
+                    onClick={handleDownloadPDF}
+                    className="mt-5 bg-[#C0A04C] text-white font-bold py-2 px-4 rounded"
+                >
+                    Download PDF
+                </button>
             </div>
         </>
     )

@@ -63,8 +63,9 @@ const VendorHostedEvents = () => {
         return (
             <div>
                 <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                
                 <div className='flex justify-center items-center align-middle mt-5'>
-                    <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-10/12 2xl:w-7/12'>
+                    <section className='w-full sm:mx-5 md:mx-5 md:w-9/12 xl:w-8/12 2xl:w-7/12'>
                         <div className='flex justify-end md:justify-between align-middle items-center'>
                             <div className="ml-3 hidden md:flex align-middle items-center">
                                 <button onClick={handleBack}>
@@ -155,7 +156,7 @@ const VendorHostedEvents = () => {
                             </div>
                         </div>
 
-                        <div className='mb-7 mx-5 grid xs:grid-cols-2 justify-items-center md:flex-wrap gap-y-4 lg:justify-start md:flex lg:grid-cols-2 xl:grid-cols-3 gap-4'>
+                        <div className='mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
                             {
                                 showArchived
                                     ?

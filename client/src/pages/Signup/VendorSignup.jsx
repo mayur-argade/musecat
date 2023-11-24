@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { VendorRegister } from '../../http/index'
+import { VendorRegister, handleUpload } from '../../http/index'
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios'
+
 
 const VendorSignup = () => {
     document.title = "Vendor ~ Signup"
@@ -27,6 +29,12 @@ const VendorSignup = () => {
     const [crImage, setCrImage] = useState('')
     const [selectedLogo, setSelectedLogo] = useState(null)
     const [selectedCrImage, setSelectedCrImage] = useState(null)
+    const [showBusinessInfo, setShowBusinessInfo] = useState(false)
+    const [Baddress, setBaddress] = useState('')
+    const [poBox, setPoBox] = useState('')
+    const [postcode, setPostcode] = useState('')
+    const [Crfile, setCrfile] = useState(null)
+    const [fileURL, setFileURL] = useState('');
 
     function captureLogo(e) {
         const file = e.target.files[0];
@@ -41,28 +49,70 @@ const VendorSignup = () => {
         }
     }
 
-    function captureImage(e) {
-        const file = e.target.files[0];
-        setSelectedCrImage(file)
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = function () {
-                setCrImage(reader.result);
-                console.log(reader.result);
-            };
-        }
-    }
-    
+    const handleFileChange = (event) => {
+        setCrfile(event.target.files[0]);
+    };
+
     async function submit() {
 
-        if (!firstname || !lastname || !email || !password || !mobile || !registerAddress || !accountType || !companyName || !companyDisplayName || !crNo || !website || !logo || !crImage) {
-            window.alert("all fields are mandatory")
+        // if (!firstname || !lastname || !email || !password || !mobile || !registerAddress || !accountType || !companyName || !companyDisplayName || !crNo || !website || !logo || !crImage) {
+        //     window.alert("all fields are mandatory")
+        // }
+        if (!Crfile || Crfile == null) {
+            return toast.error("CR Pdf is missing")
         }
-
+        else if (!firstname) {
+            return toast.error("Firstname is missing")
+        }
+        else if (!lastname) {
+            return toast.error("lastname is missing")
+        }
+        else if (!email) {
+            return toast.error("Email is missing")
+        }
+        else if (!password) {
+            return toast.error("Password is missing")
+        }
+        else if (!mobile) {
+            return toast.error("Mobile Number is missing")
+        }
+        else if (!registerAddress) {
+            return toast.error("Register address is missing")
+        }
+        else if (!accountType) {
+            return toast.error("Please select account type")
+        }
+        else if (!companyName) {
+            return toast.error("Company name is missing")
+        }
+        else if (!companyDisplayName) {
+            return toast.error("Please provide Company display name")
+        }
+        else if (!crNo) {
+            return toast.error("Provide CR no.")
+        }
+        else if (!logo) {
+            return toast.error("Please provide company logo")
+        }
         if (mobile.length !== 8) {
             return toast.error("Please input valid phone number")
         }
+
+        const formData = new FormData();
+        formData.append('file', Crfile);
+
+        handleUpload(formData)
+            .then((response) => {
+                console.log('Upload successful:', response);
+                setFileURL(response.data.data.data)
+                // Do something with the response if needed
+            })
+            .catch((error) => {
+                console.error('Error during upload:', error);
+                // Handle the error if needed
+            });
+
+        console.log("response from function call", fileURL)
 
         const signupdata = {
             firstname: firstname,
@@ -77,7 +127,7 @@ const VendorSignup = () => {
             crNo: crNo,
             website: website,
             logo: logo,
-            crImage: crImage
+            crImage: fileURL
         }
         console.log(signupdata)
         try {
@@ -152,7 +202,10 @@ const VendorSignup = () => {
                             <input
                                 type="radio"
                                 value="business"
-                                onChange={(e) => setAccountType(e.target.value)}
+                                onChange={(e) => {
+                                    setAccountType(e.target.value);
+                                    setShowBusinessInfo(true)
+                                }}
                                 checked={accountType === "business"} // Check if "Business" is selected
                                 id="business"
                             />
@@ -164,7 +217,10 @@ const VendorSignup = () => {
                             <input
                                 type="radio"
                                 value="individual"
-                                onChange={(e) => setAccountType(e.target.value)}
+                                onChange={(e) => {
+                                    setAccountType(e.target.value);
+                                    setShowBusinessInfo(false)
+                                }}
                                 checked={accountType === "individual"} // Check if "Individual" is selected
                                 id="individual"
                             />
@@ -173,9 +229,38 @@ const VendorSignup = () => {
                             </label>
                         </div>
 
+
+                        {
+                            showBusinessInfo
+                                ?
+                                <div className="business space-y-2">
+                                    <div>
+                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                            value={Baddress} onChange={(e) => setBaddress(e.target.value)}
+                                            placeholder="Address" />
+                                    </div>
+                                    <div>
+                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                            value={poBox} onChange={(e) => setPoBox(e.target.value)}
+                                            placeholder="P.O. Box" />
+                                    </div>
+                                    <div>
+                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                            value={postcode} onChange={(e) => setPostcode(e.target.value)}
+                                            placeholder="Post code" />
+                                    </div>
+                                </div>
+                                :
+                                <></>
+                        }
+
+
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="Number" for="companyname" id='companyname'
-                                value={companyName} onChange={(e) => setCompanyName(e.target.value)}
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyname" id='companyname'
+                                value={companyName} onChange={(e) => {
+                                    const alphabetsOnly = e.target.value.replace(/[^A-Za-z]/g, '')
+                                    setCompanyName(alphabetsOnly);
+                                }}
                                 placeholder="Company Name (as per CR)" />
                         </div>
 
@@ -210,7 +295,7 @@ const VendorSignup = () => {
 
                                     <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload CR Image'}</p>
                                 </div>
-                                <input onChange={captureImage} id="crimage" type="file" className="hidden" />
+                                <input onChange={(e) => setCrfile(e.target.files[0])} id="crimage" type="file" className="hidden" />
                             </label>
                         </div>
 

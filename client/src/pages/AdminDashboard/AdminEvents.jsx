@@ -76,11 +76,9 @@ const AdminEvents = () => {
 
 
     if (events.data == null) {
-        return (
-            <>
-                "loading"
-            </>
-        )
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     }
     else {
         return (

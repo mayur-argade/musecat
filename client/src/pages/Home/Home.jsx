@@ -150,13 +150,14 @@ const Home = () => {
     const [chooseDate, setChooseDate] = useState('')
 
     function setDayforCategory(passedDate) {
-        console.log("this is passed date", passedDate)
+        // console.log("this is passed date", passedDate)
         setSelectedDay(passedDate)
         SetDay(`?date=${passedDate}`)
         // console.log(selectedDay)
     }
-    console.log("this is selected day", selectedDay)
+    // console.log("this is selected day", selectedDay)
     function displayLinks() {
+        console.log("clicked")
         setShowLinks(true)
     }
 
@@ -218,8 +219,10 @@ const Home = () => {
     useEffect(() => {
         const fetchdata = async () => {
             try {
+                setOffersLoading(true)
                 const { data } = await ClientGetOffers()
                 setOffers(data)
+                setOffersLoading(false)
             } catch (error) {
                 console.log(error)
             }
@@ -274,37 +277,6 @@ const Home = () => {
                 <div
                     class="NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">
                     <header className='p-5 md:p-10 '>
-
-                        <div className='hidden md:block'>
-                            <button
-                                ref={followButtonRef}
-                                onClick={() => setShowLinks(!showLinks)}
-                                className='absolute top-96 right-0 text-white bg-[#C0A04C] text-sm font-semibold py-2 pl-7 pr-6 rounded-l-full'>
-                                Follow Us
-                            </button>
-                            {showLinks
-                                ?
-                                <div
-                                    className='top-96 right-0 absolute  px-3 bg-white rounded-l-full flex space-x-2 py-2'>
-                                    <a blank href="https://wa.me/+96891738405">
-                                        <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
-                                    </a>
-                                    <a href="https://www.facebook.com/muscatwhereto">
-                                        <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
-                                    </a>
-
-                                    <a href="https://www.instagram.com/muscat_whereto/">
-                                        <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
-                                    </a>
-                                    <a href="mailto:info@muscatwhereto.com">
-                                        <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
-                                    </a>
-                                </div>
-                                :
-                                <>
-                                </>
-                            }
-                        </div>
 
                         <div className="">
                             <div
@@ -361,7 +333,35 @@ const Home = () => {
                                     </p>
                                 </div>
 
+                                <div onClick={() => setShowLinks(!showLinks)} className='hidden md:block z-50 '>
+                                    <button
+                                        ref={followButtonRef}
+                                        className='m-0 -right-10 absolute  text-white bg-[#C0A04C] text-sm font-semibold py-2 pl-7 pr-6 rounded-l-full'>
+                                        Follow Us
+                                    </button>
+                                    {showLinks
+                                        ?
+                                        <div
+                                            className='-right-10 absolute  px-3 bg-white rounded-l-full flex space-x-2 py-2'>
+                                            <a blank href="https://wa.me/+96891738405">
+                                                <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
+                                            </a>
+                                            <a href="https://www.facebook.com/muscatwhereto">
+                                                <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
+                                            </a>
 
+                                            <a href="https://www.instagram.com/muscat_whereto/">
+                                                <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
+                                            </a>
+                                            <a href="mailto:info@muscatwhereto.com">
+                                                <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
+                                            </a>
+                                        </div>
+                                        :
+                                        <>
+                                        </>
+                                    }
+                                </div>
 
                                 <div className='hidden md:flex items-center justify-center '>
                                     <div className='bg-white border-2 w-11/12 md:w-2/3 flex items-center justify-center flex-col p-3 rounded-lg'>
@@ -376,7 +376,7 @@ const Home = () => {
                                             </div>
 
                                             <div className='flex mx-auto justify-center'>
-                                                <button onClick={(() => navigate(`/Category/events?search=${query}`))} type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Search</button>
+                                                <button onClick={(() => navigate(`/Category/events?search=${query}`))} type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none border focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 flex align-middle justify-center items-center"><img src="/images/icons/search1.svg" className="h-4 w-4" alt="" srcset="" /> <span>Search</span></button>
                                             </div>
                                         </div>
 
@@ -656,7 +656,8 @@ const Home = () => {
                 {
                     editorpick.data == null || editorpick.data == undefined
                         ?
-                        <>loading..</>
+                        <>
+                        </>
                         :
                         editorpickLoading
                             ?
@@ -730,47 +731,89 @@ const Home = () => {
                                 </section>
                 }
 
+                {
+                    offers.data == undefined || offers.data == null
+                        ?
+                        <>
+                        </>
+                        :
+                        offersLoading
+                            ?
+                            <section className='flex justify-center items-center align-middle mt-5'>
+                                <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                                    <div className='flex justify-between '>
+                                        <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Offers</span></div>
+                                        <div className="right"></div>
+                                    </div>
+
+                                    <div>
+                                        <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3'>
+                                            <>
+                                                <div className='h-30'>
+                                                    <SkeletonCard />
+                                                </div>
+                                            </>
+                                        </div>
+
+                                    </div>
+                                    <div className='flex justify-end space-x-2 '>
+                                        <Link to="/category/editorspick">
+                                            <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                                        </Link>
+                                    </div>
+                                </section>
+                            </section>
+                            :
+                            offers.data.length === 0
+                                ?
+                                <></>
+                                :
+                                <section className='flex justify-center items-center align-middle mt-5'>
+                                    <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                                        <div className='flex justify-between '>
+                                            <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Offers</span></div>
+                                            <div className="right"></div>
+
+                                        </div>
+
+                                        <div className="ml-1 mr-1">
+                                            <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-10'>
+                                                {
+                                                    offers.data == undefined || offers.data == null
+                                                        ?
+                                                        <>
+                                                            <div className='h-30'>
+                                                                <SkeletonCard />
+                                                            </div>
+                                                        </>
+                                                        :
+                                                        offers.data.map((offer) => (
+                                                            <Link key={offer._id} to={`events/${offer._id}`}>
+                                                                <img className='rounded-md h-64 w-52' src={`${offer.displayPhoto}`} alt="" />
+                                                            </Link>
+                                                        ))
+                                                }
+                                            </div>
+                                            <div className='flex justify-end space-x-2 '>
+                                                <Link to='/category/offers'>
+                                                    <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+                }
+
 
                 <section className='flex justify-center items-center align-middle mt-5'>
                     <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         <div className='flex justify-between '>
-                            <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Offers</span></div>
+                            <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Where To ?</span></div>
                             <div className="right"></div>
 
                         </div>
 
-                        <div className="ml-1 mr-1">
-                            <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-10'>
-                                {
-                                    offers.data == undefined || offers.data == null
-                                        ?
-                                        <>
-                                            loading..
-                                        </>
-                                        :
-                                        offers.data.map((offer) => (
-                                            <Link key={offer._id} to={`events/${offer._id}`}>
-                                                <img className='rounded-md h-64 w-52' src={`${offer.displayPhoto}`} alt="" />
-                                            </Link>
-                                        ))
-                                }
-                            </div>
-                            <div className='flex justify-end space-x-2 '>
-                                <Link to='/category/offers'>
-                                    <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
-                                </Link>
-                            </div>
-                        </div>
-                    </section>
-                </section>
-
-                <section className='flex justify-center items-center align-middle mt-5'>
-                    <section className='w-full mx-5 md:mx-0 md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
-                        <p className='ml-6 md:ml-0 text-xl font-bold md:text-2xl md:font-[700]  '>
-                            Where to ?
-                        </p>
-
-                        <div className='grid md:grid-cols-3 gap-3 p-3'>
+                        <div className='mx-5 grid md:grid-cols-3 gap-3 p-3'>
                             <div className='grid md:grid-cols-1 grid-rows-2 gap-3'>
                                 <Link to='/category/events'>
                                     <div className='relative'>
@@ -829,26 +872,26 @@ const Home = () => {
                             </div>
                         </Link>
                     </section>
-                    <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                        <div className='flex justify-between mb-2'>
-                            {
-                                visible && (
-                                    <button onClick={() => window.scrollTo({
-                                        top: 0,
-                                        behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                    })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                    </button>
-                                )
-                            }
-
-                            <button>
-                            </button>
-                        </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                    </div>
                 </section >
 
+                <div className='fixed hidden lg:flex justify-center flex-col right-5 bottom-10'>
+                    <div className='flex justify-center mb-2'>
+                        {
+                            visible && (
+                                <button onClick={() => window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                    <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                </button>
+                            )
+                        }
+
+                        <button>
+                        </button>
+                    </div>
+                    <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                </div>
 
                 <Footer />
             </div >

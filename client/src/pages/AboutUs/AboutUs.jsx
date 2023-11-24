@@ -7,56 +7,64 @@ const AboutUs = () => {
     return (
         <>
             <Navbar />
-            <section className='contactmargine'>
-                <div className='h-40 md:h-64 mt-32 md:mt-52 justify-center items-center relative'>
+            <section className='contactmargine flex flex-col'>
+                <div className='h-40 md:h-64 justify-center items-center relative'>
 
-                    <section className="flex md:grid md:grid-cols-6 h-11/12 items-center md:mt-16 relative">
-                        <div className="col-start-1 col-end-3 md:col-start-2 md:col-end-4 justify-items-start relative z-20">
-                            <div className="ml-3 -mt-2 space-y-4">
-                                <p className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</p>
-                                <p className="text-3xl font-extrabold md:text-5xl md:font-bold">Muscat Where <br /> To ?</p>
-                            </div>
-                        </div>
+                    <div className="relative ">
+                        <img className="h-52 md:h-full " src="/images/assets/about2.jpg" alt="" />
 
-                        <div className="col-start-3 col-end-6 absolute z-10 -mt-16 img">
-                            <img className="ml-40 md:ml-0 h-64 w-52 md:h-96 md:w-full" src="/images/assets/about.png" alt="" />
+                        <div className="md:mr-52 md:ml-52 absolute top-16 left-0 p-8 space-y-4 text-white">
+                            <p className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</p>
+                            <p className="text-3xl font-extrabold md:text-5xl md:font-bold">Muscat Where <br /> To ?</p>
                         </div>
-                    </section>
+                    </div>
+
                 </div>
 
-                <section className='md:mr-52 md:ml-52 ml-3 mr-3'>
-                    <p className='text-center font-medium text-lg'>
+                <section className='md:mr-52 md:ml-52 ml-3 mr-3 mt-40 mb-10 flex flex-col justify-center '>
+                    <span className='ml-0 font-bold text-2xl text-center mb-2'>Muscat's Premier Event Hub: Discover, Book, Celebrate!</span>
+                    <p className='text-center font-medium text-lg leading-8'>
                         Muscat Where To is a platform to discover the latest offers and events in Muscat.Browse through offers, find more info and directions. Find Muscat’s offers and events by type and filters like Eat & Drink, Kids Corner, Health and Beauty, Getaway Deals, Gym Memberships, Activities & Adventure and much more.
                     </p>
                 </section>
 
-                <div className="img mt-8 mb-10">
-                    <img className='h-52 md:h-full' src="/images/assets/about2.jpg" alt="" />
-                </div>
 
                 <hr className='h-px my-8 bg-blue-500 border-0 dark:bg-gray-700' />
 
-                <div className="relative space-y-10 md:mr-36 md:ml-36 ">
+                <div className="space-y-10 mr-5 md:mr-52 md:ml-52 ">
 
-                    <div className='flex mr-5 md:mr-24 md:ml-24 justify-between md:flex-row flex-col align-items items-start ml-5 md:ml-0 md:items-center'>
+                    <div className='w-full flex items-center justify-center'>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="1 mt-5">
+                                <div className="font-bold text-left text-3xl">Find Your Next Event</div>
 
-                        <div className="font-bold text-left text-5xl">Find Your <br /> Next Event</div>
-
-                        <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose">
-                            <p className=''>Choose a venue according to cuisine type, day of the week or other filters. Check offers including Friday Brunch, Happy Hour, Ladies Night, Live Music, Pool & beach passes and more.Save your favorite offer or event into your favorite list and rate the places you visited.</p>
+                                <div className="mt-2 font-medium text-md leading-loose">
+                                    <p className=''>Choose a venue according to cuisine type, day of the week, or other filters. Check offers including Friday Brunch, Happy Hour, Ladies Night, Live Music, Pool & beach passes and more. Save your favorite offer or event into your favorite list and rate the places you visited.</p>
+                                </div>
+                            </div>
+                            <div className="2">
+                                <img className='ml-3 h-52 md:h-64 w-96' src="images/assets/about3.png" alt="" />
+                            </div>
                         </div>
                     </div>
 
-                    <div className='flex mr-5 md:mr-24 md:ml-24 justify-around md:flex-row flex-col-reverse align-items items-center'>
 
-                        <div className="mt-2 w-11/12 md:w-6/12 font-medium text-lg leading-loose"><p>If you wish to have your offer displayed on Muscat Where To platform, kindly <Link to='/contactus'><span className='ml-0 text-[#C0A04C]'>contact us</span></Link> at info@muscatwhereto.com. (if you don’t hear from us, check your spam folder)</p></div>
+                    <div className='w-full flex items-center justify-center'>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="2">
+                                <img className=' h-52 md:h-64 w-96' src="/images/assets/aboutus2.png" alt="" />
+                            </div>
 
-                        <div className="">
-                            <img className='ml-3 h-52 md:h-64' src="images/assets/about3.png" alt="" />
+                            <div className="1 mt-6 ml-2">
+                                <div className="font-bold text-left text-3xl">Reach out to us</div>
+
+                                <div className="mt-2 font-medium text-md leading-loose">
+                                    <p>If you wish to have your offer displayed on Muscat <br></br> Where To platform, kindly <Link to='/contactus'><span className='ml-0 text-[#C0A04C]'>contact us</span></Link> at info@muscatwhereto.com. (if you don’t hear from us, check your spam folder)</p>                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div className='hidden md:flex justify-end flex-col absolute -right-14 bottom-0'>
+                    {/* <div className='hidden md:flex justify-end flex-col absolute -right-14 bottom-0'>
                         <div className='flex justify-between mb-2'>
                             <button
                                 onClick={() => window.scrollTo({
@@ -66,12 +74,12 @@ const AboutUs = () => {
                                 className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                                 <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                             </button>
-                             
+
                             <button>
                             </button>
                         </div>
                         <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                    </div>
+                    </div> */}
 
                 </div>
             </section>

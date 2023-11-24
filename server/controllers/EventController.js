@@ -48,16 +48,14 @@ exports.createEvent = async (req, res) => {
             })
         }
 
-        let uploadedVideo = ''
-        if (video) {
-            // Convert base64 to buffer
-            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
-                resource_type: 'video',
-                folder: "muscat/events",
-            })
-        }
-
-        console.log(uploadedVideo)
+        // let uploadedVideo = ''
+        // if (video) {
+        //     // Convert base64 to buffer
+        //     uploadedVideo = await cloudinary.v2.uploader.upload(video, {
+        //         resource_type: 'video',
+        //         folder: "muscat/events",
+        //     })
+        // }
 
         let uploadResult;
         let additinalPhotos = []
@@ -101,7 +99,7 @@ exports.createEvent = async (req, res) => {
 
             displayPhoto: uploadedEventPhoto.secure_url,
             banner: uploadedBanner.secure_url,
-            // video: uploadedVideo.secure_url,
+            video: video,
             seatingMap: uploadedSeatingMap.secure_url,
             AdditionalPhotos: additinalPhotos,
             type: 'event',
@@ -501,14 +499,23 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
     try {
         const events = await eventService.findAllEvents({
             vendorid: vendor,
-            // type: 'event',
+            type: 'event',
             // verified: true,
             $or: [
-                { // Events with start date greater than or equal to today
-                    'date.dateRange.endDate': { $gte: today }
+                {
+                    $or: [
+                        {
+                            'date.dateRange.endDate': { $gte: today }
+                        },
+                        {
+                            'date.dateRange.endDate': null
+                        }
+                    ]
+                    // Events with start date greater than or equal to today
+
                 },
                 { // Events with recurring field containing today's day
-                    'date.recurring': { $in: currentDay },
+                    'date.recurring.days': { $in: currentDay },
                 },
             ],
 
@@ -516,14 +523,14 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
 
         const expiredEvent = await eventService.findAllEvents({
             vendorid: vendor,
-            // type: 'event',
+            type: 'event',
             // verified: true,
             $and: [
                 { // Events with start date greater than or equal to today
                     'date.dateRange.endDate': { $lt: today }
                 },
                 { // Events with recurring field containing today's day
-                    'date.recurring': { $nin: currentDay },
+                    'date.recurring.days': { $nin: currentDay },
                 },
             ],
         })
@@ -534,9 +541,15 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                 type: 'offer',
                 // verified: true,
                 $or: [
-                    { // Events with start date greater than or equal to today
-                        'date.dateRange.startDate': { $lte: today },
-                        'date.dateRange.endDate': { $gte: today }
+                    {
+                        $or: [
+                            {
+                                'date.dateRange.endDate': { $gte: today }
+                            },
+                            {
+                                'date.dateRange.endDate': null
+                            }
+                        ]
                     },
                     { // Events with recurring field containing today's day
                         'date.recurring.days': { $in: currentDay },
@@ -555,7 +568,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                         'date.dateRange.endDate': { $lt: today }
                     },
                     { // Events with recurring field containing today's day
-                        'date.recurring': { $nin: currentDay },
+                        'date.recurring.days': { $nin: currentDay },
                     },
                 ],
             }
@@ -773,7 +786,7 @@ exports.addToFavorites = async (req, res) => {
 
             const updatedUser = await userService.updateUser(userData)
 
-            return res.status(200).json({ success: true, message: 'like has been removed' });
+            return res.status(200).json({ success: true, message: 'Removed from favorites' });
         } else {
             // If the user's ID is not in the 'likes' array, add it
             event.likes.push(_id);
@@ -784,7 +797,7 @@ exports.addToFavorites = async (req, res) => {
             // Save the updated event and user data
             await event.save();
             await user.save();
-            return res.status(200).json({ success: true, message: 'like has been added' });
+            return res.status(200).json({ success: true, message: 'Added to favorites' });
         }
 
     } catch (error) {
@@ -832,7 +845,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
                 }
                 ,
                 {
-                    'date.recurring': { $in: [currentDay] } // Replace with a function to get today's day
+                    'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
                 }
             ];
             eventsOnDate = await eventService.findAllEvents(query);
@@ -846,7 +859,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
                 }
                 ,
                 {
-                    'date.recurring': { $in: [day] } // Replace with a function to get today's day
+                    'date.recurring.days': { $in: [day] } // Replace with a function to get today's day
                 }
             ];
             eventsOnDate = await eventService.findAllEvents(query);
@@ -868,33 +881,23 @@ module.exports.getUpcomingEvents = async (req, res) => {
 
 exports.getTrendingEvents = async (req, res) => {
 
-
-    const categories = await categoryService.findAllCategory()
-    let categoryArray = [];
     let events;
-    for (const category of categories) {
-        categoryArray.push(category.categoryURL)
-    }
 
     const today = new Date()
     // const today = moment().utc()
     console.log(today)
-    const currentDay = moment().format('dddd').toLowerCase()
-    console.log(currentDay)
 
     // const currentDay = "sunday"
     const query = {
         verified: true,
-        // type: 'event',
-        $and: [
-            { 'eventCategory': { $in: categoryArray } },
-        ],
+        trending: true,
+        type: 'event',
         $or: [
             { // Events with start date greater than or equal to today
                 'date.dateRange.endDate': { $gte: today }
             },
             { // Events with recurring field containing today's day
-                'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
             },
         ],
 
@@ -936,7 +939,7 @@ exports.getTrendingEvents = async (req, res) => {
 
     res.status(200).json({
         success: true,
-        data: trendingEvents
+        data: events
     })
 }
 
@@ -1078,7 +1081,14 @@ exports.getEventsForAdmin = async (req, res) => {
 
         query['$or'] = [
             {
-                'date.dateRange.endDate': { $gte: todayDate }
+                $or: [
+                    {
+                        'date.dateRange.endDate': { $gte: todayDate }
+                    },
+                    {
+                        'date.dateRange.endDate': null
+                    }
+                ]
             }
             ,
             {
@@ -1122,7 +1132,14 @@ exports.getOffersForAdmin = async (req, res) => {
 
         query['$or'] = [
             {
-                'date.dateRange.endDate': { $gte: todayDate }
+                $or: [
+                    {
+                        'date.dateRange.endDate': { $gte: todayDate }
+                    },
+                    {
+                        'date.dateRange.endDate': null
+                    }
+                ]
             }
             ,
             {

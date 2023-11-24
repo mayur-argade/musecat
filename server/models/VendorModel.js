@@ -80,6 +80,9 @@ const vendorSchema = new mongoose.Schema({
     website: {
         type: String,
     },
+    passwordToken: {
+        type: String
+    },
     socialmedia: [
         String
     ],

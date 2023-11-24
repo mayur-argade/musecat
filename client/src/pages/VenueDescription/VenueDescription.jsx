@@ -17,6 +17,7 @@ const VenueDescription = () => {
     const [loading, setLoading] = useState('')
     const [response, setReponse] = useState({})
     const [trending, setTrending] = useState({})
+    const [address, setAddress] = useState('');
     const [selectedLocation, setSelectedLocation] = useState({
         lat: null,
         lng: null
@@ -44,14 +45,36 @@ const VenueDescription = () => {
         }
         fetchdata()
 
+        const getGeolocation = async () => {
+            try {
+                const apiKey = 'AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY';
+                console.log(selectedLocation)
+                console.log(selectedLocation.lat, selectedLocation.lon)
+                const response = await fetch(
+                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${selectedLocation.lat},${selectedLocation.lng}&key=${apiKey}`
+                );
+
+                console.log(response)
+                if (response.ok) {
+                    const data = await response.json();
+                    const formattedAddress = data.results[0]?.formatted_address || 'Address not found';
+                    setAddress(formattedAddress);
+                } else {
+                    console.error('Error fetching geolocation data');
+                }
+            } catch (error) {
+                console.error('Error fetching geolocation data', error);
+            }
+        };
+
+        getGeolocation();
+
     }, [venueid]);
 
     if (response.data == null || trending.data == null) {
-        return (
-            <>
-                loading
-            </>
-        )
+        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
+            <img src="/images/icons/loadmain.svg" alt="" />
+        </div>)
     }
     else {
         return (
@@ -121,10 +144,10 @@ const VenueDescription = () => {
                                 <div className="relative mx-auto md:mx-0">
                                     <div>
                                         <div className='w-full rounded-md'>
-                                            <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13}/>
+                                            <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                         <p>
-                                            {response.data.venue.address}
+                                            {address}
                                         </p>
                                     </div>
 

@@ -21,11 +21,14 @@ export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)
 export const ClientGoogleLogin = (data) => api.get("auth/user/googlelogin", data)
 export const ClienVerify = (data) => api.patch(`auth/user/verify/${data}`, data)
+export const VendorVerify = (data) => api.patch(`auth/vendor/verify/${data}`, data)
 export const ClientProfileApi = (data) => api.get("user/profile", data)
 export const ClientUpdateProfileApi = (data) => api.patch("user/update-profile", data)
 export const clientLogout = (data) => api.post("auth/user/logout", data)
 export const SendVerificationLink = (data) => api.patch('auth/user/forget-password/send-mail', data)
+export const SendForgetPasswordMail = (data) => api.patch('auth/vendor/forget-password/send-mail', data)
 export const resetUserPassword = (data) => api.patch('auth/user/reset-password', data)
+export const resetVendorPassword = (data) => api.patch(`auth/vendor/reset-password/${data}`, data)
 export const getCustomersSavedCards = (data) => api.get('user/get-payment-methods', data)
 export const googleLogin = (data) => api.post('auth/google/callback', data)
 
@@ -48,7 +51,7 @@ export const VendorUnverifiedEvents = (data) => api.get("/vendor/listing/unverif
 export const ClientEventDetailsApi = (data) => api.get(`user/eventDetails/${data}`, data)
 export const ClientFavEventApi = (data) => api.get("user/favorites", data)
 export const ClientPastPurchaseApi = (data) => api.get("/user/pastpurchased", data)
-export const getCategoryEvents = (data, query) => api.get(`category/${data.category}${query}`, data)
+export const getCategoryEvents = (data, query) => api.get(`category/${data.category}${query}`, { params: data })
 export const ClientBookTicket = (data) => api.post("ticket/bookticket", data)
 export const ClientTicketStatusApi = (data) => api.get(`ticket/${data}`, data)
 export const addToFavorites = (data) => api.put(`event/like`, data)
@@ -92,6 +95,16 @@ export const AdminDeleteUser = (data) => api.delete('/admin/delete-user', { data
 export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', data)
 export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor`, { data: data })
 
+export const handleUpload = (formData) => {
+    return axios.post('http://omanwhereto.com/api/v1/upload', formData)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            throw error; // Rethrow the error to be caught by the caller
+        });
+};
 
 api.interceptors.response.use(
     (config) => {

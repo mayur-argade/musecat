@@ -14,3 +14,149 @@ a) Admin Home
 --> stats
 
 
+Create Event
+1. Event with daterange (dateEvent)
+2. Event with recurring event (recurrEvent)
+3. Event with no end daterange (NoEnddateEvent)
+4. Event with no end daterange but recurring (NoendRecurring)
+5. Event with classnames seats price (CSP event)
+6. Event with classnames price (CP event)
+7. Event with classnames seats (CS event)
+8. Events with classnames (C event)
+9. Recurring event time (time event)
+
+
+
+if event has price
+
+
+1.Vendor form
+2.Add Offer
+3.Download Ticket
+4.Upload Video
+5.Create Ticket
+ 
+check price is there
+check categories.className and seat is not null
+check the date and take out the seats.length
+if date does not exist then add date first 
+then pass that array to the allot seats functions
+calculate price with tax (take it from the frontend only also check it on the backend)
+
+
+Work on the navbar also
+1. Event page
+
+
+
+
+Book Ticket
+--> Handel frontend
+--> Handel backend
+
+--> add pagination for the events page
+--> Add subcategories to the whereto options
+--> after logout dont redirect user to the homepage 
+
+
+
+24th Nov 2023
+1. Added icons in the profile dropdown menu
+2. Modified design and layout for about us page
+1. Download Ticket via QR,
+2. Changed Email to the muscat official mail
+3. Modification in about us
+
+
+--------------------------------------------------------------------------
+24th Nov
+homepage
+1. Search input
+2. Category wise count is not proper
+3. Upcoming event should only be 3 check if they are correct or not
+4. put some offers and try to load things
+5. Put editors pick event and try to load things
+6. Change download option on the mobile
+7. Verify footer all links once again
+8. Check calender option is working properly
+9. Check all the links in the follow button homepage
+
+Event page
+1. Check for the backend api if it correct or not
+2. Make input fields better
+3. Check the mobile version for this
+4. Sidebar location and trending event should be fixed
+
+Book Ticket page
+1. Show field only if require
+2. if no seating map then make everything into the middle
+3. Show custom conditions
+4. Check price logic once again
+5. Handle all the categories of the events
+6. Add event name on the book ticket page
+7. Handle discount on app feature
+
+
+Vendor Booked Tickets
+1. Change table and make it responsive
+2. Change the filters
+3. Show booked tickets count
+4. Add verify and remove ticket option
+5. Check refund status and also when you are removing any thicket do not just delte the allocated seats and make the ticket status to the refunded
+
+About us
+1. Change whole UI
+-------------------------------------------------------------------------------------
+25th Nov
+Past purchased
+1. Link past purchased to the Ticket
+2. Show filters to past purchased
+3. Try to reduce the time for it to load
+
+Where to map
+1. List all the event by Category
+
+Event Description
+1. Event date end date space issue
+2. when clicking on to the next scroll page a little up to start with the image 
+3. 
+
+profile 
+1. When you are changing anything make user unverified and also logout user 
+2. try to solve saved cards issue
+3. Remove card button 
+
+FAQ
+1. Link FAQ somewhere
+
+Edit Event form
+1. Check for the padding and margine
+2. Check with each field as it is changing or not
+
+Notification center
+1. Delete notification button
+
+Vendor event description
+1. Same as event description
+
+26th Nov
+Venue Description
+1. Banner is there then show banner otherwise show oman photo
+2. Show short description neatly
+3. Show address perfectly
+
+Hosted events
+1. Show filters
+2. show ongoing events/archived events
+
+Vendor Home
+1. Show ongoing events
+2. show ongoing offers
+3. If there is nothing show blank space
+4. Add skeleton view for this homepage
+5. Show unverified events also
+
+
+27th Nov
+PWA modications if there any but I want you to complete this things when you are doing all the things only
+

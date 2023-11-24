@@ -141,8 +141,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             <span className='capitalize md:hidden text-xl font-bold'>
                                 {categoryName}
                             </span>
-                            <Link to="/" class="hidden  ml-10 flex md:flex items-center">
-                                <img src="/images/logo/logo-main.png" class="h-6 md:mr-3" alt="MWT Logo" />
+                            <Link to="/" class="hidden flex md:flex items-center">
+                                <img src="/images/logo/logo-main.png" class="h-10 md:mr-3" alt="MWT Logo" />
                                 <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
                             </Link>
                         </div>
@@ -186,7 +186,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             :
                                                             `/profile`
                                                     }>
-                                                        <a href="#" class="block px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                                                        <a href="#" class="flex block px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                            <img src="/images/icons/user.svg" className="h-5 mr-2" alt="" />
+                                                            Profile</a>
                                                     </Link>
                                                     {
                                                         window.location.pathname == "/vendor/notification" ||
@@ -199,7 +201,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             ?
                                                             <>
                                                                 <button onClick={funVendorLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                    Logout
+                                                                    <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
+                                                                    logout
                                                                 </button>
                                                                 <button onClick={() => navigate('/vendor/hostedevents')} className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
                                                                     Hosted Events
@@ -207,19 +210,22 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                             </>
                                                             :
                                                             <>
-                                                                <button onClick={userLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                    logout
-                                                                </button>
-                                                                <Link to="/pastpurchase">
-                                                                    <button className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                        Past Purchased
-                                                                    </button>
-                                                                </Link>
                                                                 <Link to="/favorites">
-                                                                    <button className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                    <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                        <img src="/images/icons/heartNav.svg" className='h-5 mr-2 ' alt="" />
                                                                         Favorites
                                                                     </button>
                                                                 </Link>
+                                                                <Link to="/pastpurchase">
+                                                                    <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                        <img src="/images/icons/pastpurchased.svg" className='h-5 mr-2 ' alt="" />
+                                                                        Past Purchased
+                                                                    </button>
+                                                                </Link>
+                                                                <button onClick={userLogout} className='flex space-x-2 align-middle w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                    <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
+                                                                    logout
+                                                                </button>
                                                             </>
                                                     }
 
