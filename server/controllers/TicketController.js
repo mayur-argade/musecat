@@ -42,17 +42,10 @@ module.exports.generateTicket = async (req, res) => {
             }
         }
 
-        // console.log("hasPrice, hasClassName, hasSeats", hasPrice, hasClassName, hasSeats)
+        console.log("hasPrice, hasClassName, hasSeats", hasPrice, hasClassName, hasSeats)
 
         // category 1 (has price, has classname, has seats)
-        if (hasPrice.length <= 0 && hasClassName.length <= 0 && hasSeats.length <= 0) {
-            if (!priceWithTax && !ticketclass && !seats) {
-                return res.status(400).json({
-                    success: false,
-                    data: "Bad Request"
-                })
-            }
-        } else {
+        if (hasPrice.length != 0 && hasClassName.length != 0 && hasSeats.length != 0) {
             // check the ticket class and then take that category into the consideration
             for (const category of event.categories) {
                 if (category.className == ticketclass) {
@@ -259,8 +252,381 @@ module.exports.generateTicket = async (req, res) => {
                 seatsbooked: ticket,
                 data: `https://uatcheckout.thawani.om/pay/${payment.data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`
             })
-
         }
+
+        // has price has classname no seats
+        else if (hasPrice.length != 0 && hasClassName.length != 0 && hasSeats.length == 0) {
+            if (!priceWithTax && !ticketclass && !seats) {
+                return res.status(400).json({
+                    success: false,
+                    data: "Bad Request"
+                })
+            }
+            else {
+                try {
+                    if (ticketclass) {
+                        for (const category of event.categories) {
+                            if (category.className == ticketclass) {
+                                selectedCategory = category
+                            }
+                        }
+                        console.log("Getting selected cateogory")
+                        // eventDetails, newEvent
+                        bookedSeatsForDate = await ticketService.returnBookedSeatsbyDate(selectedCategory.bookedSeats, date);
+
+                        // eventDetails: updatedEventDetails,
+                        // newAssignedSeats: {date: newEvent.date,seats: allotedSeats}
+                        const newSeats = await ticketService.allotSeats(bookedSeatsForDate.eventDetails, date, selectedCategory.className, seats, selectedCategory);
+
+                    }
+
+                    if (priceWithTax) {
+                        let taxAmout;
+                        let basePricewithTax;
+
+                        if (selectedCategory.price != null || selectedCategory.price != undefined || selectedCategory.price != 0) {
+                            taxAmout = selectedCategory.price * 0.05
+                            basePricewithTax = Math.round(selectedCategory.price + taxAmout)
+                            finalBasePrice = basePricewithTax
+                            totalPrice = basePricewithTax * seats
+                            status = 'funnel'
+                            if (basePricewithTax != priceWithTax) {
+                                return res.status(400).json({
+                                    success: false,
+                                    data: "Price is not matched with the calculated price"
+                                })
+                            }
+                        }
+                    }
+
+                    let ticketData = {
+                        userid: req.user._id,
+                        date: new Date(date),
+                        eventid: eventid,
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email,
+                        class: selectedCategory?.className ?? null,
+                        seats: seats ? seats : null,
+                        allotedSeats: newSeats.newAssignedSeats.seats,
+                        totalPrice: totalPrice ? totalPrice : null,
+                        status: status ? status : "Awaiting Confirmation",
+                        basePrice: selectedCategory?.price ?? null,
+                        priceWithTax: finalBasePrice ? finalBasePrice : null
+                    }
+
+
+                    // Ticket - create a ticket
+                    let ticket = await ticketService.createTicket(ticketData)
+
+                    // console.log("line 121", ticket)
+
+                    // Event - add ticket id into the eventmodel
+                    let tickets = event.bookedTickets
+                    tickets.push(ticket._id)
+
+                    // Event - add eventDetails to the eventModel
+                    const existingCategoryIndex = event.categories.findIndex(category => category.className === newSeats.eventDetails.className);
+
+                    if (existingCategoryIndex !== -1) {
+                        // Update existing category
+                        event.categories[existingCategoryIndex] = newSeats.eventDetails;
+                    } else {
+                        // Push new category
+                        event.categories.push(newSeats.eventDetails);
+                    }
+
+                    const eventdata = {
+                        _id: event._id,
+                        bookedTickets: tickets,
+                        categories: event.categories
+                    }
+
+                    const updatedEvent = await eventService.updateEvent(eventdata)
+
+                    // console.log("line 134", updatedEvent)
+
+                    // user
+                    let user = await userService.findUser({ _id: req.user._id })
+                    // User - add eventid into the users pastpurchased
+                    let pastpurchased = user.pastPurchase
+                    pastpurchased.push(eventid)
+                    // User - add ticketid into the users bookedTickets
+                    let BookedTickets = user.BookedTickets
+                    BookedTickets.push(ticket._id)
+                    user.save()
+
+                    let payment;
+
+                    if (finalBasePrice) {
+                        const paymentdata = {
+                            ticketid: ticket._id,
+                            client_ref_id: req.user._id,
+                            name: event.title,
+                            quantity: seats,
+                            unitAmout: Math.round(finalBasePrice)
+                        }
+                        payment = await paymentService.CreateSession(paymentdata)
+
+                        if (payment.data.code >= 4000 && payment.data.code <= 4301 || payment.data.success == false) {
+                            const pendingTicketData = {
+                                _id: ticket._id,
+                                status: 'pending'
+                            }
+
+                            ticket = await ticketService.updateTicket(pendingTicketData)
+
+                            return res.status(500).json({
+                                success: false,
+                                data: {
+                                    seatsbooked: ticket,
+                                    message: "Unable to start payment session"
+                                }
+                            })
+                        }
+
+                        if (payment.success == true || payment.data.session_id != null || payment.data.session_id != undefined) {
+                            const sessionTicketData = {
+                                _id: ticket._id,
+                                status: 'processing',
+                                sessionId: payment.data.session_id
+                            }
+
+                            ticket = await ticketService.updateTicket(sessionTicketData)
+                        }
+                    }
+
+                    const notificationData = {
+                        senderid: req.user._id,
+                        receiverid: event.vendorid,
+                        msg: `Ticket has been booked for event ${event.title} please verify`
+                    }
+
+                    const notification = await notificationService.createNotification(notificationData)
+
+                    return res.status(200).json({
+                        seatsbooked: ticket,
+                        session_id: payment?.data.session_id ?? null
+                    })
+
+                } catch (error) {
+                    console.log(error)
+                }
+
+            }
+        }
+
+        // no price has classname no seats
+        else if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length == 0) {
+            console.log("No price has classname has seats")
+            let bookedSeatsForDate;
+            try {
+                if (ticketclass) {
+                    for (const category of event.categories) {
+                        if (category.className == ticketclass) {
+                            selectedCategory = category
+                        }
+                    }
+
+                    // eventDetails, newEvent
+                    bookedSeatsForDate = await ticketService.returnBookedSeatsbyDate(selectedCategory.bookedSeats, date);
+
+                    // eventDetails: updatedEventDetails,
+                    // newAssignedSeats: {date: newEvent.date,seats: allotedSeats}
+                }
+
+                const newSeats = await ticketService.allotSeats(bookedSeatsForDate.eventDetails, date, selectedCategory.className, seats, selectedCategory);
+
+                let ticketData = {
+                    userid: req.user._id,
+                    eventid: eventid,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    class: selectedCategory?.className ?? null,
+                    seats: seats ? seats : null,
+                    allotedSeats: newSeats.newAssignedSeats.seats,
+                    status: status ? status : "Awaiting Confirmation",
+                }
+                let ticket = await ticketService.createTicket(ticketData)
+
+                // event
+                let tickets = event.bookedTickets
+                tickets.push(ticket._id)
+                event.save()
+
+                // ticket
+                selectedCategory.bookedSeats = newSeats.newBookedSeats
+                ticket.save()
+
+                // user
+                let user = await userService.findUser({ _id: req.user._id })
+                let pastpurchased = user.pastPurchase
+                let BookedTickets = user.BookedTickets
+                pastpurchased.push(eventid)
+                BookedTickets.push(ticket._id)
+                user.save()
+
+                const notificationData = {
+                    senderid: req.user._id,
+                    receiverid: event.vendorid,
+                    msg: `Ticket has been booked for event ${event.title} please verify`
+                }
+
+                const notification = await notificationService.createNotification(notificationData)
+
+                return res.status(200).json({
+                    seatsbooked: ticket,
+                    session_id: null
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        // no price has classname has seats
+        else if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length != 0) {
+            console.log("No price has classname has seats")
+            let bookedSeatsForDate;
+
+            try {
+                if (ticketclass) {
+                    for (const category of event.categories) {
+                        if (category.className == ticketclass) {
+                            selectedCategory = category
+                        }
+                    }
+
+                    // eventDetails, newEvent
+                    bookedSeatsForDate = await ticketService.returnBookedSeatsbyDate(selectedCategory.bookedSeats, date);
+                    
+                    availableSeats = selectedCategory.seats - bookedSeatsForDate.newEvent.seats.length;
+                    if (availableSeats < seats) {
+                        return res.status(400).json({
+                            success: false,
+                            data: `Available seats are less than the required seats. Remaining seats are ${availableSeats}`
+                        });
+                    }
+
+                }
+
+                // eventDetails: updatedEventDetails,
+                // newAssignedSeats: {date: newEvent.date,seats: allotedSeats}
+                const newSeats = await ticketService.allotSeats(bookedSeatsForDate.eventDetails, date, selectedCategory.className, seats, selectedCategory);
+
+                let ticketData = {
+                    userid: req.user._id,
+                    eventid: eventid,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    class: selectedCategory?.className ?? null,
+                    seats: seats ? seats : null,
+                    allotedSeats: newSeats.newAssignedSeats.seats,
+                    status: status ? status : "Awaiting Confirmation",
+                }
+                let ticket = await ticketService.createTicket(ticketData)
+
+                // event
+                let tickets = event.bookedTickets
+                tickets.push(ticket._id)
+                event.save()
+
+                // ticket
+                selectedCategory.bookedSeats = newSeats.newBookedSeats
+                ticket.save()
+
+                // user
+                let user = await userService.findUser({ _id: req.user._id })
+                let pastpurchased = user.pastPurchase
+                let BookedTickets = user.BookedTickets
+                pastpurchased.push(eventid)
+                BookedTickets.push(ticket._id)
+                user.save()
+                const notificationData = {
+                    senderid: req.user._id,
+                    receiverid: event.vendorid,
+                    msg: `Ticket has been booked for event ${event.title} please verify`
+                }
+
+                const notification = await notificationService.createNotification(notificationData)
+
+                return res.status(200).json({
+                    seatsbooked: ticket,
+                    session_id: null
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        // no price
+        else if (hasPrice.length == 0 && hasSeats.length == 0 && hasClassName.length == 0) {
+            console.log("No price no classname no seats")
+            // console.log("selectedCategory", selectedCategory)
+            let bookedSeatsForDate;
+            let availableSeats;
+            try {
+                for (const category of event.categories) {
+                    selectedCategory = category
+                }
+
+                // eventDetails, newEvent
+                bookedSeatsForDate = await ticketService.returnBookedSeatsbyDate(selectedCategory.bookedSeats, date);
+
+                // eventDetails: updatedEventDetails,
+                // newAssignedSeats: {date: newEvent.date,seats: allotedSeats}
+                const newSeats = await ticketService.allotSeats(bookedSeatsForDate.eventDetails, date, 'Basic', seats, selectedCategory);
+
+                let ticketData = {
+                    userid: req.user._id,
+                    eventid: eventid,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    class: selectedCategory?.className ?? null,
+                    seats: seats ? seats : null,
+                    allotedSeats: newSeats.newAssignedSeats.allotedSeats,
+                    status: status ? status : "Awaiting Confirmation",
+                }
+
+                let ticket = await ticketService.createTicket(ticketData)
+
+                // event
+                let tickets = event.bookedTickets
+                tickets.push(ticket._id)
+                event.save()
+
+                // ticket
+                selectedCategory.bookedSeats = newSeats.newBookedSeats
+                ticket.save()
+
+                // user
+                let user = await userService.findUser({ _id: req.user._id })
+                let pastpurchased = user.pastPurchase
+                let BookedTickets = user.BookedTickets
+                pastpurchased.push(eventid)
+                BookedTickets.push(ticket._id)
+                user.save()
+
+                const notificationData = {
+                    senderid: req.user._id,
+                    receiverid: event.vendorid,
+                    msg: `Ticket has been booked for event ${event.title} please verify`
+                }
+
+                const notification = await notificationService.createNotification(notificationData)
+                return res.status(200).json({
+                    seatsbooked: ticket,
+                    session_id: null
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
     } catch (error) {
         console.log(error)
         return res.status(500).json({
@@ -268,330 +634,6 @@ module.exports.generateTicket = async (req, res) => {
             data: error
         })
     }
-
-    // // has price has classname no seats
-    // if (hasPrice.length != 0 && hasClassName.length != 0 && hasSeats.length == 0) {
-    //     if (!priceWithTax && !ticketclass && !seats) {
-    //         return res.status(400).json({
-    //             success: false,
-    //             data: "Bad Request"
-    //         })
-    //     }
-    //     else {
-    //         try {
-    //             if (ticketclass) {
-    //                 for (const category of event.categories) {
-    //                     if (category.className == ticketclass) {
-    //                         selectedCategory = category
-    //                     }
-    //                 }
-
-    //                 const bookedSeats = selectedCategory.bookedSeats
-    //                 newSeats = await ticketService.allotSeats(bookedSeats, selectedCategory.className, seats)
-    //             }
-
-    //             if (priceWithTax) {
-    //                 let taxAmout;
-    //                 let basePricewithTax;
-
-    //                 if (selectedCategory.price != null || selectedCategory.price != undefined || selectedCategory.price != 0) {
-    //                     taxAmout = selectedCategory.price * 0.05
-    //                     basePricewithTax = Math.round(selectedCategory.price + taxAmout)
-    //                     finalBasePrice = basePricewithTax
-    //                     totalPrice = basePricewithTax * seats
-    //                     status = 'funnel'
-    //                     if (basePricewithTax != priceWithTax) {
-    //                         return res.status(400).json({
-    //                             success: false,
-    //                             data: "Price is not matched with the calculated price"
-    //                         })
-    //                     }
-    //                 }
-    //             }
-
-    //             let ticketData = {
-    //                 userid: req.user._id,
-    //                 eventid: eventid,
-    //                 firstname: firstname,
-    //                 lastname: lastname,
-    //                 email: email,
-    //                 class: selectedCategory?.className ?? null,
-    //                 seats: seats ? seats : null,
-    //                 allotedSeats: newSeats.allotedSeats,
-    //                 totalPrice: totalPrice ? totalPrice : null,
-    //                 status: status ? status : "Awaiting Confirmation",
-    //                 basePrice: selectedCategory?.price ?? null,
-    //                 priceWithTax: finalBasePrice ? finalBasePrice : null
-    //             }
-
-    //             let ticket = await ticketService.createTicket(ticketData)
-
-    //             // event
-    //             let tickets = event.bookedTickets
-    //             tickets.push(ticket._id)
-    //             event.save()
-
-    //             // ticket
-    //             selectedCategory.bookedSeats = newSeats.newBookedSeats
-    //             ticket.save()
-
-    //             // user
-    //             let user = await userService.findUser({ _id: req.user._id })
-    //             let pastpurchased = user.pastPurchase
-    //             let BookedTickets = user.BookedTickets
-    //             pastpurchased.push(eventid)
-    //             BookedTickets.push(ticket._id)
-    //             user.save()
-
-    //             let payment;
-
-    //             if (finalBasePrice) {
-    //                 const paymentdata = {
-    //                     ticketid: ticket._id,
-    //                     client_ref_id: req.user._id,
-    //                     name: event.title,
-    //                     quantity: seats,
-    //                     unitAmout: Math.round(finalBasePrice)
-    //                 }
-    //                 payment = await paymentService.CreateSession(paymentdata)
-
-    //                 if (payment.data.code >= 4000 && payment.data.code <= 4301 || payment.data.success == false) {
-    //                     const pendingTicketData = {
-    //                         _id: ticket._id,
-    //                         status: 'pending'
-    //                     }
-
-    //                     ticket = await ticketService.updateTicket(pendingTicketData)
-
-    //                     return res.status(500).json({
-    //                         success: false,
-    //                         data: {
-    //                             seatsbooked: ticket,
-    //                             message: "Unable to start payment session"
-    //                         }
-    //                     })
-    //                 }
-
-    //                 if (payment.success == true || payment.data.session_id != null || payment.data.session_id != undefined) {
-    //                     const sessionTicketData = {
-    //                         _id: ticket._id,
-    //                         status: 'processing',
-    //                         sessionId: payment.data.session_id
-    //                     }
-
-    //                     ticket = await ticketService.updateTicket(sessionTicketData)
-    //                 }
-    //             }
-
-    //             const notificationData = {
-    //                 senderid: req.user._id,
-    //                 receiverid: event.vendorid,
-    //                 msg: `Ticket has been booked for event ${event.title} please verify`
-    //             }
-
-    //             const notification = await notificationService.createNotification(notificationData)
-
-    //             return res.status(200).json({
-    //                 seatsbooked: ticket,
-    //                 session_id: payment?.data.session_id ?? null
-    //             })
-
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-
-    //     }
-    // }
-
-    // // no price not classname no seats
-    // if (hasPrice.length == 0 && hasClassName.length == 0 && hasSeats.length == 0) {
-    //     if (!seats) {
-    //         return res.status(400).json({
-    //             success: false,
-    //             data: "Bad Request"
-    //         })
-    //     }
-    //     else {
-    //         try {
-    //             let bookedSeats = event.categories[0].bookedSeats
-    //             newSeats = await ticketService.allotSeats(bookedSeats, "Basic", seats)
-
-    //             let ticketData = {
-    //                 userid: req.user._id,
-    //                 eventid: eventid,
-    //                 firstname: firstname,
-    //                 lastname: lastname,
-    //                 email: email,
-    //                 class: "Basic",
-    //                 seats: seats ? seats : null,
-    //                 allotedSeats: newSeats.allotedSeats,
-    //                 status: status ? status : "Awaiting Confirmation",
-    //             }
-
-    //             let ticket = await ticketService.createTicket(ticketData)
-
-    //             // event
-    //             let tickets = event.bookedTickets
-    //             tickets.push(ticket._id)
-    //             event.save()
-
-    //             // ticket
-    //             event.categories[0].bookedSeats = newSeats.newBookedSeats
-    //             ticket.save()
-
-    //             // user
-    //             let user = await userService.findUser({ _id: req.user._id })
-    //             let pastpurchased = user.pastPurchase
-    //             let BookedTickets = user.BookedTickets
-    //             pastpurchased.push(eventid)
-    //             BookedTickets.push(ticket._id)
-    //             user.save()
-
-    //             const notificationData = {
-    //                 senderid: req.user._id,
-    //                 receiverid: event.vendorid,
-    //                 msg: `Ticket has been booked for event ${event.title} please verify`
-    //             }
-
-    //             const notification = await notificationService.createNotification(notificationData)
-
-    //             return res.status(200).json({
-    //                 seatsbooked: ticket,
-    //                 session_id: null
-    //             })
-
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-
-    //     }
-    // }
-
-    // // no price has classname has seats
-    // if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length != 0) {
-    //     try {
-    //         if (ticketclass) {
-    //             for (const category of event.categories) {
-    //                 if (category.className == ticketclass) {
-    //                     selectedCategory = category
-    //                 }
-    //             }
-
-    //             const bookedSeats = selectedCategory.bookedSeats
-    //             newSeats = await ticketService.allotSeats(bookedSeats, selectedCategory.className, seats)
-    //         }
-
-    //         let ticketData = {
-    //             userid: req.user._id,
-    //             eventid: eventid,
-    //             firstname: firstname,
-    //             lastname: lastname,
-    //             email: email,
-    //             class: selectedCategory?.className ?? null,
-    //             seats: seats ? seats : null,
-    //             allotedSeats: newSeats.allotedSeats,
-    //             status: status ? status : "Awaiting Confirmation",
-    //         }
-
-    //         let ticket = await ticketService.createTicket(ticketData)
-
-    //         // event
-    //         let tickets = event.bookedTickets
-    //         tickets.push(ticket._id)
-    //         event.save()
-
-    //         // ticket
-    //         selectedCategory.bookedSeats = newSeats.newBookedSeats
-    //         ticket.save()
-
-    //         // user
-    //         let user = await userService.findUser({ _id: req.user._id })
-    //         let pastpurchased = user.pastPurchase
-    //         let BookedTickets = user.BookedTickets
-    //         pastpurchased.push(eventid)
-    //         BookedTickets.push(ticket._id)
-    //         user.save()
-
-    //         const notificationData = {
-    //             senderid: req.user._id,
-    //             receiverid: event.vendorid,
-    //             msg: `Ticket has been booked for event ${event.title} please verify`
-    //         }
-
-    //         const notification = await notificationService.createNotification(notificationData)
-
-    //         return res.status(200).json({
-    //             seatsbooked: ticket,
-    //             session_id: null
-    //         })
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-    // // no price
-    // if (hasPrice.length == 0 && hasSeats.length == 0 && hasClassName.length != 0) {
-    //     try {
-    //         if (ticketclass) {
-    //             for (const category of event.categories) {
-    //                 if (category.className == ticketclass) {
-    //                     selectedCategory = category
-    //                 }
-    //             }
-
-    //             const bookedSeats = selectedCategory.bookedSeats
-    //             newSeats = await ticketService.allotSeats(bookedSeats, selectedCategory.className, seats)
-    //         }
-
-    //         let ticketData = {
-    //             userid: req.user._id,
-    //             eventid: eventid,
-    //             firstname: firstname,
-    //             lastname: lastname,
-    //             email: email,
-    //             class: selectedCategory?.className ?? null,
-    //             seats: seats ? seats : null,
-    //             allotedSeats: newSeats.allotedSeats,
-    //             status: status ? status : "Awaiting Confirmation",
-    //         }
-
-    //         let ticket = await ticketService.createTicket(ticketData)
-
-    //         // event
-    //         let tickets = event.bookedTickets
-    //         tickets.push(ticket._id)
-    //         event.save()
-
-    //         // ticket
-    //         selectedCategory.bookedSeats = newSeats.newBookedSeats
-    //         ticket.save()
-
-    //         // user
-    //         let user = await userService.findUser({ _id: req.user._id })
-    //         let pastpurchased = user.pastPurchase
-    //         let BookedTickets = user.BookedTickets
-    //         pastpurchased.push(eventid)
-    //         BookedTickets.push(ticket._id)
-    //         user.save()
-
-    //         const notificationData = {
-    //             senderid: req.user._id,
-    //             receiverid: event.vendorid,
-    //             msg: `Ticket has been booked for event ${event.title} please verify`
-    //         }
-
-    //         const notification = await notificationService.createNotification(notificationData)
-    //         return res.status(200).json({
-    //             seatsbooked: ticket,
-    //             session_id: null
-    //         })
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
 }
 
 module.exports.ticketStatus = async (req, res) => {

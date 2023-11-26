@@ -41,7 +41,7 @@ const Events = () => {
     const [categoryLoading, setCategoryLoading] = useState(false)
     const [trending, setTrending] = useState({})
     const [checkCategory, setCheckCategory] = useState(false)
-    const [filterDate, setFilterDate] = useState('')
+    const [filterDate, setFilterDate] = useState(new Date())
     // console.log("selected distance", selectedDistance)
 
     const handleFeaturesChange = (feature) => {
@@ -430,7 +430,7 @@ const Events = () => {
                                 <div className="2 flex md:justify-center lg:justify-end ">
                                     <div className="relative mx-auto md:mx-0">
                                         <div>
-                                            <div className='w-full h-9/12 rounded-md'>
+                                            <div className='w-72 h-9/12 rounded-md'>
                                                 <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={10} />
                                             </div>
                                         </div>

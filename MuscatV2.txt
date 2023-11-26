@@ -72,30 +72,30 @@ Book Ticket
 24th Nov
 homepage
 1. Search input
-2. Category wise count is not proper
-3. Upcoming event should only be 3 check if they are correct or not
-4. put some offers and try to load things
-5. Put editors pick event and try to load things
+2. Category wise count is not proper (done)
+3. Upcoming event should only be 3 check if they are correct or not (done)
+4. put some offers and try to load things (done)
+5. Put editors pick event and try to load things (handled but not tested)
 6. Change download option on the mobile
 7. Verify footer all links once again
-8. Check calender option is working properly
-9. Check all the links in the follow button homepage
+8. Check calender option is working properly (done)
+9. Check all the links in the follow button homepage (whatsapp, insta, facebook, mail)
 
 Event page
-1. Check for the backend api if it correct or not
+1. Check for the backend api if it correct or not (get all events, get datewise events, get filter events, get category wise events)
 2. Make input fields better
 3. Check the mobile version for this
 4. Sidebar location and trending event should be fixed
+5. Check events backend api
 
 Book Ticket page
-1. Show field only if require
-2. if no seating map then make everything into the middle
-3. Show custom conditions
-4. Check price logic once again
+1. Show field only if require (done)
+2. if no seating map then make everything into the middle (done)
+3. Show custom conditions 
+4. Check price logic once again 
 5. Handle all the categories of the events
 6. Add event name on the book ticket page
 7. Handle discount on app feature
-
 
 Vendor Booked Tickets
 1. Change table and make it responsive
@@ -160,3 +160,8 @@ Vendor Home
 27th Nov
 PWA modications if there any but I want you to complete this things when you are doing all the things only
 
+
+
+Completion report
+1. Get category wise events (homepage) --> done
+2. Ongoing events done (homepage) --> done

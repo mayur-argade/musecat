@@ -834,8 +834,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
             verified: true
         };
         if (customDate) {
-            const filterdate1 = moment(customDate).format("YYYY-MM-DD")
-            const filterDate = new Date(filterdate1);
+            const filterDate = new Date(customDate);
             console.log(filterDate)
             const currentDay = moment(filterDate).format('dddd').toLowerCase()
             query['$or'] = [
@@ -845,8 +844,23 @@ module.exports.getUpcomingEvents = async (req, res) => {
                 }
                 ,
                 {
-                    'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-                }
+                    $and: [
+                        {
+                            $or: [
+                                {
+                                    'date.recurring.startDate': { $lte: filterDate },
+                                    'date.recurring.endDate': { $gte: filterDate },
+                                    'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
+                                },
+                                {
+                                    'date.recurring.startDate': { $lte: filterDate },
+                                    'date.recurring.endDate': { $gte: null },
+                                    'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
+                                }
+                            ]
+                        },
+                    ]
+                },
             ];
             eventsOnDate = await eventService.findAllEvents(query);
 
@@ -859,10 +873,24 @@ module.exports.getUpcomingEvents = async (req, res) => {
                 }
                 ,
                 {
-                    'date.recurring.days': { $in: [day] } // Replace with a function to get today's day
-                }
+                    $and: [
+                        {
+                            $or: [
+                                {
+                                    'date.recurring.endDate': { $gte: todayDate },
+                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
+
+                                },
+                                {
+                                    'date.recurring.endDate': { $gte: null },
+                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                                }
+                            ]
+                        },
+                    ]
+                },
             ];
-            eventsOnDate = await eventService.findAllEvents(query);
+            eventsOnDate = await eventService.findAllEvents(query, 4);
         }
 
         // Send the events happening on the specified date as a response
@@ -943,11 +971,6 @@ exports.getTrendingEvents = async (req, res) => {
     })
 }
 
-// yet to done this is for map screen here you have to pass venue lat lon also
-exports.whereToMap = async (req, res) => {
-
-}
-
 // --------------------offers -------------------
 
 
@@ -956,27 +979,37 @@ exports.getAllOffers = async (req, res) => {
     try {
 
         const today = new Date()
-
-        // const today = moment().utc()
-        // console.log(today)
-        // const currentDay = moment().format('dddd').toLowerCase()
-        // console.log(currentDay)
-        // const currentDay = "sunday"
+        const day = moment(today).format('dddd').toLowerCase()
         offers = await eventService.findAllEvents(
             {
                 // Assuming you pass the vendor id as a route parameter
                 type: 'offer',
                 verified: true,
                 $or: [
-                    { // Events with start date greater than or equal to today
-                        'date.dateRange.startDate': { $lte: today },
+                    {
                         'date.dateRange.endDate': { $gte: today }
-                    },
-                    { // Events with recurring field containing today's day
-                        'date.recurring': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+                    }
+                    ,
+                    {
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.endDate': { $gte: today },
+                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
+
+                                    },
+                                    {
+                                        'date.recurring.endDate': { $gte: null },
+                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                                    }
+                                ]
+                            },
+                        ]
                     },
                 ],
-            }
+            },
+            4
         )
 
         return res.status(200).json({

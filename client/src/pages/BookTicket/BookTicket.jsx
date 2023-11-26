@@ -326,7 +326,8 @@ const BookTicket = () => {
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
                 setLoading(false)
-                if (data.seatsBooked != null) {
+                console.log("the one i want", data)
+                if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
                     navigate(`/ticketstatus/${data.seatsbooked._id}`)
                 } else {
@@ -442,6 +443,7 @@ const BookTicket = () => {
 
                         <div className="grid justify-items-center gap-4 grid-cols-1 md:grid-cols-2">
                             <div className="hidden  md:flex flex-col justify-center">
+                                <p className='text-xl text-center font-medium'>{response.data.eventDetails.title}</p>
                                 <img className='w-96 h-auto' src={response.data.eventDetails.seatingMap} alt="" />
                             </div>
                             {isModalOpen && (
@@ -537,7 +539,7 @@ const BookTicket = () => {
 
                                         {
                                             response.data.eventDetails.categories.map((category) => (
-                                                category.className != null && category.seats != null
+                                                category.className != null
                                                     ?
                                                     <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
                                                         <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -550,7 +552,7 @@ const BookTicket = () => {
                                                                 <option>Select Class</option>
                                                                 {
                                                                     response.data.eventDetails.categories.map((category) => (
-                                                                        category.className != null && category.seats != null
+                                                                        category.className != null
                                                                             ?
                                                                             <option value={category.className}>
                                                                                 {category.className}
@@ -576,7 +578,18 @@ const BookTicket = () => {
 
                                                     </div>
                                                     :
-                                                    <></>
+                                                    <>
+                                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                            <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
+                                                            <input
+                                                                type="number"
+                                                                className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                                onChange={(e) => setSeats(e.target.value)}
+                                                                onClick={closePrice}
+                                                                placeholder='5'
+                                                            />
+                                                        </div>
+                                                    </>
                                             ))
                                         }
 
@@ -682,7 +695,7 @@ const BookTicket = () => {
 
                                             </button>
                                         </div>
-                                    </form>
+                                    </form >
                                 </div>
                             </div>
                         </div >

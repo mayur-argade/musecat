@@ -106,7 +106,9 @@ const EventDescription = () => {
                 setLoading(false)
                 let categoryprice = []
                 for (const category of data.data.eventDetails.categories) {
-                    categoryprice.push(`${category.className} = ${category.price}`)
+                    if (category.className != null && category.price != null) {
+                        categoryprice.push(`${category.className} = ${category.price}`)
+                    }
                 }
                 setSelectedLocation({
                     lat: data.data.eventDetails.location.coordinates.lat,

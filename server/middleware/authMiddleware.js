@@ -12,7 +12,7 @@ exports.isLoggedin = async (req, res, next) => {
         }
 
         const userid = await tokenService.verifyAccessToken(accessToken);
-        console.log(userid)
+        // console.log(userid)
         // console.log(userid)
 
         const userData = await vendorService.findVendor({ _id: userid._id });
@@ -41,9 +41,9 @@ exports.isUserLoggedin = async (req, res, next) => {
         const userid = await tokenService.verifyAccessToken(accessToken);
         // console.log(userid)
         const userData = await userService.findUser({ _id: userid._id });
-        console.log("user", userData)
+        // console.log("user", userData)
         if (userData != null || userData != undefined) {
-            console.log(userData)
+            // console.log(userData)
             req.user = userData;
             // console.log(res.user)
         } else {
@@ -82,9 +82,9 @@ exports.requiredRole = (requiredRole) => {
             }
 
             const userid = await tokenService.verifyAccessToken(accessToken);
-            console.log(userid)
+            // console.log(userid)
             const userData = await userService.findUser({ _id: userid._id });
-            console.log(userData)
+            // console.log(userData)
             if (userData.role === requiredRole) {
                 req.user = userData; // Attach user data to the request object
                 next(); // User has the required role, proceed to the next middleware/route handler
