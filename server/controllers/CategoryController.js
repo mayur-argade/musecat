@@ -286,6 +286,7 @@ exports.getCategoryAllEvents = async (req, res) => {
     // taking parameters like categoryname, searchquery, date
     let categoryDisplayName = req.params.categoryname
     const search = req.query.search
+    console.log(search)
     const querydate = req.query.filterdate
     const today = new Date()
     const currentDay = moment().format('dddd').toLowerCase()
@@ -374,59 +375,58 @@ exports.getCategoryAllEvents = async (req, res) => {
             }, [])
 
         } else {
-            const today = new Date()
-            const filterdate = new Date(querydate)
-            console.log("filterdate--> ", filterdate)
-            const filterday = moment(filterdate).format("dddd").toLowerCase()
-            console.log(today)
-            const currentDay = moment().format('dddd').toLowerCase()
-            console.log(currentDay)
+            const today = new Date();
+            const day = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-            // const currentDay = "sunday"
             let query = {
-                // type: 'event',
                 verified: true,
                 $or: [
                     {
                         'date.dateRange.endDate': { $gte: today }
-                    }
-                    ,
+                    },
                     {
                         $and: [
                             {
                                 $or: [
                                     {
                                         'date.recurring.endDate': { $gte: today },
-                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
-
+                                        'date.recurring.days': { $in: day }
                                     },
                                     {
                                         'date.recurring.endDate': { $gte: null },
-                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                                        'date.recurring.days': { $in: day }
                                     }
                                 ]
                             },
                         ]
                     },
                 ],
-            }
-            // console.log("search before if block", search)
-            // console.log("query before if block", query)
-            if (search == undefined || search == 'undefined') {
-                console.log("what")
+            };
+
+            console.log("query before search block", query)
+            console.log("this is search --> ", search)
+            if (search == undefined || search == 'undefined' || search == null) {
+                console.log("did noting")
             } else {
+                query.$and = query.$and || [];
+
+                // Fuzzy search with case-insensitivity
+                const fuzzySearchPattern = search.split('').join('.*?');
+                const regex = new RegExp(fuzzySearchPattern, 'i');
+
                 // Add search conditions for category name, description, and title
-                // console.log("search inside if block", search)
-                query.$and.push(
-                    // Case-insensitive search
-                    { 'description': new RegExp(search, 'i') },
-                    { 'title': new RegExp(search, 'i') }
-                );
+                query.$and.push({
+                    $or: [
+                        { 'description': regex },
+                        { 'title': regex }
+                    ]
+                });
             }
 
-            console.log("query after if block", query)
-            events = await eventService.findAllEvents(query)
+            console.log("query after if block", query);
+            events = await eventService.findAllEvents(query);
         }
+
 
         return res.status(statusCode.SUCCESS.code).json({
             success: true,

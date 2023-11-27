@@ -217,9 +217,14 @@ const Events = () => {
 
     // console.log("trending events", trending)
     if (response.data == null || trending.data == null) {
-        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
-            <img src="/images/icons/loadmain.svg" alt="" />
-        </div>)
+        return (
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
+            </div>
+        )
     } else {
         return (
             <div className='contactmargine'>
@@ -346,14 +351,13 @@ const Events = () => {
                                     </div>
                                 </div>
 
-
                                 <div className="datepicker">
                                     <div className="px-4">
-                                        <label for="session-date"></label>
+                                        <label for=""></label>
                                         <input
-                                            id="session-date"
+                                            id=""
                                             onChange={(e) => setFilterDate(e.target.value)}
-                                            className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-32 md:w-40' for='date' type="date" />
+                                            className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-32 md:w-40' type="date" />
                                     </div>
                                 </div>
                             </div>

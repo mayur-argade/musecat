@@ -8,6 +8,21 @@ class UserService {
         return user;
     }
 
+    async finduserAndPopulate(filter) {
+        const user = UserModel.findOne(filter).populate({
+            path: 'BookedTickets',
+            populate: {
+                path: 'eventid',
+                populate: {
+                    path: 'location'
+                }
+            }
+        })
+            .select('BookedTickets')
+            .sort({ createdAt: -1 })
+        return user
+    }
+
     async findUsers(filter, limit) {
         const users = UserModel.find(filter).sort({ createdAt: -1 }).limit(limit)
         return users

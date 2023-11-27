@@ -20,9 +20,12 @@ const BookTicket = () => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [dateList, setDateList] = useState([])
     const [ticketDate, setTicketDate] = useState('')
-
-
+    const [discountPercent, setDiscountPercent] = useState('')
+    const [appPrice, setAppPrice] = useState('')
+    const [isStandalone, setIsStandalone] = useState(false);
+    // const navigate = useNavigate()
     useEffect(() => {
+
         const fetchdata = async () => {
             try {
                 setLoading(true)
@@ -83,6 +86,7 @@ const BookTicket = () => {
             }
         }
         fetchdata()
+
     }, [eventid]);
 
     console.log("dates we are going to show", dateList)
@@ -145,18 +149,20 @@ const BookTicket = () => {
                 } else if (seats <= 0) {
                     return toast.error("Enter valid seat number")
                 }
-                //  else if (!checked.every((isChecked) => isChecked)) {
-                //     return toast.error("Tick all checkboxes")
-                // }
+                else if (!checked.every((isChecked) => isChecked)) {
+                    return toast.error("Tick all checkboxes")
+                }
                 else if (!termsAccepted) {
                     return toast.error("Check terms and conditions")
                 } else {
                     // calculatePrice()
-                    const { basePrice, tax, totalPrice, baseTaxAmout } = calculatePrice()
+                    const { basePrice, tax, totalPrice, baseTaxAmout, discountpercent, priceAfterDiscount } = calculatePrice()
                     setPriceWithTax(baseTaxAmout)
                     setTotalPrice(totalPrice)
                     setBasePrice(basePrice)
                     setTax(tax)
+                    setDiscountPercent(discountpercent)
+                    setAppPrice(priceAfterDiscount)
                     setPrice(true);
                 }
             }
@@ -167,18 +173,25 @@ const BookTicket = () => {
 
     function calculatePrice() {
         console.log(ticketclass)
+        // baseprice1 --> price of 1 ticket
+        // Taxes --> taxes on all seats
+        // app discount --> discount on app
+        // total price --> final price
         let category = response.data.eventDetails.categories.find(item => item.className == ticketclass)
         // console.log("category", category)
+
+        const discountpercent = response.data.eventDetails.discountOnApp || 0
 
         const taxRate = 0.05
         let basePrice1 = category.price
         const taxAmout = basePrice1 * taxRate
-        const baseTaxAmout = Math.round(basePrice1 + taxAmout)
+        const baseTaxAmout = basePrice1 + taxAmout
         const tax = taxAmout * seats
         const totalPrice = baseTaxAmout * seats
         const basePrice = basePrice1 * seats
+        const priceAfterDiscount = totalPrice - (totalPrice * discountpercent)
         return {
-            basePrice, tax, totalPrice, baseTaxAmout
+            basePrice, tax, totalPrice, baseTaxAmout, discountpercent, priceAfterDiscount
         }
     }
 
@@ -421,9 +434,9 @@ const BookTicket = () => {
         return (
             <>
                 <div className='appmargine'>
-                    <Toaster />
                     <Navbar />
                     <Tabbar />
+
                     <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                         <div className="ml-3 hidden md:flex align-middle items-center">
                             <button onClick={handleBack} className='mt-1'>
@@ -440,7 +453,7 @@ const BookTicket = () => {
                                 <img src="/images/icons/show.svg" alt="" />
                             </button>
                         </div>
-
+                        <Toaster />
                         <div className="grid justify-items-center gap-4 grid-cols-1 md:grid-cols-2">
                             <div className="hidden  md:flex flex-col justify-center">
                                 <p className='text-xl text-center font-medium'>{response.data.eventDetails.title}</p>
@@ -537,66 +550,44 @@ const BookTicket = () => {
 
                                         </div>
 
-                                        {
-                                            response.data.eventDetails.categories.map((category) => (
-                                                category.className != null
-                                                    ?
-                                                    <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
-                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                            <label className='text-xs mt-1' htmlFor="first name">Select Class</label>
-                                                            <select
-                                                                className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                                onChange={(e) => setTicketclass(e.target.value)}
-                                                                onClick={closePrice}
-                                                            >
-                                                                <option>Select Class</option>
-                                                                {
-                                                                    response.data.eventDetails.categories.map((category) => (
-                                                                        category.className != null
-                                                                            ?
-                                                                            <option value={category.className}>
-                                                                                {category.className}
-                                                                            </option>
-                                                                            :
-                                                                            <option value="">No ticket categories found</option>
-                                                                    ))
-                                                                }
-                                                            </select>
+                                        {response.data.eventDetails.categories && response.data.eventDetails.categories.length > 0 && (
+                                            <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
+                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                    <label className='text-xs mt-1' htmlFor="classSelect">Select Class</label>
+                                                    <select
+                                                        id="classSelect"
+                                                        className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                        onChange={(e) => setTicketclass(e.target.value)}
+                                                        onClick={closePrice}
+                                                    >
+                                                        <option value="">Select Class</option>
+                                                        {
+                                                            response.data.eventDetails.categories.map((category) => (
+                                                                category.className != null &&
+                                                                <option key={category.className} value={category.className}>
+                                                                    {category.className}
+                                                                </option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </div>
 
-                                                        </div>
-
-                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                            <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
-                                                            <input
-                                                                type="number"
-                                                                className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                                onChange={(e) => setSeats(e.target.value)}
-                                                                onClick={closePrice}
-                                                                placeholder='5'
-                                                            />
-                                                        </div>
-
-                                                    </div>
-                                                    :
-                                                    <>
-                                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                            <label className='text-xs mt-1' htmlFor="first name">Select No. of seats</label>
-                                                            <input
-                                                                type="number"
-                                                                className='font-medium  border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                                onChange={(e) => setSeats(e.target.value)}
-                                                                onClick={closePrice}
-                                                                placeholder='5'
-                                                            />
-                                                        </div>
-                                                    </>
-                                            ))
-                                        }
-
-
+                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                    <label className='text-xs mt-1' htmlFor="seatInput">Select No. of seats</label>
+                                                    <input
+                                                        type="number"
+                                                        id="seatInput"
+                                                        className='font-medium border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                        onChange={(e) => setSeats(e.target.value)}
+                                                        onClick={closePrice}
+                                                        placeholder='5'
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
 
                                         <div className='flex flex-col justify-between mt-3'>
-                                            {/* {
+                                            {
                                                 response.data.eventDetails.custom &&
                                                 response.data.eventDetails.custom.map((custom, index) => (
                                                     <div className="check" key={index}>
@@ -616,7 +607,7 @@ const BookTicket = () => {
                                                         </label>
                                                     </div>
                                                 ))
-                                            } */}
+                                            }
 
                                             <div className="check">
                                                 <input checked={termsAccepted}
@@ -624,7 +615,11 @@ const BookTicket = () => {
 
                                                 <label
                                                     for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                    <a href={response.data.eventDetails.termsAndConditions} target="_blank" rel="noopener noreferrer">
+                                                    <a
+                                                        href={response.data.eventDetails.termsAndConditions}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
                                                         Terms and Conditions
                                                     </a>
                                                 </label>
@@ -645,6 +640,14 @@ const BookTicket = () => {
                                                         <p className='font-semibold'>{tax} OMR</p>
                                                     </div>
                                                     <hr />
+                                                    {
+                                                        isStandalone && (
+                                                            <div className="w-full baseprice flex justify-between">
+                                                                <p className='font-semibold'>Discount % on App</p>
+                                                                <p className='font-semibold'>{discountPercent} OMR</p>
+                                                            </div>
+                                                        )
+                                                    }
                                                     <div className="w-full baseprice flex justify-between">
                                                         <p className='font-semibold'>Total</p>
                                                         <p className='font-semibold'>{totalPrice} OMR</p>

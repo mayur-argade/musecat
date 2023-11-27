@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 
 const PastPurchaseCard = ({ data }) => {
     let status;
-    // console.log(data)
+    console.log(data)
     const currentDate = DateTime.now();
     const startEventDate = data.date.dateRange?.startDate ? DateTime.fromISO(data.date.dateRange.startDate) : null;
     const eventDate = data.date.dateRange?.endDate ? DateTime.fromISO(data.date.dateRange.endDate) : null;

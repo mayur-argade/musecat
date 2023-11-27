@@ -319,27 +319,19 @@ exports.getEventDetails = async (req, res) => {
 exports.getPastPurchase = async (req, res) => {
     try {
 
-        const user = await userService.findUser({ _id: req.user.id });
+        const user = await userService.finduserAndPopulate({ _id: req.user.id });
 
-
-        let pastpurchased = user.BookedTickets;
-        const BookedTickets = await ticketService.findAllTickets({ _id: { $in: pastpurchased } });
-
-        const response = [];
-
-        for (const ticket of BookedTickets) {
-            console.log(ticket)
-            if (ticket.eventid != null) {
-                const eventobject = ticket.eventid
-                // console.log(event)
-                response.push(eventobject);
-            }
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                data: "User not found"
+            })
         }
-
+        
         return res.status(200).json({
             success: true,
             data: {
-                pastpurchased: response, // Use the response array, not 'res'
+                pastpurchased: user, // Use the response array, not 'res'
             },
         });
     } catch (error) {
