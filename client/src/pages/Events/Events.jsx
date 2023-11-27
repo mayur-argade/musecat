@@ -41,7 +41,7 @@ const Events = () => {
     const [categoryLoading, setCategoryLoading] = useState(false)
     const [trending, setTrending] = useState({})
     const [checkCategory, setCheckCategory] = useState(false)
-    const [filterDate, setFilterDate] = useState(new Date())
+    const [filterDate, setFilterDate] = useState(null)
     // console.log("selected distance", selectedDistance)
 
     const handleFeaturesChange = (feature) => {
