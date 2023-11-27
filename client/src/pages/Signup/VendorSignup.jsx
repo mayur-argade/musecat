@@ -35,6 +35,7 @@ const VendorSignup = () => {
     const [postcode, setPostcode] = useState('')
     const [Crfile, setCrfile] = useState(null)
     const [fileURL, setFileURL] = useState('');
+    const [loading, setLoading] = useState(false)
 
     function captureLogo(e) {
         const file = e.target.files[0];
@@ -55,9 +56,6 @@ const VendorSignup = () => {
 
     async function submit() {
 
-        // if (!firstname || !lastname || !email || !password || !mobile || !registerAddress || !accountType || !companyName || !companyDisplayName || !crNo || !website || !logo || !crImage) {
-        //     window.alert("all fields are mandatory")
-        // }
         if (!Crfile || Crfile == null) {
             return toast.error("CR Pdf is missing")
         }
@@ -101,6 +99,7 @@ const VendorSignup = () => {
         const formData = new FormData();
         formData.append('file', Crfile);
 
+        setLoading(true)
         handleUpload(formData)
             .then((response) => {
                 console.log('Upload successful:', response);
@@ -133,9 +132,11 @@ const VendorSignup = () => {
         try {
             const { data } = await VendorRegister(signupdata)
             console.log(data)
+            setLoading(false)
             dispatch(setAuth(data));
             navigate('/vendor/home');
         } catch (error) {
+            setLoading(false)
             console.log(error)
             toast.error(error.response.data.message)
         }
@@ -293,9 +294,9 @@ const VendorSignup = () => {
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
 
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload CR Image'}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload CR PDF'}</p>
                                 </div>
-                                <input onChange={(e) => setCrfile(e.target.files[0])} id="crimage" type="file" className="hidden" />
+                                <input onChange={(e) => setCrfile(e.target.files[0])} accept="application/pdf" id="crimage" type="file" className="hidden" />
                             </label>
                         </div>
 
@@ -307,7 +308,15 @@ const VendorSignup = () => {
                     </div>
 
                     <div>
-                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Signup</button>
+                        {
+                            loading
+                                ?
+                                <button class="flex justify-center items-center w-full  p-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">
+                                    <img className='h-6' src="/images/icons/button-loading.svg" alt="" />
+                                </button>
+                                :
+                                <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Signup</button>
+                        }
                     </div>
                     <div className="flex items-center justify-between">
 

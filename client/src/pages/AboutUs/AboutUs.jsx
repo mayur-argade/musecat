@@ -11,7 +11,7 @@ const AboutUs = () => {
                 <div className='h-40 md:h-64 justify-center items-center relative'>
 
                     <div className="relative ">
-                        <img className="h-72 md:h-full object-cover" src="/images/assets/about2.jpg" alt="" />
+                        <img className="h-72 md:h-80 xl:h-full object-cover" src="/images/assets/about2.jpg" alt="" />
 
                         <div className="md:mr-52 md:ml-52 absolute top-16 left-0 p-8 space-y-4 text-white">
                             <p className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</p>
@@ -63,24 +63,6 @@ const AboutUs = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className='hidden md:flex justify-end flex-col absolute -right-14 bottom-0'>
-                        <div className='flex justify-between mb-2'>
-                            <button
-                                onClick={() => window.scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                })}
-                                className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button>
-
-                            <button>
-                            </button>
-                        </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                    </div> */}
-
                 </div>
             </section>
 

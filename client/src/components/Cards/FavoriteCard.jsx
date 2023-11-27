@@ -42,7 +42,7 @@ const FavoriteCard = ({ data }) => {
     }
     return (
         <>
-            <div class="standalone:mb-5 relative my-3 h-auto lg:h-96 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div onClick={(() => navigate(`/events/${data._id}`))} class="standalone:mb-5 relative my-3 h-auto lg:h-96 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent click event from propagating

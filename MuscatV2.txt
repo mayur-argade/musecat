@@ -122,7 +122,7 @@ Where to map
 1. List all the event by Category
 
 Event Description
-1. Event date end date space issue
+1. Event date end date space issue (done)
 2. when clicking on to the next scroll page a little up to start with the image 
 3. 
 
@@ -185,4 +185,15 @@ return (
 TODO 
 1. Change sidebar remove fields
 2. Look navbar again and make it proper
+
+done
+1. Favorites back butter fixed
+2. Changed Button functionality of offer to the Buy now and event will be book now
+3. Venue Banner Kept mandatory only
+4. After loggin in user loader is not there home page is developed such a way that apis will get fetched real time to keep engage user
+5. Added new loader to the after Vendor login page
+6. Even After add venue you can not continue adding that event because there will be no venue in the list till admin verifies it
+7. Book seat page handled for booking events/offers
+8. for Events page live search filtering is done if there are no event already then there will no event to search
+
 

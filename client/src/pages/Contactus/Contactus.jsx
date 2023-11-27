@@ -119,7 +119,7 @@ const Contactus = () => {
 
                                 </div>
                                 <div className="flex justify-center mt-5">
-                                    <button onClick={submit} type="button" class="text-white bg-[#C0A04C] hover:bg-white hover:text-[#C0A04C] font-medium rounded-lg text-sm px-4 w-40 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Send Message</button>
+                                    <button onClick={submit} type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white font-medium rounded-lg text-sm px-4 w-40 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-[#A48533]" >Send Message</button>
                                 </div>
                                 <div className="flex flex-col justify-center items-center mt-5 space-y-2">
                                     <span className='text-sm font-bold'>

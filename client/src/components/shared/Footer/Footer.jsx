@@ -89,7 +89,7 @@ const Footer = () => {
                                         <nav class="hidden md:flex flex-col mt-4 space-y-5 text-sm">
                                             <a onClick={() => navigate("/aboutus")} class="hover:opacity-75 font-medium cursor-pointer" href> About </a>
                                             <a onClick={() => navigate("/contactus")} class="hover:opacity-75 font-medium cursor-pointer" href> Contact Us </a>
-                                            <a onClick={() => navigate("/")} class="hover:opacity-75 font-medium cursor-pointer" href> Home </a>
+                                            <a onClick={() => navigate("/faq")} class="hover:opacity-75 font-medium cursor-pointer" href> FAQ </a>
                                         </nav>
                                     </div>
                                 </div>

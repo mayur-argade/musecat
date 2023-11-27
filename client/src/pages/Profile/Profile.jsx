@@ -95,9 +95,14 @@ const Profile = () => {
     }
 
     if (response.data == null) {
-        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
-            <img src="/images/icons/loadmain.svg" alt="" />
-        </div>)
+        return (
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
+            </div>
+        )
     } else {
         return (
             <>
@@ -232,7 +237,7 @@ const Profile = () => {
                                 <div className="relative rounded-lg ">
                                     <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
                                         <div className='w-96 md:w-[1000px]'>
-                                            <div className="modal bg-white px-3 py-4">
+                                            <div className="modal bg-white px-5 py-5">
                                                 <div className='space-y-4 max-h-auto  overflow-y-auto'>
                                                     <div className="flex items-center justify-center w-full">
                                                         <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -246,7 +251,7 @@ const Profile = () => {
                                                     </div>
 
                                                     <div>
-                                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate} >Update profile</button>
+                                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate} >Upload</button>
                                                     </div>
 
                                                 </div>

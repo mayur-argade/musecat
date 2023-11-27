@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import { ClientEventDetailsApi, addToFavorites, VedorDetails, ClientUpcomingEvents, ClientGetOffers } from '../../http'
+import { ClientEventDetailsApi, addToFavorites } from '../../http'
 import EventCard from '../../components/Cards/EventCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
@@ -14,6 +14,8 @@ import MapComponent from '../../components/GoogleMap/Map'
 import { useSelector } from 'react-redux'
 
 const EventDescription = () => {
+    document.title = 'Event Info'
+
     let { eventid } = useParams();
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,27 +23,23 @@ const EventDescription = () => {
     const handleShowNextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     };
-
     const handleShowPrevImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
 
     const [isDropdownOpen, setDropdownOpen] = useState(false);
-
-
     const dropdownRef = useRef(null);
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
     };
 
     const [isLiked, setIsLiked] = useState(false)
-
     const { user, isAuth } = useSelector((state) => state.auth);
-
     const [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
         lng: 58.37132692337036,
     });
+
     const [loading, setLoading] = useState(false)
     const [response, setReponse] = useState({});
     const [accordions, setAccordions] = useState([])
@@ -87,11 +85,11 @@ const EventDescription = () => {
         };
     }, []);
 
-    document.title = 'Event Info'
+
     const dispatch = useDispatch();
 
     console.log("isMobile", isMobile)
-
+    console.log("images array -->", images)
 
     useEffect(() => {
 
@@ -115,13 +113,19 @@ const EventDescription = () => {
                     lng: data.data.eventDetails.location.coordinates.lng
                 })
 
-                setImages((prevImages) => [
-                    ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
-                    ...(data.data.eventDetails.AdditionalPhotos || []),
-                    ...(data.data.eventDetails.banner || []),
-                    ...(data.data.eventDetails.video || []),
-                    ...prevImages,
-                ]);
+                setImages((prevImages) => {
+                    const uniqueImages = new Set([
+                        ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
+                        ...(data.data.eventDetails.AdditionalPhotos || []),
+                        ...(data.data.eventDetails.banner || []),
+                        ...(data.data.eventDetails.video || []),
+                        ...prevImages,
+                    ]);
+
+                    // Convert the Set back to an array
+                    return [...uniqueImages];
+                });
+
 
                 // Assuming setAccordions is a state update function
                 const newAccordions = [];
@@ -234,8 +238,23 @@ const EventDescription = () => {
 
     }, [eventid, user, isAuth, fetchLikes]);
 
+    const ContentDisplay = ({ currentContent }) => {
+        console.log(currentContent)
+        if (isVideo(currentContent)) {
+            return (
+                <video className="h-auto w-full rounded" controls>
+                    <source src={currentContent} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            );
+        } else {
+            return <img className="h-auto w-full rounded" src={currentContent} alt="" />;
+        }
+    };
 
-
+    // Helper functions to check content type
+    const isImage = (url) => /\.(jpeg|jpg|gif|png)$/.test(url);
+    const isVideo = (url) => /\.(mp4|webm|ogg)$/.test(url);
 
     let totalSeats = 0;
     let startPrice = 1000000000;
@@ -261,11 +280,6 @@ const EventDescription = () => {
                     startPrice = 0
                 }
             })
-            // console.log("availableTickets", startPrice, availableSeats)
-
-            // console.log("date printing", response.data.eventDetails.data)
-            // eventStart = response.data.eventDetails.date.dateRange.startDate ; 
-            // eventEnd =  response.data.eventDetails.date.dateRange.endDate ;
         }
     }
 
@@ -328,8 +342,6 @@ const EventDescription = () => {
         window.open(shareonwhatsapp, '_blank');
     }
 
-    // console.log("response", upcomingEvents)
-
     if (response.data == null) {
         return (
             <div className='h-screen w-full flex justify-center align-middle items-center'>
@@ -373,7 +385,10 @@ const EventDescription = () => {
                                                     {response.data.eventDetails.showEndDate
                                                         ?
                                                         <>
-                                                            to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
+                                                            <span className="mx-3">
+                                                                to
+                                                            </span>
+                                                            {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
                                                         </>
                                                         :
                                                         <>
@@ -390,7 +405,7 @@ const EventDescription = () => {
                                     <div className="col-span-4 md:col-span-2  flex flex-col ">
                                         <div className="w-full max-w-6xl rounded-lg relative">
                                             {/* Image */}
-                                            <img className="h-auto w-full rounded" src={`${response.data.eventDetails.displayPhoto}`} alt="" />
+                                            <ContentDisplay currentContent={images[currentImageIndex]} />
 
                                             {/* Top-right Edit and View Sales */}
                                             <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
@@ -426,10 +441,24 @@ const EventDescription = () => {
                                                 images.length > 1
                                                     ?
                                                     <div className="absolute flex items-center -bottom-10 left-1/2 transform -translate-x-1/2 space-x-2">
-                                                        <button onClick={handleShowPrevImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                        <button onClick={() => {
+                                                            handleShowPrevImage();
+                                                            window.scrollTo({
+                                                                top: 90,
+                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                                            })
+                                                        }} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
                                                             Prev
                                                         </button>
-                                                        <button onClick={handleShowNextImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                        <button onClick={() => {
+                                                            handleShowNextImage();
+                                                            window.scrollTo({
+                                                                top: 90,
+                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                                            })
+                                                        }
+
+                                                        } className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
                                                             Next
                                                         </button>
                                                     </div>
@@ -493,7 +522,7 @@ const EventDescription = () => {
                                                         <p className='font-semibold text-xl'>OMR {startPrice}</p>
                                                     </div>
                                                     <div className='flex flex-col text-right'>
-                                                        <p className='text-xs'>Available Tickets</p>
+                                                        <p className='text-xs'>Daily Available Tickets</p>
                                                         <p className='font-semibold text-xl'>{availableSeats}</p>
                                                     </div>
                                                 </div>

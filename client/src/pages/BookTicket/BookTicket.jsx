@@ -2,28 +2,41 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Footer from '../../components/shared/Footer/Footer'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ClientEventDetailsApi, ClientBookTicket, getCustomersSavedCards } from '../../http'
-import { setEvent } from '../../store/eventSlice'
 import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment'
 
 const BookTicket = () => {
     document.title = 'Book Ticket'
     let { eventid } = useParams();
-    const { user, isAuth } = useSelector((state) => state.auth)
+    let navigate = useNavigate();
 
     const [response, setReponse] = useState({});
     const [savedCard, setSavedCards] = useState([])
-    const [checked, setChecked] = useState(null);
+    const [checked, setChecked] = useState([]);
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [dateList, setDateList] = useState([])
     const [ticketDate, setTicketDate] = useState('')
     const [discountPercent, setDiscountPercent] = useState('')
     const [appPrice, setAppPrice] = useState('')
     const [isStandalone, setIsStandalone] = useState(false);
-    // const navigate = useNavigate()
+    const [price, setPrice] = useState();
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [basePrice, setBasePrice] = useState('')
+    const [tax, setTax] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [firstname, setFirstname] = useState()
+    const [lastname, setLastname] = useState()
+    const [email, setEmail] = useState()
+    const [ticketclass, setTicketclass] = useState('')
+    const [seats, setSeats] = useState('')
+    const [totalPrice, setTotalPrice] = useState('')
+    const [priceWithTax, setPriceWithTax] = useState('')
+    const [cardid, setCardid] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [submissionLoading, setSubmissionLoading] = useState(false)
     useEffect(() => {
 
         const fetchdata = async () => {
@@ -34,21 +47,33 @@ const BookTicket = () => {
                 setReponse(data)
 
                 const today = moment();
-
                 let endMoment;
-
                 const dateList = [];
+
                 if (data.data.eventDetails.date.dateRange) {
-                    if (data.data.eventDetails.date.dateRange.endDate != null || data.data.eventDetails.date.dateRange.endDate != undefined) {
+                    let endMoment;
+
+                    if (data.data.eventDetails.date.dateRange.endDate != null && data.data.eventDetails.date.dateRange.endDate != undefined) {
                         endMoment = moment(data.data.eventDetails.date.dateRange.endDate);
                     } else {
                         // If no end date, generate dates for the next 7 days
                         endMoment = today.clone().add(7, 'days');
                     }
+
+                    // Check if endMoment is greater than the next 7 days
+                    if (endMoment.isAfter(today.clone().add(7, 'days'), 'day')) {
+                        endMoment = today.clone().add(7, 'days');
+                    }
+
+                    // Generate date list till endMoment
+                    let currentMoment = today.clone();
+                    while (currentMoment.isSameOrBefore(endMoment, 'day')) {
+                        dateList.push(currentMoment.format('YYYY-MM-DD'));
+                        currentMoment.add(1, 'day');
+                    }
                 } else {
                     // Add dates for the current week based on recurring days to dateList array
                     const recurringDays = data.data.eventDetails.date.recurring.days;
-                    const today = moment();
 
                     for (let i = 0; i < 7; i++) {
                         const currentDay = today.clone().add(i, 'days');
@@ -60,43 +85,32 @@ const BookTicket = () => {
                     }
 
                     console.log(dateList);
-
-                }
-                let currentMoment = today.clone();
-                if (endMoment != null || endMoment != undefined) {
-                    while (currentMoment.isSameOrBefore(endMoment, 'day')) {
-                        dateList.push(currentMoment.format('YYYY-MM-DD'));
-                        currentMoment.add(1, 'day');
-                    }
                 }
 
                 setDateList(dateList);
 
-                setChecked(Array(data.data.eventDetails.custom.length).fill(false))
+                const customData = data.data.eventDetails.custom;
+                const shouldFillChecked = customData.every(element => element !== "");
+
+                if (shouldFillChecked) {
+                    setChecked(Array(customData.length).fill(false));
+                }
                 const { data: res } = await getCustomersSavedCards()
 
-
-
-                console.log(res)
                 setSavedCards(res.data)
 
                 setLoading(false)
             } catch (error) {
                 console.log(error)
+                setLoading(false)
+                toast.error(error.response.data.data)
             }
         }
         fetchdata()
 
     }, [eventid]);
 
-    const [price, setPrice] = useState(
-
-    );
-    const [basePrice, setBasePrice] = useState('')
-    const [tax, setTax] = useState('')
-    let navigate = useNavigate();
-
-    // console.log(event)
+    console.log("Checked --> ", checked)
     const handleBack = () => {
         navigate(-1); // This function will take you back to the previous page
     };
@@ -110,8 +124,6 @@ const BookTicket = () => {
     const closePrice = () => {
         setPrice(false)
     }
-
-    const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
         setModalOpen(true);
@@ -194,28 +206,17 @@ const BookTicket = () => {
         }
     }
 
-    const [loading, setLoading] = useState(false)
-    const [firstname, setFirstname] = useState()
-    const [lastname, setLastname] = useState()
-    const [email, setEmail] = useState()
-    const [ticketclass, setTicketclass] = useState('')
-    const [seats, setSeats] = useState('')
-    const [totalPrice, setTotalPrice] = useState('')
-    const [priceWithTax, setPriceWithTax] = useState('')
-    const [cardid, setCardid] = useState('')
-
     async function submit() {
         if (!firstname || !lastname || !seats) {
             return toast.error("All fields are mandatory")
         }
-        if (response.data.eventDetails.categories.length > 0) {
-
-        }
         else if (seats <= 0) {
             return toast.error("Enter valid seat number")
         }
-        else if (!checked.every((isChecked) => isChecked)) {
-            return toast.error("Tick all checkboxes")
+        else if (checked.length > 0) {
+            if (!checked.every((isChecked) => isChecked)) {
+                return toast.error("Tick all checkboxes")
+            }
         }
         else if (!termsAccepted) {
             return toast.error("Check terms and conditions")
@@ -224,7 +225,6 @@ const BookTicket = () => {
         else if (!checked.every((isChecked) => isChecked)) {
             return toast.error("Tick all checkboxes")
         }
-
         if (!termsAccepted) {
             return toast.error("Check terms and conditions")
         }
@@ -266,10 +266,10 @@ const BookTicket = () => {
                         date: ticketDate
                     }
 
-                    setLoading(true)
+                    setSubmissionLoading(true)
                     const { data } = await ClientBookTicket(ticketdata)
                     console.log("checking data for the 404 error", data)
-                    setLoading(false)
+                    setSubmissionLoading(false)
                     toast.success("To book your Ticket proceed to payment page")
 
                     if (data.data != null) {
@@ -280,7 +280,7 @@ const BookTicket = () => {
                         toast.error("Failed to initiate payment service")
                     }
                 } catch (error) {
-                    setLoading(false)
+                    setSubmissionLoading(false)
                     console.log(error)
                     if (error.response.status == 401) {
                         toast((t) => (
@@ -310,10 +310,10 @@ const BookTicket = () => {
                     eventid: eventid,
                     date: ticketDate
                 }
-                setLoading(true)
+                setSubmissionLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
-                setLoading(false)
+                setSubmissionLoading(false)
                 if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
                     navigate(`/ticketstatus/${data.seatsbooked._id}`)
@@ -321,7 +321,7 @@ const BookTicket = () => {
                     toast.error("no price has classname has seatss We are unable to book your ticket please try later")
                 }
             } catch (error) {
-                setLoading(false)
+                setSubmissionLoading(false)
                 console.log(error)
                 if (error.response.status == 401) {
                     toast((t) => (
@@ -350,10 +350,10 @@ const BookTicket = () => {
                     ticketclass: ticketclass,
                     date: ticketDate
                 }
-                setLoading(true)
+                setSubmissionLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
-                setLoading(false)
+                setSubmissionLoading(false)
                 console.log("the one i want", data)
                 if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
@@ -362,7 +362,7 @@ const BookTicket = () => {
                     toast.error("We are unable to book your ticket please try later")
                 }
             } catch (error) {
-                setLoading(false)
+                setSubmissionLoading(false)
                 console.log(error)
                 if (error.response.status == 401) {
                     toast((t) => (
@@ -390,10 +390,10 @@ const BookTicket = () => {
                     eventid: eventid,
                     date: ticketDate
                 }
-                setLoading(true)
+                setSubmissionLoading(true)
                 const { data } = await ClientBookTicket(ticketdata)
                 // console.log("checking data for the 404 error",data)
-                setLoading(false)
+                setSubmissionLoading(false)
                 if (data.seatsbooked != null) {
                     toast.success("Ticket Has been booked")
                     navigate(`/ticketstatus/${data.seatsbooked._id}`)
@@ -401,7 +401,7 @@ const BookTicket = () => {
                     toast.error("no price no classname no seats We are unable to book your ticket please try later")
                 }
             } catch (error) {
-                setLoading(false)
+                setSubmissionLoading(false)
                 console.log(error)
                 if (error.response.status == 401) {
                     toast((t) => (
@@ -418,8 +418,6 @@ const BookTicket = () => {
         }
 
     }
-
-    const [visible, setVisible] = useState(false)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -596,7 +594,19 @@ const BookTicket = () => {
                                             </div>
                                         )}
                                         <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="seatInput">Select No. of seats</label>
+                                            <label className='text-xs mt-1' htmlFor="seatInput">
+                                                {
+                                                    response.data.eventDetails.type == 'event'
+                                                        ?
+                                                        <>
+                                                            Enter No. of seats
+                                                        </>
+                                                        :
+                                                        <>
+                                                            Enter No. of Vouchers
+                                                        </>
+                                                }
+                                            </label>
                                             <input
                                                 type="number"
                                                 id="seatInput"
@@ -609,24 +619,28 @@ const BookTicket = () => {
                                         <div className='flex flex-col justify-between mt-3'>
                                             {
                                                 response.data.eventDetails.custom &&
-                                                response.data.eventDetails.custom.map((custom, index) => (
-                                                    <div className="check" key={index}>
-                                                        <input
-                                                            id={`custom-check-${index}`}
-                                                            checked={checked[index]}
-                                                            onChange={() => handleCheckboxChange(index)}
-                                                            type="checkbox"
-                                                            value=""
-                                                            className="w-4 h-4 text-bg-[#A48533] border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                        />
-                                                        <label
-                                                            htmlFor={`custom-check-${index}`}
-                                                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                        >
-                                                            {custom}
-                                                        </label>
-                                                    </div>
-                                                ))
+                                                response.data.eventDetails.custom.map((custom, index) => {
+                                                    custom != ''
+                                                        ?
+                                                        <div className="check" key={index}>
+                                                            <input
+                                                                id={`custom-check-${index}`}
+                                                                checked={checked[index]}
+                                                                onChange={() => handleCheckboxChange(index)}
+                                                                type="checkbox"
+                                                                value=""
+                                                                className="w-4 h-4 text-bg-[#A48533] border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                            />
+                                                            <label
+                                                                htmlFor={`custom-check-${index}`}
+                                                                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                            >
+                                                                {custom}
+                                                            </label>
+                                                        </div>
+                                                        :
+                                                        <></>
+                                                })
                                             }
 
                                             <div className="check">
@@ -705,14 +719,24 @@ const BookTicket = () => {
                                         <div onClick={handleBookNowClick} className="flex justify-center w-full mt-3">
                                             <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
                                                 {
-                                                    loading
+                                                    submissionLoading
                                                         ?
                                                         <button class="flex justify-center items-center w-full bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">
                                                             <img className='h-5' src="/images/icons/button-loading.svg" alt="" />
                                                         </button>
                                                         :
                                                         <p>
-                                                            Book Seat
+                                                            {
+                                                                response.data.eventDetails.type == 'event'
+                                                                    ?
+                                                                    <>
+                                                                        Book Seat
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                        Buy Voucher
+                                                                    </>
+                                                            }
                                                         </p>
                                                 }
 

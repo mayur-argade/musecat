@@ -3,7 +3,7 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import FavoriteCard from '../../components/Cards/FavoriteCard'
 import Footer from '../../components/shared/Footer/Footer'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ClientFavEventApi } from '../../http/index'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
@@ -32,8 +32,10 @@ const Favorites = () => {
     }, []);
 
 
-    console.log(response)
 
+    const handleBack = () => {
+        navigate(-1); // This function will take you back to the previous page
+    };
     return (
         <>
             <div className='appmargine'>
@@ -42,7 +44,7 @@ const Favorites = () => {
 
                 <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                     <div className="ml-3 hidden md:flex align-middle items-center">
-                        <button className=' mt-1'>
+                        <button  onClick={handleBack} className=' mt-1'>
                             <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                         </button>
                         <p className='text-2xl font-bold'>Favorites</p>
@@ -61,13 +63,19 @@ const Favorites = () => {
                                     <SkeletonCard />
                                 </>
                                 :
-                                <>
-                                    {
-                                        response.data.map((event) => (
-                                            <FavoriteCard data={event} />
-                                        ))
-                                    }
-                                </>
+                                response.data.length > 0
+                                    ?
+                                    <>
+                                        {
+                                            response.data.map((event) => (
+                                                <FavoriteCard data={event} />
+                                            ))
+                                        }
+                                    </>
+                                    :
+                                    <div className='mb-10 md:ml-80 md:mt-20  flex items-center justify-center w-full'>
+                                        <img className='h-52 md:h-60' src="/images/assets/nothing.png" alt="" />
+                                    </div>
                         }
                     </div>
 

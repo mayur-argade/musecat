@@ -484,6 +484,7 @@ module.exports.generateTicket = async (req, res) => {
                 console.log(error)
             }
         }
+        
         // no price has classname has seats
         else if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length != 0) {
             console.log("No price has classname has seats")

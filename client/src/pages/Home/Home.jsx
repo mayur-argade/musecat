@@ -268,8 +268,6 @@ const Home = () => {
         }
     }
 
-
-    // console.log(highlightedDates)
     return (
         <>
             <div className='appmargine '>
