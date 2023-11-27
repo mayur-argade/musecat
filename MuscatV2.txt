@@ -181,3 +181,8 @@ return (
                 </div>
             </div>
         )
+
+TODO 
+1. Change sidebar remove fields
+2. Look navbar again and make it proper
+

@@ -89,7 +89,6 @@ const BookTicket = () => {
 
     }, [eventid]);
 
-    console.log("dates we are going to show", dateList)
     const [price, setPrice] = useState(
 
     );
@@ -206,9 +205,25 @@ const BookTicket = () => {
     const [cardid, setCardid] = useState('')
 
     async function submit() {
-        // if (!checked.every((isChecked) => isChecked)) {
-        //     return toast.error("Tick all checkboxes")
-        // }
+        if (!firstname || !lastname || !seats) {
+            return toast.error("All fields are mandatory")
+        }
+        if (response.data.eventDetails.categories.length > 0) {
+
+        }
+        else if (seats <= 0) {
+            return toast.error("Enter valid seat number")
+        }
+        else if (!checked.every((isChecked) => isChecked)) {
+            return toast.error("Tick all checkboxes")
+        }
+        else if (!termsAccepted) {
+            return toast.error("Check terms and conditions")
+        }
+
+        else if (!checked.every((isChecked) => isChecked)) {
+            return toast.error("Tick all checkboxes")
+        }
 
         if (!termsAccepted) {
             return toast.error("Check terms and conditions")
@@ -427,7 +442,12 @@ const BookTicket = () => {
 
     if (response.data == null) {
         return (
-            <>loading</>
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
+            </div>
         )
     }
     else {
@@ -550,7 +570,7 @@ const BookTicket = () => {
 
                                         </div>
 
-                                        {response.data.eventDetails.categories && response.data.eventDetails.categories.length > 0 && (
+                                        {response.data.eventDetails.categories && response.data.eventDetails.categories.length > 0 && response.data.eventDetails.categories[0].className != null && (
                                             <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
                                                 <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                                     <label className='text-xs mt-1' htmlFor="classSelect">Select Class</label>
@@ -572,20 +592,20 @@ const BookTicket = () => {
                                                     </select>
                                                 </div>
 
-                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                    <label className='text-xs mt-1' htmlFor="seatInput">Select No. of seats</label>
-                                                    <input
-                                                        type="number"
-                                                        id="seatInput"
-                                                        className='font-medium border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                                        onChange={(e) => setSeats(e.target.value)}
-                                                        onClick={closePrice}
-                                                        placeholder='5'
-                                                    />
-                                                </div>
+
                                             </div>
                                         )}
-
+                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="seatInput">Select No. of seats</label>
+                                            <input
+                                                type="number"
+                                                id="seatInput"
+                                                className='font-medium border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                onChange={(e) => setSeats(e.target.value)}
+                                                onClick={closePrice}
+                                                placeholder='5'
+                                            />
+                                        </div>
                                         <div className='flex flex-col justify-between mt-3'>
                                             {
                                                 response.data.eventDetails.custom &&
@@ -704,7 +724,7 @@ const BookTicket = () => {
                         </div >
 
                         <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                            <div className='flex justify-between mb-2'>
+                            <div className='flex justify-center mb-2'>
                                 {
                                     visible && (
                                         <button onClick={() => window.scrollTo({

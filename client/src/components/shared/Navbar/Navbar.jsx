@@ -237,10 +237,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 :
                                 <div className='space-x-2'>
                                     <Link to="/login">
-                                        <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
+                                        <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
                                     </Link>
                                     <Link to="/signup">
-                                        <button type="button" class="border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                        <button type="button" class="border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
                                     </Link>
                                 </div>
                         }
@@ -499,14 +499,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                             window.location.pathname == "/vendor/home" ||
                                             window.location.pathname == '/vendor/profile'
                                             ?
-                                            <button onClick={funVendorLogout} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                            <button onClick={funVendorLogout} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
                                                 <img className='h-5' src="/images/icons/logout.svg" alt="" />
                                                 <p>
                                                     Sign up
                                                 </p>
                                             </button>
                                             :
-                                            <button onClick={handleOnclick} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                            <button onClick={handleOnclick} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
                                                 <img className='h-5' src="/images/icons/logout.svg" alt="" />
                                                 <p>
                                                     Log out
@@ -518,10 +518,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <>
                                     <div className='w-full flex flex-col justify-start space-y-2 ml-4'>
                                         <Link to="/login">
-                                            <button type="button" class="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
+                                            <button type="button" class="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
                                         </Link>
                                         <Link to="/signup">
-                                            <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                            <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
                                         </Link>
                                     </div>
                                 </>

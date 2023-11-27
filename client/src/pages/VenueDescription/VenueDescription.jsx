@@ -72,9 +72,14 @@ const VenueDescription = () => {
     }, [venueid]);
 
     if (response.data == null || trending.data == null) {
-        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
-            <img src="/images/icons/loadmain.svg" alt="" />
-        </div>)
+        return (
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
+            </div>
+        )
     }
     else {
         return (
@@ -83,9 +88,7 @@ const VenueDescription = () => {
                 <Tabbar />
 
                 <section className='flex justify-center mt-3'>
-
-
-                    <section className='sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                    <section className='mx-5 sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         <div className="hidden md:flex align-middle items-center">
                             <button className="backlogo rounded-full shadow-md shadow-gray-500">
                                 <img onClick={(() => navigate(-1))} className='h-6' src="/images/icons/backarrow.svg" alt="" />
@@ -142,8 +145,13 @@ const VenueDescription = () => {
 
                             <div className="2 flex md:justify-center lg:justify-end ">
                                 <div className="relative mx-auto md:mx-0">
+                                    <div className="block md:hidden mt-3">
+                                        <p className="text-xl font-bold mt-3">
+                                            Location
+                                        </p>
+                                    </div>
                                     <div>
-                                        <div className='w-full rounded-md'>
+                                        <div className='w-72 h-9/12 rounded-md'>
                                             <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                         <p>
@@ -172,7 +180,7 @@ const VenueDescription = () => {
                                         </div>
 
                                         <div className='hidden lg:flex justify-end flex-col absolute -right-32 bottom-0 lg:right-0 lg:-bottom-32'>
-                                            <div className='flex justify-between mb-2'>
+                                            <div className='flex justify-center mb-2'>
                                                 <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                                                     <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                                                 </button>

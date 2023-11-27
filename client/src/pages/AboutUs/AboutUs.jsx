@@ -11,7 +11,7 @@ const AboutUs = () => {
                 <div className='h-40 md:h-64 justify-center items-center relative'>
 
                     <div className="relative ">
-                        <img className="h-52 md:h-full " src="/images/assets/about2.jpg" alt="" />
+                        <img className="h-72 md:h-full object-cover" src="/images/assets/about2.jpg" alt="" />
 
                         <div className="md:mr-52 md:ml-52 absolute top-16 left-0 p-8 space-y-4 text-white">
                             <p className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</p>
@@ -34,8 +34,8 @@ const AboutUs = () => {
                 <div className="space-y-10 mr-5 md:mr-52 md:ml-52 ">
 
                     <div className='w-full flex items-center justify-center'>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="1 mt-5">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div className="ml-3 1 mt-5">
                                 <div className="font-bold text-left text-3xl">Find Your Next Event</div>
 
                                 <div className="mt-2 font-medium text-md leading-loose">
@@ -50,12 +50,12 @@ const AboutUs = () => {
 
 
                     <div className='w-full flex items-center justify-center'>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 flex-row-reverse gap-4">
                             <div className="2">
-                                <img className=' h-52 md:h-64 w-96' src="/images/assets/aboutus2.png" alt="" />
+                                <img className='ml-3 h-52 md:h-64 w-96' src="/images/assets/aboutus2.png" alt="" />
                             </div>
 
-                            <div className="1 mt-6 ml-2">
+                            <div className="ml-3 1 mt-6 ml-2">
                                 <div className="font-bold text-left text-3xl">Reach out to us</div>
 
                                 <div className="mt-2 font-medium text-md leading-loose">
