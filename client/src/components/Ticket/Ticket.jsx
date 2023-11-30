@@ -11,9 +11,7 @@ const Ticket = ({ event, ticket, download }) => {
 
     const pageUrl = `${baseUrl}/${ticket._id}?download=true`;
 
-    const qrdata = {
-        link: pageUrl, // Add the link to the page
-    };
+    const qrdata = pageUrl;
 
     const qrCodeValue = JSON.stringify(qrdata);
 

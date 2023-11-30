@@ -96,7 +96,7 @@ export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', dat
 export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor`, { data: data })
 
 export const handleUpload = (formData) => {
-    return axios.post('http://omanwhereto.com/api/v1/upload', formData)
+    return axios.post('https://omanwhereto.com/api/v1/upload', formData)
         .then((response) => {
             return response;
         })

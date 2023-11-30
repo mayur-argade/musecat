@@ -1,0 +1,112 @@
+##!/bin/bash
+
+curl -i -X POST \
+  -H "Accept:application/json" \
+  -H  "Content-Type:application/json" \
+  http://localhost:8085/connectors/ -d '
+  {
+     "name": "sensordata-connector-prod",
+    "config": {
+
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "task.max": "1",
+        "topics": "sensordata",
+        "errors.deadletterqueue.topic.name": "sensordata-dlq",
+
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "true",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "true",
+        "auto.create": "true",
+
+        "transforms": "Flatten, timestamp, timestamp_createdAt, timestamp_updatedAt",
+        "transforms.Flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+        "transforms.Flatten.delimiter": "_",
+
+        "transforms": "timestamp, timestamp_createdAt, timestamp_updatedAt",
+
+        "transforms.timestamp.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+        "transforms.timestamp.format": "yyyy-MM-dd HH:mm:ss",
+        "transforms.timestamp.field": "timestamp",
+        "transforms.timestamp.target.type": "Timestamp",
+
+        "transforms.timestamp_createdAt.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+        "transforms.timestamp_createdAt.format": "yyyy-MM-dd HH:mm:ss",
+        "transforms.timestamp_createdAt.field": "createdAt",
+        "transforms.timestamp_createdAt.target.type": "Timestamp",
+
+        "transforms.timestamp_updatedAt.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+        "transforms.timestamp_updatedAt.format": "yyyy-MM-dd HH:mm:ss",
+        "transforms.timestamp_updatedAt.field": "updatedAt",
+        "transforms.timestamp_updatedAt.target.type": "Timestamp",
+
+        "connection.url": "jdbc:postgresql://192.175.127.206:5432/Gauge",
+        "connection.user": "postgres",
+        "connection.password": "postsegr@321",
+		"insert.mode": "insert",
+        "batch.size": "2",
+
+        "table.name.format": "devicedata",
+        "pk.mode": "record_value",
+        "pk.fields": "device_id",
+
+
+        "db.timezone": "Asia/Kolkata"
+
+      }
+    }
+  '
+
+##!/bin/bash
+
+curl -i -X POST \
+  -H "Accept:application/json" \
+  -H  "Content-Type:application/json" \
+  http://localhost:8085/connectors/ -d '
+  {
+  "name": "devicedata-connector",
+  "config": {
+
+"connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+"task.max": "1",
+"topics": "sensordata",
+"errors.deadletterqueue.topic.name": "sensordata-dlq",
+
+"key.converter": "org.apache.kafka.connect.json.JsonConverter",
+"key.converter.schemas.enable": "true",
+"value.converter": "org.apache.kafka.connect.json.JsonConverter",
+"value.converter.schemas.enable": "true",
+"auto.create": "true",
+"transforms": "Flatten, timestamp, timestamp_createdAt, timestamp_updatedAt",
+"transforms.Flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+"transforms.Flatten.delimiter": "_",
+"transforms.timestamp.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+"transforms.timestamp.format": "yyyy-MM-dd HH:mm:ss",
+"transforms.timestamp.field": "timestamp",
+"transforms.timestamp.target.type": "Timestamp",
+"transforms.timestamp_createdAt.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+"transforms.timestamp_createdAt.format": "yyyy-MM-dd HH:mm:ss",
+"transforms.timestamp_createdAt.field": "createdAt",
+"transforms.timestamp_createdAt.target.type": "Timestamp",
+
+"transforms.timestamp_updatedAt.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+"transforms.timestamp_updatedAt.format": "yyyy-MM-dd HH:mm:ss",
+"transforms.timestamp_updatedAt.field": "updatedAt",
+"transforms.timestamp_updatedAt.target.type": "Timestamp",
+
+"connection.url": "jdbc:postgresql://192.175.127.206:5432/Gauge",
+"connection.user": "postgres",
+"connection.password": "postsegr@321",
+
+"insert.mode": "insert",
+"batch.size": "2",
+
+"table.name.format": "test_table",
+"pk.mode": "none",
+"pk.fields": "id",
+
+"db.timezone": "Asia/Kolkata"
+
+}
+}
+'

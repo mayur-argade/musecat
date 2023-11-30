@@ -332,7 +332,7 @@ exports.getCategoryAllEvents = async (req, res) => {
                     verified: true,
                     $or: [
                         {
-                            'date.dateRange.startDate': { $lte: filterdate },
+                            // 'date.dateRange.startDate': { $lte: filterdate },
                             'date.dateRange.endDate': { $gte: filterdate }
                         }
                         ,
@@ -341,12 +341,12 @@ exports.getCategoryAllEvents = async (req, res) => {
                                 {
                                     $or: [
                                         {
-                                            'date.recurring.startDate': { $lte: filterdate },
+                                            // 'date.recurring.startDate': { $lte: filterdate },
                                             'date.recurring.endDate': { $gte: filterdate },
                                             'date.recurring.days': { $in: [filterday] }
                                         },
                                         {
-                                            'date.recurring.startDate': { $lte: filterdate },
+                                            // 'date.recurring.startDate': { $lte: filterdate },
                                             'date.recurring.endDate': { $gte: null },
                                             'date.recurring.days': { $in: [filterday] }
                                         }

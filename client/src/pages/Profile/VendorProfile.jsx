@@ -4,16 +4,26 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import DebitCard from '../../components/Debit-Card/DebitCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 const Profile = () => {
 
     document.title = 'Vendor ~ Profile'
-
+    const [displayModal, setDisplayModal] = useState(false)
     const [response, setReponse] = useState({});
-
+    const [loading, setLoading] = useState(false)
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
+    const [photo, setPhoto] = useState('')
+    const [selectedPhoto, setSelectedPhoto] = useState(null)
+    const [formChanged, setFormChanged] = useState(false);
+
+
+    // Function to handle input change
+    const handleInputChange = () => {
+        setFormChanged(true);
+    };
 
     useEffect(() => {
         const fetchdata = async () => {
@@ -33,27 +43,64 @@ const Profile = () => {
     }, []);
 
     async function handleUpdate() {
-        const updatedata = {
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
+        if (!formChanged) {
+            toast.error("No changes made.");
+            return;
         }
+        try {
+            const updatedata = {
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                photo: photo
+            }
+            setLoading(true)
+            const { data } = await VendorUpdateProfileApi(updatedata)
+            if (data.success == true) {
+                toast.success("User updated Successfully")
+                window.location.reload()
+            }
+            console.log(data)
 
-        const { data } = await VendorUpdateProfileApi(updatedata)
-
-        console.log(data)
-
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response.data.data)
+        }
     }
 
+    async function ImageModal() {
+        setDisplayModal(!displayModal)
+    }
+
+    function capturePhoto(e) {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedPhoto(file)
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                setPhoto(reader.result);
+                handleInputChange();
+                // console.log(reader.result);
+            };
+        }
+    }
     if (response.data == null) {
-        <>loading..</>
+        return (
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
+            </div>
+        )
     }
     else {
         return (
             <>
                 <Navbar />
                 <section className='hidden md:block md:mr-48 md:ml-48 mt-5 ml-4 mr-4'>
-
+                    <Toaster />
                     <div className="profie flex flex-col md:flex-row justify-center align-middle items-center space-x-2">
                         <div className=" w-full right bg-neutral-200 pl-2 pr-2 py-2 rounded-lg">
                             <p className='text-sm'>Profile card</p>
@@ -134,22 +181,6 @@ const Profile = () => {
                                 </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="savedCards mt-10 ">
-                        <div className="text-2xl">Saved Cards</div>
-                        <div className="flex md:flex-row space-y-5 flex-col items-center justify-center align-middle md:space-x-2">
-                            <div className='mt-5'>
-                                <DebitCard />
-                            </div>
-                            <div>
-                                <DebitCard />
-                            </div>
-                            <div>
-                                <DebitCard />
-                            </div>
-                        </div>
-
                     </div>
                 </section>
 

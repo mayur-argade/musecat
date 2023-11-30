@@ -2,11 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import JoditEditor from 'jodit-react';
 import toast, { Toaster } from 'react-hot-toast';
-import { VendorCreateOffer, GetAllCategory, getAllVenues } from '../../http/index'
+import { VendorCreateOffer, GetAllCategory, getAllVenues, handleUpload} from '../../http/index'
 import AddVenueModal from './AddVenueModal';
 import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import Tooltip from '../shared/Tooltip/Tooltip'
+import moment from 'moment'
 
 const AddOfferModal = ({ onClose }) => {
 
@@ -23,6 +24,8 @@ const AddOfferModal = ({ onClose }) => {
     const [minDateTime, setMinDateTime] = useState('');
     const [listCategory, setListCategory] = useState([])
     const [listVenues, setListVenues] = useState([])
+    const [Crfile, setCrfile] = useState(null)
+    const [fileURL, setFileURL] = useState('');
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -84,6 +87,19 @@ const AddOfferModal = ({ onClose }) => {
         setShowEndDate(!showEndDate); // Toggle the state when the checkbox is changed
     };
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const venues = await getAllVenues()
+                setListVenues(venues.data.data)
+                setLoading(false)
+                // console.log("categories", response.data.data)
+            } catch (error) {
+                // console.log(error)
+            }
+        }
+        fetchCategories()
+    }, [showVenuecreate])
 
     const handleEventCategoryChange = (selectedOptions) => {
         // console.log("this is what getting selected", selectedOptions)
@@ -241,21 +257,41 @@ const AddOfferModal = ({ onClose }) => {
     };
 
     const handleSave = async () => {
+        let momentstart = moment(startDate);
+        let momentend = moment(endDate);
 
         if (!title) {
-            return toast.error("Title is Mandatory")
-        } else if (!content) {
-            return toast.error("Event Information is Mandatory")
-        } else if (!location) {
-            return toast.error("Location is Mandatory")
-        } else if (!termsAndConditions) {
+            return toast.error("Title is missing")
+        }
+        else if (!shortDesc) {
+            return toast.error("Short Description is missing")
+        }
+        else if (!content) {
+            return toast.error("Offer Information is missing")
+        }
+        else if (!venueDescription) {
+            return toast.error("Venue Information is missing")
+        }
+        else if (!location) {
+            return toast.error("Location is missing")
+        }
+        else if (!termsAndConditions) {
             return toast.error("Please add terms and conditions")
-        } else if (!photo) {
+        }
+        else if (!photo) {
             return toast.error("Featured Photo is missing")
-        } else if (selectedCategories.length <= 0) {
+        }
+        else if (selectedFeature.length <= 0) {
+            return toast.error("Please select applicatble features")
+        }
+        else if (selectedCategories.length <= 0) {
             return toast.error("Please select Event Category")
-        } else if (!seatingMap) {
-            return toast.error("Seating Map is missing")
+        }
+        else if (!number || number.length !== 8) {
+            return toast.error("Phone number should be of valid 8 digits")
+        }
+        else if (!momentstart.isSameOrBefore(momentend, 'day')) {
+            return toast.error('Start date should be less than or equal to end date');
         }
 
         let dateType;
@@ -301,8 +337,24 @@ const AddOfferModal = ({ onClose }) => {
             }
         }
 
-        console.log("categories of ticket", categories)
-        console.log("event categories", selectedCategories)
+        let response;
+        if (Crfile != null) {
+            const formData = new FormData();
+            formData.append('file', Crfile);
+
+            response = await handleUpload(formData)
+                .then((response) => {
+                    console.log('Upload successful:', response);
+                    console.log(response.data.data)
+                    setFileURL(response.data.data)
+                    return response.data.data
+                    // Do something with the response if needed
+                })
+                .catch((error) => {
+                    console.error('Error during upload:', error);
+                    // Handle the error if needed
+                });
+        }
 
         const eventdata = {
             title: title,
@@ -337,14 +389,17 @@ const AddOfferModal = ({ onClose }) => {
             setLoading(false)
             console.log(data)
             if (data.success == true) {
-                toast.success("Event is successfully added")
-                navigate(`/vendor/event/${data.data._id}`)
+                toast.success("Offer is successfully added")
+                setTimeout(() => {
+                    navigate(`/vendor/event/${data.data._id}`)
+                }, 2000);
             } else if (data.success == false) {
                 toast.error(data.data)
-                window.alert(data.data)
             }
         } catch (error) {
             console.log(error)
+            setLoading(false)
+            toast.error(error.response.data.message)
         }
         // onClose(); // This will close the modal
     };
@@ -578,7 +633,7 @@ const AddOfferModal = ({ onClose }) => {
                                     {
                                         showVenuecreate
                                             ?
-                                            <AddVenueModal />
+                                            <AddVenueModal onClose={() => setShowVenuecreate(false)} />
                                             :
                                             <></>
                                     }

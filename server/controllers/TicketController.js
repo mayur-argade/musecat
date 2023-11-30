@@ -4,6 +4,7 @@ const ticketService = require("../services/ticket-service");
 const userService = require("../services/user-service");
 const notificationService = require('../services/notification-service')
 const moment = require('moment')
+const { transporter } = require('../services/mail-service')
 
 module.exports.generateTicket = async (req, res) => {
     try {
@@ -81,7 +82,7 @@ module.exports.generateTicket = async (req, res) => {
 
                 if (selectedCategory.price != null || selectedCategory.price != undefined || selectedCategory.price != 0) {
                     taxAmout = selectedCategory.price * 0.05
-                    basePricewithTax = Math.round(selectedCategory.price + taxAmout)
+                    basePricewithTax = selectedCategory.price + taxAmout
                     finalBasePrice = basePricewithTax
                     totalPrice = basePricewithTax * seats
                     status = 'funnel'
@@ -176,7 +177,7 @@ module.exports.generateTicket = async (req, res) => {
                         client_ref_id: req.user._id,
                         name: event.title,
                         quantity: seats,
-                        unitAmout: Math.round(finalBasePrice)
+                        unitAmout: finalBasePrice
                     }
 
                     payment = await paymentService.CreateSession(paymentdata)
@@ -207,6 +208,21 @@ module.exports.generateTicket = async (req, res) => {
 
                         ticket = await ticketService.updateTicket(sessionTicketData)
 
+                        const notificationData = {
+                            senderid: req.user._id,
+                            receiverid: event.vendorid,
+                            msg: `Ticket has been booked for event ${event.title} please verify`
+                        }
+
+                        const userNotification = {
+                            senderid: event.vendorid,
+                            receiverid: req.user._id,
+                            msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                        }
+                        const notification = await notificationService.createNotification(notificationData)
+                        const usernotification = await notificationService.createNotification(userNotification)
+
+
                         return res.status(200).json({
                             success: true,
                             data: `https://uatcheckout.thawani.om/pay/${payment.data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`
@@ -233,6 +249,20 @@ module.exports.generateTicket = async (req, res) => {
                         paymet_intent_id: paymentIntent.data.id
                     })
 
+                    const notificationData = {
+                        senderid: req.user._id,
+                        receiverid: event.vendorid,
+                        msg: `Ticket has been booked for event ${event.title} please verify`
+                    }
+
+                    const userNotication = {
+                        senderid: event.vendorid,
+                        receiverid: req.user._id,
+                        msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                    }
+                    const notification = await notificationService.createNotification(notificationData)
+                    const usernotification = await notificationService.createNotification(userNotication)
+
                     return res.status(200).json({
                         success: true,
                         data: confirmPaymentIntent.data.next_action.url
@@ -240,21 +270,13 @@ module.exports.generateTicket = async (req, res) => {
                 }
             }
 
-            const notificationData = {
-                senderid: req.user._id,
-                receiverid: event.vendorid,
-                msg: `Ticket has been booked for event ${event.title} please verify`
-            }
-
-            const notification = await notificationService.createNotification(notificationData)
-
             return res.status(200).json({
                 seatsbooked: ticket,
                 data: `https://uatcheckout.thawani.om/pay/${payment.data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`
             })
         }
 
-        // has price has classname no seats
+        // (CP) has price has classname no seats
         else if (hasPrice.length != 0 && hasClassName.length != 0 && hasSeats.length == 0) {
             if (!priceWithTax && !ticketclass && !seats) {
                 return res.status(400).json({
@@ -276,9 +298,9 @@ module.exports.generateTicket = async (req, res) => {
 
                         // eventDetails: updatedEventDetails,
                         // newAssignedSeats: {date: newEvent.date,seats: allotedSeats}
-                        const newSeats = await ticketService.allotSeats(bookedSeatsForDate.eventDetails, date, selectedCategory.className, seats, selectedCategory);
 
                     }
+                    const newSeats = await ticketService.allotSeats(bookedSeatsForDate.eventDetails, date, selectedCategory.className, seats, selectedCategory);
 
                     if (priceWithTax) {
                         let taxAmout;
@@ -286,7 +308,7 @@ module.exports.generateTicket = async (req, res) => {
 
                         if (selectedCategory.price != null || selectedCategory.price != undefined || selectedCategory.price != 0) {
                             taxAmout = selectedCategory.price * 0.05
-                            basePricewithTax = Math.round(selectedCategory.price + taxAmout)
+                            basePricewithTax = selectedCategory.price + taxAmout
                             finalBasePrice = basePricewithTax
                             totalPrice = basePricewithTax * seats
                             status = 'funnel'
@@ -359,16 +381,88 @@ module.exports.generateTicket = async (req, res) => {
                     let payment;
 
                     if (finalBasePrice) {
-                        const paymentdata = {
-                            ticketid: ticket._id,
-                            client_ref_id: req.user._id,
-                            name: event.title,
-                            quantity: seats,
-                            unitAmout: Math.round(finalBasePrice)
-                        }
-                        payment = await paymentService.CreateSession(paymentdata)
+                        if (cardid == null || cardid == undefined || cardid == '') {
+                            if (req.user.payment_customer_id == null || req.user.payment_customer_id == undefined) {
+                                const createACustomer = await paymentService.createCustomer({
+                                    userid: req.user._id,
+                                    email: req.user.email
+                                })
 
-                        if (payment.data.code >= 4000 && payment.data.code <= 4301 || payment.data.success == false) {
+                                if (createACustomer.success != true) {
+                                    return res.status(500).json({
+                                        success: false,
+                                        data: "Unable to create a customer"
+                                    })
+                                }
+                            }
+
+                            const paymentdata = {
+                                ticketid: ticket._id,
+                                customerId: req.user.payment_customer_id,
+                                client_ref_id: req.user._id,
+                                name: event.title,
+                                quantity: seats,
+                                unitAmout: finalBasePrice
+                            }
+
+                            payment = await paymentService.CreateSession(paymentdata)
+
+                            if (payment.data.code >= 4000 && payment.data.code <= 4301 || payment.data.success == false) {
+                                const pendingTicketData = {
+                                    _id: ticket._id,
+                                    status: 'pending'
+                                }
+
+                                ticket = await ticketService.updateTicket(pendingTicketData)
+
+                                return res.status(500).json({
+                                    success: false,
+                                    data: {
+                                        seatsbooked: ticket,
+                                        message: "Unable to start payment session"
+                                    }
+                                })
+                            }
+
+                            if (payment.success == true || payment.data.session_id != null || payment.data.session_id != undefined) {
+                                const sessionTicketData = {
+                                    _id: ticket._id,
+                                    status: 'processing',
+                                    sessionId: payment.data.session_id
+                                }
+
+                                ticket = await ticketService.updateTicket(sessionTicketData)
+
+                                const notificationData = {
+                                    senderid: req.user._id,
+                                    receiverid: event.vendorid,
+                                    msg: `Ticket has been booked for event ${event.title} please verify`
+                                }
+
+                                const userNotification = {
+                                    senderid: event.vendorid,
+                                    receiverid: req.user._id,
+                                    msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                                }
+                                const notification = await notificationService.createNotification(notificationData)
+                                const usernotification = await notificationService.createNotification(userNotication)
+
+
+                                return res.status(200).json({
+                                    success: true,
+                                    data: `https://uatcheckout.thawani.om/pay/${payment.data.session_id}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy`
+                                })
+                            }
+                        } else {
+                            const paymentintentdata = {
+                                cardid: cardid,
+                                ticketid: ticket._id,
+                                amount: totalPrice,
+                                email: email
+                            }
+
+                            const paymentIntent = await paymentService.createPaymentIntent(paymentintentdata)
+
                             const pendingTicketData = {
                                 _id: ticket._id,
                                 status: 'pending'
@@ -376,33 +470,30 @@ module.exports.generateTicket = async (req, res) => {
 
                             ticket = await ticketService.updateTicket(pendingTicketData)
 
-                            return res.status(500).json({
-                                success: false,
-                                data: {
-                                    seatsbooked: ticket,
-                                    message: "Unable to start payment session"
-                                }
+                            const confirmPaymentIntent = await paymentService.confirmPaymentIntent({
+                                paymet_intent_id: paymentIntent.data.id
                             })
-                        }
 
-                        if (payment.success == true || payment.data.session_id != null || payment.data.session_id != undefined) {
-                            const sessionTicketData = {
-                                _id: ticket._id,
-                                status: 'processing',
-                                sessionId: payment.data.session_id
+                            const notificationData = {
+                                senderid: req.user._id,
+                                receiverid: event.vendorid._id,
+                                msg: `Ticket has been booked for event ${event.title} please verify`
                             }
 
-                            ticket = await ticketService.updateTicket(sessionTicketData)
+                            const userNotification = {
+                                senderid: event.vendorid._id,
+                                receiverid: req.user._id,
+                                msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                            }
+                            const notification = await notificationService.createNotification(notificationData)
+                            const usernotification = await notificationService.createNotification(userNotification)
+
+                            return res.status(200).json({
+                                success: true,
+                                data: confirmPaymentIntent.data.next_action.url
+                            })
                         }
                     }
-
-                    const notificationData = {
-                        senderid: req.user._id,
-                        receiverid: event.vendorid,
-                        msg: `Ticket has been booked for event ${event.title} please verify`
-                    }
-
-                    const notification = await notificationService.createNotification(notificationData)
 
                     return res.status(200).json({
                         seatsbooked: ticket,
@@ -418,7 +509,7 @@ module.exports.generateTicket = async (req, res) => {
 
         // no price has classname no seats
         else if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length == 0) {
-            console.log("No price has classname has seats")
+
             let bookedSeatsForDate;
             try {
                 if (ticketclass) {
@@ -469,11 +560,18 @@ module.exports.generateTicket = async (req, res) => {
 
                 const notificationData = {
                     senderid: req.user._id,
-                    receiverid: event.vendorid,
+                    receiverid: event.vendorid._id,
                     msg: `Ticket has been booked for event ${event.title} please verify`
                 }
 
+                const userNotification = {
+                    senderid: event.vendorid._id,
+                    receiverid: req.user._id,
+                    msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                }
                 const notification = await notificationService.createNotification(notificationData)
+                const usernotification = await notificationService.createNotification(userNotification)
+
 
                 return res.status(200).json({
                     seatsbooked: ticket,
@@ -484,8 +582,8 @@ module.exports.generateTicket = async (req, res) => {
                 console.log(error)
             }
         }
-        
-        // no price has classname has seats
+
+        // (CS) no price has classname has seats
         else if (hasPrice.length == 0 && hasClassName.length != 0 && hasSeats.length != 0) {
             console.log("No price has classname has seats")
             let bookedSeatsForDate;
@@ -500,7 +598,7 @@ module.exports.generateTicket = async (req, res) => {
 
                     // eventDetails, newEvent
                     bookedSeatsForDate = await ticketService.returnBookedSeatsbyDate(selectedCategory.bookedSeats, date);
-                    
+
                     availableSeats = selectedCategory.seats - bookedSeatsForDate.newEvent.seats.length;
                     if (availableSeats < seats) {
                         return res.status(400).json({
@@ -526,31 +624,61 @@ module.exports.generateTicket = async (req, res) => {
                     allotedSeats: newSeats.newAssignedSeats.seats,
                     status: status ? status : "Awaiting Confirmation",
                 }
+
+                // Ticket - create a ticket
                 let ticket = await ticketService.createTicket(ticketData)
 
-                // event
+                // console.log("line 121", ticket)
+
+                // Event - add ticket id into the eventmodel
                 let tickets = event.bookedTickets
                 tickets.push(ticket._id)
-                event.save()
 
-                // ticket
-                selectedCategory.bookedSeats = newSeats.newBookedSeats
-                ticket.save()
+                // Event - add eventDetails to the eventModel
+                const existingCategoryIndex = event.categories.findIndex(category => category.className === newSeats.eventDetails.className);
+
+                if (existingCategoryIndex !== -1) {
+                    // Update existing category
+                    event.categories[existingCategoryIndex] = newSeats.eventDetails;
+                } else {
+                    // Push new category
+                    event.categories.push(newSeats.eventDetails);
+                }
+
+                const eventdata = {
+                    _id: event._id,
+                    bookedTickets: tickets,
+                    categories: event.categories
+                }
+
+                const updatedEvent = await eventService.updateEvent(eventdata)
+
+                // console.log("line 134", updatedEvent)
 
                 // user
                 let user = await userService.findUser({ _id: req.user._id })
+                // User - add eventid into the users pastpurchased
                 let pastpurchased = user.pastPurchase
-                let BookedTickets = user.BookedTickets
                 pastpurchased.push(eventid)
+                // User - add ticketid into the users bookedTickets
+                let BookedTickets = user.BookedTickets
                 BookedTickets.push(ticket._id)
                 user.save()
+
                 const notificationData = {
                     senderid: req.user._id,
-                    receiverid: event.vendorid,
+                    receiverid: event.vendorid._id,
                     msg: `Ticket has been booked for event ${event.title} please verify`
                 }
 
+                const userNotification = {
+                    senderid: event.vendorid._id,
+                    receiverid: req.user._id,
+                    msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                }
                 const notification = await notificationService.createNotification(notificationData)
+                const usernotification = await notificationService.createNotification(userNotification)
+
 
                 return res.status(200).json({
                     seatsbooked: ticket,
@@ -613,11 +741,18 @@ module.exports.generateTicket = async (req, res) => {
 
                 const notificationData = {
                     senderid: req.user._id,
-                    receiverid: event.vendorid,
+                    receiverid: event.vendorid._id,
                     msg: `Ticket has been booked for event ${event.title} please verify`
                 }
 
+                const userNotification = {
+                    senderid: event.vendorid._id,
+                    receiverid: req.user._id,
+                    msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
+                }
                 const notification = await notificationService.createNotification(notificationData)
+                const usernotification = await notificationService.createNotification(userNotification)
+
                 return res.status(200).json({
                     seatsbooked: ticket,
                     session_id: null
@@ -801,9 +936,9 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
         if (status == 'canceled') {
             // delete seats 
             event = await eventService.findEvent({ _id: ticket.eventid });
+
             for (const category of event.categories) {
-                category.bookedSeats = category.bookedSeats.filter(seat => !ticket.allotedSeats.includes(seat));
-                // console.log(category.bookedSeats);
+                category.className == ticket.class;
             }
             // console.log(event.categories);
 

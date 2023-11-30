@@ -103,7 +103,7 @@ const VendorHome = () => {
 
                     <div className='mt-5 flex flex-col'>
                         <span className='font-bold text-2xl'>Ongoing Events</span>
-                        <div className="carousel p-4 flex items-center justify-start overflow-y-hidden overflow-x-auto scroll-smooth md:scrollbar-hide">
+                        <div className="md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-6">
                             {response.data.ongoingEvents.lendth != 0 ?
                                 response.data.ongoingEvents.map((event) => (
                                     <Link to={`/vendor/event/${event._id}`}>

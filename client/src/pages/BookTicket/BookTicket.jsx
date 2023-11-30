@@ -569,12 +569,12 @@ const BookTicket = () => {
                                         </div>
 
                                         {response.data.eventDetails.categories && response.data.eventDetails.categories.length > 0 && response.data.eventDetails.categories[0].className != null && (
-                                            <div className="flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
-                                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <div className="w-full flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
+                                                <div className='w-full flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                                     <label className='text-xs mt-1' htmlFor="classSelect">Select Class</label>
                                                     <select
                                                         id="classSelect"
-                                                        className='font-medium w-full md:w-56 border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                        className='font-medium w-full  border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
                                                         onChange={(e) => setTicketclass(e.target.value)}
                                                         onClick={closePrice}
                                                     >
@@ -589,8 +589,6 @@ const BookTicket = () => {
                                                         }
                                                     </select>
                                                 </div>
-
-
                                             </div>
                                         )}
                                         <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
@@ -619,8 +617,8 @@ const BookTicket = () => {
                                         <div className='flex flex-col justify-between mt-3'>
                                             {
                                                 response.data.eventDetails.custom &&
-                                                response.data.eventDetails.custom.map((custom, index) => {
-                                                    custom != ''
+                                                response.data.eventDetails.custom.map((custom, index) => (
+                                                    custom != ""
                                                         ?
                                                         <div className="check" key={index}>
                                                             <input
@@ -629,7 +627,7 @@ const BookTicket = () => {
                                                                 onChange={() => handleCheckboxChange(index)}
                                                                 type="checkbox"
                                                                 value=""
-                                                                className="w-4 h-4 text-bg-[#A48533] border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                                className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                                             />
                                                             <label
                                                                 htmlFor={`custom-check-${index}`}
@@ -639,13 +637,14 @@ const BookTicket = () => {
                                                             </label>
                                                         </div>
                                                         :
-                                                        <></>
-                                                })
+                                                        <>
+                                                        </>
+                                                ))
                                             }
 
                                             <div className="check">
                                                 <input checked={termsAccepted}
-                                                    onChange={(() => setTermsAccepted(!termsAccepted))} id="T&C" type="checkbox" value="" class="w-4 h-4 text-bg-[#A48533]border-gray-300 rounded focus:ring-bg-[#A48533] dark:focus:ring-bg-[#A48533] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                    onChange={(() => setTermsAccepted(!termsAccepted))} id="T&C" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
 
                                                 <label
                                                     for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">

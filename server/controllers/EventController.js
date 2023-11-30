@@ -503,19 +503,27 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
             // verified: true,
             $or: [
                 {
-                    $or: [
+                    // 'date.dateRange.startDate': { $lte: filterdate },
+                    'date.dateRange.endDate': { $gte: today }
+                }
+                ,
+                {
+                    $and: [
                         {
-                            'date.dateRange.endDate': { $gte: today }
+                            $or: [
+                                {
+                                    // 'date.recurring.startDate': { $lte: today },
+                                    'date.recurring.endDate': { $gte: today },
+                                    'date.recurring.days': { $in: [currentDay] }
+                                },
+                                {
+                                    // 'date.recurring.startDate': { $lte: today },
+                                    'date.recurring.endDate': { $gte: null },
+                                    'date.recurring.days': { $in: [currentDay] }
+                                }
+                            ]
                         },
-                        {
-                            'date.dateRange.endDate': null
-                        }
                     ]
-                    // Events with start date greater than or equal to today
-
-                },
-                { // Events with recurring field containing today's day
-                    'date.recurring.days': { $in: currentDay },
                 },
             ],
 
@@ -834,7 +842,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
             verified: true
         };
         if (customDate) {
-            const filterDate = new Date(customDate);
+            const today = new Date(customDate);
             console.log(filterDate)
             const currentDay = moment(filterDate).format('dddd').toLowerCase()
             query['$or'] = [

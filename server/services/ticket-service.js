@@ -43,14 +43,14 @@ class TicketService {
         if (newEvent !== undefined) {
             let allotedSeats = [];
             let seatNumber = 1;
-            let updatedBookedSeats = { ...newEvent, seats: newEvent.seats || [] };
 
             while (allotedSeats.length < seats) {
                 const seatId = `${className.charAt(0)}${seatNumber}`;
 
-                if (!updatedBookedSeats.seats.includes(seatId)) {
+                // Only push the seat if it's not already booked
+                if (!newEvent.seats.includes(seatId)) {
                     allotedSeats.push(seatId);
-                    updatedBookedSeats.seats.push(seatId);
+                    newEvent.seats.push(seatId);
                 }
 
                 seatNumber++;
@@ -59,7 +59,7 @@ class TicketService {
             // Update eventDetails array
             const updatedEventDetails = eventDetails.map(event => {
                 if (moment(event.date).startOf('day').isSame(searchDateWithTimeZero)) {
-                    return updatedBookedSeats;
+                    return newEvent;
                 }
                 return event;
             });
@@ -70,11 +70,12 @@ class TicketService {
             return {
                 eventDetails: updatedCategory,
                 newAssignedSeats: {
-                    date: updatedBookedSeats.date,
-                    seats: updatedBookedSeats.seats
+                    date: newEvent.date,
+                    seats: allotedSeats
                 }
-            };
-        } else {
+            }
+        }
+        else {
             newEvent = { date: searchDateWithTimeZero.toDate(), seats: [] };
 
             // Allocate seats for the new event

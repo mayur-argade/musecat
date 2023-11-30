@@ -200,7 +200,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                                                             ?
                                                             <>
-                                                                <button onClick={funVendorLogout} className=' w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
                                                                     <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
                                                                     logout
                                                                 </button>
@@ -506,7 +506,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                 </p>
                                             </button>
                                             :
-                                            <button onClick={handleOnclick} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                            <button onClick={handleOnclick} type="button" class="flex ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
                                                 <img className='h-5' src="/images/icons/logout.svg" alt="" />
                                                 <p>
                                                     Log out

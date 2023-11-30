@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Table from '../../components/Table/Table';
 import Footer from '../../components/shared/Footer/Footer';
-import { VendorBookedTicketApi, VendorUpdateTicketStatus, vendorUpdateTicketStatus } from '../../http/index'
+import { VendorBookedTicketApi, VendorUpdateTicketStatus, vendorUpdateTicketStatus, ClientEventDetailsApi } from '../../http/index'
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 
@@ -10,13 +10,33 @@ const VendorBookedTickets = () => {
     document.title = 'Vendor ~ Booked Tickets'
 
     const [response, setReponse] = useState({});
-
+    const [selectedCategories, setSelectedCategories] = useState([])
     const [serialNumbers, setSerialNumbers] = useState([]);
+    const [visible, setVisible] = useState(false)
     const [ticketId, setTicketId] = useState('')
     const [status, setStatus] = useState('')
     const [bookedSeatsLength, setBookedSeatsLength] = useState(0)
+    const [event, setEvent] = useState('')
     let { eventid } = useParams();
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                // Show the button when the user scrolls down 100 pixels
+                setVisible(true);
+            } else {
+                // Hide the button when the user scrolls up
+                setVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+    
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -36,6 +56,17 @@ const VendorBookedTickets = () => {
         }
 
         fetchdata()
+
+        const fetchEvent = async () => {
+            try {
+                const { data } = await ClientEventDetailsApi(eventid)
+
+                setEvent(data)
+            } catch (error) {
+
+            }
+        }
+        fetchEvent()
     }, []);
     console.log("totalseats", bookedSeatsLength)
     const updateStatus = async () => {
@@ -59,6 +90,18 @@ const VendorBookedTickets = () => {
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setIsOpen(false);
+        }
+    };
+
+    const handleCategoryChange = (categoryURL) => {
+        // console.log(categoryURL)
+        // Check if the categoryURL is already in selectedCategories
+        if (selectedCategories.includes(categoryURL)) {
+            // Remove the categoryURL from selectedCategories
+            setSelectedCategories(selectedCategories.filter((url) => url !== categoryURL));
+        } else {
+            // Add the categoryURL to selectedCategories
+            setSelectedCategories([...selectedCategories, categoryURL]);
         }
     };
 
@@ -89,7 +132,7 @@ const VendorBookedTickets = () => {
         }
     }
 
-    if (response.data == null) {
+    if (response.data == null || event.data == null) {
         return (
             <div className='h-screen w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
@@ -133,78 +176,19 @@ const VendorBookedTickets = () => {
                                         >
                                             <div className="p-5">
                                                 <div className="popular">
-                                                    <span className='ml-0 font-semibold text-sm'>Row</span>
-                                                    <div class="flex items-center mb-1 mt-2">
-                                                        <input id="platinum" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="platinum" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Platinum</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="gold" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="gold" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Gold</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="silver" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="silver" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Silver</label>
-                                                    </div>
-                                                </div>
-
-                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                <div className="distance">
                                                     <span className='ml-0 font-semibold text-sm'>Class</span>
-                                                    <div class="flex items-center mb-1 mt-2">
-                                                        <input id="platinumclass" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="platinumclass" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Platinum</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="goldclass" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="goldclass" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Gold</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="silverclass" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="silverclass" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Silver</label>
-                                                    </div>
-
-
-                                                </div>
-
-                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                <div className="timings">
-                                                    <span className='ml-0 font-semibold text-sm'>Rows</span>
-                                                    <div class="flex items-center mb-1 mt-2">
-                                                        <input id="atop" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="atop" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">A to O platinum</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="otzp" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="otzp" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">O to Z platinum</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="atog" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="atog" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">A to O Gold</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="otzg" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="otzg" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">O to Z Gold</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="atos" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="atos" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">A to O silver</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="otzs" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="otzs" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">O to Z silver</label>
-                                                    </div>
+                                                    {event.data.eventDetails.categories.map((category) => (
+                                                        <div class="flex items-center mb-1 mt-2">
+                                                            <input
+                                                                id={category.className}
+                                                                type="checkbox"
+                                                                onChange={() => handleCategoryChange(category)}
+                                                                checked={selectedCategories.includes(category)}
+                                                                value={category}
+                                                                class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#A48533] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                            <label for="platinum" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{category.className}</label>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
@@ -287,95 +271,113 @@ const VendorBookedTickets = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {response.data.map((ticket, index) => (
-                                        <tr key={ticket._id} class="bg-[#EEEEEE] border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {index + 1}
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.firstname}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.lastname}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.email}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.class}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.seats}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.allotedSeats.join(', ')}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.status}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <p className='text-xs text-black font-medium'>
-                                                    {ticket.totalPrice}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4 flex space-x-1">
-                                                {
-                                                    ticket.status == 'verified'
-                                                        ?
-                                                        <div>
-                                                            <button onClick={() => changeStatus(ticket._id, 'canceled')}>
-                                                                <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
-                                                            </button>
-                                                        </div>
-                                                        :
-                                                        ticket.status == 'canceled'
+                                    {response.data.filter((ticket) => {
+
+                                        const categoryMatch = selectedCategories.length === 0 || selectedCategories.some((category) => (
+                                            category.className == ticket.class
+                                        ))
+
+                                        return categoryMatch
+                                    })
+                                        .map((ticket, index) => (
+                                            <tr key={ticket._id} class="bg-[#EEEEEE] border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    {index + 1}
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.firstname}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.lastname}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.email}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.class}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.seats}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.allotedSeats.join(', ')}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.status}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black font-medium'>
+                                                        {ticket.totalPrice}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4 flex space-x-1">
+                                                    {
+                                                        ticket.status == 'verified'
                                                             ?
-                                                            <>
-                                                                <button onClick={() => changeStatus(ticket._id, 'verified')}>
-                                                                    <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
-                                                                </button>
-                                                            </>
-                                                            :
-                                                            <>
-                                                                <button onClick={() => changeStatus(ticket._id, 'verified')}>
-                                                                    <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
-                                                                </button>
+                                                            <div>
                                                                 <button onClick={() => changeStatus(ticket._id, 'canceled')}>
-                                                                    <img className='h-6 w-6 ml-1' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                                    <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
                                                                 </button>
-                                                            </>
-                                                }
-                                            </td>
-                                        </tr>
-                                    ))}
+                                                            </div>
+                                                            :
+                                                            ticket.status == 'canceled'
+                                                                ?
+                                                                <>
+                                                                    <button onClick={() => changeStatus(ticket._id, 'verified')}>
+                                                                        <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
+                                                                    </button>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    <button onClick={() => changeStatus(ticket._id, 'verified')}>
+                                                                        <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
+                                                                    </button>
+                                                                    <button onClick={() => changeStatus(ticket._id, 'canceled')}>
+                                                                        <img className='h-6 w-6 ml-1' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                                    </button>
+                                                                </>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    {response.data.seatsBooked != 0 ? <div className='hidden md:flex justify-end flex-col absolute -right-36 bottom-0'>
-                        <div className='flex justify-between mb-2'>
+                    {response.data.seatsBooked != 0 ?
+                        <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
+                            <div className='flex justify-center mb-2'>
+                                {
+                                    visible && (
+                                        <button onClick={() => window.scrollTo({
+                                            top: 0,
+                                            behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                        })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                        </button>
+                                    )
+                                }
 
-                            {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
-                            <button>
-                            </button>
+                                <button>
+                                </button>
+                            </div>
+                            <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                         </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                    </div>
                         :
                         <></>
                     }

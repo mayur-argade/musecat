@@ -406,3 +406,45 @@ Changes I have to do
 
 
 
+const mailOptions = {
+                        from: 'argademayur2002@gmail.com',
+                        to: email,
+                        subject: 'Ticket Booking Confirmation',
+                        html: `
+                          <html>
+                          <body>
+                            <p>Dear ${vendor.firstname},</p>
+                            <p>
+                            Thank you for booking your ticket with Muscat whereto ! We're excited to have you on board for ${event.title}.</p>
+                            <h3>Booking Details:</h3>
+        <ul>
+            <li><strong>Event Name:</strong> ${event.title}</li>
+            <li><strong>Date and Time:</strong> ${event.date}</li>
+            <li><strong>Venue:</strong> ${event.location.name}</li>
+            <li><strong>Seat Number(s):</strong> ${newSeats.newAssignedSeats.seats}</li>
+            <li><strong>Ticket Price:</strong> ${selectedCategory?.price}</li>
+            <li><strong>Total Amount:</strong> ${finalBasePrice}</li>
+        </ul>
+                            <p>Thank you for choosing Muscatwhereto.com</p>
+                            <p>Best regards,<br>The Muscat WheretoTeam</p>
+                          </body>
+                          </html>
+                        `,
+                    };
+        
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error)
+                            return res
+                                .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                                    success: false,
+                                    data: "failed to send email try again"
+                                });
+                        } else {
+                            return res
+                                .status(statusCode.SUCCESS.code).json({
+                                    success: true,
+                                    data: `Email sent successFully Kindly check your email`
+                                });
+                        }
+                    });

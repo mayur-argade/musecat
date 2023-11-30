@@ -589,7 +589,19 @@ const EventDescription = () => {
                                                                     <></>
                                                             }
                                                             <div className="booknow">
-                                                                <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                    {
+                                                                        response.data.eventDetails.type == 'event'
+                                                                            ?
+                                                                            <>
+                                                                                Book Seat
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                Buy Voucher
+                                                                            </>
+                                                                    }
+                                                                </button>
                                                             </div>
                                                         </>
                                                         :
@@ -612,7 +624,19 @@ const EventDescription = () => {
                                                             </div>
                                                             <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                                 <div className="booknow">
-                                                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                    {
+                                                                        response.data.eventDetails.type == 'event'
+                                                                            ?
+                                                                            <>
+                                                                                Book Seat
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                Buy Voucher
+                                                                            </>
+                                                                    }
+                                                                    </button>
                                                                 </div>
                                                             </Link>
                                                         </>
@@ -634,7 +658,19 @@ const EventDescription = () => {
                                                         }
                                                         <Link to={`/bookticket/${response.data.eventDetails._id}`}>
                                                             <div className="booknow">
-                                                                <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                {
+                                                                        response.data.eventDetails.type == 'event'
+                                                                            ?
+                                                                            <>
+                                                                                Book Seat
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                Buy Voucher
+                                                                            </>
+                                                                    }
+                                                                </button>
                                                             </div>
                                                         </Link>
                                                     </>

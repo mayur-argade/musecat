@@ -7,8 +7,8 @@ import './addeventmodal.css'
 import AddVenueModal from './AddVenueModal';
 import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
-import axios from "axios";
 import Tooltip from '../shared/Tooltip/Tooltip'
+import moment from 'moment'
 
 const AddEventModal = ({ onClose }) => {
 
@@ -87,6 +87,19 @@ const AddEventModal = ({ onClose }) => {
         setShowEndDate(!showEndDate); // Toggle the state when the checkbox is changed
     };
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const venues = await getAllVenues()
+                setListVenues(venues.data.data)
+                setLoading(false)
+                // console.log("categories", response.data.data)
+            } catch (error) {
+                // console.log(error)
+            }
+        }
+        fetchCategories()
+    }, [showVenuecreate])
 
     const handleEventCategoryChange = (selectedOptions) => {
         // console.log("this is what getting selected", selectedOptions)
@@ -128,18 +141,6 @@ const AddEventModal = ({ onClose }) => {
             reader.readAsDataURL(file);
             reader.onloadend = function () {
                 setBanner(reader.result);
-                // console.log(reader.result);
-            };
-        }
-    }
-
-    function captureVideo(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = function () {
-                setVideo(reader.result);
                 // console.log(reader.result);
             };
         }
@@ -235,7 +236,8 @@ const AddEventModal = ({ onClose }) => {
     };
 
     const handleSave = async () => {
-
+        let momentstart = moment(startDate);
+        let momentend = moment(endDate);
         if (!title) {
             return toast.error("Title is missing")
         }
@@ -263,8 +265,11 @@ const AddEventModal = ({ onClose }) => {
         else if (selectedCategories.length <= 0) {
             return toast.error("Please select Event Category")
         }
-        else if (!number) {
-            return toast.error("Phone number is missing")
+        else if (!number || number.length !== 8) {
+            return toast.error("Phone number should be of valid 8 digits")
+        }
+        else if (!momentstart.isSameOrBefore(momentend, 'day')) {
+            return toast.error('Start date should be less than or equal to end date');
         }
 
         let dateType;
@@ -309,21 +314,25 @@ const AddEventModal = ({ onClose }) => {
             }
         }
 
-        const formData = new FormData();
-        formData.append('file', Crfile);
+        let response;
+        if (Crfile != null) {
+            const formData = new FormData();
+            formData.append('file', Crfile);
 
-        handleUpload(formData)
-            .then((response) => {
-                console.log('Upload successful:', response);
-                setFileURL(response.data.data)
-                // Do something with the response if needed
-            })
-            .catch((error) => {
-                console.error('Error during upload:', error);
-                // Handle the error if needed
-            });
+            response = await handleUpload(formData)
+                .then((response) => {
+                    console.log('Upload successful:', response);
+                    console.log(response.data.data)
+                    setFileURL(response.data.data)
+                    return response.data.data
+                    // Do something with the response if needed
+                })
+                .catch((error) => {
+                    console.error('Error during upload:', error);
+                    // Handle the error if needed
+                });
+        }
         
-        console.log(fileURL)
         const eventdata = {
             title: title,
             shortDescription: shortDesc,
@@ -339,7 +348,7 @@ const AddEventModal = ({ onClose }) => {
             banner: banner,
             date: eventdate,
             additinalImages: additinalPhotos,
-            video: fileURL,
+            video: response,
             seatingMap: seatingMap,
             facebook: fb,
             instagram: insta,
@@ -349,6 +358,7 @@ const AddEventModal = ({ onClose }) => {
             phone: number,
             showEndDate: showEndDate
         }
+        console.log(eventdata)
         setLoading(true)
         try {
             console.log(eventdata)
@@ -365,6 +375,8 @@ const AddEventModal = ({ onClose }) => {
             }
         } catch (error) {
             console.log(error)
+            setLoading(false)
+            toast.error(error.response.data.message)
         }
         // onClose(); // This will close the modal
     };
@@ -597,7 +609,7 @@ const AddEventModal = ({ onClose }) => {
                                     {
                                         showVenuecreate
                                             ?
-                                            <AddVenueModal />
+                                            <AddVenueModal onClose={() => setShowVenuecreate(false)} />
                                             :
                                             <></>
                                     }
@@ -712,7 +724,7 @@ const AddEventModal = ({ onClose }) => {
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                                 <label className='text-xs mt-1' htmlFor="first name">Phone No. *</label>
                                                 <input
-                                                    type='tel'
+                                                    type='number'
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                                     placeholder='Phone number'
                                                     onChange={((e) => setNumber(e.target.value))}

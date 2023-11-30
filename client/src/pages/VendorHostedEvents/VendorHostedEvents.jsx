@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard';
 import VendorOfferCard from '../../components/Cards/VendorOfferCard';
 import Footer from '../../components/shared/Footer/Footer';
-import { VendorHostedEventsApi } from '../../http';
+import { VendorHostedEventsApi, getCategoryEvents, GetAllCategory, GetTrendingEvents } from '../../http';
 import { Link } from 'react-router-dom';
+import Features from '../../utils/Data'
 const VendorHostedEvents = () => {
 
     document.title = 'Vendor ~ Hosted Events'
@@ -13,10 +14,31 @@ const VendorHostedEvents = () => {
     const [response, setReponse] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
     const [showArchived, setShowArchived] = useState(false)
-
+    const [categories, setCategories] = useState([])
+    const [selectedCategories, setSelectedCategories] = useState([])
+    const [selectedDistance, setSelectedDistance] = useState([])
+    const [selectedFeatures, setSelectedFeatures] = useState([])
+    const [categoryName, setCategoryName] = useState('')
+    const [categoryLoading, setCategoryLoading] = useState(false)
+    const [trending, setTrending] = useState({})
+    const [checkCategory, setCheckCategory] = useState(false)
     const navigate = useNavigate();
 
     useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                setCategoryLoading(true)
+                const res = await GetAllCategory()
+                setCategories(res.data)
+                setCategoryLoading(false)
+                setCheckCategory(true)
+            } catch (error) {
+                setCategoryLoading(false)
+                // console.log(error)
+            }
+        }
+        fetchCategories()
+
         const fetchdata = async () => {
             try {
                 const { data } = await VendorHostedEventsApi()
@@ -29,6 +51,30 @@ const VendorHostedEvents = () => {
 
         fetchdata()
     }, []);
+
+    const handleFeaturesChange = (feature) => {
+        if (selectedFeatures.includes(feature)) {
+            // Remove the feature from selectedFeatures
+            setSelectedFeatures(selectedFeatures.filter((url) => url !== feature));
+        } else {
+            // Add the feature to selectedFeatures
+            setSelectedFeatures([...selectedFeatures, feature]);
+        }
+    }
+
+    console.log(selectedFeatures)
+    const handleCategoryChange = (categoryURL) => {
+        // console.log(categoryURL)
+        // Check if the categoryURL is already in selectedCategories
+        if (selectedCategories.includes(categoryURL)) {
+            // Remove the categoryURL from selectedCategories
+            setSelectedCategories(selectedCategories.filter((url) => url !== categoryURL));
+        } else {
+            // Add the categoryURL to selectedCategories
+            setSelectedCategories([...selectedCategories, categoryURL]);
+        }
+    };
+
 
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -68,7 +114,7 @@ const VendorHostedEvents = () => {
         return (
             <div>
                 <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-                
+
                 <div className='flex justify-center items-center align-middle mt-5'>
                     <section className='w-full sm:mx-5 md:mx-5 md:w-9/12 xl:w-8/12 2xl:w-7/12'>
                         <div className='flex justify-end md:justify-between align-middle items-center'>
@@ -108,55 +154,58 @@ const VendorHostedEvents = () => {
                                     }
 
                                 </div>
-                                <div className="relative inline-block text-left">
-                                    <button
-                                        onClick={toggleDropdown}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 md:w-28 pt-1 pb-1 pl-2 pr-2 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex align-middle justify-around"
-                                    >
-                                        <p className='text-sm text-gray-500'>Filter</p>
-                                        <img className='h-5' src="/images/icons/filter.svg" alt="" />
-                                    </button>
-                                    {isOpen && (
-                                        <div
-                                            className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
-                                            ref={dropdownRef}
+                                <div class="filterbyfeature">
+                                    <div className="relative inline-block text-left">
+                                        <button
+                                            onClick={toggleDropdown}
+                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
                                         >
-                                            <div className="p-5">
-                                                <div className="popular">
-                                                    <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                    <div class="flex items-center mb-1 mt-2">
-                                                        <input id="staycation" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Staycation</label>
-                                                    </div>
+                                            <span className='hidden md:block text-gray-500'>Filter by Features</span>
+                                            <span className='hidden block text-gray-500'>Filter</span>
 
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="thingstodo" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="thingstodo" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">thingstodo</label>
+                                            <img src="/images/icons/filter.svg" alt="" />
+                                        </button>
+                                        {isOpen && (
+                                            <div
+                                                className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                                ref={dropdownRef}
+                                            >
+                                                <div className="p-5">
+                                                    <div className="popular">
+                                                        <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
+                                                        {
+                                                            categories.data.map((e) => (
+                                                                <div class="flex items-center mb-1 mt-2">
+                                                                    <input id={e.categoryURL} type="checkbox"
+                                                                        onChange={() => handleCategoryChange(e)}
+                                                                        checked={selectedCategories.includes(e)}
+                                                                        value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                </div>
+                                                            ))
+                                                        }
                                                     </div>
+                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
 
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="fridayNightOuts" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="fridayNightOuts" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Friday NightOuts</label>
+                                                    <div className="popular">
+                                                        <span className='ml-0 font-semibold text-sm'>Features</span>
+                                                        {
+                                                            Features.list.map((e) => (
+                                                                <div class="flex items-center mb-1 mt-2">
+                                                                    <input id={e} type="checkbox"
+                                                                        onChange={() => handleFeaturesChange(e)}
+                                                                        checked={selectedFeatures.includes(e)}
+                                                                        value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
+                                                                </div>
+                                                            ))
+                                                        }
                                                     </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="djNights" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="djNights" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">DJ Nights</label>
-                                                    </div>
-
-                                                    <div class="flex items-center mb-1">
-                                                        <input id="meetNgreet" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="meetNgreet" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Meet and Greet</label>
-                                                    </div>
-
-                                                    <div class="flex items-center">
-                                                        <input id="celebritiesAround" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="celebritiesAround" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Celebrities Around</label>
-                                                    </div>
+                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
                                                 </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +217,37 @@ const VendorHostedEvents = () => {
                                     <>
                                         {
                                             response.data.expiredEvents.filter((item) => {
-                                                return searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                                const searchResult = searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                                const categoryMatch =
+                                                    selectedCategories.length === 0 ||
+                                                    selectedCategories.some((selectedCategory) => {
+                                                        if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                            console.log("good")
+                                                            return (
+                                                                selectedCategory.subCategories &&
+                                                                selectedCategory.subCategories.some((subCategory) =>
+                                                                    item.eventCategory &&
+                                                                    item.eventCategory.some((itemSubcategory) => (
+                                                                        itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                    )
+                                                                )
+                                                            );
+                                                        }
+                                                        else {
+                                                            return (
+                                                                item.eventCategory.some((itemSubcategory) =>
+                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                )
+                                                            );
+                                                        }
+                                                    });
+
+
+                                                const featureMatch =
+                                                    selectedFeatures.length == 0 ||
+                                                    item.features.some(feature => selectedFeatures.includes(feature));
+
+                                                return searchResult && categoryMatch && featureMatch
                                             }).map((event) => (
                                                 <Link to={`/vendor/event/${event._id}`}>
                                                     <PastPurchaseCard data={event} />
@@ -180,7 +259,37 @@ const VendorHostedEvents = () => {
                                     <>
                                         {
                                             response.data.events.filter((item) => {
-                                                return searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                                const searchResult = searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                                const categoryMatch =
+                                                    selectedCategories.length === 0 ||
+                                                    selectedCategories.some((selectedCategory) => {
+                                                        if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                            console.log("good")
+                                                            return (
+                                                                selectedCategory.subCategories &&
+                                                                selectedCategory.subCategories.some((subCategory) =>
+                                                                    item.eventCategory &&
+                                                                    item.eventCategory.some((itemSubcategory) => (
+                                                                        itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                    )
+                                                                )
+                                                            );
+                                                        }
+                                                        else {
+                                                            return (
+                                                                item.eventCategory.some((itemSubcategory) =>
+                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                )
+                                                            );
+                                                        }
+                                                    });
+
+
+                                                const featureMatch =
+                                                    selectedFeatures.length == 0 ||
+                                                    item.features.some(feature => selectedFeatures.includes(feature));
+
+                                                return searchResult && categoryMatch && featureMatch
                                             }).map((event) => (
                                                 <Link to={`/vendor/event/${event._id}`}>
                                                     <PastPurchaseCard data={event} />

@@ -42,6 +42,7 @@ const Profile = () => {
                 setEmail(data.data.email)
             } catch (error) {
                 console.log(error)
+                toast.error(error.response.data.data)
             }
         }
 

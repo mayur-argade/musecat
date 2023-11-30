@@ -368,11 +368,11 @@ const Events = () => {
                                         <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                             {loading
                                                 ?
-                                                <div className='md:flex md:justify-start md:space-x-3 md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
+                                                <>
                                                     <SkeletonCard />
                                                     <SkeletonCard />
                                                     <SkeletonCard />
-                                                </div>
+                                                </>
                                                 :
                                                 response.data.length == 0
                                                     ?
@@ -388,16 +388,27 @@ const Events = () => {
                                                             const categoryMatch =
                                                                 selectedCategories.length === 0 ||
                                                                 selectedCategories.some((selectedCategory) => {
-                                                                    return (
-                                                                        selectedCategory.subCategories &&
-                                                                        selectedCategory.subCategories.some((subCategory) =>
-                                                                            item.eventCategory &&
-                                                                            item.eventCategory.some((itemSubcategory) => (
-                                                                                itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                    if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                                        console.log("good")
+                                                                        return (
+                                                                            selectedCategory.subCategories &&
+                                                                            selectedCategory.subCategories.some((subCategory) =>
+                                                                                item.eventCategory &&
+                                                                                item.eventCategory.some((itemSubcategory) => (
+                                                                                    itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                                )
                                                                             )
-                                                                        )
-                                                                    );
+                                                                        );
+                                                                    }
+                                                                    else{
+                                                                        return (
+                                                                            item.eventCategory.some((itemSubcategory) =>
+                                                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                            )
+                                                                        );
+                                                                    }
                                                                 });
+                                                                
 
                                                             const featureMatch =
                                                                 selectedFeatures.length == 0 ||

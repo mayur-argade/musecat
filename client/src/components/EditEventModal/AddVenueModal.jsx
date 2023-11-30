@@ -52,18 +52,19 @@ const AddVenueModal = ({ onClose }) => {
 
                 const { data } = await VendorCreateVenue(venuedata)
                 setLoading(false)
-                window.location.reload()
                 console.log(data)
-                toast.success("Venue Added Wait till admin verifies it")
+                toast.success("Your new Venue has been added to the list you can select your venue from the locations")
+                onClose(); //
             } catch (error) {
                 setLoading(false)
                 console.log(error)
                 toast.error(error.response.data.data)
+                onClose(); //
             }
 
         }
 
-        // onClose(); //
+        
     }
 
     return (
