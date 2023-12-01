@@ -48,15 +48,6 @@ exports.createEvent = async (req, res) => {
             })
         }
 
-        // let uploadedVideo = ''
-        // if (video) {
-        //     // Convert base64 to buffer
-        //     uploadedVideo = await cloudinary.v2.uploader.upload(video, {
-        //         resource_type: 'video',
-        //         folder: "muscat/events",
-        //     })
-        // }
-
         let uploadResult;
         let additinalPhotos = []
         if (additinalImages && additinalImages.length != 0) {
@@ -85,7 +76,7 @@ exports.createEvent = async (req, res) => {
             whatsapp: whatsapp,
             email: email,
             facebook: facebook,
-            intagram: instagram,
+            instagram: instagram,
             phoneNo: phone,
             website: website,
 
@@ -352,28 +343,19 @@ exports.createOffer = async (req, res) => {
             })
         }
 
-        let uploadedVideo = ''
-        if (video) {
-            // Convert base64 to buffer
-            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
-                resource_type: 'video',
-                folder: "muscat/events",
-            })
-        }
-
         console.log(uploadedVideo)
 
         let uploadResult;
         let additinalPhotos = []
-        // if (additinalImages && additinalImages.length != 0) {
-        //     for (let i = 0; i < additinalImages.length; i++) {
-        //         // console.log(additinalImages[i])
-        //         uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
-        //             folder: "muscat/events",
-        //         })
-        //         additinalPhotos.push(uploadResult.secure_url)
-        //     }
-        // }
+        if (additinalImages && additinalImages.length != 0) {
+            for (let i = 0; i < additinalImages.length; i++) {
+                // console.log(additinalImages[i])
+                uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+                    folder: "muscat/events",
+                })
+                additinalPhotos.push(uploadResult.secure_url)
+            }
+        }
 
         console.log(additinalPhotos)
 
@@ -391,7 +373,7 @@ exports.createOffer = async (req, res) => {
             whatsapp: whatsapp,
             email: email,
             facebook: facebook,
-            intagram: instagram,
+            instagram: instagram,
             phoneNo: phone,
             website: website,
 

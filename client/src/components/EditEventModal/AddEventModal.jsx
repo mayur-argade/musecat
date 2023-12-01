@@ -16,7 +16,19 @@ const AddEventModal = ({ onClose }) => {
     const navigate = useNavigate()
     const config = {
         placeholder: "Amr Diab, the legendary Egyptian singer is set to perform at the Etihad Arena ....",
-        buttons: 'bold,italic,h1,h2,h3',
+        buttons: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'ul',
+            'ol', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
         buttonsMD: 'bold,italic,h1,h2,h3',
         buttonsSM: 'bold,italic,h1,h2,h3',
         buttonsXS: 'bold,italic,h1,h2,h3',
@@ -253,9 +265,6 @@ const AddEventModal = ({ onClose }) => {
         else if (!location) {
             return toast.error("Location is missing")
         }
-        else if (!termsAndConditions) {
-            return toast.error("Please add terms and conditions")
-        }
         else if (!photo) {
             return toast.error("Featured Photo is missing")
         }
@@ -265,8 +274,8 @@ const AddEventModal = ({ onClose }) => {
         else if (selectedCategories.length <= 0) {
             return toast.error("Please select Event Category")
         }
-        else if (!number || number.length !== 8) {
-            return toast.error("Phone number should be of valid 8 digits")
+        else if (!number) {
+            return toast.error("Phone number is Mandatory")
         }
         else if (!momentstart.isSameOrBefore(momentend, 'day')) {
             return toast.error('Start date should be less than or equal to end date');
@@ -398,7 +407,7 @@ const AddEventModal = ({ onClose }) => {
                             <div className='w-96 md:w-[1000px]'>
                                 <div className="modal bg-white px-10 py-5">
                                     <div className='text-left flex justify-start items-start align-middle'>
-                                        <p className='text-xl font-bold'>Event Details</p>
+                                        <p className='text-xl font-bold'>Event/Offer Details</p>
                                     </div>
                                     <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name *">
@@ -437,7 +446,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Event Information  *                                                </span>
+                                                    Event/Offer Information  *                                                </span>
                                                 <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
                                             </div>
                                         </label>
@@ -637,9 +646,9 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Category  *
+                                                    Select Relevant Category/Categories  *
                                                 </span>
-                                                <Tooltip data={"Select All the applicable categories, you can select multiple categories also"} />
+                                                <Tooltip data={"Select All the Relevant categories, you can select multiple categories also"} />
                                             </div>
                                         </label>
                                         <CategorySelector
@@ -654,7 +663,7 @@ const AddEventModal = ({ onClose }) => {
                                         <h3 class="font-semibold text-gray-900 dark:text-white">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Features *
+                                                    Select Applicable Features *
                                                 </span>
                                                 <Tooltip data={"Select All the applicable features, you can select multiple features also"} />
                                             </div>
@@ -693,17 +702,16 @@ const AddEventModal = ({ onClose }) => {
                                                 <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
                                                 <input
 
-                                                    type="text"
+                                                    type="url"
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                                     placeholder='Link for FB page'
                                                     onChange={((e) => setFb(e.target.value))}
                                                 />
                                             </div>
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Instagram URL</label>
                                                 <input
-
-                                                    type="text"
+                                                    type='url'
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
                                                     placeholder='Link for Instagram page'
                                                     onChange={((e) => setInsta(e.target.value))}
@@ -722,7 +730,7 @@ const AddEventModal = ({ onClose }) => {
                                         </div>
                                         <div className="w-full flex justify-between">
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Phone No. *</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code *</label>
                                                 <input
                                                     type='number'
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
@@ -732,7 +740,7 @@ const AddEventModal = ({ onClose }) => {
                                             </div>
 
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
                                                 <input
                                                     type="number"
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
@@ -742,7 +750,7 @@ const AddEventModal = ({ onClose }) => {
                                             </div>
 
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Website link</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Website URL</label>
                                                 <input
                                                     type="link"
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
@@ -759,11 +767,12 @@ const AddEventModal = ({ onClose }) => {
                                         </span>
                                         <Tooltip data={"If your event has tickets you can specify Ticket class, No. of Seats, and price. You can add multiple ticket classes"} />
                                     </div>
+
                                     <div>
                                         {categories.map((category, index) => (
                                             <div key={index} className='w-full flex flex-row  '>
                                                 <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >Class name</label>
+                                                    <label className='text-xs mt-3' >Ticket Type</label>
                                                     <input
                                                         type='text'
                                                         className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
@@ -810,7 +819,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Link for Terms And Condition  *
+                                                    Link for Terms And Conditions  *
                                                 </span>
                                                 <Tooltip data={"Give link to your terms and conditions page, if have pdf you can give accessable drive link also"} />
                                             </div>

@@ -472,7 +472,7 @@ const Events = () => {
                                             </div>
 
                                             <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                                <div className='flex justify-between mb-2'>
+                                                <div className='flex justify-center mb-2'>
                                                     {
                                                         visible && (
                                                             <button onClick={() => window.scrollTo({

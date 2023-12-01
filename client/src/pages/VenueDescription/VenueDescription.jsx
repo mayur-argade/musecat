@@ -97,7 +97,7 @@ const VenueDescription = () => {
                         </div>
 
                         <div className="flex justify-center mt-5 ">
-                            <img className='rounded-xl h-40 md:h-80 w-full object-cover md:max-h-fit  md:' src={`${response.data.venue.displayPhoto}` || "/images/assets/IMAGE.png"} alt="" />
+                            <img className='rounded-xl h-40 md:h-80 w-full object-cover md:max-h-fit  md:' src={`${response.data.venue.photo}` || "/images/assets/IMAGE.png"} alt="" />
                         </div>
 
 

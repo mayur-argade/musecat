@@ -270,7 +270,7 @@ const EditEventModal = ({ onClose, data }) => {
                 endDate: endDate
             }
         } else if (dateType == 'recurring') {
-            eventdate.recurring = selectedDays
+            eventdate.recurring.days = selectedDays
         }
 
         for (const category of categories) {

@@ -118,7 +118,7 @@ const EventDescription = () => {
                         ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
                         ...(data.data.eventDetails.AdditionalPhotos || []),
                         ...(data.data.eventDetails.banner || []),
-                        ...(data.data.eventDetails.video || []),
+                        ...(data.data.eventDetails.video ? [data.data.eventDetails.video] : []),
                         ...prevImages,
                     ]);
 
@@ -255,6 +255,7 @@ const EventDescription = () => {
     // Helper functions to check content type
     const isImage = (url) => /\.(jpeg|jpg|gif|png)$/.test(url);
     const isVideo = (url) => /\.(mp4|webm|ogg)$/.test(url);
+
 
     let totalSeats = 0;
     let startPrice = 1000000000;

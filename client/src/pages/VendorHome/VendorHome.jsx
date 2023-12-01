@@ -84,7 +84,7 @@ const VendorHome = () => {
                                 <img className='' src="/images/assets/vendoraddevent.png" alt="" />
                                 <button type="button" onClick={handleClick} className="w-52 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4  font-medium rounded-lg px-4 py-2 text-center mr-3 md:mr-0  dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 flex align-middle items-center justify-center ">
                                     <img className='h-3 mr-3' src="/images/icons/+.svg" alt="" />
-                                    <p className='font-bold leading-5'>Add Event</p>
+                                    <p className='font-bold leading-5'>Add Event / Offer</p>
                                 </button>
                             </div>
                         </div>
@@ -93,9 +93,8 @@ const VendorHome = () => {
                                 <img className='h-36' src="/images/assets/vendoraddoffer.png" alt="" />
                                 <button type="button" onClick={handleOfferClick} className="w-52 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4  font-medium rounded-lg px-4 py-2 text-center mr-3 md:mr-0  dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 flex align-middle items-center justify-center ">
                                     <img className='h-3 mr-3' src="/images/icons/+.svg" alt="" />
-                                    <p className='font-bold leading-5'>Add Offer</p>
+                                    <p className='font-bold leading-5'>Add Voucher</p>
                                 </button>
-
                             </div>
                         </div>
                     </div>
