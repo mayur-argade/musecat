@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import {  addToFavorites, VedorDetails, ClientUpcomingEvents, ClientGetOffers,ClientEventDetailsApi } from '../../http'
+import { addToFavorites, VedorDetails, ClientUpcomingEvents, ClientGetOffers, ClientEventDetailsApi } from '../../http'
 import EventCard from '../../components/Cards/EventCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
@@ -301,11 +301,6 @@ const VendorEventDescripton = () => {
                     startPrice = 0
                 }
             })
-            // console.log("availableTickets", startPrice, availableSeats)
-
-            // console.log("date printing", response.data.eventDetails.data)
-            // eventStart = response.data.eventDetails.date.dateRange.startDate ; 
-            // eventEnd =  response.data.eventDetails.date.dateRange.endDate ;
         }
     }
 
@@ -346,220 +341,239 @@ const VendorEventDescripton = () => {
         const shareonwhatsapp = `https://api.whatsapp.com/send?text=${window.location.origin + location.pathname}`;
         window.open(shareonwhatsapp, '_blank');
     }
-
-
-
-    // console.log("Response", response)
-    if (response.data == null) {
-        return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
-                </div>
-            </div>
-        )
-    }
-    else {
-        return (
-            <>
+    return (
+        <>
+            <div className="z-50 sticky top-0 shadow-lg">
                 <Navbar />
-                <Toaster />
-                <div className='w-full flex justify-center'>
-                    <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
-                        <section className=''>
-                            <section>
-                                <div className="hidden md:flex align-middle items-center">
-                                    <button className="backlogo" onClick={handleBack}>
-                                        <img className='h-16' src="/images/icons/back-button.png" alt="" />
-                                    </button>
-                                    <span className='text-lg font-bold'>Event Description</span>
-                                </div>
-
-                                <div className='text-center'>
-                                    <p className='text-xl md:text-3xl font-bold'>{response.data.eventDetails.title}</p>
-                                    <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
-                                        <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
-                                            <span className='ml-1 font-medium'>
-                                                {response.data.eventDetails.location.name}
-                                            </span>
-                                        </Link></p>
-                                    <div className='mt-4 flex justify-center space-x-2 text-center'>
-                                        <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
-                                        {
-                                            response.data.eventDetails.date.type == 'dateRange'
-                                                ?
-                                                <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
-                                                    {response.data.eventDetails.showEndDate
-                                                        ?
-                                                        <>
-                                                            to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
-                                                        </>
-                                                        :
-                                                        <>
-                                                        </>
-                                                    }
-                                                </p>
-                                                :
-                                                <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
-                                        }
+            </div>
+            <Toaster />
+            <div className='w-full flex justify-center'>
+                <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
+                    <section className=''>
+                        <section>
+                            <div className="hidden md:flex align-middle items-center">
+                                <button className="backlogo" onClick={handleBack}>
+                                    <img className='h-16' src="/images/icons/back-button.png" alt="" />
+                                </button>
+                                <span className='text-lg font-bold'>Event Description</span>
+                            </div>
+                            {
+                                response.data == null
+                                    ?
+                                    <div className='h-96 w-full flex justify-center align-middle'>
+                                        <div class="relative flex justify-center items-center">
+                                            <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                                            <img src="/images/logo/logo-main.png" class="h-16" />
+                                        </div>
                                     </div>
-                                </div>
+                                    :
+                                    <>
 
-                                <div className="mt-8 grid grid-cols-4">
-                                    <div className="col-span-4 md:col-span-2  flex flex-col ">
-                                        <div className="w-full max-w-6xl rounded-lg relative">
-                                            {/* Image */}
-                                            <ContentDisplay currentContent={images[currentImageIndex]} />
-
-                                            {/* Top-right Edit and View Sales */}
-                                            <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
-                                                <button onClick={() => navigate(`/vendor/${response.data.eventDetails._id}/bookedtickets`)} className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
-                                                    View Sales
-                                                </button>
-                                                <button onClick={handleShowModal} className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
-                                                    <img className="text-white " src="/images/icons/edit.svg" alt="" />
-                                                </button>
-                                            </div>
-
-                                            {/* Bottom Rectangle */}
-                                            <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-25 p-2 rounded-lg">
-                                                <div className="flex items-center justify-between text-white">
-                                                    {/* Like Button */}
-                                                    <button className="text-white rounded-md px-3 py-1 hover:bg-red-700"></button>
-                                                    {/* Like Count */}
-                                                    <div className="flex items-center">
-                                                        <img className='h-4' src="/images/icons/like.svg" alt="" /> <span className='ml-1'>{response.data.eventDetails.likes.length} People liked this event</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Slider Buttons */}
-                                            <div className="absolute flex items-center -bottom-10 left-1/2 transform -translate-x-1/2 space-x-2">
-                                                <button onClick={handleShowPrevImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
-                                                    Prev
-                                                </button>
-                                                <button onClick={handleShowNextImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
-                                                    Next
-                                                </button>
+                                        <div className='text-center'>
+                                            <p className='text-xl md:text-3xl font-bold'>{response.data.eventDetails.title}</p>
+                                            <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
+                                                <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
+                                                    <span className='ml-1 font-medium'>
+                                                        {response.data.eventDetails.location.name}
+                                                    </span>
+                                                </Link></p>
+                                            <div className='mt-4 flex justify-center space-x-2 text-center'>
+                                                <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
+                                                {
+                                                    response.data.eventDetails.date.type == 'dateRange'
+                                                        ?
+                                                        <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
+                                                            {response.data.eventDetails.showEndDate
+                                                                ?
+                                                                <>
+                                                                    to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
+                                                                </>
+                                                                :
+                                                                <>
+                                                                </>
+                                                            }
+                                                        </p>
+                                                        :
+                                                        <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
+                                                }
                                             </div>
                                         </div>
-                                        <div className='flex mt-3 w-full align-middle justify-between items-center space-x-2'>
-                                            <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
-                                            </div>
 
-                                            <div>
-                                                <p className='font-light text-wrap text-xs'></p>
-                                            </div>
+                                        <div className="mt-8 grid grid-cols-4">
+                                            <div className="col-span-4 md:col-span-2  flex flex-col ">
+                                                <div className="w-full max-w-6xl rounded-lg relative">
+                                                    {/* Image */}
+                                                    <ContentDisplay currentContent={images[currentImageIndex]} />
 
-                                            <div className="dropdown-container reltive">
-                                                <button
-                                                    onClick={toggleDropdown}
-                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
-                                                    <img className='md:h-5 h-8' src="/images/icons/share.svg" alt="" />
-                                                </button>
-                                                {isDropdownOpen && (
-                                                    <div
-                                                        className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
-                                                        ref={dropdownRef}
-                                                    >
-                                                        <div className="flex space-x-3 socialmedia">
+                                                    {/* Top-right Edit and View Sales */}
+                                                    <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
+                                                        <button onClick={() => navigate(`/vendor/${response.data.eventDetails._id}/bookedtickets`)} className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
+                                                            View Sales
+                                                        </button>
+                                                        <button onClick={handleShowModal} className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">
+                                                            <img className="text-white " src="/images/icons/edit.svg" alt="" />
+                                                        </button>
+                                                    </div>
 
-                                                            <img onClick={shareonWhatsapp} className='cursor-pointer h-7' src="/images/icons/wp-a.svg" alt="" />
-
-                                                            <img onClick={shareonFacebook} className='cursor-pointer h-7' src="/images/icons/fb-a.svg" alt="" />
-
-
-                                                            <img onClick={shareonInstagram} className='cursor-pointer h-7' src="/images/icons/ig-a.svg" alt="" />
-
-                                                            <img onClick={shareonMail} className='cursor-pointer h-7' src="/images/icons/emal-a.svg" alt="" />
+                                                    {/* Bottom Rectangle */}
+                                                    <div className="absolute bottom-0 left-0 w-full bg-gray-800 bg-opacity-25 p-2 rounded-lg">
+                                                        <div className="flex items-center justify-between text-white">
+                                                            {/* Like Button */}
+                                                            <button className="text-white rounded-md px-3 py-1 hover:bg-red-700"></button>
+                                                            {/* Like Count */}
+                                                            <div className="flex items-center">
+                                                                <img className='h-4' src="/images/icons/like.svg" alt="" /> <span className='ml-1'>{response.data.eventDetails.likes.length} People liked this event</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                )}
-                                            </div>
-                                        </div>
 
-
-                                        <div className='w-full mt-3'>
-                                            <div className='card w-full h- pl-4 pr-4 py-4 flex flex-col rounded-xl  border shadow-2xl shadow-[#F3F3F3] rounded-lg '>
-                                                <Link to="/whereto">
-                                                    <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
-                                                        <img className='h-5' src="/images/icons/map-1.svg" alt="" />
-                                                        <p className='text-md'>{response.data.eventDetails.location.name}</p>
-                                                        <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
+                                                    {/* Slider Buttons */}
+                                                    <div className="absolute flex items-center -bottom-10 left-1/2 transform -translate-x-1/2 space-x-2">
+                                                        <button onClick={handleShowPrevImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                            Prev
+                                                        </button>
+                                                        <button onClick={handleShowNextImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                            Next
+                                                        </button>
                                                     </div>
-                                                </Link>
-
-                                                <hr />
-
-                                                <div className='p-2 pb-0 flex justify-between '>
-                                                    <div className='flex flex-col'>
-                                                        <p className='text-xs'>Ticket price starting from</p>
-                                                        <p className='font-semibold text-xl'>OMR {startPrice}</p>
+                                                </div>
+                                                <div className='flex mt-3 w-full align-middle justify-between items-center space-x-2'>
+                                                    <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                        <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
                                                     </div>
-                                                    <div className='flex flex-col text-right'>
-                                                        <p className='text-xs'>Available Tickets</p>
-                                                        <p className='font-semibold text-xl'>{availableSeats}</p>
+
+                                                    <div>
+                                                        <p className='font-light text-wrap text-xs'></p>
+                                                    </div>
+
+                                                    <div className="dropdown-container reltive">
+                                                        <button
+                                                            onClick={toggleDropdown}
+                                                            className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                                                            <img className='md:h-5 h-8' src="/images/icons/share.svg" alt="" />
+                                                        </button>
+                                                        {isDropdownOpen && (
+                                                            <div
+                                                                className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
+                                                                ref={dropdownRef}
+                                                            >
+                                                                <div className="flex space-x-3 socialmedia">
+
+                                                                    <img onClick={shareonWhatsapp} className='cursor-pointer h-7' src="/images/icons/wp-a.svg" alt="" />
+
+                                                                    <img onClick={shareonFacebook} className='cursor-pointer h-7' src="/images/icons/fb-a.svg" alt="" />
+
+
+                                                                    <img onClick={shareonInstagram} className='cursor-pointer h-7' src="/images/icons/ig-a.svg" alt="" />
+
+                                                                    <img onClick={shareonMail} className='cursor-pointer h-7' src="/images/icons/emal-a.svg" alt="" />
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
 
-                                            </div>
 
-                                            <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
-                                                {/* <Link to='/favorites' className='w-full'> */}
-
-                                                {/* </Link> */}
-                                                <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                                    <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
-                                                    <span >Add to Calendar</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-3 md:mt-0 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
-                                        <div className="eventdesc w-full ">
-                                            {accordions.map((accordion, index) => (
-                                                <Accordian
-                                                    className='mx-auto'
-                                                    textcol={'font-semibold'}
-                                                    contentfont={'font-medium text-gray-500'}
-                                                    key={index}
-                                                    title={accordion.title}
-                                                    content={accordion.content}
-                                                    isOpened={accordion.isOpened}
-                                                    onClick={() => handleAccordionClick(index)}
-                                                />
-                                            ))}
-                                        </div>
-
-                                        <div className="">
-                                            {
-                                                response.data.eventDetails.date.type == 'dateRange'
-                                                    ?
-                                                    moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
-                                                        ?
-                                                        <>
-                                                            {
-                                                                response.data.eventDetails.whatsapp
-                                                                    ?
-                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                                                        {/* <button type="button" class=""> */}
-                                                                        <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                        Call On Whatsapp
-                                                                        {/* </button> */}
-                                                                    </a>
-                                                                    :
-                                                                    <></>
-                                                            }
-                                                            <div className="booknow">
-                                                                <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                <div className='w-full mt-3'>
+                                                    <div className='card w-full h- pl-4 pr-4 py-4 flex flex-col rounded-xl  border shadow-2xl shadow-[#F3F3F3] rounded-lg '>
+                                                        <Link to="/whereto">
+                                                            <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
+                                                                <img className='h-5' src="/images/icons/map-1.svg" alt="" />
+                                                                <p className='text-md'>{response.data.eventDetails.location.name}</p>
+                                                                <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                                             </div>
-                                                        </>
-                                                        :
-                                                        <>
-                                                            <div className="flex">
+                                                        </Link>
+
+                                                        <hr />
+
+                                                        <div className='p-2 pb-0 flex justify-between '>
+                                                            <div className='flex flex-col'>
+                                                                <p className='text-xs'>Ticket price starting from</p>
+                                                                <p className='font-semibold text-xl'>OMR {startPrice}</p>
+                                                            </div>
+                                                            <div className='flex flex-col text-right'>
+                                                                <p className='text-xs'>Available Tickets</p>
+                                                                <p className='font-semibold text-xl'>{availableSeats}</p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
+                                                        {/* <Link to='/favorites' className='w-full'> */}
+
+                                                        {/* </Link> */}
+                                                        <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                                            <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
+                                                            <span >Add to Calendar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-3 md:mt-0 h-auto col-span-4 pl-5 pr-5 md:col-span-2 ">
+                                                <div className="eventdesc w-full ">
+                                                    {accordions.map((accordion, index) => (
+                                                        <Accordian
+                                                            className='mx-auto'
+                                                            textcol={'font-semibold'}
+                                                            contentfont={'font-medium text-gray-500'}
+                                                            key={index}
+                                                            title={accordion.title}
+                                                            content={accordion.content}
+                                                            isOpened={accordion.isOpened}
+                                                            onClick={() => handleAccordionClick(index)}
+                                                        />
+                                                    ))}
+                                                </div>
+
+                                                <div className="">
+                                                    {
+                                                        response.data.eventDetails.date.type == 'dateRange'
+                                                            ?
+                                                            moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
+                                                                ?
+                                                                <>
+                                                                    {
+                                                                        response.data.eventDetails.whatsapp
+                                                                            ?
+                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                                {/* <button type="button" class=""> */}
+                                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                                Call On Whatsapp
+                                                                                {/* </button> */}
+                                                                            </a>
+                                                                            :
+                                                                            <></>
+                                                                    }
+                                                                    <div className="booknow">
+                                                                        <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                    </div>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    <div className="flex">
+                                                                        {
+                                                                            response.data.eventDetails.whatsapp
+                                                                                ?
+
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                                    {/* <button type="button" class=""> */}
+                                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                                    Call On Whatsapp
+                                                                                    {/* </button> */}
+                                                                                </a>
+
+                                                                                :
+                                                                                <></>
+                                                                        }
+                                                                    </div>
+                                                                    <div className="booknow">
+                                                                        <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                    </div>
+                                                                </>
+                                                            :
+                                                            <>
                                                                 {
                                                                     response.data.eventDetails.whatsapp
                                                                         ?
@@ -574,101 +588,81 @@ const VendorEventDescripton = () => {
                                                                         :
                                                                         <></>
                                                                 }
-                                                            </div>
-                                                            <div className="booknow">
-                                                                <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                            </div>
-                                                        </>
-                                                    :
-                                                    <>
-                                                        {
-                                                            response.data.eventDetails.whatsapp
-                                                                ?
 
-                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                                                    {/* <button type="button" class=""> */}
-                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                    Call On Whatsapp
-                                                                    {/* </button> */}
-                                                                </a>
+                                                                <div className="booknow">
+                                                                    <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                </div>
+                                                            </>
 
-                                                                :
-                                                                <></>
-                                                        }
+                                                    }
+                                                </div>
+                                            </div>
 
-                                                        <div className="booknow">
-                                                            <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                        </div>
-                                                    </>
-
-                                            }
                                         </div>
-                                    </div>
-
-                                </div>
 
 
 
-                                <div className='flex flex-col justify-center items-center mt-5'>
-                                    <span className='text-xl font-bold'>
-                                        Location
-                                    </span>
-                                    <div className='w-full md:w-11/12'>
-                                        <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
-                                    </div>
+                                        <div className='flex flex-col justify-center items-center mt-5'>
+                                            <span className='text-xl font-bold'>
+                                                Location
+                                            </span>
+                                            <div className='w-full md:w-11/12'>
+                                                <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                            </div>
 
-                                </div>
+                                        </div>
 
 
-                                <div className="standalone:hidden relative mt-8 ml-6 mr-6">
-                                    {/* <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" /> */}
+                                        <div className="standalone:hidden relative mt-8 ml-6 mr-6">
+                                            {/* <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" /> */}
 
-                                    <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                        <div className='flex justify-between mb-2'>
-                                            {
-                                                visible && (
-                                                    <button onClick={() => window.scrollTo({
-                                                        top: 0,
-                                                        behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                    })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                            <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
+                                                <div className='flex justify-center mb-2'>
+                                                    {
+                                                        visible && (
+                                                            <button onClick={() => window.scrollTo({
+                                                                top: 0,
+                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                                            </button>
+                                                        )
+                                                    }
+
+                                                    <button>
                                                     </button>
-                                                )
-                                            }
-
-                                            <button>
-                                            </button>
+                                                </div>
+                                                <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                                            </div>
                                         </div>
-                                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                                    </div>
-                                </div>
-                            </section>
+
+                                    </>
+                            }
                         </section>
                     </section>
-                </div>
-                {showModal && (
-                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                        <div className="relative rounded-lg ">
-                            <EditEventModal
-                                data={response.data.eventDetails}
-                                isOpen={showModal}
-                                onClose={closeModal} />
-                            {/* Close button */}
-                            <button
-                                onClick={closeModal} className="absolute top-5 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                            >
-                                <img src="/images/icons/cancel-icon.png" alt="" />
-                            </button>
-                        </div>
+                </section>
+            </div>
+            {showModal && (
+                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                    <div className="relative rounded-lg ">
+                        <EditEventModal
+                            data={response.data.eventDetails}
+                            isOpen={showModal}
+                            onClose={closeModal} />
+                        {/* Close button */}
+                        <button
+                            onClick={closeModal} className="absolute top-5 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                        >
+                            <img src="/images/icons/cancel-icon.png" alt="" />
+                        </button>
                     </div>
-                )}
-                <div className=''>
-                    < Footer />
                 </div>
-            </>
-        )
-    }
-
+            )}
+            <div className=''>
+                < Footer />
+            </div>
+        </>
+    )
 
 }
 

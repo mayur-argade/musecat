@@ -272,6 +272,7 @@ const Home = () => {
         <>
             <div className='appmargine '>
                 <Navbar />
+
                 <div
                     class="NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">
                     <header className='p-5 md:p-10 '>

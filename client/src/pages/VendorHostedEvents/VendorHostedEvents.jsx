@@ -7,6 +7,7 @@ import Footer from '../../components/shared/Footer/Footer';
 import { VendorHostedEventsApi, GetAllCategory } from '../../http';
 import { Link } from 'react-router-dom';
 import Features from '../../utils/Data'
+import SkeletonCard from '../../components/shared/skeletons/SkeletonCard';
 const VendorHostedEvents = () => {
 
     document.title = 'Vendor ~ Hosted Events'
@@ -97,96 +98,89 @@ const VendorHostedEvents = () => {
         navigate(-1); // This function will take you back to the previous page
     };
 
-    if (response.data == null) {
-        return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <div>
+    return (
+        <div>
+            <div className="z-50 sticky top-0 shadow-lg">
                 <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            </div>
 
-                <div className='flex justify-center items-center align-middle mt-5'>
-                    <section className='w-full sm:mx-5 md:mx-5 md:w-9/12 xl:w-8/12 2xl:w-7/12'>
-                        <div className='flex justify-end md:justify-between align-middle items-center'>
-                            <div className="ml-3 hidden md:flex align-middle items-center">
-                                <button onClick={handleBack}>
-                                    <img className='h-16' src="/images/icons/back-button.png" alt="" />
+            <div className='flex justify-center items-center align-middle mt-5'>
+                <section className='w-full sm:mx-5 md:mx-5 md:w-9/12 xl:w-8/12 2xl:w-7/12'>
+                    <div className='flex justify-end md:justify-between align-middle items-center'>
+                        <div className="ml-3 hidden md:flex align-middle items-center">
+                            <button onClick={handleBack}>
+                                <img className='h-16' src="/images/icons/back-button.png" alt="" />
+                            </button>
+                            <p className='text-xl font-bold'>
+                                Hosted
+                                {
+                                    showArchived
+                                        ?
+                                        <span className='mx-2'>
+                                            Archived
+                                        </span>
+                                        :
+                                        <span className='mx-2'>
+                                            Ongoing
+                                        </span>
+                                }
+                                Events
+                            </p>
+                        </div>
+
+
+                        <div class="filterbyfeature">
+                            <div className="relative inline-block text-left">
+                                <button
+                                    onClick={toggleDropdown}
+                                    className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                >
+                                    <span className='hidden md:block text-gray-500'>Filter by Features</span>
+                                    <span className='hidden block text-gray-500'>Filter</span>
+
+                                    <img src="/images/icons/filter.svg" alt="" />
                                 </button>
-                                <p className='text-xl font-bold'>
-                                    Hosted
-                                    {
-                                        showArchived
-                                            ?
-                                            <span className='mx-2'>
-                                                Archived
-                                            </span>
-                                            :
-                                            <span className='mx-2'>
-                                                Ongoing
-                                            </span>
-                                    }
-                                    Events
-                                </p>
-                            </div>
-
-
-                            <div class="filterbyfeature">
-                                <div className="relative inline-block text-left">
-                                    <button
-                                        onClick={toggleDropdown}
-                                        className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                {isOpen && (
+                                    <div
+                                        className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                        ref={dropdownRef}
                                     >
-                                        <span className='hidden md:block text-gray-500'>Filter by Features</span>
-                                        <span className='hidden block text-gray-500'>Filter</span>
-
-                                        <img src="/images/icons/filter.svg" alt="" />
-                                    </button>
-                                    {isOpen && (
-                                        <div
-                                            className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                                            ref={dropdownRef}
-                                        >
-                                            <div className="p-5">
-                                                <div className="popular">
-                                                    <span className='ml-0 font-semibold text-sm'>Category</span>
-                                                    <div className="flex items-center mb-1 mt-2">
-                                                        <input
-                                                            id="group2"
-                                                            name="status"
-                                                            type="radio"
-                                                            checked={!showArchived}
-                                                            onChange={() => setShowArchived(false)}
-                                                            className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                        />
-                                                        <label htmlFor="group2" className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">
-                                                            Ongoing
-                                                        </label>
-                                                    </div>
-                                                    <div className="flex items-center mb-1 mt-2">
-                                                        <input
-                                                            id="group1"
-                                                            name="status"
-                                                            type="radio"
-                                                            checked={showArchived}
-                                                            onChange={() => setShowArchived(true)}
-                                                            className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                        />
-                                                        <label htmlFor="group1" className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">
-                                                            Archived
-                                                        </label>
-                                                    </div>
-
+                                        <div className="p-5">
+                                            <div className="popular">
+                                                <span className='ml-0 font-semibold text-sm'>Category</span>
+                                                <div className="flex items-center mb-1 mt-2">
+                                                    <input
+                                                        id="group2"
+                                                        name="status"
+                                                        type="radio"
+                                                        checked={!showArchived}
+                                                        onChange={() => setShowArchived(false)}
+                                                        className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                    />
+                                                    <label htmlFor="group2" className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">
+                                                        Ongoing
+                                                    </label>
+                                                </div>
+                                                <div className="flex items-center mb-1 mt-2">
+                                                    <input
+                                                        id="group1"
+                                                        name="status"
+                                                        type="radio"
+                                                        checked={showArchived}
+                                                        onChange={() => setShowArchived(true)}
+                                                        className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                    />
+                                                    <label htmlFor="group1" className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">
+                                                        Archived
+                                                    </label>
                                                 </div>
 
-                                                <div className="popular">
-                                                    <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                    {
+                                            </div>
+
+                                            <div className="popular">
+                                                <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
+                                                {
+                                                    categories.data != null && (
                                                         categories.data.map((e) => (
                                                             <div class="flex items-center mb-1 mt-2">
                                                                 <input id={e.categoryURL} type="checkbox"
@@ -196,164 +190,189 @@ const VendorHostedEvents = () => {
                                                                 <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
                                                             </div>
                                                         ))
-                                                    }
-                                                </div>
-                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                <div className="popular">
-                                                    <span className='ml-0 font-semibold text-sm'>Features</span>
-                                                    {
-                                                        Features.list.map((e) => (
-                                                            <div class="flex items-center mb-1 mt-2">
-                                                                <input id={e} type="checkbox"
-                                                                    onChange={() => handleFeaturesChange(e)}
-                                                                    checked={selectedFeatures.includes(e)}
-                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
-                                                            </div>
-                                                        ))
-                                                    }
-                                                </div>
-                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+                                                    )
+                                                }
                                             </div>
+                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
+                                            <div className="popular">
+                                                <span className='ml-0 font-semibold text-sm'>Features</span>
+                                                {
+                                                    Features.list.map((e) => (
+                                                        <div class="flex items-center mb-1 mt-2">
+                                                            <input id={e} type="checkbox"
+                                                                onChange={() => handleFeaturesChange(e)}
+                                                                checked={selectedFeatures.includes(e)}
+                                                                value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                            <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
                                         </div>
-                                    )}
-                                </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
+                    </div>
 
-                        <div className='mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
+                    <div className='grid grid-flow-row gap:8 md:mx-3 md:gap-3 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
+                        {
+                            response.data == null
+                                ?
+                                <>
+                                    <SkeletonCard />
+                                    <SkeletonCard />
+                                    <SkeletonCard />
+                                    <SkeletonCard />
+                                    <SkeletonCard />
+                                    <SkeletonCard />
+                                </>
+                                :
+                                <>
+                                    {
+                                        showArchived
+                                            ?
+                                            <>
+                                                {
+                                                    response.data.expiredEvents.filter((item) => {
+                                                        const searchResult = searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                                        const categoryMatch =
+                                                            selectedCategories.length === 0 ||
+                                                            selectedCategories.some((selectedCategory) => {
+                                                                if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                                    console.log("good")
+                                                                    return (
+                                                                        selectedCategory.subCategories &&
+                                                                        selectedCategory.subCategories.some((subCategory) =>
+                                                                            item.eventCategory &&
+                                                                            item.eventCategory.some((itemSubcategory) => (
+                                                                                itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                            )
+                                                                        )
+                                                                    );
+                                                                }
+                                                                else {
+                                                                    return (
+                                                                        item.eventCategory.some((itemSubcategory) =>
+                                                                            itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                        )
+                                                                    );
+                                                                }
+                                                            });
+
+
+                                                        const featureMatch =
+                                                            selectedFeatures.length == 0 ||
+                                                            item.features.some(feature => selectedFeatures.includes(feature));
+
+                                                        return searchResult && categoryMatch && featureMatch
+                                                    }).map((event) => (
+                                                        <Link to={`/vendor/event/${event._id}`}>
+                                                            <PastPurchaseCard data={event} />
+                                                        </Link>
+                                                    ))
+                                                }
+                                            </>
+                                            :
+                                            <>
+                                                {
+                                                    response.data.events.filter((item) => {
+                                                        const searchResult = searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
+                                                        const categoryMatch =
+                                                            selectedCategories.length === 0 ||
+                                                            selectedCategories.some((selectedCategory) => {
+                                                                if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                                    console.log("good")
+                                                                    return (
+                                                                        selectedCategory.subCategories &&
+                                                                        selectedCategory.subCategories.some((subCategory) =>
+                                                                            item.eventCategory &&
+                                                                            item.eventCategory.some((itemSubcategory) => (
+                                                                                itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                            )
+                                                                        )
+                                                                    );
+                                                                }
+                                                                else {
+                                                                    return (
+                                                                        item.eventCategory.some((itemSubcategory) =>
+                                                                            itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                        )
+                                                                    );
+                                                                }
+                                                            });
+
+
+                                                        const featureMatch =
+                                                            selectedFeatures.length == 0 ||
+                                                            item.features.some(feature => selectedFeatures.includes(feature));
+
+                                                        return searchResult && categoryMatch && featureMatch
+                                                    }).map((event) => (
+                                                        <Link to={`/vendor/event/${event._id}`}>
+                                                            <PastPurchaseCard data={event} />
+                                                        </Link>
+                                                    ))
+                                                }
+                                            </>
+                                    }
+                                </>
+                        }
+
+                    </div>
+
+                    <div>
+                        <span className='lg:mx-9 text-2xl font-bold '>Offers</span>
+                        <div className=' md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  lg:mx-9 scrollbar-hide space-x-3 md:space-x-5'>
                             {
-                                showArchived
+                                response.data == null
                                     ?
                                     <>
-                                        {
-                                            response.data.expiredEvents.filter((item) => {
-                                                const searchResult = searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
-                                                const categoryMatch =
-                                                    selectedCategories.length === 0 ||
-                                                    selectedCategories.some((selectedCategory) => {
-                                                        if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
-                                                            console.log("good")
-                                                            return (
-                                                                selectedCategory.subCategories &&
-                                                                selectedCategory.subCategories.some((subCategory) =>
-                                                                    item.eventCategory &&
-                                                                    item.eventCategory.some((itemSubcategory) => (
-                                                                        itemSubcategory.categoryURL === subCategory.categoryURL)
-                                                                    )
-                                                                )
-                                                            );
-                                                        }
-                                                        else {
-                                                            return (
-                                                                item.eventCategory.some((itemSubcategory) =>
-                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
-                                                                )
-                                                            );
-                                                        }
-                                                    });
-
-
-                                                const featureMatch =
-                                                    selectedFeatures.length == 0 ||
-                                                    item.features.some(feature => selectedFeatures.includes(feature));
-
-                                                return searchResult && categoryMatch && featureMatch
-                                            }).map((event) => (
-                                                <Link to={`/vendor/event/${event._id}`}>
-                                                    <PastPurchaseCard data={event} />
-                                                </Link>
-                                            ))
-                                        }
                                     </>
                                     :
                                     <>
                                         {
-                                            response.data.events.filter((item) => {
-                                                const searchResult = searchQuery.toLocaleLowerCase() === '' ? item : item.title.toLowerCase().includes(searchQuery)
-                                                const categoryMatch =
-                                                    selectedCategories.length === 0 ||
-                                                    selectedCategories.some((selectedCategory) => {
-                                                        if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
-                                                            console.log("good")
-                                                            return (
-                                                                selectedCategory.subCategories &&
-                                                                selectedCategory.subCategories.some((subCategory) =>
-                                                                    item.eventCategory &&
-                                                                    item.eventCategory.some((itemSubcategory) => (
-                                                                        itemSubcategory.categoryURL === subCategory.categoryURL)
-                                                                    )
-                                                                )
-                                                            );
-                                                        }
-                                                        else {
-                                                            return (
-                                                                item.eventCategory.some((itemSubcategory) =>
-                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
-                                                                )
-                                                            );
-                                                        }
-                                                    });
-
-
-                                                const featureMatch =
-                                                    selectedFeatures.length == 0 ||
-                                                    item.features.some(feature => selectedFeatures.includes(feature));
-
-                                                return searchResult && categoryMatch && featureMatch
-                                            }).map((event) => (
-                                                <Link to={`/vendor/event/${event._id}`}>
-                                                    <PastPurchaseCard data={event} />
-                                                </Link>
-                                            ))
+                                            showArchived
+                                                ?
+                                                <>
+                                                    {
+                                                        response.data.expiredOffers.map((offer) => (
+                                                            <div className='w-full'>
+                                                                <Link to={`/vendor/offer/${offer._id}`}>
+                                                                    <VendorOfferCard data={offer} />
+                                                                </Link>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </>
+                                                :
+                                                <>
+                                                    {
+                                                        response.data.offers.map((offer) => (
+                                                            <div className='w-full'>
+                                                                <Link to={`/vendor/event/${offer._id}`}>
+                                                                    <VendorOfferCard data={offer} />
+                                                                </Link>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </>
                                         }
                                     </>
                             }
-
                         </div>
+                    </div>
 
-                        <div>
-                            <span className='lg:mx-9 text-2xl font-bold '>Offers</span>
-                            <div className=' md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  lg:mx-9 scrollbar-hide space-x-3 md:space-x-5'>
-                                {
-                                    showArchived
-                                        ?
-                                        <>
-                                            {
-                                                response.data.expiredOffers.map((offer) => (
-                                                    <div className='w-full'>
-                                                        <Link to={`/vendor/offer/${offer._id}`}>
-                                                            <VendorOfferCard data={offer} />
-                                                        </Link>
-                                                    </div>
-                                                ))
-                                            }
-                                        </>
-                                        :
-                                        <>
-                                            {
-                                                response.data.offers.map((offer) => (
-                                                    <div className='w-full'>
-                                                        <Link to={`/vendor/event/${offer._id}`}>
-                                                            <VendorOfferCard data={offer} />
-                                                        </Link>
-                                                    </div>
-                                                ))
-                                            }
-                                        </>
-                                }
-                            </div>
-                        </div>
-
-                    </section >
-                </div>
-                <div className=''>
-                    < Footer />
-                </div>
+                </section >
             </div >
-        )
-    }
+            <div className=''>
+                < Footer />
+            </div>
+        </div >
+    )
+    // }
 
 }
 

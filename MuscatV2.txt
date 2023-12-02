@@ -197,3 +197,794 @@ done
 8. for Events page live search filtering is done if there are no event already then there will no event to search
 
 
+priority
+4. Trending events (done)
+5. Past purchased events (done)
+3. Adding map views for all events page (done)
+9. Event description fetch upcoming events and offers (done)
+2. vendor verify ticket status (done)
+1. Vendor booked seats counts (done)
+8. Events page filter date option (done)
+14. WheretoMap (done)
+11. Vendor Booked tickets Refund payment
+12. Notification center delete Notifications
+10. Send Invoice for booked tickets
+6. show like button red unred ()
+13. Outh 0 production deploy
+7. Change image in about section
+
+1. Homepage calender 
+2. change events routing for the wheretomap
+3.
+
+Things done
+vendor home -->
+1. event category counts
+2. upcoming events
+3. offers
+4. editors pick
+
+events --> 
+1. get category wise data
+2. get all events
+3. live search in events by name
+
+event description -->
+1. contact us handling
+2. fetched event description
+3. availble seats and starting price handled
+4. Show category price and name in accordian
+
+bookseats -->
+1. handling book seats form validation
+2. payment gateway redirection
+3. if no price no payment gateway redirection
+4. ticket status handling
+
+Vendor Home -->
+1. Create Event/Offer
+2. Ongoing Events
+3. Ongoing Offer
+
+Vendor Notification -->
+1. Get All Notifications
+
+Vendor Hosted Events -->
+1. Get All hosted events
+2. Get archived Events
+3. Get all offers
+
+4. Vendor Events description
+1. Edit Events
+2. View sales
+
+5. Booked seats
+1. Get All tickets for vendor
+2. Export tickets in excel format
+3. Show Ticket status as (processing, pending, awaiting confirmation)
+
+
+Thing which Havent Pushed but completed 
+1. Vendor Create Venue
+2. Vendor show image name which is selected while signup form
+3. Vendor booked seats counts
+4. Vendor verify ticket status
+
+Things working on 
+1. Adding loading screen in all pages
+2. Adding Map-view in user side 
+3. showing Trending events
+4. User side past purchased events fetch data As model changed
+5. Show like button red unred
+
+Things Remaining
+1. Vendor searchbar 
+2. Change Image in About section
+3. Events page filter date option
+4. Event description fetch upcoming events and offers
+5. Venue page fetch data for events 
+6. Send Invoice for booked tickets
+7. Vendor Booked tickets Refund payment
+8. Notification center delete Notifications
+
+
+
+
+
+Ticket Booking
+event
+--> event with price (className/seats)
+    --> if className seats and price 
+        --> (book in a traditional manner)
+    --> if className and price
+        --> (no tension of avaialble seats)
+--> event without price (no className, no seats / className with seats / className with no seats)
+    --> if no className and no seats no price    
+        --> book ticket with awaiting confirmation
+    --> if className and seats without price
+        --> book ticket with checking availble seats dont redirect him to the payment gateway
+    --> if className with no seats and no price
+        --> (no tension of available seats book as much as you want)
+offer
+--> offer with price (className/seats)
+--> offfer without price (no className, no seats / className with seats / className with no seats)
+
+
+create a search query function route
+
+[x] create a category controllers
+[x] create a offer controllers
+
+[Y] get max6 categories have the most offers in descending order 
+[Y] get eve and there offer count should be greater than equal to 1
+[Y] get datewise categories count data 
+[] get max 3 upcoming events date query
+[Y] upcoming view all link it to the events  
+[] createa a category of ediors pick
+[Y] link view all to the category/event page
+[] show active offer only in the get offers 
+[] scroll to top function
+[] need to talk button routing
+[] whatsapp no linking
+
+0. Clear database for events offers users (categories OK)
+1. loading screen to all pages
+2. Complete backend apis
+3. Complete vendor side with proper date and time
+4. correct event apis
+5. make better folder structure
+6. whatever you are showing make sure it should only have a incoming or current offers
+7. calender events
+8. filter option
+9. Add to Favorites
+10. QR code
+
+------------------------------------------------------------------------------------------
+
+Login screen --->
+1. Show back button to come on the Homepage
+2. google sign in
+3. facebook sign in 
+4. 
+
+
+Events Page --->
+Show no events available for categories having no events (done)
+give it a scroll option make it overflow after 3 lines 
+look for responsiveness (partially done)
+Trending in muscat
+Add filter 
+Add searching events datewise 
+Add to favorite option 
+show skeleton for events loading first time
+
+
+ADD PAYMENT GATEWAY
+
+Ticket status page -->
+1. show like button neatly
+2. View ticket make it perfect use image if want 
+3. show neat qrcode in white
+
+
+steps: 
+create a book ticket controller (done)
+take all data from the frontend to that controller (done)
+create a session into that controller (done)
+give url as a response and also status and other things (done)
+from the frontend redirect it to the checkout page
+
+
+ADD CHAT engine
+
+event with no alloted seats
+
+events with no payment (price)
+event with optional time
+
+
+---------------------------------------------------
+Contact us ---> 
+1. Create loading icon when we are submitting details
+2. Add validation correctly (done)
+3. Give a success response once msg has been sent (done)
+4. Link all the social media icons
+5. whatsapp linking
+
+Homepage -->
+changed date type to epoch timestamp
+1. Get searchbar working
+2. get categories data with the total active events (done)
+3. show all the upcoming events on the show on map 
+4. Modify upcoming events api such a way that it should show events of that day only (done)
+5. Create a new category of editors pick (done)
+6. show all the active offers (partially done)
+7. create a scroll to top (done)
+8. link whatsapp number 
+9. Start integrating chatbot
+10. Link footer to the site 
+11. Change offer to date (discussion)
+
+
+About Us --->
+1. scroll to top button
+
+Event Description page --->
+0. After time changed in vendor side change here also 
+1. Make alignment proper (done)
+2. Link view on map to the cordinates (partially done)
+3. Add to Favorites (done)
+4. add share option (not done)
+5. upcoming events in the crown plaza (partially done)
+6. offers on the crown plaza (partially done)
+7. like button (partially done)
+8. Contact us redirect to the whatsapp number of the vendor (done)
+9. make call option work for the vendor number
+10. make like option red and unred
+
+Book seat Page --->
+3. add validation (done)
+5. If any field is remaining dont show the ticket price (done)
+4. This values should be prefilled by getting user from the store (done)
+2. create a controller in the backend 
+1. fetch this page from the backend (no)
+
+
+Add ticketid into the user document when ticket is getting booked
+retrive that data when showing past purchase events
+add ticketid into it 
+redirect it there
+
+
+
+
+
+
+Admin login 
+- change login user api
+- give validation if role is user or not
+- check the work flow after done
+
+
+Home-->
+Login-logout issue resolve
+Searchbar working properly redirect it to the whereto events page
+Show daywise events and when I click on any day show all the events of that day
+Apply skeleton view for this
+Show calender option
+show like button
+show offers cards and when someone clicks on that card redirect him to the events page
+subscribe to out newsletter
+Make mobile view better (reduce card size, reduce banner, make proper searchbar)
+make proper settings in App view for bottom navbar 
+Add animations for skeleton view and searchbar
+
+About -->
+Change Image for about section
+
+Contact Us -->
+Add notification to the admin when someone fill info to the contact us
+
+Profile -->
+Show saved cards
+Show mobile view for profile
+clear saved cards 
+Update user profile
+Handle undefined values
+
+Events -->
+Show 3 events in a row 
+show 3 rows at max then scroll bar
+Add filter by category
+Add live search bar
+Add trending events
+Add datewise events
+Add to favorite 
+Show events on map
+Show in list view or in grid view
+
+Event Description -->
+Show Event photo size in a fixed manner
+Show Contact us option the way they said
+Show share option after clicking on share option link for this event should get copied
+after clicking on call icon number should get visible
+Add to calender option
+Add to favorites 
+Likes button
+Show location for the event
+Show upcoming events
+show upcoming offers
+show download banner 
+
+Venue Description -->
+Show the location of the vanue on the google map
+Show all the events happening on the venue
+Show the events which are of same categories which user have purchased earlieer if user haventt purchased anything then show the eents whose tickets are getting sold faster
+After clicking on show more button more events will get showed on the page
+
+Favorites -->
+Show all the favorite events of the user the upcoming event first and expired event should be at last
+user can also remove this events from favorites by clicking on the red heart
+
+Book Seat -->
+same form will be there for book seat 
+Create a backend api to get the data for the user and image of seating map
+prefill some field and also show only those options which vendor has created to do the same
+If event has no price then dont redirect him to the payment gateway
+If event has price then redirect him to the payment gateway and then after successfull payment allot seats which you want to allot
+Make a proper validation for the form 
+Same page will be there for the offers 
+Send invoice and mail about the event booked
+send notification to the vendor that your event has got booked
+send notification to the user that event has been successfully booked
+
+FAQ -->
+Create FAQ dynamic
+Give admin access to add and delete FAQ
+Chat with us button redirect to the chat screen
+
+Past-Purchased -->
+Show pastpurchased events first upcoming then expired
+after clicking on the event he can look his ticket which he booked
+Apply filter option 
+
+Help -->
+Chat bot integration
+Only logged in user can access this chatbot setting
+
+wheretomap -->
+Show all the upcoming events on the wheretomap
+
+Vendor Home -->
+Add Event 
+Add Offer 
+Ongoing events should be coursel view 
+if he clicks on view all then he will redirect to the hosted events page
+if he clicks on the event on the home page he will redirect to the event description
+Ongoing offers also having same functionality like events
+
+Booked Tickets -->
+Show all the booked tickets
+Apply filters 
+Show booked seats count
+Extract data into the excel or pdf 
+Cancel option for the tickets
+If he cancels the ticket then refund will get initiated 
+If he cancels the ticket user will get notification
+
+Hosted Events --> 
+Show all the ongoig upcoming events on the hosted events page
+show all the ongoging upcoming offers also on the hosted events page
+Add filter 
+
+Event description -->
+Same as client side
+Edit event modal
+redirect to the booked seats 
+
+Notification center -->
+Show all the notification in a decending order
+Clear notification button deleting offers
+Take confirmation from the user that he have to delete the offer or 
+
+Vendor profile -->
+same as client side profile page
+
+Ticket status -->
+show the ticket status as pending if no payment is done
+view ticket option show the ticket card for it 
+Configure it for mobile screens 
+
+
+
+
+Changes I have to do 
+1. titile, shortdescription, description, 
+    date{
+        
+    }
+
+
+
+
+
+<h2>Category Selector</h2>
+<div>
+    <button onClick={openModal}>Open Category Selector</button>
+</div>
+<CategorySelectorModal
+    isOpen={isModalOpen}
+    categories={listCategory}
+    onClose={closeModal}
+    onCategoriesSelect={handleCategoriesSelect}
+/>
+<div>
+    <h3>Selected Categories:</h3>
+</div>
+
+
+
+
+const mailOptions = {
+                        from: 'argademayur2002@gmail.com',
+                        to: email,
+                        subject: 'Ticket Booking Confirmation',
+                        html: `
+                          <html>
+                          <body>
+                            <p>Dear ${vendor.firstname},</p>
+                            <p>
+                            Thank you for booking your ticket with Muscat whereto ! We're excited to have you on board for ${event.title}.</p>
+                            <h3>Booking Details:</h3>
+        <ul>
+            <li><strong>Event Name:</strong> ${event.title}</li>
+            <li><strong>Date and Time:</strong> ${event.date}</li>
+            <li><strong>Venue:</strong> ${event.location.name}</li>
+            <li><strong>Seat Number(s):</strong> ${newSeats.newAssignedSeats.seats}</li>
+            <li><strong>Ticket Price:</strong> ${selectedCategory?.price}</li>
+            <li><strong>Total Amount:</strong> ${finalBasePrice}</li>
+        </ul>
+                            <p>Thank you for choosing Muscatwhereto.com</p>
+                            <p>Best regards,<br>The Muscat WheretoTeam</p>
+                          </body>
+                          </html>
+                        `,
+                    };
+        
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error)
+                            return res
+                                .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                                    success: false,
+                                    data: "failed to send email try again"
+                                });
+                        } else {
+                            return res
+                                .status(statusCode.SUCCESS.code).json({
+                                    success: true,
+                                    data: `Email sent successFully Kindly check your email`
+                                });
+                        }
+                    });
+                    12. backend - Check Logic for Vendor Hosted events (done)
+11. frontend - bookticket - Add filters done
+15. cancel BookedTickets 
+8.  Show Proper Ticket in the mobile view
+7.  Download Ticket PDF
+9.  backend, frontend - usernotificaiton Fetch All user Notifications
+10. backend, frontend- Delete User Notification
+13. backend frontend - Fetch Notifications
+14. backend frontend - Delete Notification
+2.  backend - bookticket - Send two emails and notification to the user for success ticket booking and also successfull payment
+
+4.  backend frontend - event Description - Contact Us
+3.  Admin - Add contact us data into the admin side
+5.  Need to change FAQ (Provide FAQ answers)
+1.  backend - Send error msg if any image upload is failed (frontend, )
+6.  APP - App Dark and light mode
+
+
+ADMIN PAGES
+
+User Notification
+
+
+Vendor Activation (done)
+
+Vendor BookedTickets
+1. Add filters
+2. Make it same as Client Event Description
+
+Vendor Home
+1. Show Unverified Listings (not doing)
+
+Vendor Hosted Events
+1. Check Logic for Vendor Hosted events
+2. Perfect UI
+
+Vendor Notification
+1. Fetch Notifications
+2. Delete Notification
+
+Vendor Venue Description (incomplete)
+
+Change loader of the vendor side (almost done)
+Handle All modals
+
+
+Backend
+1. Create Ticket API
+    - Status pending it should be awaiting approval (ticket status issue)
+    - Alloted seats issue (done)
+2. Delete Ticket API (refund)
+3. Add to Trending API
+4. Send Notification feature (done)
+5. Send Email feature (in progress)
+
+ADMIN PANEL
+
+TODO
+-Event and offer form validation 
+    - Video part (frontend, done)
+    - seating map optional (frontend, done)
+    
+    - validation for mobile number and also validation for links (frontend-number, )
+    - link for terms and conditions is should start with https:// (not doing)
+    - start date should always be less than equal to enddate (frontend)
+
+
+About Us (done)
+
+Book Ticket
+1. 
+2. Handle in app purchase (when working on the app)
+3. Check how page looks when there is no seating map (done)
+
+ContactUs
+1. 
+
+Event Description
+1. Change available ticket logic and make it perfect (not doing right now)
+2. Check ticket price starting from also
+3.  ()
+
+FAQ
+1.
+
+Favorites
+1. Check add and remove favorite red unred
+
+Home (done)
+1. Popular Category count is coming initially for the 1st date
+
+Event 
+1.Backend API (done)
+2.Filter is not working perfectly
+
+Login (done)
+Past Purchased (done)
+
+Profile
+1. 
+
+Ticket status
+7. Create a Verify Payment Screen and then redirect user from their to the website
+
+Vendor home
+1. Change wordings (done)
+2. Offer to vouchers
+3. Video issue
+4. H1 H2 tags are not working (done)
+5. Check if booking is able to happen before event gets started
+6. Handle instagram and website
+7. terms and conditions optional
+8. 
+
+Event description
+1. Details
+
+
+Vendor Home 
+1. Add Event (done)
+2. Add offer (done)
+3. Ongoing Events (done)
+4. Ongoing Offers (done)
+
+Vendor Hosted Events
+1. Ongoing/Upcoming Events (done)
+2. Archived Events (done)
+3. Ongoing/Upcoming Offers (done)
+4. Archived Offers (done)
+
+Booked Tickets
+1. Show all Tickets (done)
+2. Filter Tickets (done)
+3. Cancel Tickets
+4. Refund Tickets
+5. Verify Tickets (done)
+
+Event Description page as client side
+1. Add skeleton view
+2. 
+Add loading screen to all pages
+
+refund payment
+
+
+login page
+1. Back button is working
+2. Invalid user response
+3. empty form submission handled
+4. incorrect password submission handled
+5. forget password link is working
+6. continue with email is working
+--> no google login
+--> no facebook login
+
+Signup page
+1. Form validation handled
+2. already existing user handled 
+3. password confirm password handled
+4. loading button added
+
+Forgot password input form 
+1. Form validation handled
+2. already existing user handled 
+3. password confirm password handled
+4. loading button added
+5. send mail checked 
+
+
+Homepage
+--> desktop
+1. Searchbar working in desktop 
+2. searchbar size adjusted
+3. popular categories routing working
+4. follow us button working
+5. Like option working
+6. calender highlight working
+7. popular category daywise working
+8. follow us button redirection working
+9. Navigation menu checked 
+10.
+---> Mobile and PWA
+1. searchbar working
+2. banner added
+3. like button working
+4. calender highlight working
+5. sidebar checked
+
+About page
+--> desktop
+done
+--> mobile and PWA
+done
+
+Contact page
+--> desktop
+1. contact us api working
+2. Responsive
+--> mobile and PWA
+1. contact us api working
+2. Responsive
+
+Events 
+--> desktop
+1. like button working properly
+2. events on map are listing correctly
+3. filter option is working
+4. search option is working
+5. category wise events are getting listed
+6. location wise filtering is working
+--> date filtering is missing
+--> time filtering is missing
+
+Event Description
+--> desktop
+1. fetched event description
+2. show event location on map
+3. show upcoming events
+5. Add to Favorites
+8. Add to favorite
+11. Add like button
+13. show likes count
+10. Add OMR in front of starting price of ticket
+12. if event is expired then book now button is disable
+7. Call button
+6. contact us button
+4. show upcoming offers (pending)
+--> Add to calender missing
+--> there are two places to show the likes
+---> Mobile
+
+
+Venue Description
+--> desktop
+1. show banner 
+2. show upcoming events
+3. show venue address on map
+4. show events you might like = trending events 
+
+Book ticket
+1. Form validation
+2. terms and condition redirection
+3. 
+
+ticket status
+1. payment status check loading screen
+2. ticket qr code
+
+
+pastpurchased
+1. pastpurchased redirect to ticket
+2. remove filter from the pastpurchased
+
+Favorites
+1. show all liked events
+2. like feature working
+3. after clicking on event event description page
+
+
+Add error hadndling to the add event and add offer modal
+
+Admin Things
+1. Add user details page where he can see users details
+2. send notifications to the user.
+
+Vendor 
+1. Create Vendor (done) with autoverification
+2. Update Vendor
+3. delete Vendor (done)
+4. Verify Vendor (done)
+5. Notify Vendor (pending mail vendor on verification)
+6. Give notification to the Vendor
+
+Events 
+4. List Events/Offers (done)
+3. Delete Event/Offers (done)
+7. Verify Event (done)
+5. Event/Offers Description  (done)
+6. Sales of events (done)
+1. Create Event/Offers
+2. Update Event/Offers
+
+Venue 
+1. Create Venue done
+2. Update Venue 
+3. Delete Venue
+3. Delete Venue
+4. List Venue done
+5. Venue Description
+6. Venue Location  
+
+
+
+customer id --> list payment method -->
+customerid 
+card id
+
+next time -->card id --> 
+
+100 baisa --> 0.100 OMR
+
+
+1 riyal == 1000 baisa 
+0.1 riyal == 100 baisa
+5 riyal --> 5000 
+
+
+terminate
+--> C4DEE2C0757/terminate
+--> terminate
+--> terminate/<any_device_id>
+
+senosor_data
+--> C4DEE2C0757/sensor_data
+--> sensor_data
+--> sensor_data/<any_device_id>
+
+device status
+--> C4DEE2C0757/device_status
+--> device_status
+--> device_status/<any_device_id>
+
+Check response
+--> C4DEE2C0757/check_response
+--> check_response
+--> check_response/<any_device_id>
+
+
+when customer going to click on the book now 
+1. list payment methods in the frontend
+2. choose one payment method or you can go without any card (create session)
+3. if he chooses the payment method then we will go with the saved card Things
+4. if he chooses to not go with the saved cards then we will go with create session
+
+
+0.100 
+
+1 OMR
+
+1000*
+

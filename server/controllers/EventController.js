@@ -14,7 +14,7 @@ exports.createEvent = async (req, res) => {
     } = req.body
 
 
-    if (!title || !displayPhoto || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
+    if (!title || !displayPhoto || !shortDescription || !description || !location || !date || !categories || !eventCategory) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: "Required fields are missing"

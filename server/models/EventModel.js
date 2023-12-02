@@ -131,7 +131,6 @@ const eventSchema = new mongoose.Schema({
 
     termsAndConditions: {
         type: String,
-        required: true
     },
 
     verified: {
