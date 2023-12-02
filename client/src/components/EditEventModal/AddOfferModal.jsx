@@ -418,8 +418,11 @@ const AddOfferModal = ({ onClose }) => {
 
     if (listCategory.length == 0 || listCategory == null || listVenues == null) {
         return (
-            <div className="h-screen w-full flex justify-center align-middle items-center">
-                <img src="/images/icons/loading.svg" alt="" />
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
             </div>
         )
     } else {
@@ -439,7 +442,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name *">
                                             <div className="flex w-full">
                                                 <span className='text-sm font-semibold mt-1 ml-0'>
-                                                    Title  *
+                                                    Title <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Offer Title"} />
                                             </div>
@@ -456,7 +459,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Short Description *
+                                                    Short Description <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Short Description for Voucher in one line"} />
                                             </div>
@@ -473,7 +476,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Voucher Information  *                                                </span>
+                                                    Voucher Information <span className='ml-0 text-lg font-bold'> * </span> </span>
                                                 <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
                                             </div>
                                         </label>
@@ -497,7 +500,7 @@ const AddOfferModal = ({ onClose }) => {
                                     <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                         <div className="flex w-full row1 space-x-4 ">
                                             <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='input-container text-xs mt-1' htmlFor="first name">Start Date</label>
+                                                <label className='input-container text-xs mt-1' htmlFor="first name">Start Date <span className='ml-0 text-lg font-bold'> * </span></label>
                                                 <input
                                                     type="datetime-local"
                                                     min={minDateTime}
@@ -593,7 +596,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Select Location  *
+                                                    Select Location <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Select Venue for your offer from the list. If your venue is not there in the list you can fill Add Venue form and request Admin to add your venue"} />
                                             </div>
@@ -653,7 +656,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Venue Information  *
+                                                    Venue Information  <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Add specific Description/Details about venue, This information is Voucher Specific"} />
                                             </div>
@@ -671,7 +674,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Select Relevant Category/Categories  *
+                                                    Select Relevant Category/Categories <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Select All the applicable categories, you can select multiple categories also"} />
                                             </div>
@@ -688,7 +691,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <h3 class="font-semibold text-gray-900 dark:text-white">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Select Applicable Features *
+                                                    Select Applicable Features <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Select All the applicable features, you can select multiple features also"} />
                                             </div>
@@ -754,7 +757,7 @@ const AddOfferModal = ({ onClose }) => {
                                         </div>
                                         <div className="w-full flex justify-between">
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Phone No.</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Phone No.  with Country code <span className='ml-0 text-lg font-bold'> * </span> </label>
                                                 <input
                                                     type='number'
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
@@ -764,7 +767,7 @@ const AddOfferModal = ({ onClose }) => {
                                             </div>
 
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code <span className='ml-0 text-lg font-bold'> * </span></label>
                                                 <input
                                                     type="number"
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
@@ -852,7 +855,7 @@ const AddOfferModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Link for Terms And Conditions  *
+                                                    Link for Terms And Conditions
                                                 </span>
                                                 <Tooltip data={"Give link to your terms and conditions page, if have pdf you can give accessable drive link"} />
                                             </div>
@@ -915,7 +918,7 @@ const AddOfferModal = ({ onClose }) => {
 
                                     <div className="mt-4 flex w-full items-center align-middle">
                                         <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
-                                            Featured Image *
+                                            Featured Image <span className='ml-0 text-lg font-bold'> * </span>
                                         </span>
                                         <Tooltip data={"Featured Image is Main Poster of your offer which will be visible to the clients "} />
                                     </div>                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
@@ -964,7 +967,7 @@ const AddOfferModal = ({ onClose }) => {
                                             Video
                                         </span>
                                         <Tooltip data={"Add sample video of the offer"} />
-                                    </div>                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                    </div><input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
                                         accept="video/*"
                                         onChange={captureVideo}
                                         type="file" />

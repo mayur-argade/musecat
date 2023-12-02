@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard';
 import VendorOfferCard from '../../components/Cards/VendorOfferCard';
 import Footer from '../../components/shared/Footer/Footer';
-import { VendorHostedEventsApi, getCategoryEvents, GetAllCategory, GetTrendingEvents } from '../../http';
+import { VendorHostedEventsApi, GetAllCategory } from '../../http';
 import { Link } from 'react-router-dom';
 import Features from '../../utils/Data'
 const VendorHostedEvents = () => {
@@ -16,11 +16,8 @@ const VendorHostedEvents = () => {
     const [showArchived, setShowArchived] = useState(false)
     const [categories, setCategories] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([])
-    const [selectedDistance, setSelectedDistance] = useState([])
     const [selectedFeatures, setSelectedFeatures] = useState([])
-    const [categoryName, setCategoryName] = useState('')
     const [categoryLoading, setCategoryLoading] = useState(false)
-    const [trending, setTrending] = useState({})
     const [checkCategory, setCheckCategory] = useState(false)
     const navigate = useNavigate();
 
@@ -62,7 +59,6 @@ const VendorHostedEvents = () => {
         }
     }
 
-    console.log(selectedFeatures)
     const handleCategoryChange = (categoryURL) => {
         // console.log(categoryURL)
         // Check if the categoryURL is already in selectedCategories
@@ -139,73 +135,89 @@ const VendorHostedEvents = () => {
                                 </p>
                             </div>
 
-                            <div class="filterbyfeature mb-3 mr-8 flex align-middle items-center">
-                                <div onClick={() => setShowArchived(!showArchived)} className='mr-3 '>
-                                    {
-                                        showArchived
-                                            ?
-                                            <p className='bg-[#E7E7E7] w-32 cursor-pointer px-2 py-1 rounded-md text-sm'>
-                                                Show Ongoing
-                                            </p>
-                                            :
-                                            <p className='bg-[#E7E7E7] w-32 cursor-pointer px-2 py-1 rounded-md text-sm'>
-                                                Show Archived
-                                            </p>
-                                    }
 
-                                </div>
-                                <div class="filterbyfeature">
-                                    <div className="relative inline-block text-left">
-                                        <button
-                                            onClick={toggleDropdown}
-                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                            <div class="filterbyfeature">
+                                <div className="relative inline-block text-left">
+                                    <button
+                                        onClick={toggleDropdown}
+                                        className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                    >
+                                        <span className='hidden md:block text-gray-500'>Filter by Features</span>
+                                        <span className='hidden block text-gray-500'>Filter</span>
+
+                                        <img src="/images/icons/filter.svg" alt="" />
+                                    </button>
+                                    {isOpen && (
+                                        <div
+                                            className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                            ref={dropdownRef}
                                         >
-                                            <span className='hidden md:block text-gray-500'>Filter by Features</span>
-                                            <span className='hidden block text-gray-500'>Filter</span>
-
-                                            <img src="/images/icons/filter.svg" alt="" />
-                                        </button>
-                                        {isOpen && (
-                                            <div
-                                                className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                                                ref={dropdownRef}
-                                            >
-                                                <div className="p-5">
-                                                    <div className="popular">
-                                                        <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                        {
-                                                            categories.data.map((e) => (
-                                                                <div class="flex items-center mb-1 mt-2">
-                                                                    <input id={e.categoryURL} type="checkbox"
-                                                                        onChange={() => handleCategoryChange(e)}
-                                                                        checked={selectedCategories.includes(e)}
-                                                                        value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
-                                                                </div>
-                                                            ))
-                                                        }
+                                            <div className="p-5">
+                                                <div className="popular">
+                                                    <span className='ml-0 font-semibold text-sm'>Category</span>
+                                                    <div className="flex items-center mb-1 mt-2">
+                                                        <input
+                                                            id="group2"
+                                                            name="status"
+                                                            type="radio"
+                                                            checked={!showArchived}
+                                                            onChange={() => setShowArchived(false)}
+                                                            className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        />
+                                                        <label htmlFor="group2" className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">
+                                                            Ongoing
+                                                        </label>
                                                     </div>
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                    <div className="popular">
-                                                        <span className='ml-0 font-semibold text-sm'>Features</span>
-                                                        {
-                                                            Features.list.map((e) => (
-                                                                <div class="flex items-center mb-1 mt-2">
-                                                                    <input id={e} type="checkbox"
-                                                                        onChange={() => handleFeaturesChange(e)}
-                                                                        checked={selectedFeatures.includes(e)}
-                                                                        value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
-                                                                </div>
-                                                            ))
-                                                        }
+                                                    <div className="flex items-center mb-1 mt-2">
+                                                        <input
+                                                            id="group1"
+                                                            name="status"
+                                                            type="radio"
+                                                            checked={showArchived}
+                                                            onChange={() => setShowArchived(true)}
+                                                            className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        />
+                                                        <label htmlFor="group1" className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">
+                                                            Archived
+                                                        </label>
                                                     </div>
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
                                                 </div>
+
+                                                <div className="popular">
+                                                    <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
+                                                    {
+                                                        categories.data.map((e) => (
+                                                            <div class="flex items-center mb-1 mt-2">
+                                                                <input id={e.categoryURL} type="checkbox"
+                                                                    onChange={() => handleCategoryChange(e)}
+                                                                    checked={selectedCategories.includes(e)}
+                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
+                                                <div className="popular">
+                                                    <span className='ml-0 font-semibold text-sm'>Features</span>
+                                                    {
+                                                        Features.list.map((e) => (
+                                                            <div class="flex items-center mb-1 mt-2">
+                                                                <input id={e} type="checkbox"
+                                                                    onChange={() => handleFeaturesChange(e)}
+                                                                    checked={selectedFeatures.includes(e)}
+                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
                                             </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

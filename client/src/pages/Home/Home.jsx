@@ -278,7 +278,7 @@ const Home = () => {
 
                         <div className="">
                             <div
-                                className={` bottom-0 transition ease-in-out  duration-75 ${isVisible ? 'translate-y-0 opacity-100 duration-75' : 'translate-y-4 opacity-0 duration-75'
+                                className={` bottom-0 transition ease-in-out delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                                     }`}
                             >
                                 <div className='flex justify-center md: pt-0 md:p-10'>

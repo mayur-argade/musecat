@@ -99,65 +99,79 @@ const VendorHome = () => {
                         </div>
                     </div>
 
+                    {
+                        response.data.ongoingEvents.length != 0 && (
+                            <div className='mt-5 flex flex-col'>
+                                <span className='font-bold text-2xl'>Ongoing Events</span>
+                                <div className="pl-4 flex overflow-x-auto scrollbar">
+                                    {response.data.ongoingEvents.length != 0 ?
+                                        response.data.ongoingEvents.map((event) => (
+                                            <Link to={`/vendor/event/${event._id}`}>
+                                                <div key={event._id} className=" flex-shrink-0">
+                                                    <PastPurchaseCard data={event} />
+                                                </div>
+                                            </Link>
+                                        )) : <div>no ongoing events..</div>
+                                    }
+                                </div>
+                                <Link className='flex justify-end text-right' to="/vendor/hostedevents">
+                                    {
+                                        response.data.ongoingEvents != 0 ? <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span> : <span></span>
+                                    }
+
+                                </Link>
+                            </div>
+                        )
+                    }
+
+                    {
+                        response.data.ongoingOffers.length != 0 && (
+                            <div className='mt-5 flex flex-col'>
+                                <span className='font-bold text-2xl'>Ongoing Offers</span>
+                                <div className="pl-2 flex overflow-x-auto ">
+                                    {response.data.ongoingOffers.map((offer) => (
+                                        <div key={offer._id} className=" flex-shrink-0">
+                                            <Link to={`/vendor/event/${offer._id}`}>
+                                                <VendorOfferCard data={offer} />
+                                            </Link>
+                                        </div>
+                                    ))
+                                    }
+                                </div>
+                                <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span>
+                            </div>
+                        )
+                    }
+
 
                     <div className='mt-5 flex flex-col'>
-                        <span className='font-bold text-2xl'>Ongoing Events</span>
-                        <div className="md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-6">
-                            {response.data.ongoingEvents.lendth != 0 ?
-                                response.data.ongoingEvents.map((event) => (
-                                    <Link to={`/vendor/event/${event._id}`}>
-                                        <div key={event._id} className=" flex-shrink-0">
-                                            <PastPurchaseCard data={event} />
+                        <span className='font-bold text-2xl'>Unverified Lisitings</span>
+                        <div className="pl-2 flex overflow-x-auto scrollbar">
+                            {
+                                eventsLoading
+                                    ?
+                                    <>
+                                        loading
+                                    </>
+                                    :
+                                    unverifiedEvents.data.map((offer) => (
+                                        <div key={offer._id} className="flex-shrink-0">
+                                            {/* <Link to={`/vendor/event/${offer._id}`}> */}
+                                                <VendorUnverifedCard data={offer} />
+                                            {/* </Link> */}
                                         </div>
-                                    </Link>
-                                )) : <div>no ongoing events..</div>
+                                    ))
                             }
                         </div>
                         <Link className='flex justify-end text-right' to="/vendor/hostedevents">
                             {
-                                response.data.ongoingEvents != 0 ? <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span> : <span></span>
+                                unverifiedEvents.data.length != 0 ? <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span> : <span></span>
                             }
 
                         </Link>
+
                     </div>
 
-                    <div className='mt-5 flex flex-col'>
-                        <span className='font-bold text-2xl'>Ongoing Offers</span>
-                        <div className="ml-3 md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scrollbar-hide space-x-3 md:space-x-5">
-                            {response.data.ongoingOffers.map((offer) => (
-                                <div key={offer._id} className=" flex-shrink-0">
-                                    <Link to={`/vendor/event/${offer._id}`}>
-                                        <VendorOfferCard data={offer} />
-                                    </Link>
-                                </div>
-                            ))
-                            }
-                        </div>
-                        <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span>
-                    </div>
-
-                    {/* <div className='mt-5 flex flex-col'>
-                        <span className='font-bold text-2xl'>Unverified Lisitings</span>
-                        <div className="ml-3 md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scrollbar-hide space-x-3 md:space-x-5">
-                            {
-                                eventsLoading 
-                                ?
-                                <>
-                                loading
-                                </>
-                                :
-                                unverifiedEvents.data.map((offer) => (
-                                    <div key={offer._id} className=" flex-shrink-0">
-                                        <Link to={`/vendor/event/${offer._id}`}>
-                                            <VendorUnverifedCard data={offer} />
-                                        </Link>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span>
-                    </div> */}
-                    
                 </section >
 
                 {showAddEvent && (

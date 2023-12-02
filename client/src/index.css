@@ -23,9 +23,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* Customize the scrollbar for WebKit browsers */
 ::-webkit-scrollbar {
+    margin-top: 3px;
     width: 0px;
     /* Decrease the width */
-    height: 0px;
+    height: 3px;
 }
 
 

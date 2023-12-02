@@ -1,10 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const VendorUnverifedCard = ({ data }) => {
+
+    const navigate = useNavigate()
+    
     return (
         <div>
-            <div class="relative mx-2 h-auto lg:h-96 w-64 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div onClick={() => navigate(`/vendor/event/${data._id}`)} class="relative mx-2 h-auto lg:h-96 w-64 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <a href="#">
                     <img class="h-72 w-full rounded-md" src={`${data.displayPhoto}`} alt="" />

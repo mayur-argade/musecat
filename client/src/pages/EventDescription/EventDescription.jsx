@@ -480,8 +480,9 @@ const EventDescription = () => {
                                             <div className="dropdown-container reltive">
                                                 <button
                                                     onClick={toggleDropdown}
-                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
-                                                    <img className='md:h-5 h-8' src="/images/icons/share.svg" alt="" />
+                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                                                    <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
+                                                    Share
                                                 </button>
                                                 {isDropdownOpen && (
                                                     <div

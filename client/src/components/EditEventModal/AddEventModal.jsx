@@ -390,10 +390,13 @@ const AddEventModal = ({ onClose }) => {
         // onClose(); // This will close the modal
     };
 
-    if (listCategory == null || listVenues == null) {
+    if (listCategory.length == 0 || listCategory == null || listVenues == null) {
         return (
-            <div className="h-screen w-full flex justify-center align-middle items-center">
-                <img src="/images/icons/loading.svg" alt="" />
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
             </div>
         )
     } else {
@@ -413,7 +416,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name *">
                                             <div className="flex w-full">
                                                 <span className='text-sm font-semibold mt-1 ml-0'>
-                                                    Title  *
+                                                    Title  <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Event Title"} />
                                             </div>
@@ -430,7 +433,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Short Description *                                                </span>
+                                                    Short Description <span className='ml-0 text-lg font-bold'> * </span></span>
                                                 <Tooltip data={"Short Description for event in one line"} />
                                             </div>
                                         </label>
@@ -446,7 +449,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Event/Offer Information  *                                                </span>
+                                                    Event/Offer Information <span className='ml-0 text-lg font-bold'> * </span></span>
                                                 <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
                                             </div>
                                         </label>
@@ -470,7 +473,7 @@ const AddEventModal = ({ onClose }) => {
                                     <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                         <div className="flex w-full row1 space-x-4 ">
                                             <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='input-container text-xs mt-1' htmlFor="first name">Start Date</label>
+                                                <label className='input-container text-xs mt-1' htmlFor="first name">Start Date <span className='ml-0 text-lg font-bold'> * </span></label>
                                                 <input
                                                     type="datetime-local"
                                                     min={minDateTime}
@@ -568,7 +571,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Select Location  *
+                                                    Select Location  <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Select Venue for your event from the list. If your venue is not there in the list you can fill Add Venue form and request Admin to add your venue"} />
                                             </div>
@@ -628,7 +631,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Venue Information  *
+                                                    Venue Information  <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Add specific information about venue, This information is Event Specific"} />
                                             </div>
@@ -646,7 +649,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Select Relevant Category/Categories  *
+                                                    Select Relevant Category/Categories  <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Select All the Relevant categories, you can select multiple categories also"} />
                                             </div>
@@ -663,7 +666,7 @@ const AddEventModal = ({ onClose }) => {
                                         <h3 class="font-semibold text-gray-900 dark:text-white">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Select Applicable Features *
+                                                    Select Applicable Features <span className='ml-0 text-lg font-bold'> * </span>
                                                 </span>
                                                 <Tooltip data={"Select All the applicable features, you can select multiple features also"} />
                                             </div>
@@ -730,7 +733,7 @@ const AddEventModal = ({ onClose }) => {
                                         </div>
                                         <div className="w-full flex justify-between">
                                             <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code *</label>
+                                                <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code <span className='ml-0 text-lg font-bold'> * </span></label>
                                                 <input
                                                     type='number'
                                                     className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
@@ -819,7 +822,7 @@ const AddEventModal = ({ onClose }) => {
                                         <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                             <div className="flex w-full">
                                                 <span className='ml-0'>
-                                                    Link for Terms And Conditions  *
+                                                    Link for Terms And Conditions 
                                                 </span>
                                                 <Tooltip data={"Give link to your terms and conditions page, if have pdf you can give accessable drive link also"} />
                                             </div>
@@ -887,7 +890,8 @@ const AddEventModal = ({ onClose }) => {
 
                                     <div className="mt-4 flex w-full items-center align-middle">
                                         <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
-                                            Featured Image *
+                                            Featured Image 
+                                            <span className='ml-0 text-lg font-bold'> * </span>
                                         </span>
                                         <Tooltip data={"Featured Image is Main Poster of your event which will be visible to the clients "} />
                                     </div>
@@ -914,7 +918,7 @@ const AddEventModal = ({ onClose }) => {
 
                                     <div className="flex w-full items-center align-middle">
                                         <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
-                                            Seating Map
+                                            Seating Map 
                                         </span>
                                         <Tooltip data={"Add seating map image for your venue"} />
                                     </div>

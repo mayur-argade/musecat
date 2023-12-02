@@ -473,10 +473,8 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
 
     // console.log(vendor)
     const today = new Date()
-    // const today = moment().utc()
-    console.log(today)
     const currentDay = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-    console.log(currentDay)
+
 
     try {
         const events = await eventService.findAllEvents({
@@ -485,7 +483,6 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
             // verified: true,
             $or: [
                 {
-                    // 'date.dateRange.startDate': { $lte: filterdate },
                     'date.dateRange.endDate': { $gte: today }
                 }
                 ,
@@ -496,12 +493,12 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                                 {
                                     // 'date.recurring.startDate': { $lte: today },
                                     'date.recurring.endDate': { $gte: today },
-                                    'date.recurring.days': { $in: [currentDay] }
+                                    'date.recurring.days': { $in: currentDay }
                                 },
                                 {
                                     // 'date.recurring.startDate': { $lte: today },
                                     'date.recurring.endDate': { $gte: null },
-                                    'date.recurring.days': { $in: [currentDay] }
+                                    'date.recurring.days': { $in: currentDay }
                                 }
                             ]
                         },
@@ -515,52 +512,68 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
             vendorid: vendor,
             type: 'event',
             // verified: true,
-            $and: [
-                { // Events with start date greater than or equal to today
+            $or: [
+                {
                     'date.dateRange.endDate': { $lt: today }
-                },
-                { // Events with recurring field containing today's day
-                    'date.recurring.days': { $nin: currentDay },
+                }
+                ,
+                {
+                    // 'date.recurring.startDate': { $lte: today },
+                    'date.recurring.endDate': { $lt: today },
                 },
             ],
+
         })
 
         const offers = await eventService.findAllEvents(
             {
-                vendorid: vendor, // Assuming you pass the vendor id as a route parameter
+                vendorid: vendor,
                 type: 'offer',
                 // verified: true,
                 $or: [
                     {
-                        $or: [
+                        'date.dateRange.endDate': { $gte: today }
+                    }
+                    ,
+                    {
+                        $and: [
                             {
-                                'date.dateRange.endDate': { $gte: today }
+                                $or: [
+                                    {
+                                        // 'date.recurring.startDate': { $lte: today },
+                                        'date.recurring.endDate': { $gte: today },
+                                        'date.recurring.days': { $in: currentDay }
+                                    },
+                                    {
+                                        // 'date.recurring.startDate': { $lte: today },
+                                        'date.recurring.endDate': { $gte: null },
+                                        'date.recurring.days': { $in: currentDay }
+                                    }
+                                ]
                             },
-                            {
-                                'date.dateRange.endDate': null
-                            }
                         ]
                     },
-                    { // Events with recurring field containing today's day
-                        'date.recurring.days': { $in: currentDay },
-                    },
                 ],
+    
             }
         )
 
         const expiredOffers = await eventService.findAllEvents(
             {
-                vendorid: vendor, // Assuming you pass the vendor id as a route parameter
+                vendorid: vendor,
                 type: 'offer',
                 // verified: true,
-                $and: [
-                    { // Events with start date greater than or equal to today
+                $or: [
+                    {
                         'date.dateRange.endDate': { $lt: today }
-                    },
-                    { // Events with recurring field containing today's day
-                        'date.recurring.days': { $nin: currentDay },
+                    }
+                    ,
+                    {
+                        // 'date.recurring.startDate': { $lte: today },
+                        'date.recurring.endDate': { $lt: today },
                     },
                 ],
+    
             }
         )
 
@@ -582,6 +595,10 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error"
+        })
     }
 }
 
@@ -590,14 +607,10 @@ exports.vendorHome = async (req, res) => {
 
     try {
         const today = new Date()
-        // const today = moment().utc()
-        console.log(today)
         const currentDay = moment().format('dddd').toLowerCase()
-        console.log(currentDay)
-        // const currentDay = "sunday"
         const events = await eventService.findAllEvents(
             {
-                vendorid: _id, // Assuming you pass the vendor id as a route parameter
+                vendorid: _id,
                 type: 'event',
                 verified: true,
                 $or: [
@@ -609,7 +622,7 @@ exports.vendorHome = async (req, res) => {
                     {
                         $and: [
                             {
-                                'date.recurring.days': { $in: currentDay }
+                                'date.recurring.days': { $in: [currentDay] }
                             },
                             {
                                 $or: [
@@ -628,8 +641,6 @@ exports.vendorHome = async (req, res) => {
                 ],
             }
         )
-
-
 
         const offers = await eventService.findAllEvents(
             {
@@ -674,7 +685,10 @@ exports.vendorHome = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
-
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error"
+        })
     }
 
 }
@@ -722,8 +736,13 @@ exports.VendorUnverifiedListings = async (req, res) => {
     }
     catch (error) {
         console.log(error)
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error"
+        })
     }
 }
+
 
 exports.addToFavorites = async (req, res) => {
     // console.log(req.user)
