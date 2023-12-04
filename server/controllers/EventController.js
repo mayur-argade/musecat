@@ -14,7 +14,7 @@ exports.createEvent = async (req, res) => {
     } = req.body
 
 
-    if (!title || !displayPhoto || !shortDescription || !description || !location || !date || !categories || !eventCategory) {
+    if (!title || !displayPhoto || !shortDescription || !description || !location || !date || !eventCategory) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: "Required fields are missing"
@@ -306,16 +306,12 @@ exports.createOffer = async (req, res) => {
     let { title, description, shortDescription, showEndDate, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp
     } = req.body
 
-
-
-    // if (!title || !displayPhoto || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
-    //     return res.status(statusCode.BAD_REQUEST.code).json({
-    //         success: false,
-    //         data: "Required fields are missing"
-    //     })
-    // }
-
-    console.log(eventCategory)
+    if (!title || !displayPhoto || !shortDescription || !description || !location  || !date || !categories || !eventCategory) {
+        return res.status(statusCode.BAD_REQUEST.code).json({
+            success: false,
+            data: "Required fields are missing"
+        })
+    }
 
     let event = {}
 
@@ -343,7 +339,7 @@ exports.createOffer = async (req, res) => {
             })
         }
 
-        console.log(uploadedVideo)
+        
 
         let uploadResult;
         let additinalPhotos = []
@@ -357,7 +353,6 @@ exports.createOffer = async (req, res) => {
             }
         }
 
-        console.log(additinalPhotos)
 
         const data = {
             title: title,
@@ -387,9 +382,10 @@ exports.createOffer = async (req, res) => {
 
             displayPhoto: uploadedEventPhoto.secure_url,
             banner: uploadedBanner.secure_url,
-            // video: uploadedVideo.secure_url,
+            video: video,
             seatingMap: uploadedSeatingMap.secure_url,
             AdditionalPhotos: additinalPhotos,
+            
             type: 'offer',
 
             showEndDate: showEndDate,

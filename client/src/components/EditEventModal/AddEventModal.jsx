@@ -27,9 +27,39 @@ const AddEventModal = ({ onClose }) => {
             'hr',
             'print',
         ],
-        buttonsMD: 'bold,italic,h1,h2,h3',
-        buttonsSM: 'bold,italic,h1,h2,h3',
-        buttonsXS: 'bold,italic,h1,h2,h3',
+        buttonsMD: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
+        buttonsSM: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
+        buttonsXS: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
     }
 
     const [minDateTime, setMinDateTime] = useState('');
@@ -261,6 +291,9 @@ const AddEventModal = ({ onClose }) => {
         else if (!venueDescription) {
             return toast.error("Venue Information is missing")
         }
+        else if (!startDate) {
+            return toast.error("Start date is mandatory")
+        }
         else if (!location) {
             return toast.error("Location is missing")
         }
@@ -276,8 +309,10 @@ const AddEventModal = ({ onClose }) => {
         else if (!number) {
             return toast.error("Phone number is Mandatory")
         }
-        else if (!momentstart.isSameOrBefore(momentend, 'day')) {
-            return toast.error('Start date should be less than or equal to end date');
+        else if (startDate && endDate) {
+            if (!momentstart.isSameOrBefore(momentend, 'day')) {
+                return toast.error('Start date should be less than or equal to end date');
+            }
         }
 
         let dateType;
@@ -326,7 +361,7 @@ const AddEventModal = ({ onClose }) => {
         if (Crfile != null) {
             const formData = new FormData();
             formData.append('file', Crfile);
-
+            SetSubLoading(true)
             response = await handleUpload(formData)
                 .then((response) => {
                     console.log('Upload successful:', response);
@@ -726,7 +761,7 @@ const AddEventModal = ({ onClose }) => {
                                     </div>
                                     <div className="w-full flex justify-between">
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code <span className='ml-0 text-lg font-bold'> * </span></label>
+                                            <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code * </label>
                                             <input
                                                 value={number}
                                                 type='number'
