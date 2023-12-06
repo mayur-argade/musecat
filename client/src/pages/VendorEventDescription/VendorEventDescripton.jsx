@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
-import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import { addToFavorites, VedorDetails, ClientUpcomingEvents, ClientGetOffers, ClientEventDetailsApi } from '../../http'
-import EventCard from '../../components/Cards/EventCard'
+import { ClientEventDetailsApi } from '../../http'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { setEvent } from '../../store/eventSlice'
@@ -134,12 +132,18 @@ const VendorEventDescripton = () => {
                     lng: data.data.eventDetails.location.coordinates.lng
                 })
 
-                setImages((prevImages) => [
-                    ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
-                    ...(data.data.eventDetails.AdditionalPhotos || []),
-                    ...(data.data.eventDetails.video ? [data.data.eventDetails.video] : []),
-                    ...prevImages,
-                ]);
+                setImages((prevImages) => {
+                    const uniqueImages = new Set([
+                        ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
+                        ...(data.data.eventDetails.AdditionalPhotos || []),
+                        ...(data.data.eventDetails.banner || []),
+                        ...(data.data.eventDetails.video ? [data.data.eventDetails.video] : []),
+                        ...prevImages,
+                    ]);
+
+                    // Convert the Set back to an array
+                    return [...uniqueImages];
+                });
 
 
                 // Assuming setAccordions is a state update function
@@ -183,54 +187,34 @@ const VendorEventDescripton = () => {
 
                 // Contact Us
                 if (
-                    data.data.eventDetails.whatsapp ||
                     data.data.eventDetails.facebook ||
                     data.data.eventDetails.instagram ||
                     data.data.eventDetails.email ||
-                    data.data.eventDetails.phoneNo
+                    data.data.eventDetails.website
                 ) {
                     newAccordions.push({
-                        title: 'Contact Us',
+                        title: 'Social Media Handles',
                         content: (
                             <>
                                 <div className='flex space-x-3 mt-2 mb-2'>
-                                    {data.data.eventDetails.whatsapp && (
-                                        <a href={`https://wa.me/${data.data.eventDetails.whatsapp}?text=I'm interested in the event ${data.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                            <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
-                                        </a>
-                                    )}
-                                    {
-                                        data.data.eventDetails.phoneNo && (
-                                            <>
-                                                {
-                                                    isMobile
-                                                        ?
-                                                        <a href={`tel:+${data.data.eventDetails.phoneNo}`} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                            <img className='h-5 w-5 cursor-pointer' src="/images/icons/telephone.png" alt="" />
-                                                        </a>
-                                                        :
-                                                        <>
-                                                            <a onClick={() => toast(data.data.eventDetails.phoneNo)} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                                <img className='h-5 w-5 cursor-pointer' src="/images/icons/telephone.png" alt="" />
-                                                            </a>
-                                                        </>
-                                                }
-                                            </>
-                                        )
-                                    }
                                     {data.data.eventDetails.facebook && (
                                         <a href={data.data.eventDetails.facebook} target="_blank" rel="noopener noreferrer">
-                                            <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
+                                            <img className='h-7' src="/images/icons/facebook.png" alt="" />
                                         </a>
                                     )}
                                     {data.data.eventDetails.instagram && (
                                         <a href={data.data.eventDetails.instagram} target="_blank" rel="noopener noreferrer">
-                                            <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
+                                            <img className='h-7' src="/images/icons/instagram.png" alt="" />
                                         </a>
                                     )}
                                     {data.data.eventDetails.email && (
                                         <a href={`mailto:${data.data.eventDetails.email}`}>
-                                            <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
+                                            <img className='h-7' src="/images/icons/mail.png" alt="" />
+                                        </a>
+                                    )}
+                                    {data.data.eventDetails.website && (
+                                        <a href={data.data.eventDetails.website}>
+                                            <img className='h-7' src="/images/icons/web.png" alt="" />
                                         </a>
                                     )}
                                 </div>
@@ -428,14 +412,18 @@ const VendorEventDescripton = () => {
                                                     </div>
 
                                                     {/* Slider Buttons */}
-                                                    <div className="absolute flex items-center -bottom-10 left-1/2 transform -translate-x-1/2 space-x-2">
-                                                        <button onClick={handleShowPrevImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
-                                                            Prev
-                                                        </button>
-                                                        <button onClick={handleShowNextImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
-                                                            Next
-                                                        </button>
-                                                    </div>
+                                                    {
+                                                        images.length > 1 && (
+                                                            <div className="absolute flex items-center -bottom-10 left-1/2 transform -translate-x-1/2 space-x-2">
+                                                                <button onClick={handleShowPrevImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                                    Prev
+                                                                </button>
+                                                                <button onClick={handleShowNextImage} className="bg-[#C0A04C] text-white text-sm rounded-lg px-3 py-1">
+                                                                    Next
+                                                                </button>
+                                                            </div>
+                                                        )
+                                                    }
                                                 </div>
                                                 <div className='flex mt-3 w-full align-middle justify-between items-center space-x-2'>
                                                     <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
@@ -449,8 +437,9 @@ const VendorEventDescripton = () => {
                                                     <div className="dropdown-container reltive">
                                                         <button
                                                             onClick={toggleDropdown}
-                                                            className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-full text-sm md:py-2 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
-                                                            <img className='md:h-5 h-8' src="/images/icons/share.svg" alt="" />
+                                                            className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-[#C0A04C]'>
+                                                            <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
+                                                            Share
                                                         </button>
                                                         {isDropdownOpen && (
                                                             <div
@@ -484,18 +473,26 @@ const VendorEventDescripton = () => {
                                                             </div>
                                                         </Link>
 
-                                                        <hr />
+                                                        {
 
-                                                        <div className='p-2 pb-0 flex justify-between '>
-                                                            <div className='flex flex-col'>
-                                                                <p className='text-xs'>Ticket price starting from</p>
-                                                                <p className='font-semibold text-xl'>OMR {startPrice}</p>
-                                                            </div>
-                                                            <div className='flex flex-col text-right'>
-                                                                <p className='text-xs'>Available Tickets</p>
-                                                                <p className='font-semibold text-xl'>{availableSeats}</p>
-                                                            </div>
-                                                        </div>
+                                                            response.data.eventDetails.categories[0].className != null &&
+                                                            (
+                                                                <>
+                                                                    <hr />
+
+                                                                    <div className='p-2 pb-0 flex justify-between '>
+                                                                        <div className='flex flex-col'>
+                                                                            <p className='text-xs'>Ticket price starting from</p>
+                                                                            <p className='font-semibold text-xl'>OMR {startPrice}</p>
+                                                                        </div>
+                                                                        <div className='flex flex-col text-right'>
+                                                                            <p className='text-xs'>Available Tickets</p>
+                                                                            <p className='font-semibold text-xl'>{availableSeats}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            )
+                                                        }
 
                                                     </div>
 
@@ -537,10 +534,22 @@ const VendorEventDescripton = () => {
                                                                     {
                                                                         response.data.eventDetails.whatsapp
                                                                             ?
-                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
                                                                                 {/* <button type="button" class=""> */}
                                                                                 <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                                 Call On Whatsapp
+                                                                                {/* </button> */}
+                                                                            </a>
+                                                                            :
+                                                                            <></>
+                                                                    }
+                                                                    {
+                                                                        response.data.eventDetails.phoneNo
+                                                                            ?
+                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
+                                                                                {/* <button type="button" class=""> */}
+                                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                                Contact On Number
                                                                                 {/* </button> */}
                                                                             </a>
                                                                             :
@@ -552,18 +561,30 @@ const VendorEventDescripton = () => {
                                                                 </>
                                                                 :
                                                                 <>
-                                                                    <div className="flex">
+                                                                    <div className="flex w-full">
                                                                         {
                                                                             response.data.eventDetails.whatsapp
                                                                                 ?
 
-                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                                <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
                                                                                     {/* <button type="button" class=""> */}
                                                                                     <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                                     Call On Whatsapp
                                                                                     {/* </button> */}
                                                                                 </a>
 
+                                                                                :
+                                                                                <></>
+                                                                        }
+                                                                        {
+                                                                            response.data.eventDetails.phoneNo
+                                                                                ?
+                                                                                <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
+                                                                                    {/* <button type="button" class=""> */}
+                                                                                    <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                                    Contact On Number
+                                                                                    {/* </button> */}
+                                                                                </a>
                                                                                 :
                                                                                 <></>
                                                                         }
@@ -578,7 +599,7 @@ const VendorEventDescripton = () => {
                                                                     response.data.eventDetails.whatsapp
                                                                         ?
 
-                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")} >
                                                                             {/* <button type="button" class=""> */}
                                                                             <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                             Call On Whatsapp
