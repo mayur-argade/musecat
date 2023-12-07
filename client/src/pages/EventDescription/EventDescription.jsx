@@ -87,6 +87,7 @@ const EventDescription = () => {
         }
     }
 
+
     // Add event listener for window resize
     useEffect(() => {
         window.addEventListener('resize', handleResize);
@@ -97,11 +98,11 @@ const EventDescription = () => {
         };
     }, []);
 
+    const [ticketSale, setTicketSale] = useState(true)
+    const [showBooking, setShowBooking] = useState(true)
 
     const dispatch = useDispatch();
 
-    console.log("isMobile", isMobile)
-    console.log("images array -->", images)
 
     useEffect(() => {
 
@@ -120,6 +121,17 @@ const EventDescription = () => {
                         categoryprice.push(`${category.className} = ${category.price}`)
                     }
                 }
+
+                for (const category of data.data.eventDetails.categories) {
+                    console.log("category name is what", category.className)
+                    if (category.className == null) {
+                        setTicketSale(false)
+                        if ((data.data.eventDetails.whatsapp == '' || data.data.eventDetails.whatsapp == null) || (data.data.eventDetails.website == '' && data.data.eventDetails.website == null)) {
+                            setShowBooking(false)
+                        }
+                    }
+                }
+
                 setSelectedLocation({
                     lat: data.data.eventDetails.location.coordinates.lat,
                     lng: data.data.eventDetails.location.coordinates.lng
@@ -180,11 +192,10 @@ const EventDescription = () => {
 
                 // Contact Us
                 if (
-                    data.data.eventDetails.whatsapp ||
                     data.data.eventDetails.facebook ||
                     data.data.eventDetails.instagram ||
                     data.data.eventDetails.email ||
-                    data.data.eventDetails.phoneNo
+                    data.data.eventDetails.website
                 ) {
                     newAccordions.push({
                         title: 'Social Media Handles',
@@ -250,6 +261,8 @@ const EventDescription = () => {
     const isVideo = (url) => /\.(mp4|webm|ogg)$/.test(url);
 
 
+
+
     let totalSeats = 0;
     let startPrice = 1000000000;
     let availableSeats = 0;
@@ -300,6 +313,7 @@ const EventDescription = () => {
 
     }
 
+
     const location = useLocation();
 
     const navigate = useNavigate();
@@ -334,6 +348,27 @@ const EventDescription = () => {
     const shareonWhatsapp = () => {
         const shareonwhatsapp = `https://api.whatsapp.com/send?text=${window.location.origin + location.pathname}`;
         window.open(shareonwhatsapp, '_blank');
+    }
+
+    const handleBooking = (eventid) => {
+        if (ticketSale) {
+            navigate(`/bookticket/${eventid}`)
+        }
+        else {
+            if (response.data.eventDetails.whatsapp != '' && response.data.eventDetails.whatsapp != null) {
+                const tempLink = document.createElement('a');
+                tempLink.href = `https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`; // Replace with your actual phone number
+                tempLink.click();
+            }
+            else if (response.data.eventDetails.website != '' && response.data.eventDetails.website != null) {
+                const tempLink = document.createElement('a');
+                tempLink.href = `${response.data.eventDetails.website}`; // Replace with your actual phone number
+                tempLink.click();
+            }
+            else {
+                toast.error("Event booking is not enabled")
+            }
+        }
     }
 
     if (response.data == null) {
@@ -589,7 +624,7 @@ const EventDescription = () => {
                                                             }
                                                             {
                                                                 response.data.eventDetails.phoneNo && (
-                                                                    <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                    <a className="cursor-pointer w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                         {/* <button type="button" class=""> */}
                                                                         <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
                                                                         Contact On Number
@@ -597,22 +632,26 @@ const EventDescription = () => {
                                                                     </a>
                                                                 )
                                                             }
+                                                            {
+                                                                showBooking && (
+                                                                    <div className="booknow">
+                                                                        <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                            {
+                                                                                response.data.eventDetails.type == 'event'
+                                                                                    ?
+                                                                                    <>
+                                                                                        Book Seat
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        Buy Voucher
+                                                                                    </>
+                                                                            }
+                                                                        </button>
+                                                                    </div>
+                                                                )
+                                                            }
 
-                                                            <div className="booknow">
-                                                                <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
-                                                                    {
-                                                                        response.data.eventDetails.type == 'event'
-                                                                            ?
-                                                                            <>
-                                                                                Book Seat
-                                                                            </>
-                                                                            :
-                                                                            <>
-                                                                                Buy Voucher
-                                                                            </>
-                                                                    }
-                                                                </button>
-                                                            </div>
                                                         </>
                                                         :
                                                         <>
@@ -638,23 +677,27 @@ const EventDescription = () => {
                                                                     )
                                                                 }
                                                             </div>
-                                                            <Link to={`/bookticket/${response.data.eventDetails._id}`}>
-                                                                <div className="booknow">
-                                                                    <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
-                                                                        {
-                                                                            response.data.eventDetails.type == 'event'
-                                                                                ?
-                                                                                <>
-                                                                                    Book Seat
-                                                                                </>
-                                                                                :
-                                                                                <>
-                                                                                    Buy Voucher
-                                                                                </>
-                                                                        }
-                                                                    </button>
-                                                                </div>
-                                                            </Link>
+                                                            {
+                                                                showBooking && (
+                                                                    <div className="booknow">
+                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                            {
+                                                                                response.data.eventDetails.type == 'event'
+                                                                                    ?
+                                                                                    <>
+                                                                                        Book Seat
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        Buy Voucher
+                                                                                    </>
+                                                                            }
+                                                                        </button>
+                                                                    </div>
+                                                                )
+                                                            }
+
+
                                                         </>
                                                     :
                                                     <>
@@ -682,23 +725,29 @@ const EventDescription = () => {
                                                                 </a>
                                                             )
                                                         }
-                                                        <Link to={`/bookticket/${response.data.eventDetails._id}`}>
-                                                            <div className="booknow">
-                                                                <button type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
-                                                                    {
-                                                                        response.data.eventDetails.type == 'event'
-                                                                            ?
-                                                                            <>
-                                                                                Book Seat
-                                                                            </>
-                                                                            :
-                                                                            <>
-                                                                                Buy Voucher
-                                                                            </>
-                                                                    }
-                                                                </button>
-                                                            </div>
-                                                        </Link>
+
+                                                        {
+                                                            showBooking && (
+                                                                <div className="booknow">
+                                                                    <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                        {
+                                                                            response.data.eventDetails.type == 'event'
+                                                                                ?
+                                                                                <>
+                                                                                    Book Seat
+                                                                                </>
+                                                                                :
+                                                                                <>
+                                                                                    Buy Voucher
+                                                                                </>
+                                                                        }
+                                                                    </button>
+                                                                </div>
+
+                                                            )
+                                                        }
+
+
                                                     </>
 
                                             }
