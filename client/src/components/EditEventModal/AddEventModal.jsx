@@ -15,7 +15,7 @@ const AddEventModal = ({ onClose }) => {
     const editor = useRef(null);
     const navigate = useNavigate()
     const config = {
-        placeholder: "Amr Diab, the legendary Egyptian singer is set to perform at the Etihad Arena ....",
+        placeholder: "Enter Event Specific Details in brief..",
         buttons: [
             'bold',
             'strikethrough',

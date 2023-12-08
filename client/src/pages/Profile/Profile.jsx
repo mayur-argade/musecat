@@ -272,7 +272,7 @@ const Profile = () => {
                             <></>
                     }
 
-                    <section className='MobileProfile'>
+                    {/* <section className='MobileProfile'>
                         <div className="header flex items-center align-middle">
                             <div className="profile">
                                 <img src="/images/assets/profile.png" alt="" />
@@ -340,7 +340,7 @@ const Profile = () => {
                                 <hr />
                             </ul>
                         </div>
-                    </section>
+                    </section> */}
 
                     <div className="">
                         <Footer />

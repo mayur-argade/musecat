@@ -850,7 +850,7 @@ const Home = () => {
                                 </Link>
                             </div>
 
-                            <div className='grid md:grid-cols-1 grid-rows-2 gap-3'>
+                            <div className=' grid md:grid-cols-1 grid-rows-2 gap-3'>
                                 <Link to='/category/ladiesnight'>
                                     <div className='relative'>
                                         <img className=' rounded-md h-40 md:h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500' src='/images/assets/banner-ladiesnight.jpeg' alt='' />

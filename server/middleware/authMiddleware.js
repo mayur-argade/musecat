@@ -25,7 +25,10 @@ exports.isLoggedin = async (req, res, next) => {
         next(); // Call next() here, after the asynchronous operations are completed
     } catch (error) {
         console.log(error);
-        return res.status(statusCode.UNAUTHORIZED.code).json({ message: "unauth" });
+        return res.status(statusCode.UNAUTHORIZED.code).json({
+            success: false,
+            data: "Token expired please login"
+        });
     }
 };
 
@@ -53,7 +56,10 @@ exports.isUserLoggedin = async (req, res, next) => {
         next(); // Call next() here, after the asynchronous operations are completed
     } catch (error) {
         console.log(error);
-        return res.status(statusCode.UNAUTHORIZED.code).json({ message: "unauth" });
+        return res.status(statusCode.UNAUTHORIZED.code).json({
+            success: false,
+            data: "Token expired please login"
+        });
     }
 };
 
@@ -63,7 +69,10 @@ exports.isVerified = async (req, res, next) => {
         if (req.user.isVerified == true) {
             next();
         } else {
-            return res.status(statusCode.FORBIDDEN.code).json({ message: statusCode.FORBIDDEN.message });
+            return res.status(statusCode.FORBIDDEN.code).json({
+                success: false,
+                data: statusCode.FORBIDDEN.message
+            });
         }
 
     } catch (error) {
@@ -89,11 +98,17 @@ exports.requiredRole = (requiredRole) => {
                 req.user = userData; // Attach user data to the request object
                 next(); // User has the required role, proceed to the next middleware/route handler
             } else {
-                res.status(statusCode.FORBIDDEN.code).json({ error: statusCode.FORBIDDEN.message });
+                res.status(statusCode.FORBIDDEN.code).json({
+                    success: false,
+                    data: statusCode.FORBIDDEN.message
+                });
             }
         } catch (error) {
             // console.log(error)
-            res.status(statusCode.UNAUTHORIZED.code).json({ message: statusCode.UNAUTHORIZED.message });
+            res.status(statusCode.UNAUTHORIZED.code).json({
+                success: false,
+                data: "Token expired please login"
+            });
         }
     };
 };

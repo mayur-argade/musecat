@@ -14,7 +14,7 @@ const AddOfferModal = ({ onClose }) => {
     const editor = useRef(null);
     const navigate = useNavigate()
     const config = {
-        placeholder: "Amr Diab, the legendary Egyptian singer is set to perform at the Etihad Arena ....",
+        placeholder: "Enter Voucher Specific Details in brief..",
         buttons: [
             'bold',
             'strikethrough',
@@ -462,7 +462,7 @@ const AddOfferModal = ({ onClose }) => {
                                         type="text"
                                         value={shortDesc}
                                         className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                        placeholder='Enter a short description to let the users know about your event in a summary.'
+                                        placeholder='Enter a short description to let the users know about your Voucher in a summary.'
                                         onChange={((e) => setShortDesc(e.target.value))}
                                     />
                                 </div>
