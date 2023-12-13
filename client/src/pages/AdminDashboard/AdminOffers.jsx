@@ -162,7 +162,7 @@ const AdminOffers = () => {
                                                                         }
                                                                     </td>
                                                                     <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                        {offer.location.name}
+                                                                        {offer.location?.name || ""}
                                                                     </td>
                                                                     <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                         {moment(offer.createdAt).format('DD-MM-YYYY')}

@@ -322,11 +322,12 @@ const EventDescription = () => {
     };
 
     const handleAccordionClick = (index) => {
-        const updatedAccordions = accordions.map((accordion, i) => ({
-            ...accordion,
-            isOpened: i === index ? !accordion.isOpened : false,
-        }));
-        setAccordions(updatedAccordions);
+        setAccordions((prevAccordions) => {
+            return prevAccordions.map((accordion, i) => ({
+                ...accordion,
+                isOpened: i === index ? !accordion.isOpened : accordion.isOpened,
+            }));
+        });
     };
 
     const shareonFacebook = () => {
@@ -402,7 +403,7 @@ const EventDescription = () => {
                                     <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
                                         <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
                                             <span className='ml-1 font-medium'>
-                                                {response.data.eventDetails.location.name}
+                                                {response.data.eventDetails.location?.name || ""}
                                             </span>
                                         </Link></p>
                                     <div className='mt-4 flex justify-center space-x-2 text-center'>
@@ -539,7 +540,7 @@ const EventDescription = () => {
                                                 <Link to="/whereto">
                                                     <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
                                                         <img className='h-5' src="/images/icons/map-1.svg" alt="" />
-                                                        <p className='text-md'>{response.data.eventDetails.location.name}</p>
+                                                        <p className='text-md'>{response.data.eventDetails.location?.name || ""}</p>
                                                         <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                                     </div>
                                                 </Link>

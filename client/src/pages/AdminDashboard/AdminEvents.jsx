@@ -162,7 +162,7 @@ const AdminEvents = () => {
                                                                     }
                                                                 </td>
                                                                 <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.location.name}
+                                                                    {event.location?.name || ""}
                                                                 </td>
                                                                 <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {moment(event.createdAt).format('DD-MM-YYYY')}

@@ -71,7 +71,7 @@ const EventCard = ({ data }) => {
                             <p className='text-xs mt-2 font-medium'>
                                 {data.title.length > 25 ? data.title.substring(0, 25) + '...' : data.title},
                             </p>
-                            <p className='text-xs mt-2 font-medium'>{data.location.name}</p>
+                            <p className='text-xs mt-2 font-medium'>{data.location?.name || ""}</p>
                             <p className="mt-1 mb-1 text-xs font-light">{data.type}</p>
                         </div>
                     </div>

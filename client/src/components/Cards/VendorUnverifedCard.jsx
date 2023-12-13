@@ -18,11 +18,11 @@ const VendorUnverifedCard = ({ data }) => {
                         <p class="title text-md lg:text-md font-bold text-left">
                             {data.title} at
                         </p>
-                        <span className='ml-0 text-md lg:text-md font-bold text-left mb-1  '>{data.location.name}</span>
+                        <span className='ml-0 text-md lg:text-md font-bold text-left mb-1  '>{data.location?.name || ""}</span>
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                            {data.shortDescription.length > 80 ? data.shortDescription.substring(0, 80) + '...' : data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'>{data.location.name}</span></Link>
+                            {data.shortDescription.length > 80 ? data.shortDescription.substring(0, 80) + '...' : data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'>{data.location?.name || ""}</span></Link>
                         </p>
                     </div>
                 </div>

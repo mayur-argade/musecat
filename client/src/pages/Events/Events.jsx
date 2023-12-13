@@ -169,12 +169,12 @@ const Events = () => {
     }, [category, filterDate]);
 
     if (response.data != null) {
-        response.data.map((event, index) => (
-            coordinates.push(event.location.coordinates)
-        ))
+        response.data.map((event, index) => {
+            if (event && event.location.coordinates && event.location.coordinates != null) {
+                coordinates.push(event.location.coordinates)
+            }
+        })
     }
-
-
 
 
     // Close the dropdown when clicking anywhere outside of it
@@ -400,7 +400,7 @@ const Events = () => {
                                                                             )
                                                                         );
                                                                     }
-                                                                    else{
+                                                                    else {
                                                                         return (
                                                                             item.eventCategory.some((itemSubcategory) =>
                                                                                 itemSubcategory.categoryURL === selectedCategory.categoryURL
@@ -408,7 +408,7 @@ const Events = () => {
                                                                         );
                                                                     }
                                                                 });
-                                                                
+
 
                                                             const featureMatch =
                                                                 selectedFeatures.length == 0 ||

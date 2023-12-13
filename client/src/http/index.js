@@ -94,6 +94,7 @@ export const AdminListUsers = (data) => api.get('/admin/list-all-users', data)
 export const AdminDeleteUser = (data) => api.delete('/admin/delete-user', { data: data })
 export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', data)
 export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor`, { data: data })
+export const AdminEditVenue = (data) => api.patch('venue/admin/edit-venue', data)
 
 export const handleUpload = (formData) => {
     return axios.post('https://omanwhereto.com/api/v1/upload', formData)

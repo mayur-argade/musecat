@@ -2,23 +2,25 @@ import React, { useState, useEffect } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import SearchLocationInput from '../GoogleMap/GooglePlcasesApi';
 import MapComponent from '../GoogleMap/Map';
-import { VendorCreateVenue } from '../../http/index'
+import { AdminEditVenue } from '../../http/index'
 import Tooltip from '../shared/Tooltip/Tooltip'
 
-const AddVenueModal = ({ onClose }) => {
+const EditVenueModel = ({ data, onClose, apiRefreshstate }) => {
+
     const [selectedLocation, setSelectedLocation] = useState({
-        lat: 23.58371305879854,
-        lng: 58.37132692337036,
+        lat: data.coordinates.lat,
+        lng: data.coordinates.lng,
     });
 
     const [selectedFile, setSelectedFile] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
+    const [name, setName] = useState(data.name)
+    const [address, setAddress] = useState(data.address)
     const [mapAddress, setMapAddress] = useState({
-        lat: null,
-        lon: null
+        lat: data.coordinates.lat,
+        lng: data.coordinates.lng
     })
+
     const [banner, setBanner] = useState('')
 
     function capturePhoto(e) {
@@ -33,43 +35,54 @@ const AddVenueModal = ({ onClose }) => {
     }
 
     const handleLocationSelect = (location) => {
+        console.log("Setting up location", location)
+        setSelectedLocation({
+            lat: location.lat,
+            lng: location.lng
+        })
         setMapAddress({
             lat: location.lat,
             lng: location.lng
         })
     }
+
     async function submit() {
         if (!name) {
             toast.error("name field is mandatory")
         } else if (!address) {
             toast.error("Address Field is mandatory")
-        } else if (!banner) {
-            toast.error("Banner image is mandatory")
         } else if (!mapAddress) {
             toast.error("Map coordinates are mandatory")
         } else {
             try {
                 const venuedata = {
+                    _id: data._id,
                     name: name,
                     photo: banner,
                     address: address,
                     mapAddress: mapAddress
                 }
+
                 setLoading(true)
                 console.log(venuedata)
-                const { data } = await VendorCreateVenue(venuedata)
+                const response = await AdminEditVenue(venuedata)
+                console.log("api response -->", response)
                 setLoading(false)
                 console.log(data)
-                toast.success("Your new Venue has been added to the list you can select your venue from the locations")
+                if (response.data.success == true) {
+                    toast.success("Venue updated Successfully")
+                }
+                apiRefreshstate(true)
                 onClose(); //
             } catch (error) {
                 setLoading(false)
                 console.log(error)
-                toast.error(error.response.data.data)
+                // toast.error(error.response.data.data)
                 onClose(); //
             }
 
         }
+
 
     }
 
@@ -84,7 +97,7 @@ const AddVenueModal = ({ onClose }) => {
                             <div className="modal bg-white px-3 py-4">
                                 <div className='space-y-4 max-h-auto  overflow-y-auto'>
                                     <div className='text-left flex justify-start items-start align-middle'>
-                                        <p className='text-md font-bold'>Add Venue </p>
+                                        <p className='text-md font-bold'>Edit Venue </p>
                                     </div>
 
 
@@ -139,7 +152,7 @@ const AddVenueModal = ({ onClose }) => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default AddVenueModal
+export default EditVenueModel

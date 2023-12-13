@@ -7,6 +7,7 @@ import AddVenueModal from './AddVenueModal';
 import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import axios from "axios";
+import moment from 'moment'
 
 const EditEventModal = ({ onClose, data }) => {
 
@@ -58,14 +59,17 @@ const EditEventModal = ({ onClose, data }) => {
     let eventendtime = '';
 
     if (data.date.type == 'dateRange') {
-        eventstartdate = data.date.dateRange.startDate
-        eventenddate = data.date.dateRange.endDate
+        eventstartdate = moment(data.date.dateRange.startDate).format('YYYY-MM-DDTHH:mm')
+        eventenddate = moment(data.date.dateRange.endDate).format('YYYY-MM-DDTHH:mm')
     } else {
         eventstartdate = data.date.recurring.startDate
         eventenddate = data.date.recurring.endDate
         eventendtime = data.date.recurring.endTime
         eventstarttime = data.date.recurring.startTime
     }
+
+    console.log("--> --> -->",eventstartdate)
+    console.log("--> --> -->",eventenddate)
 
     const [title, setTitle] = useState(data.title)
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
@@ -77,13 +81,13 @@ const EditEventModal = ({ onClose, data }) => {
     const [selectedDays, setSelectedDays] = useState(data.date.recurring.days);
     const [startTime, setStartTime] = useState(eventstarttime || '')
     const [endTime, setEndTime] = useState(eventendtime || '')
-    const [showEndDate, setShowEndDate] = useState(data.date.showEndDate);
+    const [showEndDate, setShowEndDate] = useState(data.showEndDate);
 
 
     const [location, setLocation] = useState(data.location._id)
     const [showVenuecreate, setShowVenuecreate] = useState(false)
     const [venueDescription, setVenueDescription] = useState(data.venueInfo)
-    const [selectedCategories, setSelectedCategories] = useState([])
+    const [selectedCategories, setSelectedCategories] = useState(data.eventCategory)
     const [selectedFeature, setSelectedFeatures] = useState(data.features)
 
 
@@ -396,6 +400,7 @@ const EditEventModal = ({ onClose, data }) => {
                                                 <label className='input-container text-xs mt-1' htmlFor="first name">Start Date</label>
                                                 <input
                                                     type="datetime-local"
+                                                    value={startDate}
                                                     min={minDateTime}
                                                     id="session-date"
                                                     onChange={((e) => setStartDate(e.target.value))}
@@ -409,6 +414,7 @@ const EditEventModal = ({ onClose, data }) => {
                                                 <label className='text-xs mt-1' htmlFor="first name">End Date</label>
                                                 <input
                                                     type="datetime-local"
+                                                    value={endDate}
                                                     min={minDateTime}
                                                     id="session-date"
                                                     onChange={((e) => setEndDate(e.target.value))}
@@ -478,7 +484,7 @@ const EditEventModal = ({ onClose, data }) => {
                                     <label className="relative inline-flex items-center mb-5 cursor-pointer">
                                         <input
                                             type="checkbox"
-                                            value=""
+                                            // value=""
                                             className="sr-only peer"
                                             onChange={handleCheckboxChange}
                                             checked={showEndDate} // Bind the checked state to the showEndDate state

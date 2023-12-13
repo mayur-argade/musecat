@@ -23,7 +23,7 @@ const TicketStatusCard = ({data}) => {
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">
-                        {data.shortDescription.length > 80 ? data.shortDescription.substring(0, 80) + '...' : data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'>{data.location.name}</span></Link>
+                        {data.shortDescription.length > 80 ? data.shortDescription.substring(0, 80) + '...' : data.shortDescription} at <Link to={`/venue/${data.location}`}><span className='ml-0 text-[#C0A04C] underline'>{data.location?.name || ""}</span></Link>
                         </p>
                     </div>
                 </div>

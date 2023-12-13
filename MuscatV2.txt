@@ -619,7 +619,7 @@ const mailOptions = {
         <ul>
             <li><strong>Event Name:</strong> ${event.title}</li>
             <li><strong>Date and Time:</strong> ${event.date}</li>
-            <li><strong>Venue:</strong> ${event.location.name}</li>
+            <li><strong>Venue:</strong> ${event.location?.name || ""}</li>
             <li><strong>Seat Number(s):</strong> ${newSeats.newAssignedSeats.seats}</li>
             <li><strong>Ticket Price:</strong> ${selectedCategory?.price}</li>
             <li><strong>Total Amount:</strong> ${finalBasePrice}</li>

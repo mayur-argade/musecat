@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fa58387b-023d-4140-a5a1-59fae8c559f7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/MuscatV2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MuscatV2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/EventCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/EventCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/FavoriteCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/FavoriteCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/PastPurchaseCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/PastPurchaseCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/SubEventCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/SubEventCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/TicketStatusCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/TicketStatusCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/TrendingCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/TrendingCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/UpcomingEventsCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/UpcomingEventsCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Cards/VendorUnverifedCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Cards/VendorUnverifedCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/EditEventModal/AddVenueModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/EditEventModal/AddVenueModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/EditEventModal/EditEventModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/EditEventModal/EditEventModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/GoogleMap/GooglePlcasesApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/GoogleMap/GooglePlcasesApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/http/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/http/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminEventDescription.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminEventDescription.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminHome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminOffers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/AdminDashboard/AdminOffers.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/EventDescription/EventDescription.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/EventDescription/EventDescription.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Events/Events.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Events/Events.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/VendorEventDescription/VendorEventDescripton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/VendorEventDescription/VendorEventDescripton.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/EventModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/EventModel.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2ZRlapqa7SC0c426ynsj6FcrUFO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fa58387b-023d-4140-a5a1-59fae8c559f7" name="Changes" comment="" />
+      <created>1702392861086</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1702392861086</updated>
+    </task>
+    <servers />
+  </component>
+</project>

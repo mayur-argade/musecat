@@ -190,3 +190,47 @@ exports.deleteVenue = async (req, res) => {
     }
 
 }
+
+exports.editVenue = async (req, res) => {
+    const { _id, name, photo, address, mapAddress } = req.body
+
+    try {
+
+        let uploadedVenuePhoto = ''
+        if (photo != '') {
+            uploadedVenuePhoto = await cloudinary.v2.uploader.upload(photo, {
+                folder: "muscat/venue",
+            })
+            // console.log(uploadedVenuePhoto)
+        }
+
+        let data = {
+            _id: _id,
+            name: name,
+            address: address,
+            coordinates: {
+                lat: mapAddress.lat,
+                lng: mapAddress.lng
+            }
+        }
+
+        console.log("mapaddress -->",mapAddress)
+
+        if (uploadedVenuePhoto.secure_url) {
+            data.photo = uploadedVenuePhoto.secure_url
+        }
+
+        const venue = await venueService.updateEvent(data)
+
+        return res.status(200).json({
+            success: true,
+            data: venue
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+}

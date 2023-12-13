@@ -23,7 +23,7 @@ const loadScript = (url, callback) => {
     document.getElementsByTagName("head")[0].appendChild(script);
 };
 
-const SearchLocationInput = ({ setSelectedLocation }) => {
+const SearchLocationInput = ({ handleLocationSelect }) => {
     const [query, setQuery] = useState("");
     const autoCompleteRef = useRef(null);
 
@@ -40,6 +40,8 @@ const SearchLocationInput = ({ setSelectedLocation }) => {
     const handlePlaceSelect = async (updateQuery) => {
         const addressObject = await autoComplete.getPlace();
 
+        console.log(addressObject)
+
         const query = addressObject.formatted_address;
         updateQuery(query);
         console.log({ query });
@@ -50,7 +52,7 @@ const SearchLocationInput = ({ setSelectedLocation }) => {
         };
 
         console.log({ latLng });
-        setSelectedLocation(latLng);
+        handleLocationSelect(latLng);
     };
 
     useEffect(() => {

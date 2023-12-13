@@ -12,7 +12,7 @@ const TrendingCard = ({ data }) => {
                 </div>
                 <div className="text-left">
                     <div className="text-xs font-medium">{data.title},</div>
-                    <p className='text-xs font-medium'>{data.location.name}</p>
+                    <p className='text-xs font-medium'>{data.location?.name || ""}</p>
                     <div className="text-xss font-light">Be the first to review</div>
                     <div className="text-xss font-light">Hormuz Grand Muscat, Radisson...</div>
                 </div>

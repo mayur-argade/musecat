@@ -41,9 +41,9 @@ const UpcomingEventsCard = ({ event }) => {
         <div>
             <div >
                 <Toaster />
-                <div onClick={(() => navigate(`/events/${event._id}`))} className="relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-96 max-h-96 bg-[#F3F3F3] top-0 md:mt-5">
+                <div onClick={(() => navigate(`/events/${event._id}`))} className="cursor-pointer relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-[30rem] max-h-[30rem] bg-[#F3F3F3] top-0 md:mt-5">
                     <div className='absolute bottom-0 left-0 flex flex-col rounded-lg'>
-                        <img className="rounded-lg object-fill rounded-lg h-52 w-52 md:h-72 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
+                        <img className="rounded-lg object-cover bg-center rounded-lg h-96 w-52 md:h-96 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
                         <button onClick={(e) => {
                             e.stopPropagation();
                             favoriteFeature(event._id)
@@ -58,7 +58,7 @@ const UpcomingEventsCard = ({ event }) => {
                         </button>
                         <div className='flex flex-col p-2'>
                             <p className='text-sm mt-2 font-medium'>{event.title},</p>
-                            <p className='text-sm mt-2 font-medium'>{event.location.name}</p>
+                            <p className='text-sm mt-2 font-medium'>{event.location?.name || "\u00A0"}</p>
                             <p className="mt-1 mb-1 text-xs font-light">Events</p>
                             <div className='flex items-center justify-between space-x-2'>
                                 <Link className='button w-full' to={`/events/${event._id}`}>

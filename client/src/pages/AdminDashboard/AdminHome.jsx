@@ -129,6 +129,9 @@ const AdminHome = () => {
                             </div>
                             <div className='space-x-8'>
                                 <button>
+                                    <img className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
+                                </button>
+                                <button>
                                     <img className='h-5 w-5' src="/images/icons/logout.png" alt="" />
                                 </button>
                             </div>
@@ -397,7 +400,7 @@ const AdminHome = () => {
                                                                     {moment(event.createdAt).format("DD-MM-YYYY")}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.location.name}
+                                                                    {event.location?.name || ""}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {event.verified
@@ -441,7 +444,7 @@ const AdminHome = () => {
                                                         <th scope="col" class="px-6 py-3">
                                                             Vendor Name
                                                         </th>
-                                                        
+
                                                         <th scope="col" class="px-6 py-3">
                                                             Start Date
                                                         </th>
@@ -471,7 +474,7 @@ const AdminHome = () => {
                                                                     {moment(offer.createdAt).format("DD-MM-YYYY")}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.location.name}
+                                                                    {offer.location?.name || ""}
 
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
