@@ -53,39 +53,56 @@ const AdminVenue = () => {
 
     }, [refresh]);
 
+
     const verifyVenue = async (venueid) => {
-        const venuedata = {
-            venueid: venueid
-        }
-        const response = await AdminVerifyVenue(venuedata)
+        try {
+            const venuedata = {
+                venueid: venueid
+            };
 
-        if (response.data.success == true) {
-            toast.success("Venue Verified Successfully")
-            window.location.reload()
+            // Use toast.promise to display a promise-based toast
+            const promise = AdminVerifyVenue(venuedata);
+            const response = await toast.promise(promise, {
+                loading: 'Verifying Venue...',
+                success: 'Venue Verified Successfully',
+                error: (error) => `Error: ${error.response.data.data}`,
+            });
 
+            // Refresh or update the UI as needed after successful verification
+            if (response.data.success === true) {
+                setRefresh(!refresh);
+            }
+        } catch (error) {
+            console.error(error);
+            // No need for a separate toast.error here; it's handled in the promise configuration
         }
-    }
+    };
 
     const deleteVenue = async (venueId) => {
         try {
             const body = {
                 venueId: venueId
-            }
-            const { data } = await AdminDeleteVenue(body)
-            if (data.success == true) {
-                window.location.reload()
+            };
+
+            // Use toast.promise to display a promise-based toast
+            const promise = AdminDeleteVenue(body);
+            const { data } = await toast.promise(promise, {
+                loading: 'Deleting...',
+                success: 'Venue Deleted Successfully',
+                error: (error) => `Error: ${error.response.data.data}`,
+            });
+
+            // Refresh or update the UI as needed after successful deletion
+            if (data.success === true) {
+                setRefresh(!refresh);
             }
 
         } catch (error) {
-            console.log(error)
+            console.error(error);
+            // No need for a separate toast.error here; it's handled in the promise configuration
         }
-    }
+    };
 
-    // if (venues.data == null) {
-    //     return (
-
-    //     )
-    // } else {
     return (
         <div>
             <div className='flex '>

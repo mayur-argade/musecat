@@ -1148,7 +1148,7 @@ exports.getEventsForAdmin = async (req, res) => {
             }
         ];
 
-        eventsOnDate = await eventService.findAllEvents(query);
+        eventsOnDate = await eventService.findAllEvents(query, 5);
         res.status(200).json({
             success: true,
             data: eventsOnDate,

@@ -4,7 +4,7 @@ const venueService = require('../services/venue-service')
 const cloudinary = require('cloudinary')
 const moment = require('moment')
 
-module.exports.createVenue = async (req, res) => {
+exports.createVenue = async (req, res) => {
     const { name, photo, address, mapAddress } = req.body
 
     if (!name || !photo || !address || !mapAddress) {
@@ -31,27 +31,39 @@ module.exports.createVenue = async (req, res) => {
             coordinates: {
                 lat: mapAddress.lat,
                 lng: mapAddress.lng
-            }
+            },
+            requester: req.user._id
         }
 
         const venue = await venueService.createVenue(data)
 
         return res.status(200).json({
             success: true,
-            data: venue
+            data: "Venue Added Successfully"
         })
 
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
 
 }
 
 exports.getVenueDetails = async (req, res) => {
     const venueid = req.params.venueid
-    console.log(venueid)
+    // console.log(venueid)
 
     try {
+
+        if (!venueid) {
+            return res.status(404).json({
+                success: false,
+                data: "Venue Id is missing"
+            })
+        }
 
         const venuedata = await venueService.findVenue({ _id: venueid })
 
@@ -67,7 +79,7 @@ exports.getVenueDetails = async (req, res) => {
         let query = {
             // type: 'event',
             verified: true,
-            'location': venueid,
+            location: venueid,
             $or: [
                 { // Events with start date greater than or equal to today
                     'date.dateRange.endDate': { $gte: today }
@@ -104,18 +116,31 @@ exports.getVenueDetails = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
 }
 
 exports.getAllVenues = async (req, res) => {
     try {
-        const venues = await venueService.findAllVenue()
+        const venues = await venueService.findAllVenue({
+            $or: [
+                { verified: true },
+                { verified: false, requester: req.user._id },
+            ],
+        })
         return res.status(200).json({
             success: true,
             data: venues
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
 }
 
@@ -128,26 +153,46 @@ exports.getAllVenuesAdmin = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
 }
 
 exports.AdminVerifyVenue = async (req, res) => {
+    try {
 
-    const { venueid } = req.body
+        const { venueid } = req.body
 
-    console.log(req.body)
+        const FindVenue = await venueService.findVenue({ _id: venueid })
 
-    const venuedata = {
-        _id: venueid,
-        verified: true
+        if (!FindVenue) {
+            return res.status(404).json({
+                success: false,
+                data: "Venue Not found."
+            })
+        }
+
+        // console.log(req.body)
+
+        const venuedata = {
+            _id: venueid,
+            verified: true
+        }
+
+        const venue = await venueService.updateEvent(venuedata)
+
+        res.status(200).json({
+            success: true,
+            data: venue
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
     }
-
-    const venue = await venueService.updateEvent(venuedata)
-
-    res.status(200).json({
-        success: true,
-        data: venue
-    })
 
 }
 
@@ -166,6 +211,13 @@ exports.deleteVenue = async (req, res) => {
                 data: "Venue Not Found"
             })
         }
+
+        const eventsToArchive = await eventService.findAllEvents({ location: venueId })
+
+        await Promise.all(eventsToArchive.map(async (event) => {
+            event.archived = true;
+            await event.save();
+        }));
 
         const deletedVenue = await venueService.deleteVenue({ _id: venueId })
 
@@ -214,7 +266,7 @@ exports.editVenue = async (req, res) => {
             }
         }
 
-        console.log("mapaddress -->",mapAddress)
+        // console.log("mapaddress -->", mapAddress)
 
         if (uploadedVenuePhoto.secure_url) {
             data.photo = uploadedVenuePhoto.secure_url

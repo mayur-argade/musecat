@@ -31,7 +31,6 @@ import VendorEventDescripton from './pages/VendorEventDescription/VendorEventDes
 import VendorBookedTickets from './pages/VendorBookedTickets/VendorBookedTickets';
 import VendorProfile from './pages/Profile/VendorProfile'
 import AdminHome from './pages/AdminDashboard/AdminHome';
-import AdminAdd from './pages/AdminDashboard/AdminAdd'
 import EventsPWA from './pages/PWA-Events/EventsPWA';
 import AdminCategory from './pages/AdminDashboard/AdminCategory'
 import AdminUsers from './pages/AdminDashboard/AdminUsers';
@@ -111,7 +110,6 @@ function App() {
                     {/* admin pages */}
                     <Route path="/admin/profile/:userid" element={<AdminCheckProfile />} />
                     <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
-                    <Route path="/admin/add" exact element={<AdminAdd />} />
                     <Route path="/admin/users" exact element={<AdminUsers />} />
                     <Route path="/admin/vendors" exact element={<AdminVendors />} />
                     <Route path="/admin/events" exact element={<AdminEvents />} />

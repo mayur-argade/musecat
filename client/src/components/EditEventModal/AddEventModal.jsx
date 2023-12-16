@@ -62,6 +62,9 @@ const AddEventModal = ({ onClose }) => {
         ],
     }
 
+
+    // console.log("this is url path from event modal",window.location.href)
+
     const [minDateTime, setMinDateTime] = useState('');
     const [listCategory, setListCategory] = useState([])
     const [listVenues, setListVenues] = useState([])
@@ -411,7 +414,11 @@ const AddEventModal = ({ onClose }) => {
             if (data.success == true) {
                 toast.success("Event is successfully added")
                 setTimeout(() => {
-                    navigate(`/vendor/event/${data.data._id}`)
+                    if (window.location.href.includes('/admin/')) {
+                        navigate(`/admin/event/${data.data._id}`)
+                    } else {
+                        navigate(`/vendor/event/${data.data._id}`)
+                    }
                 }, 2000);
             } else if (data.success == false) {
                 toast.error(data.data)

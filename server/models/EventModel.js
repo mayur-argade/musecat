@@ -104,6 +104,7 @@ const eventSchema = new mongoose.Schema({
         ref: "Venue",
         required: [true, "Please provide location details for the event"]
     },
+
     venueInfo: {
         type: String,
         require: [true, "Please provide Venue description for an event"]
@@ -141,6 +142,7 @@ const eventSchema = new mongoose.Schema({
     phoneNo: {
         type: Number
     },
+
     website: {
         type: String
     },
@@ -148,18 +150,27 @@ const eventSchema = new mongoose.Schema({
     whatsapp: {
         type: Number
     },
+
     facebook: {
         type: String
     },
+
     instagram: {
         type: String
     },
+
     showEndDate: {
         type: Boolean,
         default: false
     },
+
     email: {
         type: String
+    },
+
+    archived: {
+        type: Boolean,
+        default: false
     }
 },
     {

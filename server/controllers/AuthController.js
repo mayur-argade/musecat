@@ -198,7 +198,10 @@ exports.vendorRegister = async (req, res) => {
     try {
         let user = await vendorService.findVendor({ email: email })
         if (user) {
-            return res.status(statusCode.CONFLICT.code).json({ message: "This email already exist try signing in" })
+            return res.status(statusCode.CONFLICT.code).json({
+                success: false,
+                data: "This email already exist try signing in"
+            })
         }
 
         let uploadedLogo = ''
@@ -298,8 +301,19 @@ exports.vendorRegister = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
-        return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({ error: statusCode.INTERNAL_SERVER_ERROR.message });
+        console.log(error)
+        // const { properties } = error.errors[0]
+        const firstErrorField = Object.keys(error.errors)[0];
+
+        // Access the detailed error message for the first field
+        const detailedErrorMessage = error.errors[firstErrorField].message;
+
+        // Log the detailed error message
+        // console.log('Detailed Error Message:', detailedErrorMessage);
+        return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+            success: false,
+            data: detailedErrorMessage
+        });
     }
 
 }

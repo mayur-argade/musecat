@@ -327,7 +327,7 @@ exports.getPastPurchase = async (req, res) => {
                 data: "User not found"
             })
         }
-        
+
         return res.status(200).json({
             success: true,
             data: {
@@ -449,11 +449,18 @@ exports.deleteUser = async (req, res) => {
 }
 
 exports.getAllVendorsList = async (req, res) => {
-    const vendors = await vendorService.findVendors()
-    return res.status(200).json({
-        success: true,
-        data: vendors
-    })
+    try {
+        const vendors = await vendorService.findVendors({ role: 'vendor' })
+        return res.status(200).json({
+            success: true,
+            data: vendors
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
 }
 
 exports.deleteVendor = async (req, res) => {
@@ -461,6 +468,10 @@ exports.deleteVendor = async (req, res) => {
 
     console.log(vendorid)
     try {
+
+        const eventToDelete = await eventService.DeleteMany({ vendorid: vendorid })
+
+
         const deleteUser = await vendorService.deleteVendor({ _id: vendorid })
 
         if (deleteUser) {

@@ -108,402 +108,578 @@ const AdminHome = () => {
         }
     }
 
-    console.log("this is vendor", users)
-    if (vendors.data == null || users.data == null || response.data == null || offers.data == null || stats.data == null) {
-        return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <>
-                <div className=' '>
-                    <div className='flex flex-col w-full'>
-                        <div className="navbar flex justify-between ml-10 mr-10 space-x-8">
-                            <div className="left">
-                                <img src="/images/logo/logo.png" alt="" />
-                            </div>
-                            <div className='space-x-8'>
-                                <button>
-                                    <img className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
-                                </button>
-                                <button>
-                                    <img className='h-5 w-5' src="/images/icons/logout.png" alt="" />
-                                </button>
-                            </div>
+    return (
+        <>
+            <div className=' '>
+                <div className='flex flex-col w-full'>
+                    <div className="navbar flex justify-between ml-10 mr-10 space-x-8">
+                        <div className="left">
+                            <img src="/images/logo/logo.png" alt="" />
                         </div>
-
-                        <div className="headline ">
-                            <div className="heading">
-                                <span className="text-2xl font-semibold text-lg">Dashboard</span>
-                                <hr className='mt-3 mb-3' />
-                                <div className='flex justify-between '>
-
-                                    <Link to='/admin/users'>
-                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                                <div class="flex items-start justify-between">
-                                                    <div class="flex flex-col space-y-2">
-                                                        <span class="text-gray-400">Total Users</span>
-                                                        <span class="text-lg font-semibold text-lg">{stats.data.users}</span>
-                                                    </div>
-                                                    <div class="ml-2">
-                                                        <img className="h-14" src="/images/icons/users.png" alt="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </Link>
-
-                                    <Link to='/admin/vendors'>
-                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                                <div class="flex items-start justify-between">
-                                                    <div class="flex flex-col space-y-2">
-                                                        <span class="text-gray-400">Total Vendors</span>
-                                                        <span class="text-lg font-semibold text-lg">{stats.data.vendors}</span>
-                                                    </div>
-                                                    <div class="ml-2">
-                                                        <img className="h-14" src="/images/icons/vendor.png" alt="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-
-                                    <Link to='/admin/events'>
-                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                                <div class="flex items-start justify-between">
-                                                    <div class="flex flex-col space-y-2">
-                                                        <span class="text-gray-400">Total Events</span>
-                                                        <span class="text-lg font-semibold text-lg">{stats.data.events}</span>
-                                                    </div>
-                                                    <div class="ml-2">
-                                                        <img className="h-14" src="/images/icons/events.png" alt="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-
-                                    <Link to='/admin/offers'>
-                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                                <div class="flex items-start justify-between">
-                                                    <div class="flex flex-col space-y-2">
-                                                        <span class="text-gray-400">Total Offers</span>
-                                                        <span class="text-lg font-semibold text-lg">{stats.data.offers}</span>
-                                                    </div>
-                                                    <div class="ml-2">
-                                                        <img className="h-14" src="/images/icons/offers.png" alt="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </Link>
-
-                                    <Link to='/admin/Categories'>
-                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                                <div class="flex items-start justify-between">
-                                                    <div class="flex flex-col space-y-2">
-                                                        <span class="text-gray-400">Total Categories</span>
-                                                        <span class="text-lg font-semibold text-lg">{stats.data.category}</span>
-                                                    </div>
-                                                    <div class="ml-2">
-                                                        <img className="h-14" src="/images/icons/categories.png" alt="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </Link>
-
-                                    <Link to='/admin/venue'>
-                                        <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                            <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
-                                                <div class="flex items-start justify-between">
-                                                    <div class="flex flex-col space-y-2">
-                                                        <span class="text-gray-400">Total Venues</span>
-                                                        <span class="text-lg font-semibold text-lg">{stats.data.venues}</span>
-                                                    </div>
-                                                    <div class="ml-2">
-                                                        <img className="h-14" src="/images/icons/location.png" alt="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </Link>
-                                </div>
-                            </div>
+                        <div className='space-x-8'>
+                            <button>
+                                <img className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
+                            </button>
+                            <button>
+                                <img className='h-5 w-5' src="/images/icons/logout.png" alt="" />
+                            </button>
                         </div>
+                    </div>
 
-                        <div className="maincontent ml-4 mr-4 mt-5">
+                    <div className="headline ">
+                        <div className="heading">
+                            <span className="text-2xl font-semibold text-lg">Dashboard</span>
+                            <hr className='mt-3 mb-3' />
+                            <div className='flex justify-between '>
 
-                            <div className="1st row grid grid-cols-2 gap-8 ">
-                                <div className='table1 h-96 shadow-md'>
-                                    <div className="title mb-2 flex justify-between">
-                                        <p className='font-semibold text-lg'>Unverified Vendors</p>
-                                        <Link to='/admin/vendors'>
-                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
-                                        </Link>
-                                    </div>
-                                    <div className="overflow-x-auto">
-                                        <table className="min-w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th className="px-6 w-64 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        Email
-                                                    </th>
-                                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        First Name
-                                                    </th>
-                                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        Last Name
-                                                    </th>
-                                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        Action
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    vendors.data.map((vendor) => (
-                                                        <tr>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {vendor.email}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {vendor.firstname}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {vendor.lastname}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <button onClick={() => verifyUsers(vendor._id)} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                    Verify
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-
-
-                                <div className='table1 h-96 shadow-md'>
-                                    <div className="title mb-2 flex justify-between">
-                                        <p className='font-semibold text-lg'>Recently Registered Users</p>
-                                        <Link to='/admin/users'>
-                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
-                                        </Link>
-                                    </div>
-                                    <div className="overflow-x-auto">
-                                        <table className="min-w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th className="px-6 w-64 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        Email
-                                                    </th>
-                                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        First Name
-                                                    </th>
-                                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        Last Name
-                                                    </th>
-                                                    {/* <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                        Action
-                                                    </th> */}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    users.data.map((user) => (
-                                                        <tr>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {user.email}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {user.firstname}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {user.lastname}
-                                                            </td>
-                                                            {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                    Verify
-                                                                </button>
-                                                            </td> */}
-                                                        </tr>
-                                                    ))
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="recentOffers mt-4">
-                                <div className='table1 h-auto shadow-md'>
-                                    <div className="mb-2 title flex justify-between">
-                                        <p className='font-semibold text-lg'>Recently Added Events</p>
-                                        <Link to='/admin/events'>
-                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
-                                        </Link>
-                                    </div>
-                                    <div className="overflow-x-auto">
-
-                                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                    <tr>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Event Name
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Vendor ID
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Date
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Venue
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Status
-                                                        </th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                <Link to='/admin/users'>
+                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex flex-col space-y-2">
+                                                    <span class="text-gray-400">Total Users</span>
                                                     {
-                                                        response.data.map((event) => (
-                                                            <tr>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.title}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.vendorid.firstname || null}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(event.createdAt).format("DD-MM-YYYY")}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.location?.name || ""}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {event.verified
-                                                                        ?
-                                                                        <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
-                                                                            Verified
-                                                                        </span>
-                                                                        :
-                                                                        <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
-                                                                            Unverified
-                                                                        </span>
-                                                                    }
-                                                                </td>
-                                                            </tr>
-                                                        ))
+                                                        stats.data != null && (
+                                                            <span class="text-lg font-semibold text-lg">
+                                                                {stats.data.users}
+                                                            </span>
+                                                        )
                                                     }
-                                                </tbody>
-                                            </table>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <img className="h-14" src="/images/icons/users.png" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </Link>
+
+                                <Link to='/admin/vendors'>
+                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex flex-col space-y-2">
+                                                    <span class="text-gray-400">Total Vendors</span>
+                                                    {
+                                                        stats.data != null && (
+                                                            <span class="text-lg font-semibold text-lg">{stats.data.vendors}</span>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div class="ml-2">
+                                                    <img className="h-14" src="/images/icons/vendor.png" alt="" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </Link>
 
-                            <div className="recentEvents mt-4">
-                                <div className='table1 h-96 shadow-md'>
-                                    <div className="title mb-2 flex justify-between">
-                                        <p className='font-semibold text-lg'>Recently Added Offers</p>
-                                        <Link to='/admin/offers'>
-                                            <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
-                                        </Link>
+                                <Link to='/admin/events'>
+                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex flex-col space-y-2">
+                                                    <span class="text-gray-400">Total Events</span>
+                                                    {
+                                                        stats.data != null && (
+                                                            <span class="text-lg font-semibold text-lg">{stats.data.events}</span>
+                                                        )
+                                                    }
+
+                                                </div>
+                                                <div class="ml-2">
+                                                    <img className="h-14" src="/images/icons/events.png" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="overflow-x-auto">
+                                </Link>
 
-                                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                    <tr>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Offer Name
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Vendor Name
-                                                        </th>
+                                <Link to='/admin/offers'>
+                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex flex-col space-y-2">
+                                                    <span class="text-gray-400">Total Offers</span>
+                                                    {
+                                                        stats.data != null && (
+                                                            <span class="text-lg font-semibold text-lg">{stats.data.offers}</span>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div class="ml-2">
+                                                    <img className="h-14" src="/images/icons/offers.png" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Start Date
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Venue
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Offer expiry
-                                                        </th>
+                                    </div>
+                                </Link>
 
-                                                        <th scope="col" class="px-6 py-3">
-                                                            Action
-                                                        </th>
+                                <Link to='/admin/Categories'>
+                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex flex-col space-y-2">
+                                                    <span class="text-gray-400">Total Categories</span>
+                                                    {
+                                                        stats.data != null && (
+                                                            <span class="text-lg font-semibold text-lg">{stats.data.category}</span>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div class="ml-2">
+                                                    <img className="h-14" src="/images/icons/categories.png" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </Link>
+
+                                <Link to='/admin/venue'>
+                                    <div className="m-3 cards flex justify-between md:flex-row flex-col">
+                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex flex-col space-y-2">
+                                                    <span class="text-gray-400">Total Venues</span>
+                                                    {
+                                                        stats.data != null && (
+                                                            <span class="text-lg font-semibold text-lg">{stats.data.venues}</span>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div class="ml-2">
+                                                    <img className="h-14" src="/images/icons/location.png" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="maincontent ml-4 mr-4 mt-5">
+
+                        <div className="1st row grid grid-cols-2 gap-8 ">
+                            <div className='table1 h-96 shadow-md'>
+                                <div className="title mb-2 flex justify-between">
+                                    <p className='font-semibold text-lg'>Unverified Vendors</p>
+                                    <Link to='/admin/vendors'>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                    </Link>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-full">
+                                        <thead>
+                                            <tr>
+                                                <th className="px-6 w-64 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    Email
+                                                </th>
+                                                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    First Name
+                                                </th>
+                                                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    Last Name
+                                                </th>
+                                                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        {
+                                            vendors.data == null
+                                                ?
+                                                <tbody>
+                                                    <tr >
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>                                                        </td>
+                                                        <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
-                                                </thead>
+
+
+                                                </tbody>
+                                                :
                                                 <tbody>
                                                     {
-                                                        offers.data.map((offer) => (
+                                                        vendors.data.map((vendor) => (
                                                             <tr>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.title}
+                                                                    {vendor.email}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.vendorid.firstname}
+                                                                    {vendor.firstname}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(offer.createdAt).format("DD-MM-YYYY")}
+                                                                    {vendor.lastname}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {offer.location?.name || ""}
-
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    {moment(offer.createdAt).format("DD-MM-YYYY")}
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                    <button onClick={(() => navigate(`/admin/event/${offer._id}`))} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                                                        View
+                                                                    <button onClick={() => verifyUsers(vendor._id)} className="text-white rounded-md h-6 w-6">
+                                                                    <img src="/images/icons/done.png" alt="" />
                                                                     </button>
                                                                 </td>
                                                             </tr>
                                                         ))
                                                     }
                                                 </tbody>
-                                            </table>
-                                        </div>
+                                        }
 
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                            <div className='table1 h-96 shadow-md'>
+                                <div className="title mb-2 flex justify-between">
+                                    <p className='font-semibold text-lg'>Recently Registered Users</p>
+                                    <Link to='/admin/users'>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                    </Link>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-full">
+                                        <thead>
+                                            <tr>
+                                                <th className="px-6 w-64 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    Email
+                                                </th>
+                                                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    First Name
+                                                </th>
+                                                <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                    Last Name
+                                                </th>
+                                                {/* <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        Action
+                                                    </th> */}
+                                            </tr>
+                                        </thead>
+                                        {
+                                            users.data == null
+                                                ?
+                                                <tbody>
+                                                    <tr >
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                :
+                                                <tbody>
+                                                    {
+                                                        users.data.map((user) => (
+                                                            <tr>
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {user.email}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {user.firstname}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {user.lastname}
+                                                                </td>
+                                                                {/* <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                                    Verify
+                                                                </button>
+                                                            </td> */}
+                                                            </tr>
+                                                        ))
+                                                    }
+                                                </tbody>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="recentOffers mt-4">
+                            <div className='table1 h-auto shadow-md'>
+                                <div className="mb-2 title flex justify-between">
+                                    <p className='font-semibold text-lg'>Recently Added Events</p>
+                                    <Link to='/admin/events'>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                    </Link>
+                                </div>
+                                <div className="overflow-x-auto">
+
+                                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Event Name
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Vendor ID
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Date
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Venue
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Status
+                                                    </th>
+
+                                                </tr>
+                                            </thead>
+                                            {
+                                                response.data == null
+                                                    ?
+                                                    <tbody>
+                                                        <tr >
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>                                                        </td>
+                                                            <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    :
+                                                    <tbody>
+                                                        {
+                                                            response.data.map((event) => (
+                                                                <tr>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {event.title}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {event.vendorid.firstname || null}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {moment(event.createdAt).format("DD-MM-YYYY")}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {event.location?.name || ""}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {event.verified
+                                                                            ?
+                                                                            <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
+                                                                                Verified
+                                                                            </span>
+                                                                            :
+                                                                            <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                                Unverified
+                                                                            </span>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                            }
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <div className="recentEvents mt-4">
+                            <div className='table1 h-96 shadow-md'>
+                                <div className="title mb-2 flex justify-between">
+                                    <p className='font-semibold text-lg'>Recently Added Offers</p>
+                                    <Link to='/admin/offers'>
+                                        <button className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'>show all</button>
+                                    </Link>
+                                </div>
+                                <div className="overflow-x-auto">
+
+                                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Offer Name
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Vendor Name
+                                                    </th>
+
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Start Date
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Venue
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Offer expiry
+                                                    </th>
+
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            {
+                                                offers.data == null
+                                                    ?
+                                                    <tbody>
+                                                        <tr >
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>                                                        </td>
+                                                            <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    :
+                                                    <tbody>
+                                                        {
+                                                            offers.data.map((offer) => (
+                                                                <tr>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.title}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.vendorid.firstname}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {moment(offer.createdAt).format("DD-MM-YYYY")}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {offer.location?.name || ""}
+
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        {moment(offer.createdAt).format("DD-MM-YYYY")}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                        <button onClick={(() => navigate(`/admin/event/${offer._id}`))} className="h-6 w-6">
+                                                                        <img src="/images/icons/eye.png" alt="" />
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                            }
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-
                 </div>
-            </>
-        )
-    }
+
+
+            </div>
+        </>
+    )
 }
 
 export default AdminHome

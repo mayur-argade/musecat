@@ -21,6 +21,11 @@ const venueSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    requester: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendors',
+        required: true,  
+    },
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []

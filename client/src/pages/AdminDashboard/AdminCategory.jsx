@@ -4,7 +4,7 @@ import { GetAllCategory, AdminDeleteCategory } from '../../http'
 import { Link } from 'react-router-dom'
 import AddCategoryModel from '../../components/EditEventModal/AddCategoryModel'
 import EditCategoryModel from '../../components/EditEventModal/EditCategoryModel'
-
+import toast, { Toaster } from 'react-hot-toast';
 
 const AdminCategory = () => {
 
@@ -13,6 +13,11 @@ const AdminCategory = () => {
     const [showAddCategory, setShowAddCategory] = useState(false)
     const [showEditCategory, setShowEditCategory] = useState(false)
     const [selectedCategory, setSelectedCategory] = useState(null)
+    const [refresh, setRefresh] = useState(false)
+
+    const apiRefreshstate = () => {
+        setRefresh(!refresh)
+    }
 
     const handleEditCategoryClick = (category) => {
         setSelectedCategory(category)
@@ -27,6 +32,7 @@ const AdminCategory = () => {
     }
 
     const closeCategoryModel = () => {
+        setRefresh(!refresh)
         setShowAddCategory(false)
     }
 
@@ -44,153 +50,200 @@ const AdminCategory = () => {
 
         fetchCategory()
 
-    }, []);
+    }, [refresh]);
 
     const DeleteCategory = async (categoryId) => {
         try {
             const body = {
                 categoryId: categoryId
-            }
-            const { data } = await AdminDeleteCategory(body)
-            if (data.success == true) {
-                window.location.reload()
-            }
+            };
 
+            // Use toast.promise to display a promise-based toast
+            const promise = AdminDeleteCategory(body);
+            const { data } = await toast.promise(promise, {
+                loading: 'Deleting Category...',
+                success: 'Category Deleted Successfully',
+                error: (error) => `Error: ${error.response.data.data}`,
+            });
+
+            // Refresh or update the UI as needed after successful deletion
+            if (data.success === true) {
+                setRefresh(!refresh);
+            }
         } catch (error) {
-            console.log(error)
+            console.error(error);
+            // No need for a separate toast.error here; it's handled in the promise configuration
         }
-    }
+    };
 
-    if (category.data == null) {
-        return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
+    return (
+        <div>
+            <div className='flex '>
+
+                <div>
+                    <Sidebar />
                 </div>
-            </div>
-        )
-    } else {
-        return (
-            <div>
-                <div className='flex '>
+                <Toaster />
+                <div className='pl-20 flex flex-col w-full'>
+                    <div className="mt-7"></div>
+                    <div className="headline ">
+                        <div className="heading">
+                            <div className="flex justify-between">
+                                <span className="text-2xl font-semibold">Categories</span>
+                                <button onClick={() => handleCategoryClick()} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Category</button>
+                            </div>
 
-                    <div>
-                        <Sidebar />
-                    </div>
+                            <hr className='mt-3 mb-3' />
 
-                    <div className='pl-20 flex flex-col w-full'>
-                        <div className="mt-7"></div>
-                        <div className="headline ">
-                            <div className="heading">
-                                <div className="flex justify-between">
-                                    <span className="text-2xl font-semibold">Categories</span>
-                                    <button onClick={() => handleCategoryClick()} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Category</button>
-                                </div>
+                            <div className="maincontent flex flex-col">
+                                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Name
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    category URL
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Sub Categories
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Photo
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        {
+                                            category.data == null
+                                                ?
+                                                <tbody>
+                                                    <tr >
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        {/* </Link> */}
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>                                                        </td>
+                                                        <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                            <div class="flex items-center justify-between">
+                                                                <div>
+                                                                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                :
 
-                                <hr className='mt-3 mb-3' />
+                                                <tbody>
+                                                    {
+                                                        category.data.map((cat, index) => (
+                                                            <tr key={index}>
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {cat.name}
+                                                                </td>
+                                                                {/* </Link> */}
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {cat.categoryURL}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    {cat.subCategories.map(subcategory => subcategory.name).join(', ')}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    <a href={cat.photo} target="_blank" rel="noopener noreferrer">Link</a>
+                                                                </td>
+                                                                <td className="flex space-x-2 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                    <button onClick={() => DeleteCategory(cat._id)} className="h-6 w-6">
+                                                                        <img src="/images/icons/delete.png" alt="" />
+                                                                    </button>
+                                                                    <button onClick={() => handleEditCategoryClick(cat)} className="h-6 w-6">
+                                                                        <img src="/images/icons/adminEdit.png" alt="" />
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
 
-                                <div className="maincontent flex flex-col">
-                                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Name
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        category URL
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Sub Categories
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Photo
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Action
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    category.data.map((cat, index) => (
-                                                        <tr key={index}>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {cat.name}
-                                                            </td>
-                                                            {/* </Link> */}
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {cat.categoryURL}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                {cat.subCategories.map(subcategory => subcategory.name).join(', ')}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <a href={cat.photo} target="_blank" rel="noopener noreferrer">Link</a>
-                                                            </td>
-                                                            <td className="flex space-x-2 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <button onClick={() => DeleteCategory(cat._id)} className="h-6 w-6">
-                                                                    <img src="/images/icons/delete.png" alt="" />
-                                                                </button>
-                                                                <button onClick={() => handleEditCategoryClick(cat)} className="h-6 w-6">
-                                                                    <img src="/images/icons/adminEdit.png" alt="" />
-                                                                </button>
-                                                            </td>
-                                                        </tr>
+                                                        ))
+                                                    }
 
-                                                    ))
-                                                }
-
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </tbody>
+                                        }
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {showAddCategory && (
-                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                        <div className="relative my-auto w-11/12 xl:w-1/2">
-                            <AddCategoryModel
-                                isOpen={showAddCategory}
-                                onClose={closeCategoryModel} />
-                            {/* Close button */}
-                            <button
-                                onClick={closeCategoryModel}
-                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                            >
-                                <img src="/images/icons/cancel-icon.png" alt="" />
-                            </button>
-                        </div>
-                    </div>
-                )
-                }
-
-                {showEditCategory && (
-                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                        <div className="relative my-auto w-11/12 xl:w-1/2">
-                            <EditCategoryModel
-                                isOpen={showEditCategory}
-                                onClose={closeEditCategoryModel}
-                                data={selectedCategory}
-                            />
-                            {/* Close button */}
-                            <button
-                                onClick={closeEditCategoryModel}
-                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                            >
-                                <img src="/images/icons/cancel-icon.png" alt="" />
-                            </button>
-                        </div>
-                    </div>
-
-                )}
             </div>
-        )
-    }
+
+            {showAddCategory && (
+                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                    <div className="relative my-auto w-11/12 xl:w-1/2">
+                        <AddCategoryModel
+                            isOpen={showAddCategory}
+                            onClose={closeCategoryModel}
+                            apiRefreshstate={apiRefreshstate}
+                        />
+                        {/* Close button */}
+                        <button
+                            onClick={closeCategoryModel}
+                            className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                        >
+                            <img src="/images/icons/cancel-icon.png" alt="" />
+                        </button>
+                    </div>
+                </div>
+            )
+            }
+
+            {showEditCategory && (
+                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                    <div className="relative my-auto w-11/12 xl:w-1/2">
+                        <EditCategoryModel
+                            isOpen={showEditCategory}
+                            onClose={closeEditCategoryModel}
+                            data={selectedCategory}
+                            apiRefreshstate={apiRefreshstate}
+                        />
+                        {/* Close button */}
+                        <button
+                            onClick={closeEditCategoryModel}
+                            className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                        >
+                            <img src="/images/icons/cancel-icon.png" alt="" />
+                        </button>
+                    </div>
+                </div>
+
+            )}
+        </div>
+    )
+
 }
 
 export default AdminCategory

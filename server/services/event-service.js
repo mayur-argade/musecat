@@ -31,6 +31,10 @@ class EventService {
         const events = await EventModel.countDocuments(filter)
         return events
     }
+
+    async DeleteMany(filter){
+        const events = await EventModel.deleteMany(filter)
+    }
 }
 
 module.exports = new EventService();

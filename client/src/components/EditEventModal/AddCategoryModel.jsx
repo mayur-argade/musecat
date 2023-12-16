@@ -58,7 +58,7 @@ const AddCategoryModel = ({ onClose }) => {
                 toast.success("Category Added")
                 onClose(); //
             }
-            window.location.reload()
+            // window.location.reload()
         } catch (error) {
             setLoading(false)
             console.log(error)

@@ -139,7 +139,7 @@ const EditVenueModel = ({ data, onClose, apiRefreshstate }) => {
 
 
                                     <div>
-                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Add Venue</button>
+                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Edit Venue</button>
                                     </div>
 
                                 </div>
