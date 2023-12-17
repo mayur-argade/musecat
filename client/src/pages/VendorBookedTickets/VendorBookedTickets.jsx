@@ -5,6 +5,7 @@ import Footer from '../../components/shared/Footer/Footer';
 import { VendorBookedTicketApi, vendorUpdateTicketStatus, ClientEventDetailsApi } from '../../http/index'
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
+import toast, { Toaster } from 'react-hot-toast';
 
 const VendorBookedTickets = () => {
     document.title = 'Vendor ~ Booked Tickets'
@@ -17,6 +18,7 @@ const VendorBookedTickets = () => {
     const [status, setStatus] = useState('')
     const [bookedSeatsLength, setBookedSeatsLength] = useState(0)
     const [event, setEvent] = useState('')
+    const [refresh, setRefresh] = useState(false)
     let { eventid } = useParams();
 
     useEffect(() => {
@@ -67,7 +69,7 @@ const VendorBookedTickets = () => {
             }
         }
         fetchEvent()
-    }, []);
+    }, [refresh, eventid]);
 
     const navigate = useNavigate();
     const handleBack = () => {
@@ -109,19 +111,25 @@ const VendorBookedTickets = () => {
 
     const changeStatus = async (ticketid, status) => {
         try {
-            const { data } = await vendorUpdateTicketStatus({
-                ticketid: ticketid,
-                status: status
-            })
-            if (data.success == true) {
-                // toast.success("Ticket status updated Successfully")
-                window.location.reload()
-            }
+            await toast.promise(
+                vendorUpdateTicketStatus({
+                    ticketid: ticketid,
+                    status: status
+                }),
+                {
+                    loading: 'Updating ticket status...',
+                    success: 'Ticket status updated successfully',
+                    error: 'Failed to update ticket status'
+                }
+            );
+
+            // Reload the window after a successful update
+            setRefresh(!refresh)
+        } catch (error) {
+            console.log(error);
         }
-        catch (error) {
-            console.log(error)
-        }
-    }
+    };
+
 
     if (response.data == null || event.data == null) {
         return (
@@ -138,7 +146,7 @@ const VendorBookedTickets = () => {
                 <div className='shadow-md'>
                     <Navbar />
                 </div>
-
+                <Toaster />
                 <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                     <div className='flex flex-col md:flex-row align-middle md:items-center  md:justify-between'>
                         <div className="flex align-middle items-center">
