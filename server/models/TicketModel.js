@@ -53,6 +53,9 @@ const ticketModel = new mongoose.Schema({
     sessionId: {
         type: String
     },
+    refundId: {
+        type: String
+    }
 },
     {
         timestamps: true,

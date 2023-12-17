@@ -145,15 +145,9 @@ exports.createEvent = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
     let { eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
-        date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type, seatingMap
+        date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type, seatingMap, showEndDate, venueInfo, additinalImages, website, phone
     } = req.body
 
-    // if (!title || !displayPhoto || !banner || !shortDescription || !description || !location || !termsAndConditions || !date || !categories || !eventCategory) {
-    //     return res.status(statusCode.BAD_REQUEST.code).json({
-    //         success: false,
-    //         data: "Required fields are missing"
-    //     })
-    // }
 
     let event = {}
 
@@ -173,13 +167,6 @@ exports.updateEvent = async (req, res) => {
             })
         }
 
-        let uploadedVideo = ''
-        if (video) {
-            uploadedVideo = await cloudinary.v2.uploader.upload(video, {
-                folder: "muscat/events",
-            })
-        }
-
         let uploadedSeatingMap = '';
         if (seatingMap) {
             uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
@@ -187,29 +174,53 @@ exports.updateEvent = async (req, res) => {
             })
         }
 
+        let uploadResult;
+        let additinalPhotos = []
+        if (additinalImages && additinalImages.length != 0) {
+            for (let i = 0; i < additinalImages.length; i++) {
+                // console.log(additinalImages[i])
+                uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+                    folder: "muscat/events",
+                })
+                additinalPhotos.push(uploadResult.secure_url)
+            }
+        }
+
         const data = {
             _id: eventid,
             title: title,
-            displayPhoto: uploadedEventPhoto.secure_url,
-            type: type,
-            banner: uploadedBanner.secure_url,
-            video: uploadedVideo.secure_url,
-            seatingMap: uploadedSeatingMap.secure_url,
             shortDescription: shortDescription,
             description: description,
-            location: location,
-            custom: custom,
-            features: features,
-            termsAndConditions: termsAndConditions,
+
             date: date,
-            categories: categories,
+            showEndDate: showEndDate,
+
+            location: location,
+            venueInfo: venueInfo,
+
             eventCategory: eventCategory,
-            vendorid: req.user._id,
+            features: features,
+
             facebook: facebook,
-            whatsapp: whatsapp,
             instagram: instagram,
             email: email,
-            discountOnApp: discountOnApp
+            phoneNo: phone,
+            whatsapp: whatsapp,
+            website: website,
+
+
+            categories: categories,
+            termsAndConditions: termsAndConditions,
+            custom: custom,
+
+            displayPhoto: uploadedEventPhoto.secure_url,
+            AdditionalPhotos: additinalPhotos,
+            seatingMap: uploadedSeatingMap.secure_url,
+            banner: uploadedBanner.secure_url,
+            video: video,
+
+            type: type,
+            discountOnApp: discountOnApp,
         }
 
         let categoryData;
@@ -243,12 +254,6 @@ exports.updateEvent = async (req, res) => {
 
         event = await eventService.updateEvent(data)
 
-        // push event id into the category
-        if (categoryData) {
-            categoryData.events.push(event._id)
-            categoryData.save()
-        }
-
 
         res.status(statusCode.SUCCESS.code).json({
             success: true,
@@ -263,50 +268,13 @@ exports.updateEvent = async (req, res) => {
         })
     }
 
-
-    // const { eventid } = req.params
-
-    // const { title, description, date, location, silverSeats, silverPrice, goldSeats, goldPrice, platinumSeats, platinumPrice, displayPhoto, custom, features } = req.body
-
-
-    // try {
-
-    //     const data = {
-    //         _id: eventid,
-    //         title: title,
-    //         description: description,
-    //         date: date,
-    //         location: location,
-    //         silverSeats: silverSeats,
-    //         silverPrice: silverPrice,
-    //         goldSeats: goldSeats,
-    //         goldPrice: goldPrice,
-    //         platinumSeats: platinumSeats, platinumPrice: platinumPrice, displayPhoto: displayPhoto,
-    //         custom: custom,
-    //         features: features
-    //     }
-
-    //     const event = await eventService.updateEvent(data)
-    //     const updatedEvent = await eventService.findEvent({ _id: eventid })
-    //     return res.status(200).json({
-    //         success: true,
-    //         data: updatedEvent
-    //     })
-
-    // } catch (error) {
-    //     console.log(error)
-    //     return res.status(500).json({
-    //         success: false,
-    //         data: "internal service error"
-    //     })
-    // }
 }
 
 exports.createOffer = async (req, res) => {
     let { title, description, shortDescription, showEndDate, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp
     } = req.body
 
-    if (!title || !displayPhoto || !shortDescription || !description || !location  || !date || !categories || !eventCategory) {
+    if (!title || !displayPhoto || !shortDescription || !description || !location || !date || !categories || !eventCategory) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: "Required fields are missing"
@@ -339,7 +307,7 @@ exports.createOffer = async (req, res) => {
             })
         }
 
-        
+
 
         let uploadResult;
         let additinalPhotos = []
@@ -385,7 +353,7 @@ exports.createOffer = async (req, res) => {
             video: video,
             seatingMap: uploadedSeatingMap.secure_url,
             AdditionalPhotos: additinalPhotos,
-            
+
             type: 'offer',
 
             showEndDate: showEndDate,
@@ -476,10 +444,14 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
         const events = await eventService.findAllEvents({
             vendorid: vendor,
             type: 'event',
+            archived: false,
             // verified: true,
             $or: [
                 {
                     'date.dateRange.endDate': { $gte: today }
+                },
+                {
+                    'date.dateRange.endDate': null
                 }
                 ,
                 {
@@ -511,7 +483,8 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
             $or: [
                 {
                     'date.dateRange.endDate': { $lt: today }
-                }
+                },
+                { archived: true }
                 ,
                 {
                     // 'date.recurring.startDate': { $lte: today },
@@ -550,7 +523,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                         ]
                     },
                 ],
-    
+
             }
         )
 
@@ -558,6 +531,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
             {
                 vendorid: vendor,
                 type: 'offer',
+                archived: true,
                 // verified: true,
                 $or: [
                     {
@@ -569,7 +543,7 @@ exports.getVendorAllEventsNOffers = async (req, res) => {
                         'date.recurring.endDate': { $lt: today },
                     },
                 ],
-    
+
             }
         )
 
@@ -609,10 +583,15 @@ exports.vendorHome = async (req, res) => {
                 vendorid: _id,
                 type: 'event',
                 verified: true,
+                archived: false,
                 $or: [
                     {
                         'date.dateRange.startDate': { $lte: today },
                         'date.dateRange.endDate': { $gte: today }
+                    },
+                    {
+                        'date.dateRange.startDate': { $lte: today },
+                        'date.dateRange.endDate': null
                     }
                     ,
                     {
@@ -643,6 +622,7 @@ exports.vendorHome = async (req, res) => {
                 vendorid: _id, // Assuming you pass the vendor id as a route parameter
                 type: 'offer',
                 verified: true,
+                archived: false,
                 $or: [
                     {
                         'date.dateRange.startDate': { $lte: today },

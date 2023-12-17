@@ -15,6 +15,8 @@ import EditEventModal from '../../components/EditEventModal/EditEventModal'
 const VendorEventDescripton = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [images, setImages] = useState([]);
+    const [refresh, setRefresh] = useState(false)
+    
     const handleShowNextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     };
@@ -28,6 +30,7 @@ const VendorEventDescripton = () => {
     };
 
     const closeModal = () => {
+        setRefresh(!refresh)
         setShowModal(false);
     };
 
@@ -235,7 +238,7 @@ const VendorEventDescripton = () => {
         }
         fetchdata()
 
-    }, [eventid, user, isAuth, fetchLikes]);
+    }, [eventid, user, isAuth, fetchLikes, refresh]);
 
 
     const ContentDisplay = ({ currentContent }) => {

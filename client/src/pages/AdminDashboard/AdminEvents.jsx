@@ -131,7 +131,7 @@ const AdminEvents = () => {
                                                     <tbody>
                                                         <tr >
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <div class="flex items-center justify-between">
+                                                                <div class="flex items-center justify-between animate-pulse">
                                                                     <div>
                                                                         <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
                                                                     </div>
@@ -139,27 +139,104 @@ const AdminEvents = () => {
                                                             </td>
                                                             {/* </Link> */}
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
-                                                                <div class="flex items-center justify-between">
+                                                                <div class="flex items-center justify-between animate-pulse">
                                                                     <div>
                                                                         <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <div class="flex items-center justify-between">
+                                                                <div class="flex items-center justify-between animate-pulse">
                                                                     <div>
                                                                         <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <div class="flex items-center justify-between">
+                                                                <div class="flex items-center justify-between animate-pulse">
                                                                     <div>
                                                                         <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
                                                                     </div>
-                                                                </div>                                                        </td>
+                                                                </div>
+                                                            </td>
                                                             <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                <div class="flex items-center justify-between">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            {/* </Link> */}
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            {/* </Link> */}
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
+                                                                    <div>
+                                                                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="space-x-3 px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                                                <div class="flex items-center justify-between animate-pulse">
                                                                     <div>
                                                                         <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
                                                                     </div>

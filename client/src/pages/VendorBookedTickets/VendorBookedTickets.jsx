@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Table from '../../components/Table/Table';
 import Footer from '../../components/shared/Footer/Footer';
-import { VendorBookedTicketApi, VendorUpdateTicketStatus, vendorUpdateTicketStatus, ClientEventDetailsApi } from '../../http/index'
+import { VendorBookedTicketApi, vendorUpdateTicketStatus, ClientEventDetailsApi } from '../../http/index'
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 
@@ -36,7 +36,7 @@ const VendorBookedTickets = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-    
+
     useEffect(() => {
         const fetchdata = async () => {
             try {
@@ -68,15 +68,6 @@ const VendorBookedTickets = () => {
         }
         fetchEvent()
     }, []);
-    console.log("totalseats", bookedSeatsLength)
-    const updateStatus = async () => {
-        const data = {
-            ticketid: ticketId,
-            status: status
-        }
-        const updateStatus = await VendorUpdateTicketStatus(data)
-        console.log(updateStatus)
-    }
 
     const navigate = useNavigate();
     const handleBack = () => {
@@ -326,30 +317,22 @@ const VendorBookedTickets = () => {
                                                 </td>
                                                 <td class="px-6 py-4 flex space-x-1">
                                                     {
-                                                        ticket.status == 'verified'
+                                                        ticket.status == 'verified' || ticket.status == 'canceled' || ticket.status == 'refunded'
                                                             ?
-                                                            <div>
-                                                                <button onClick={() => changeStatus(ticket._id, 'canceled')}>
-                                                                    <img className='h-6' src="/images/icons/cancel-vendor.svg" alt="" />
-                                                                </button>
-                                                            </div>
+                                                            <>
+                                                                {/* <button onClick={() => changeStatus(ticket._id, 'canceled')}>
+                                                                    <img className='h-6 w-6 ml-1' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                                </button> */}
+                                                            </>
                                                             :
-                                                            ticket.status == 'canceled'
-                                                                ?
-                                                                <>
-                                                                    <button onClick={() => changeStatus(ticket._id, 'verified')}>
-                                                                        <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
-                                                                    </button>
-                                                                </>
-                                                                :
-                                                                <>
-                                                                    <button onClick={() => changeStatus(ticket._id, 'verified')}>
-                                                                        <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
-                                                                    </button>
-                                                                    <button onClick={() => changeStatus(ticket._id, 'canceled')}>
-                                                                        <img className='h-6 w-6 ml-1' src="/images/icons/cancel-vendor.svg" alt="" />
-                                                                    </button>
-                                                                </>
+                                                            <>
+                                                                <button onClick={() => changeStatus(ticket._id, 'verified')}>
+                                                                    <img className='h-5 w-7 rounded-sm' src="/images/icons/yes.png" alt="" />
+                                                                </button>
+                                                                <button onClick={() => changeStatus(ticket._id, 'canceled')}>
+                                                                    <img className='h-6 w-6 ml-1' src="/images/icons/cancel-vendor.svg" alt="" />
+                                                                </button>
+                                                            </>
                                                     }
                                                 </td>
                                             </tr>

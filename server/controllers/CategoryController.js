@@ -128,12 +128,31 @@ exports.deleteCategory = async (req, res) => {
 
         const category = await categoryService.findCategory({ _id: categoryId })
 
+
+
         if (!category) {
             return res.status(404).json({
                 success: false,
                 data: "Category Not Found"
             })
         }
+
+        const eventsWithCategory = await eventService.findAllEvents({ 'eventCategory.categoryURL': category.categoryURL })
+
+        console.log(eventsWithCategory)
+
+        for (const event of eventsWithCategory) {
+            event.eventCategory = event.eventCategory.filter((cat) => cat.categoryURL !== category.categoryURL);
+
+            if (event.eventCategory.length > 0) {
+                await event.save();
+            } else {
+                event.archived = true;
+                await event.save()
+            }
+        }
+
+        const eventsWithCategory1 = await eventService.findAllEvents({ 'eventCategory.categoryURL': category.categoryURL })
 
         const deletedCategory = await categoryService.deleteCategory({ _id: categoryId })
 
@@ -146,7 +165,7 @@ exports.deleteCategory = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            data: "Category Deleted successfully"
+            data: "Category Deleted Successfully"
         })
     }
     catch (error) {

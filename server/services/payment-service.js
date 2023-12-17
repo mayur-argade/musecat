@@ -126,7 +126,7 @@ class PaymentService {
 
         try {
             const { data } = await axios.request(options);
-            console.log(data);
+            // console.log(data);
             return data
         } catch (error) {
             console.error(error);
@@ -135,7 +135,55 @@ class PaymentService {
     }
 
     async refundPayment(sessionId) {
+        const sessionInfo = await this.getSessionInfo(sessionId);
+        const paymentData = await this.listPayments(sessionInfo.data.invoice)
+        const refundData = await this.createRefund(paymentData.data[0].payment_id)
+        return refundData;
+    }
 
+    async listPayments(invoiceId) {
+        const options = {
+            method: 'GET',
+            url: `https://uatcheckout.thawani.om/api/v1/payments?checkout_invoice=${invoiceId}`,
+            headers: {
+                Accept: 'application/json',
+                'thawani-api-key': 'rRQ26GcsZzoEhbrP2HZvLYDbn9C9et'
+            }
+        };
+
+        try {
+            const { data } = await axios.request(options);
+            // console.log(data);
+            return data
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async createRefund(paymentId) {
+        const options = {
+            method: 'POST',
+            url: 'https://uatcheckout.thawani.om/api/v1/refunds',
+            headers: {
+                'Content-type': '',
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'thawani-api-key': 'rRQ26GcsZzoEhbrP2HZvLYDbn9C9et'
+            },
+            data: {
+                payment_id: paymentId,
+                reason: 'Canceled Ticket by vendor',
+                metadata: { customer: 'Jone Doe' }
+            }
+        };
+
+        try {
+            const { data } = await axios.request(options);
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     async listCustomerPaymentMethods(customerid) {

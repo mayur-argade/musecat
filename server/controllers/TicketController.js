@@ -926,6 +926,7 @@ exports.updateStatusUsingSessionId = async (req, res) => {
 
 }
 
+
 exports.updateStatusOfTicketbyVendor = async (req, res) => {
     try {
         let { ticketid, status } = req.body
@@ -933,245 +934,164 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
         let ticket = await ticketService.findTicket({ _id: ticketid })
         // console.log(ticket)
         let event;
-        if (status == 'canceled') {
+        if (status == 'verified') {
+
+            const ticketdata = {
+                _id: ticket._id,
+                status: status
+            }
+
+            ticket = await ticketService.updateTicket(ticketdata)
+
+            // send notification 
+            const notification = {
+                senderid: req.user._id,
+                receiverid: ticket.userid,
+                msg: `Your Ticket for event ${ticket.eventid.title} has been verified by the vendor your Ticket ID: ${ticket._id} `
+            }
+
+            const sentNotification = await notificationService.createNotification(notification)
+
+            // send mail
+            const mailOptions = {
+                from: 'argademayur2002@gmail.com',
+                to: ticket.email,
+                subject: 'Ticket Verification mail',
+                html: `
+                  <html>
+                  <body>
+                  <p>Dear ${ticket.firstname},</p>
+                  <p>Thank you for booking a ticket on omanwhereto.com. We are excited to have you join us for this event!</p>
+                  <p>Your ticket with ID ${ticket._id} has been verified and is now confirmed for the event. Here are the details:</p>
+                  <ul>
+                    <li>Ticket ID: ${ticket._id}</li>
+                    <li>Date and Time: ${moment(ticket.date).format("DD-MM-YYYY")}</li>
+                  </ul>
+                  <p>Please ensure to bring a copy of this email or the digital version of your ticket with you to the event for smooth entry.</p>                
+                  <p>Thank you for choosing omanwhereto.com. We look forward to seeing you at the event!</p>
+                  <p>Best regards,<br>The omanwhereto Team</p>
+                  </body>
+                  </html>
+                `,
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res
+                        .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                            success: false,
+                            data: "Ticket update But failed to send to mail.."
+                        });
+                } else {
+                    return res.status(200).json({
+                        success: true,
+                        data: ticket
+                    })
+                }
+            });
+
+        }
+        else if (status == 'canceled') {
             // delete seats 
             event = await eventService.findEvent({ _id: ticket.eventid });
 
-            for (const category of event.categories) {
-                category.className == ticket.class;
-            }
-            // console.log(event.categories);
+            const targetCategory = event.categories.find(category => category.className === ticket.class)
 
+            if (targetCategory) {
+                const targetBooking = targetCategory.bookedSeats.find(booking => moment(ticket.date).format("DD-MM-YYYY") == moment(booking.date).format("DD-MM-YYYY"));
+                // console.log(targetBooking)
+                if (targetBooking) {
+                    targetBooking.seats = targetBooking.seats.filter(seat => !ticket.allotedSeats.includes(seat));
+                    const updatedEvent = await event.save()
+                    console.log(updatedEvent.categories)
+                } else {
+                    console.log("target booking date not found")
+                }
+            } else {
+                console.log("Target category not found")
+            }
 
             // check for payment
             if (ticket.sessionId) {
                 status = "refunded"
-                // go for refund process
-                // change the status to the refunded
+
+                const paymentInfo = await paymentService.refundPayment(ticket.sessionId)
+
+                // console.log("paymentInfo`"`)
+
+                if (paymentInfo.success == true) {
+
+                    const ticketdata = {
+                        _id: ticket._id,
+                        status: status,
+                        refundId: paymentInfo.data.refund_id
+                    }
+
+                    ticket = await ticketService.updateTicket(ticketdata)
+
+                    // send notification 
+                    const notification = {
+                        senderid: req.user._id,
+                        receiverid: ticket.userid,
+                        msg: `Your Ticket has been canceled by the vendor Ticket ID: ${ticket._id}. Refund for your ticket will be processed shortly`
+                    }
+
+                    const sentNotification = await notificationService.createNotification(notification)
+
+                    // send mail
+                    const mailOptions = {
+                        from: 'argademayur2002@gmail.com',
+                        to: ticket.email,
+                        subject: 'Ticket cancellation mail',
+                        html: `
+                      <html>
+                      <body>
+                      <p>Dear ${ticket.firstname},</p>
+                      <p>We're sorry to inform you that your booking on omanwhereto.com has been canceled.</p>
+                      <p>Your ticket with ID ${ticket._id} for the event has been canceled. Here are the details:</p>
+                      <ul>
+                        <li>Ticket ID: ${ticket._id}</li>
+                        <li>Date and Time: ${moment(ticket.date).format("DD-MM-YYYY")}</li>
+                      </ul>
+                      <p>Your refund will be processed shortly. If you have any questions or concerns, please don't hesitate to reach out to our support team.</p>
+                      <p>We appreciate your understanding. Thank you for considering omanwhereto.com.</p>
+                      <p>Best regards,<br>The omanwhereto Team</p>
+                    </body>                    
+                      </html>
+                    `,
+                    };
+
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error)
+                            return res
+                                .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                                    success: false,
+                                    data: "Ticket update But failed to send to mail.."
+                                });
+                        } else {
+                            return res.status(200).json({
+                                success: true,
+                                data: ticket
+                            })
+                        }
+                    });
+
+                }
+            }else{
+                console.log("no session id")
             }
 
         }
-        const ticketdata = {
-            _id: ticket._id,
-            status: status
+        else {
+            return res.status(500).json({
+                success: false,
+                data: "Unknown status"
+            })
         }
-
-        ticket = await ticketService.updateTicket(ticketdata)
-
-        res.status(200).json({
-            success: true,
-            data: ticket
-        })
-
     } catch (error) {
         console.log(error)
     }
 }
 
-exports.downloadTicketPdf = async (req, res) => {
-    try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-
-        // Replace this with the logic to generate your PDF content dynamically
-        const pdfContent = `
-            <html>
-                <head>
-                    <style>
-                    div.container {
-                        /* display: none; */
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        max-width: 810px;
-                        overflow: hidden
-                      }
-                    
-                      .custom-qr-code {
-                        background-color: transparent !important; /* Make the background transparent */
-                      }
-                      
-                      /* Change black color to white */
-                      .custom-qr-code svg rect {
-                        fill: white !important; /* Change the fill color to white */
-                      }
-                    
-                      .container .item {
-                        width: 100%;
-                        height: 310px;
-                        float: left;
-                        /* padding: 0 0px; */
-                        background: #fff;
-                        overflow: hidden;
-                        margin: 10px
-                      }
-                      .container .item-right, .container .item-left {
-                        float: left;
-                        padding: 15px 
-                      }
-                      .container .item-right {
-                        background-color: #C0A04C;
-                        /* padding: 79px 50px; */
-                        /* margin-right: 20px; */
-                        width: 273px;
-                        position: relative;
-                        height: 330px
-                      }
-                      .container .item-right .up-border, .container .item-right .down-border {
-                          padding: 14px 15px;
-                          background-color: #ddd;
-                          border-radius: 50%;
-                          position: absolute
-                      }
-                      .container .item-right .up-border {
-                        top: -10px;
-                        right: 260px;
-                      }
-                      .container .item-right .down-border {
-                        bottom: 8px;
-                        right: 260px;
-                      }
-                      .container .item-right .num {
-                        font-size: 60px;
-                        text-align: center;
-                        color: #111
-                      }
-                      .container .item-right .day, .container .item-left .event {
-                        color: #555;
-                        font-size: 20px;
-                        margin-bottom: 9px;
-                      }
-                      .container .item-right .day {
-                        text-align: center;
-                        font-size: 25px;
-                      }
-                      .container .item-left {
-                        width: 65%;
-                        padding: 34px 0px 19px 46px;
-                        border-right: 3px dotted #999;
-                      } 
-                      .container .item-left .title {
-                        color: #111;
-                        font-size: 34px;
-                        margin-bottom: 12px
-                      }
-                      .container .item-left .sce {
-                        margin-top: 5px;
-                        display: block
-                      }
-                      .item-left .sce .icon, .item-left .sce p,
-                      .item-left .loc .icon, .item-left .loc p{
-                          float: left;
-                          word-spacing: 5px;
-                          letter-spacing: 1px;
-                          color: #888;
-                          margin-bottom: 10px;
-                      }
-                      .item-left .sce .icon,  .item-left .loc .icon {
-                        margin-right: 10px;
-                        font-size: 20px;
-                        color: #666
-                      }
-                        .item-left .loc {display: block}
-                      .fix {clear: both}
-                       .item .tickets, .booked, .cancel{
-                          color: #fff;
-                          padding: 6px 14px;
-                          float: right;
-                          margin-top: 10px;
-                          font-size: 18px;
-                          border: none;
-                          cursor: pointer
-                      }
-                       .item .tickets {background: white}
-                       .item .booked {background: #3D71E9}
-                       .item .cancel {background: #DF5454}
-                      .linethrough {text-decoration: line-through}
-                    
-                      @media only screen and (max-width: 1150px) {
-                        .container .item {
-                          width: 100%;
-                          margin-right: 20px
-                        }
-                        div.container {
-                          margin: 0 20px auto
-                        }
-                      }
-                    
-                      @media only screen and (max-width: 767px) {
-                        .container .item {
-                            width: 100%;
-                            margin-right: 20px
-                          }
-                          div.container {
-                            margin: 0 20px auto
-                          }
-                      }
-                    </style>
-                </head>
-                <body>
-                <div id="ticketContent" class="container bg-white rounded-lg">
-                <div class="item rounded-2xl">
-                    <div class="item-left">
-                        <div className='flex justify-between items-center align-middle '>
-                            <img className='mt-5 h-5' src="/images/logo/logo.png" alt="" />
-                            {/* <img className='h-10 mr-5' src="/images/assets/logoticket.png" alt="" /> */}
-                            <p class="font- text-md mt-5 mr-5 ">{ticket._id}</p>
-                        </div>
-                        <div className='flex space-x-10'>
-
-                            <p class="font-bold text-md mt-5">{event.title}</p>
-
-
-                        </div>
-                        <div class="">
-                            <p className='font-bold text-md mt-5'>${ticket.firstname} {ticket.lastname}</p>
-                            <p className='font-medium text-md mt-5'>${ticket.email}</p>
-                            <div className='flex justify-between mt-10'>
-                                <div className='flex flex-col'>
-                                    <p className='font-light text-sm'>Date</p>
-                                    <p className='font-medium text-sm'>${moment(ticket.date).format("DD-MM-YYYY")}</p>
-                                </div>
-                                <div className='flex flex-col'>
-                                    <p className='font-light text-sm'>Class</p>
-                                    <p className='font-medium text-sm'>${ticket.class}</p>
-                                </div>
-                                <div className='flex flex-col'>
-                                    <p className='font-light text-sm'>No. of Seats</p>
-                                    <p className='font-medium text-sm'>${ticket.seats}</p>
-                                </div>
-                                <div className='flex flex-col mr-5'>
-                                    <p className='font-light text-sm'>Status</p>
-                                    <p className='font-medium text-sm'>${ticket.status}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="tickets">Tickets</span>
-                    </div>
-                    <div class="item-right">
-                        {/* <img className='h-60 mt-5' src="/images/assets/qrcode.png" alt="" /> */}
-                        <QRCode value=${qrCodeValue} className='mt-5'
-                            bgColor="#C0A04C" fgColor="#ffff" level='L' size="240" />
-                        <span class="up-border"></span>
-                        <span class="down-border"></span>
-                    </div>
-                </div>
-
-            </div>
-                </body>
-            </html>
-        `;
-
-        await page.setContent(pdfContent);
-        const pdfBuffer = await page.pdf();
-
-        await browser.close();
-
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=generated-pdf.pdf');
-        res.send(pdfBuffer);
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        res.status(500).send('Internal Server Error');
-    }
-}

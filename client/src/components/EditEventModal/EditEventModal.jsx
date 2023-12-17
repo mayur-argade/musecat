@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { VendorUpdateEvent, GetAllCategory, getAllVenues } from '../../http/index'
+import { VendorUpdateEvent, GetAllCategory, getAllVenues, handleUpload } from '../../http/index'
 import JoditEditor from 'jodit-react';
 import toast, { Toaster } from 'react-hot-toast';
 import AddVenueModal from './AddVenueModal';
@@ -24,6 +24,7 @@ const EditEventModal = ({ onClose, data }) => {
     const [minDateTime, setMinDateTime] = useState('');
     const [listCategory, setListCategory] = useState([])
     const [listVenues, setListVenues] = useState([])
+    const [subLoading, setSubLoading] = useState(false)
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -68,8 +69,8 @@ const EditEventModal = ({ onClose, data }) => {
         eventstarttime = data.date.recurring.startTime
     }
 
-    console.log("--> --> -->",eventstartdate)
-    console.log("--> --> -->",eventenddate)
+    console.log("--> --> -->", eventstartdate)
+    console.log("--> --> -->", eventenddate)
 
     const [title, setTitle] = useState(data.title)
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
@@ -113,6 +114,9 @@ const EditEventModal = ({ onClose, data }) => {
 
     const [eventCategory, setEventCategory] = useState(undefined)
     const [loading, setLoading] = useState(false)
+    const [Crfile, setCrfile] = useState(null)
+    const [fileURL, setFileURL] = useState('');
+
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
     const handleCheckboxChange = () => {
@@ -252,9 +256,14 @@ const EditEventModal = ({ onClose, data }) => {
     };
 
     const handleCategoryChange = (index, field, value) => {
-        const updatedCategories = [...categories];
-        updatedCategories[index][field] = value;
-        setCategories(updatedCategories);
+        setCategories((prevCategories) => {
+            const updatedCategories = [...prevCategories];
+            updatedCategories[index] = {
+                ...updatedCategories[index],
+                [field]: value,
+            };
+            return updatedCategories;
+        });
     };
 
     const handleSave = async () => {
@@ -292,6 +301,25 @@ const EditEventModal = ({ onClose, data }) => {
 
         }
 
+        let response;
+        if (Crfile != null) {
+            const formData = new FormData();
+            formData.append('file', Crfile);
+            setSubLoading(true)
+            response = await handleUpload(formData)
+                .then((response) => {
+                    console.log('Upload successful:', response);
+                    console.log(response.data.data)
+                    setFileURL(response.data.data)
+                    return response.data.data
+                    // Do something with the response if needed
+                })
+                .catch((error) => {
+                    console.error('Error during upload:', error);
+                    // Handle the error if needed
+                });
+        }
+
         const eventdata = {
             eventid: data._id,
             title: title,
@@ -309,7 +337,7 @@ const EditEventModal = ({ onClose, data }) => {
             banner: banner,
             date: eventdate,
             additinalImages: additinalPhotos,
-            video: video,
+            video: response,
             seatingMap: seatingMap,
             facebook: fb,
             instagram: insta,
@@ -322,18 +350,18 @@ const EditEventModal = ({ onClose, data }) => {
 
         console.log(eventdata)
 
-        setLoading(true)
+        setSubLoading(true)
         try {
             console.log(eventdata)
             const { data } = await VendorUpdateEvent(eventdata)
-            setLoading(false)
+            setSubLoading(false)
             console.log(data)
             if (data.success == true) {
-                toast.success("Event is successfully added")
-                window.location.reload()
+                toast.success("Event saved")
+                // window.location.reload()
             } else if (data.success == false) {
                 toast.error(data.data)
-                window.alert(data.data)
+                // window.alert(data.data)
             }
         } catch (error) {
             console.log(error)
@@ -341,485 +369,478 @@ const EditEventModal = ({ onClose, data }) => {
         onClose(); // This will close the modal
     };
 
-    if (listCategory.length == 0 || listCategory == null || listVenues == null) {
-        return (
-            <div className="h-screen w-full flex justify-center align-middle items-center">
-                <img src="/images/icons/loading.svg" alt="" />
-            </div>
-        )
-    } else {
-        return (
-            <div>
-                <Toaster />
-                {
-                    !loading
-                        ?
-                        <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
-                            <div className='w-96 md:w-[1000px]'>
-                                <div className="modal bg-white px-3 py-4">
-                                    <div className='text-left flex justify-start items-start align-middle'>
-                                        <p className='text-md font-bold'>Event Details</p>
-                                    </div>
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name *">Title  *</label>
-                                        <input
-                                            type="text"
-                                            defaultValue={data.title}
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            onChange={((e) => setTitle(e.target.value))}
-                                            placeholder='Breakfast and poolpass'
-                                        />
-                                    </div>
+    return (
+        <div>
+            <Toaster />
+            {
+                !subLoading
+                    ?
+                    <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
+                        <div className='w-96 md:w-[1000px]'>
+                            <div className="modal bg-white px-3 py-4">
+                                <div className='text-left flex justify-start items-start align-middle'>
+                                    <p className='text-md font-bold'>Event Details</p>
+                                </div>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name *">Title  *</label>
+                                    <input
+                                        type="text"
+                                        defaultValue={data.title}
+                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                        onChange={((e) => setTitle(e.target.value))}
+                                        placeholder='Breakfast and poolpass'
+                                    />
+                                </div>
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Short Description *</label>
-                                        <input
-                                            type="text"
-                                            defaultValue={data.shortDescription}
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Breakfast and poolpass'
-                                            onChange={((e) => setShortDesc(e.target.value))}
-                                        />
-                                    </div>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name">Short Description *</label>
+                                    <input
+                                        type="text"
+                                        defaultValue={data.shortDescription}
+                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                        placeholder='Breakfast and poolpass'
+                                        onChange={((e) => setShortDesc(e.target.value))}
+                                    />
+                                </div>
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Event Information  *</label>
-                                        <JoditEditor
-                                            ref={editor}
-                                            value={content}
-                                            config={config}
-                                            tabIndex={1} // tabIndex of textarea
-                                            onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                        />
-                                    </div>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name">Event Information  *</label>
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={content}
+                                        config={config}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                    />
+                                </div>
 
-                                    <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
-                                    <div className="flex align-middle items-center  w-full mt-2 space-x-4">
-                                        <div className="flex w-full row1 space-x-4 ">
-                                            <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='input-container text-xs mt-1' htmlFor="first name">Start Date</label>
-                                                <input
-                                                    type="datetime-local"
-                                                    value={startDate}
-                                                    min={minDateTime}
-                                                    id="session-date"
-                                                    onChange={((e) => setStartDate(e.target.value))}
-                                                    className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
-                                                />
-                                            </div>
-                                        </div>
-                                        <p className='text-center'>to</p>
-                                        <div className="flex w-full row1 space-x-4 ">
-                                            <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">End Date</label>
-                                                <input
-                                                    type="datetime-local"
-                                                    value={endDate}
-                                                    min={minDateTime}
-                                                    id="session-date"
-                                                    onChange={((e) => setEndDate(e.target.value))}
-                                                    className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
-                                                />
-                                            </div>
+                                <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
+                                <div className="flex align-middle items-center  w-full mt-2 space-x-4">
+                                    <div className="flex w-full row1 space-x-4 ">
+                                        <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='input-container text-xs mt-1' htmlFor="first name">Start Date</label>
+                                            <input
+                                                type="datetime-local"
+                                                value={startDate}
+                                                min={minDateTime}
+                                                id="session-date"
+                                                onChange={((e) => setStartDate(e.target.value))}
+                                                className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                                            />
                                         </div>
                                     </div>
-
-                                    <div className="flex space-x-2 align-middle ml-2 mt-1 mb-3">
-                                        <label className="block">
-                                            <input defaultChecked={!check} type="checkbox" className="w-4 h-4 rounded" name="recurring" id="recurring" onChange={((e) => setDatetype(!e.target.checked))} />
-                                            <span className='ml-1 text-sm '>
-                                                Recurring Event ?
-                                            </span>
-                                        </label>
-
-                                        {/* <label htmlFor="recurring">Recurring Event ?</label> */}
+                                    <p className='text-center'>to</p>
+                                    <div className="flex w-full row1 space-x-4 ">
+                                        <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">End Date</label>
+                                            <input
+                                                type="datetime-local"
+                                                value={endDate}
+                                                min={minDateTime}
+                                                id="session-date"
+                                                onChange={((e) => setEndDate(e.target.value))}
+                                                className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                                            />
+                                        </div>
                                     </div>
-                                    {
-                                        datetype
-                                            ?
-                                            <></>
-                                            :
-                                            <div>
-                                                <p className='text-sm mt-2'>Select Days of the Week For recurring event :</p>
-                                                <div className='flex space-x-4 align-middle items-center '>
-                                                    {
-                                                        days.map((day, index) => (
-                                                            <div className='mx-2'>
-                                                                <label key={index} className="block">
-                                                                    <input
-                                                                        className='rounded-sm mr-1'
-                                                                        defaultChecked={data.date?.recurring && data.date.recurring.days.includes(day)}
-                                                                        type="checkbox"
-                                                                        value={day}
-                                                                        checked={selectedDays.includes(day)}
-                                                                        onChange={() => handleDayClick(day)}
-                                                                    />
-                                                                    <span className='ml-0 text-sm '>
-                                                                        {day}
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        ))
-                                                    }
+                                </div>
 
-                                                    <div className='flex'>
-                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
-                                                            <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
-                                                            <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
-                                                                onChange={((e) => setStartTime(e.target.value))}
-                                                            />
-                                                        </div>
-                                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                            <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
-                                                            <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
-                                                                onChange={((e) => setEndTime(e.target.value))}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                    }
-
-                                    <label className="relative inline-flex items-center mb-5 cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            // value=""
-                                            className="sr-only peer"
-                                            onChange={handleCheckboxChange}
-                                            checked={showEndDate} // Bind the checked state to the showEndDate state
-                                        />
-                                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
+                                <div className="flex space-x-2 align-middle ml-2 mt-1 mb-3">
+                                    <label className="block">
+                                        <input defaultChecked={!check} type="checkbox" className="w-4 h-4 rounded" name="recurring" id="recurring" onChange={((e) => setDatetype(!e.target.checked))} />
+                                        <span className='ml-1 text-sm '>
+                                            Recurring Event ?
+                                        </span>
                                     </label>
 
+                                    {/* <label htmlFor="recurring">Recurring Event ?</label> */}
+                                </div>
+                                {
+                                    datetype
+                                        ?
+                                        <></>
+                                        :
+                                        <div>
+                                            <p className='text-sm mt-2'>Select Days of the Week For recurring event :</p>
+                                            <div className='flex space-x-4 align-middle items-center '>
+                                                {
+                                                    days.map((day, index) => (
+                                                        <div className='mx-2'>
+                                                            <label key={index} className="block">
+                                                                <input
+                                                                    className='rounded-sm mr-1'
+                                                                    defaultChecked={data.date?.recurring && data.date.recurring.days.includes(day)}
+                                                                    type="checkbox"
+                                                                    value={day}
+                                                                    checked={selectedDays.includes(day)}
+                                                                    onChange={() => handleDayClick(day)}
+                                                                />
+                                                                <span className='ml-0 text-sm '>
+                                                                    {day}
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    ))
+                                                }
 
-                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Select Location  *</label>
-                                        <select
-                                            defaultValue={data.location._id}
-                                            type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
-                                            onChange={((e) => setLocation(e.target.value))}
-                                            placeholder='Theatre of Arts'
-                                        >
-                                            {
-                                                listVenues.length == 0
-                                                    ?
-                                                    <option className=' text-sm font-medium' >Select Venue
-                                                    </option>
-                                                    :
-                                                    <>
-                                                        <option className=' text-sm font-medium' >Select Venue
-                                                        </option>
-                                                        {
-                                                            listVenues.map((venue) => (
-                                                                <option className=' text-sm font-medium' key={venue._id} value={venue._id}>{venue.name}</option>
-                                                            ))
-                                                        }
-                                                    </>
-                                            }
-                                        </select>
-                                    </div>
-                                    <button onClick={(() => setShowVenuecreate(!showVenuecreate))}>
+                                                <div className='flex'>
+                                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
+                                                        <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
+                                                        <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
+                                                            onChange={((e) => setStartTime(e.target.value))}
+                                                        />
+                                                    </div>
+                                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                        <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
+                                                        <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
+                                                            onChange={((e) => setEndTime(e.target.value))}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                }
+
+                                <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        // value=""
+                                        className="sr-only peer"
+                                        onChange={handleCheckboxChange}
+                                        checked={showEndDate} // Bind the checked state to the showEndDate state
+                                    />
+                                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                    <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
+                                </label>
+
+
+                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name">Select Location  *</label>
+                                    <select
+                                        value={location}
+                                        type="text"
+                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
+                                        onChange={((e) => setLocation(e.target.value))}
+                                        placeholder='Theatre of Arts'
+                                    >
                                         {
-                                            showVenuecreate
+                                            listVenues.length == 0
                                                 ?
-                                                <p className='mt-1'>
-                                                    <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Close Add Venue form</span>
-                                                </p>
+                                                <option className=' text-sm font-medium' >Select Venue
+                                                </option>
                                                 :
                                                 <>
-                                                    <p className='mt-1'>
-                                                        <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Add Venue</span> <span className='ml-0 text-xs'>(If your Venue is NOT in the above list)</span>
-                                                    </p>
+                                                    <option className=' text-sm font-medium' >Select Venue
+                                                    </option>
+                                                    {
+                                                        listVenues.map((venue) => (
+                                                            <option className=' text-sm font-medium' key={venue._id} value={venue._id}>{venue.name}</option>
+                                                        ))
+                                                    }
                                                 </>
-
                                         }
-                                    </button>
-
+                                    </select>
+                                </div>
+                                <button onClick={(() => setShowVenuecreate(!showVenuecreate))}>
                                     {
                                         showVenuecreate
                                             ?
-                                            <AddVenueModal />
+                                            <p className='mt-1'>
+                                                <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Close Add Venue form</span>
+                                            </p>
                                             :
-                                            <></>
+                                            <>
+                                                <p className='mt-1'>
+                                                    <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Add Venue</span> <span className='ml-0 text-xs'>(If your Venue is NOT in the above list)</span>
+                                                </p>
+                                            </>
+
                                     }
+                                </button>
+
+                                {
+                                    showVenuecreate
+                                        ?
+                                        <AddVenueModal />
+                                        :
+                                        <></>
+                                }
 
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
-                                        <JoditEditor
-                                            ref={editor}
-                                            value={venueDescription}
-                                            config={config}
-                                            tabIndex={1} // tabIndex of textarea
-                                            onBlur={newContent => setVenueDescription(newContent)} // preferred to use only this option to update the content for performance reasons
-                                        />
-                                    </div>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={venueDescription}
+                                        config={config}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setVenueDescription(newContent)} // preferred to use only this option to update the content for performance reasons
+                                    />
+                                </div>
 
-                                    <div className='mt-3 flex flex-col  pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Category  *</label>
-                                        <CategorySelector
-                                            categories={listCategory}
-                                            selectedCategories={selectedCategories}
-                                            onChange={handleEventCategoryChange}
-                                        />
-                                    </div>
+                                <div className='mt-3 flex flex-col  pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name">Category  *</label>
+                                    <CategorySelector
+                                        categories={listCategory}
+                                        selectedCategories={selectedCategories}
+                                        onChange={handleEventCategoryChange}
+                                    />
+                                </div>
 
-                                    <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
+                                <div className='mb-3 mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
 
-                                        <h3 class="font-semibold text-gray-900 dark:text-white">Features *</h3>
-                                        <ul class="w-full flex flex-wrap">
-                                            {
-                                                Features.list.map((feature) => (
-                                                    <li class="w-auto border-b border-gray-200 sm:border-b-0 dark:border-gray-600">
-                                                        <div class="flex  items-center pl-3">
-                                                            <input id={feature}
-                                                                type="checkbox"
-                                                                defaultChecked={data.features && data.features.includes(feature)}
-                                                                value={feature}
-                                                                checked={selectedFeature.includes(feature)}
-                                                                onChange={() => handleFeaturesClick(feature)}
-                                                                class="w-4 h-4 rounded" />
-                                                            <label for={feature} class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{feature}</label>
-                                                        </div>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </div>
-
-
-                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Contact</label>
-                                    <div className=' mb-3 flex flex-col justify-between'>
-                                        <div className='w-full flex justify-between'>
-                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
-                                                <input
-                                                    defaultValue={data.facebook}
-                                                    type="text"
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                    placeholder='Link for FB page'
-                                                    onChange={((e) => setFb(e.target.value))}
-                                                />
-                                            </div>
-                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
-                                                <input
-                                                    defaultValue={data.instagram}
-                                                    type="text"
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                    placeholder='Link for Instagram page'
-                                                    onChange={((e) => setInsta(e.target.value))}
-                                                />
-                                            </div>
-                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Email</label>
-                                                <input
-                                                    defaultValue={data.email}
-                                                    type="email"
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                    placeholder='Your email address'
-                                                    onChange={((e) => setMail(e.target.value))}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="w-full flex justify-between">
-                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Phone No. *</label>
-                                                <input
-                                                    defaultValue={data.phoneNo}
-                                                    type='tel'
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                    placeholder='Phone number'
-                                                    onChange={((e) => setNumber(e.target.value))}
-                                                />
-                                            </div>
-
-                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
-                                                <input
-                                                    defaultValue={data.whatsapp}
-                                                    type="number"
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                    placeholder='Whatsapp number'
-                                                    onChange={((e) => setWpNumber(e.target.value))}
-                                                />
-                                            </div>
-
-                                            <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                                <label className='text-xs mt-1' htmlFor="first name">Website link</label>
-                                                <input
-                                                    defaultValue={data.website}
-                                                    type="link"
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                                    placeholder='Website Link'
-                                                    onChange={((e) => setWebsite(e.target.value))}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Ticket Sales</label>
-                                    <div>
-                                        {categories.map((category, index) => (
-                                            <div key={index} className='w-full flex flex-row  '>
-                                                <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >Class name</label>
-                                                    <input
-                                                        type='text'
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
-                                                        placeholder='Class Name'
-                                                        value={category.className}
-                                                        onChange={(e) => handleCategoryChange(index, 'className', e.target.value)}
-                                                    />
-                                                </div>
-                                                <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >No of seats</label>
-                                                    <input
-                                                        type='number'
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
-                                                        placeholder='No of Seats'
-                                                        value={category.seats}
-                                                        onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
-                                                    />
-                                                </div>
-                                                <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
-                                                    <label className='text-xs mt-3' >Price</label>
-                                                    <input
-                                                        type='number'
-                                                        min="100"
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
-                                                        placeholder='Price'
-                                                        value={category.price}
-                                                        onChange={(e) => handleCategoryChange(index, 'price', e.target.value)}
-                                                    />
-                                                </div>
-                                                {index > 0 && (
-                                                    <button onClick={() => removeCategory(index)} className='mt-1 ml-2'>
-                                                        Delete
-                                                    </button>
-                                                )}
-                                            </div>
-                                        ))}
-
-                                        <button onClick={addCategory} className='ml-2 mt-2'>
-                                            + Add Ticket Type
-                                        </button>
-                                    </div>
-
-                                    <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">Terms And Condition  *</label>
-                                        <input
-
-                                            type="text"
-                                            className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
-                                            placeholder='Link for terms and condition'
-                                            onChange={((e) => setTermsAndConditions(e.target.value))}
-                                        />
-                                    </div>
-
-
-                                    <div>
-                                        <label className='ml-2 text-sm font-semibold mt-1' >Additional Terms & Conditions</label>
-
-                                        {inputFields.map((value, index) => (
-                                            <div
-                                                key={index}
-                                                className='flex mt-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'
-                                            >
-                                                <label className='text-xs mt-1' htmlFor={`field-${index}`}>
-                                                    Terms or condition {index + 1}
-                                                </label>
-                                                <div className="flex align-middle justify-between">
-
-                                                    <input
-                                                        type='text'
-                                                        id={`field-${index}`}
-                                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium'
-                                                        placeholder={`Enter term or condition ${index + 1}`}
-                                                        value={value}
-                                                        onChange={(e) => handleInputChange(index, e.target.value)}
-                                                    />
-                                                    {
-                                                        index == 0
-                                                            ?
-                                                            <>
-                                                            </>
-                                                            :
-                                                            <button className="" onClick={() => removeInputField(index)}>
-                                                                Delete
-                                                            </button>
-                                                    }
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                        {inputFields.length < 3 && (
-                                            <button onClick={addInputField} className='mt-3'>
-                                                + Add term and condition
-                                            </button>
-                                        )}
-                                    </div>
-
-
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-                                        onChange={capturePhoto}
-                                        accept="image/*"
-                                        id="photo" type="file" />
-
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-                                        onChange={captureAdditionalPhotos}
-                                        accept="image/*"
-                                        multiple id="photo" type="file" />
-
-
-                                    <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
-
-                                        onChange={captureSeatingMap}
-                                        accept="image/*"
-                                        id="photo" type="file" />
-
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
-
-                                        onChange={captureBanner}
-                                        accept="image/*"
-                                        type="file" />
-
-                                    <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
-                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
-                                        accept="video/*"
-                                        onChange={captureVideo}
-                                        type="file" />
-
-                                    <div className="button flex justify-center items-center mt-5">
-                                        <button
-                                            type="button"
-                                            onClick={handleSave}
-                                            className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
-
+                                    <h3 class="font-semibold text-gray-900 dark:text-white">Features *</h3>
+                                    <ul class="w-full flex flex-wrap">
+                                        {
+                                            Features.list.map((feature) => (
+                                                <li class="w-auto border-b border-gray-200 sm:border-b-0 dark:border-gray-600">
+                                                    <div class="flex  items-center pl-3">
+                                                        <input id={feature}
+                                                            type="checkbox"
+                                                            defaultChecked={data.features && data.features.includes(feature)}
+                                                            value={feature}
+                                                            checked={selectedFeature.includes(feature)}
+                                                            onChange={() => handleFeaturesClick(feature)}
+                                                            class="w-4 h-4 rounded" />
+                                                        <label for={feature} class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{feature}</label>
+                                                    </div>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
                                 </div>
 
 
+                                <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Contact</label>
+                                <div className=' mb-3 flex flex-col justify-between'>
+                                    <div className='w-full flex justify-between'>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                            <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
+                                            <input
+                                                defaultValue={data.facebook}
+                                                type="text"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Link for FB page'
+                                                onChange={((e) => setFb(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Insta URL</label>
+                                            <input
+                                                defaultValue={data.instagram}
+                                                type="text"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Link for Instagram page'
+                                                onChange={((e) => setInsta(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Email</label>
+                                            <input
+                                                defaultValue={data.email}
+                                                type="email"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Your email address'
+                                                onChange={((e) => setMail(e.target.value))}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex justify-between">
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Phone No. *</label>
+                                            <input
+                                                defaultValue={data.phoneNo}
+                                                type='tel'
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Phone number'
+                                                onChange={((e) => setNumber(e.target.value))}
+                                            />
+                                        </div>
+
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
+                                            <input
+                                                defaultValue={data.whatsapp}
+                                                type="number"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Whatsapp number'
+                                                onChange={((e) => setWpNumber(e.target.value))}
+                                            />
+                                        </div>
+
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Website link</label>
+                                            <input
+                                                defaultValue={data.website}
+                                                type="link"
+                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                placeholder='Website Link'
+                                                onChange={((e) => setWebsite(e.target.value))}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label class="ml-2 text-sm font-semibold  dark:text-white" for="file_input">Ticket Sales</label>
+                                <div>
+                                    {categories.map((category, index) => (
+                                        <div key={index} className='w-full flex flex-row'>
+                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-3'>Class name</label>
+                                                <input
+                                                    type='text'
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
+                                                    placeholder='Class Name'
+                                                    value={category.className || ''}
+                                                    onChange={(e) => handleCategoryChange(index, 'className', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-3'>No of seats</label>
+                                                <input
+                                                    type='number'
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                                                    placeholder='No of Seats'
+                                                    value={category.seats || ''}
+                                                    onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-3'>Price</label>
+                                                <input
+                                                    type='number'
+                                                    min="100"
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                                                    placeholder='Price'
+                                                    value={category.price || ''}
+                                                    onChange={(e) => handleCategoryChange(index, 'price', e.target.value)}
+                                                />
+                                            </div>
+                                            {index > 0 && (
+                                                <button onClick={() => removeCategory(index)} className='mt-1 ml-2'>
+                                                    Delete
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+
+                                    <button onClick={addCategory} className='ml-2 mt-2'>
+                                        + Add Ticket Type
+                                    </button>
+                                </div>
+
+
+                                <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <label className='text-sm font-semibold mt-1' htmlFor="first name">Terms And Condition  *</label>
+                                    <input
+
+                                        type="text"
+                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                        placeholder='Link for terms and condition'
+                                        onChange={((e) => setTermsAndConditions(e.target.value))}
+                                    />
+                                </div>
+
+
+                                <div>
+                                    <label className='ml-2 text-sm font-semibold mt-1' >Additional Terms & Conditions</label>
+
+                                    {inputFields.map((value, index) => (
+                                        <div
+                                            key={index}
+                                            className='flex mt-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'
+                                        >
+                                            <label className='text-xs mt-1' htmlFor={`field-${index}`}>
+                                                Terms or condition {index + 1}
+                                            </label>
+                                            <div className="flex align-middle justify-between">
+
+                                                <input
+                                                    type='text'
+                                                    id={`field-${index}`}
+                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium'
+                                                    placeholder={`Enter term or condition ${index + 1}`}
+                                                    value={value}
+                                                    onChange={(e) => handleInputChange(index, e.target.value)}
+                                                />
+                                                {
+                                                    index == 0
+                                                        ?
+                                                        <>
+                                                        </>
+                                                        :
+                                                        <button className="" onClick={() => removeInputField(index)}>
+                                                            Delete
+                                                        </button>
+                                                }
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    {inputFields.length < 3 && (
+                                        <button onClick={addInputField} className='mt-3'>
+                                            + Add term and condition
+                                        </button>
+                                    )}
+                                </div>
+
+
+                                <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                    onChange={capturePhoto}
+                                    accept="image/*"
+                                    id="photo" type="file" />
+
+                                <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                    onChange={captureAdditionalPhotos}
+                                    accept="image/*"
+                                    multiple id="photo" type="file" />
+
+
+                                <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+
+                                    onChange={captureSeatingMap}
+                                    accept="image/*"
+                                    id="photo" type="file" />
+
+                                <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+
+                                    onChange={captureBanner}
+                                    accept="image/*"
+                                    type="file" />
+
+                                <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                    accept="video/*"
+                                    onChange={captureVideo}
+                                    type="file" />
+
+                                <div className="button flex justify-center items-center mt-5">
+                                    <button
+                                        type="button"
+                                        onClick={handleSave}
+                                        className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+
                             </div>
-                        </section>
-                        :
-                        <div className="h-screen w-full flex justify-center align-middle items-center">
-                            <img src="/images/icons/loading.svg" alt="" />
+
+
                         </div>
-                }
-            </div >
-        )
-    }
+                    </section>
+                    :
+                    <div className="h-screen w-full flex justify-center align-middle items-center">
+                        <img src="/images/icons/loading.svg" alt="" />
+                    </div>
+            }
+        </div >
+    )
 }
 
 export default EditEventModal

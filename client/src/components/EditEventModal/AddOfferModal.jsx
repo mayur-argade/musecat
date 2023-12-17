@@ -406,7 +406,11 @@ const AddOfferModal = ({ onClose }) => {
             if (data.success == true) {
                 toast.success("Offer is successfully added")
                 setTimeout(() => {
-                    navigate(`/vendor/event/${data.data._id}`)
+                    if (window.location.href.includes('/admin/')) {
+                        navigate(`/admin/event/${data.data._id}`)
+                    } else {
+                        navigate(`/vendor/event/${data.data._id}`)
+                    }
                 }, 2000);
             } else if (data.success == false) {
                 toast.error(data.data)
@@ -923,7 +927,7 @@ const AddOfferModal = ({ onClose }) => {
                                     </span>
                                     <Tooltip data={"Featured Image is Main Poster of your offer which will be visible to the clients "} />
                                 </div>
-                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
                                     onChange={capturePhoto}
                                     accept="image/*"
                                     id="photo" type="file" />

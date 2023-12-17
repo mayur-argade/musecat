@@ -3,7 +3,12 @@ const moment = require('moment')
 
 class TicketService {
     async findTicket(filter) {
-        const ticket = TicketModel.findOne(filter);
+        const ticket = TicketModel.findOne(filter).populate({
+            path: 'eventid',
+            populate: {
+                path: 'location',
+            },
+        });
         return ticket;
     }
 
