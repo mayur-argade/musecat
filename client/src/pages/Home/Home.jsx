@@ -736,7 +736,7 @@ const Home = () => {
                                                         :
                                                         editorpick.data.map((event) => (
                                                             <Link to={`/events/${event._id}`}>
-                                                                <EventCard data={event} />
+                                                                <EventCard width={'w-52'}data={event} />
                                                             </Link>
                                                         ))
                                                 }

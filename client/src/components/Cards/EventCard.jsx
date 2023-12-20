@@ -5,7 +5,7 @@ import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, g
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
 
-const EventCard = ({ data }) => {
+const EventCard = ({ data, width }) => {
 
     // console.log(data)
 
@@ -43,7 +43,7 @@ const EventCard = ({ data }) => {
 
     return (
         <>
-            <div className='mx-1 rounded-md bg-[#F3F3F3] my-2'>
+            <div className={`mx-1 ${width} rounded-md bg-[#F3F3F3] my-2`}>
                 <div className='image'>
                     <img className="rounded-md aspect-square" src={`${data.displayPhoto}`} alt="" />
                 </div>
