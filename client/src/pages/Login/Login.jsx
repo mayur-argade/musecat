@@ -7,7 +7,7 @@ import { ClientLogin, ClientGoogleLogin, googleLogin } from "../../http/index"
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 // import { LoginSocialFacebook } from "reactjs-social-login";
 // import { FacebookLoginButton } from "react-social-login-buttons";
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
 
 const Login = () => {
 
@@ -130,12 +130,12 @@ const Login = () => {
                 </div>
 
                 <div className="max-w-sm w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
-                    <FacebookLogin
+                    {/* <FacebookLogin
                         appId="785762826618684"
                         autoLoad={false}
                         fields="name,email,picture"
                         callback={responseFacebook}
-                    />
+                    /> */}
                     {/* <LoginSocialFacebook
                         appId="785762826618684"
                         onResolve={(response) => {
