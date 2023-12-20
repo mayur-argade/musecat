@@ -11,7 +11,6 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
-import './events.css'
 import Features from '../../utils/Data'
 
 const Events = () => {
@@ -215,6 +214,13 @@ const Events = () => {
         };
     }, []);
 
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const handleComponentClick = () => {
+      setShowDatePicker(true);
+    };
+
+    
     // console.log("trending events", trending)
     if (response.data == null || trending.data == null) {
         return (
@@ -351,7 +357,7 @@ const Events = () => {
                                     </div>
                                 </div>
 
-                                <div className="datepicker">
+                                <div className="">
                                     <div className="px-4">
                                         <label for=""></label>
                                         <input
@@ -365,7 +371,7 @@ const Events = () => {
                             <div className='mainContainer grid grid-cols-1 lg:grid-cols-3'>
                                 <div className="1 col-span-2">
                                     <div className="left w-full flex justify-center">
-                                        <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 s:grid-cols-1 m:grid-cols-1 l:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                        <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 m:grid-cols-2 l:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                                             {loading
                                                 ?
                                                 <>
