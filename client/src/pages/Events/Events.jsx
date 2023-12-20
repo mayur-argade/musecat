@@ -12,13 +12,14 @@ import { Link } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
 import Features from '../../utils/Data'
+import './events.css'
 
 const Events = () => {
     let [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
         lng: 58.37132692337036,
     });
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/datepicker.min.js"></script>
     let coordinates = [];
     let { category } = useParams();
     const categorydisplayname = category
@@ -28,6 +29,21 @@ const Events = () => {
 
     document.title = `muscat ~ ${category}`
 
+    const [searchActive, setSearchActive] = useState(false);
+    const [hideFilter, setHideFilter] = useState(false);
+    const [hideDate, setHideDate] = useState(false);
+
+    const searchInputRef = useRef(null);
+
+    const toggleSearch = () => {
+        setHideFilter(true);
+        setHideDate(true);
+    };
+
+    const MakeNormal = () => {
+        setHideFilter(false);
+        setHideDate(false);
+    }
 
     const [loading, setLoading] = useState(false)
     const [response, setResponse] = useState({});
@@ -217,10 +233,10 @@ const Events = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     const handleComponentClick = () => {
-      setShowDatePicker(true);
+        setShowDatePicker(true);
     };
 
-    
+
     // console.log("trending events", trending)
     if (response.data == null || trending.data == null) {
         return (
@@ -263,17 +279,20 @@ const Events = () => {
                                                 </svg>
                                             </div>
                                             <input
+                                                ref={searchInputRef}
                                                 type="text"
                                                 id="table-search"
                                                 className={`placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
                                                 onChange={(e) => setSearch(e.target.value)}
                                                 placeholder="Search "
+                                                onFocus={toggleSearch}
+                                                onBlur={MakeNormal}
                                             />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="filterbyfeature">
+                                <div className={`filterbyfeature ${hideFilter ? 'hidden md:block' : ''}`}>
                                     <div className="relative inline-block text-left">
                                         <button
                                             onClick={toggleDropdown}
@@ -356,22 +375,33 @@ const Events = () => {
                                         )}
                                     </div>
                                 </div>
-
-                                <div className="">
-                                    <div className="px-4">
-                                        <label for=""></label>
+                                <div className="flex items-center space-x-2">
+                                    <span className="datepicker-toggle mb-5">
+                                        <span className="datepicker-toggle-button">
+                                            <button
+                                                className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
+                                            >
+                                                <span className="hidden md:block text-gray-500">Calendar</span>
+                                                <span className="block md:hidden text-gray-500">Calendar</span>
+                                                <img className="ml-2 w-4 h-4" src="/images/icons/calendar.png" alt="" />
+                                            </button>
+                                        </span>
                                         <input
-                                            id=""
+                                            id="calendarInput"
                                             onChange={(e) => setFilterDate(e.target.value)}
-                                            className='cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-32 md:w-40' type="date" />
-                                    </div>
+                                            className="datepicker-input cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-32 md:w-40"
+                                            type="date"
+                                            placeholder="Calendar"
+                                        />
+                                    </span>
                                 </div>
+
                             </div>
 
                             <div className='mainContainer grid grid-cols-1 lg:grid-cols-3'>
                                 <div className="1 col-span-2">
                                     <div className="left w-full flex justify-center">
-                                        <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 m:grid-cols-2 l:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                        <div className="mx-2 grid grid-flow-row text-neutral-600 grid-cols-2 m:grid-cols-2 l:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                                             {loading
                                                 ?
                                                 <>

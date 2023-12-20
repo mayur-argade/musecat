@@ -7,7 +7,8 @@ import { ClientLogin, ClientGoogleLogin, googleLogin } from "../../http/index"
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 // import { LoginSocialFacebook } from "reactjs-social-login";
 // import { FacebookLoginButton } from "react-social-login-buttons";
-// import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+
 
 const Login = () => {
 
@@ -17,7 +18,7 @@ const Login = () => {
     const responseFacebook = (response) => {
         console.log(response);
         // Handle the Facebook login response here
-      };
+    };
 
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
@@ -130,24 +131,7 @@ const Login = () => {
                 </div>
 
                 <div className="max-w-sm w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
-                    {/* <FacebookLogin
-                        appId="785762826618684"
-                        autoLoad={false}
-                        fields="name,email,picture"
-                        callback={responseFacebook}
-                    /> */}
-                    {/* <LoginSocialFacebook
-                        appId="785762826618684"
-                        onResolve={(response) => {
-                            console.log(response);
-                            setProfile(response.data);
-                        }}
-                        onReject={(error) => {
-                            console.log(error);
-                        }}
-                    >
-                        <FacebookLoginButton />
-                    </LoginSocialFacebook> */}
+
                     <GoogleLogin
                         width={boxSize}
                         clientId="502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com" // Replace with your Google OAuth client ID
@@ -156,13 +140,23 @@ const Login = () => {
                         scope="profile email calender"
                     // ux_mode="redirect"
                     />
-                    {/* <button onClick={() => GoogleLoginButton} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                        <img src="/images/icons/google-icon.png" alt="" />
-                        <span className='mx-auto text-center'>
-                            Continue with Google
-                        </span>
-                    </button> */}
-
+                    <FacebookLogin
+                        appId="256981060503610"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                        render={renderProps => (
+                            <button
+                                onClick={renderProps.onClick}
+                                type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                                <img src="/images/icons/facebook-icon.png" alt="" />
+                                <span className='mx-auto text-center'>
+                                    Continue with Facebook
+                                </span>
+                            </button>
+                        )
+                        }
+                    />
                     <button
                         onClick={() => navigate("/signup")}
                         type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">

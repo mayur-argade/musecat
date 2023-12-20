@@ -382,8 +382,8 @@ const EventDescription = () => {
                 <Toaster />
                 <Navbar />
                 <Tabbar />
-                <div className='w-full flex justify-center'>
-                    <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
+                <div className='px-5 w-full flex justify-center'>
+                    <section className='w-full md:w-11/12 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
                         <section className=''>
                             <section>
                                 <div className="hidden md:flex align-middle items-center">
@@ -810,7 +810,7 @@ const EventDescription = () => {
                                     <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                         {response.data.upcomingEvents.map((event) => (
                                             <div >
-                                                < EventCard data={event} />
+                                                < EventCard width={'w-44 md:w-52'} data={event} />
                                             </div>
                                         ))}
                                     </div>
@@ -829,11 +829,11 @@ const EventDescription = () => {
                                                 </div>
 
                                                 <div className="">
-                                                    <div className='md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
+                                                    <div className='gap-3 md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
                                                         {
                                                             response.data.offers.map((offer) => (
                                                                 <Link to={`/events/${offer._id}`}>
-                                                                    <img className='w-44 h-64 md:w-56 md:h-72 snap-start rounded mx-2 ' src={`${offer.displayPhoto}`} alt="" />
+                                                                    <img className='w-36 h-48 m:w-44 m:52 md:w-52 md:h-72 rounded mx-2' src={`${offer.displayPhoto}`} alt="" />
                                                                 </Link>
                                                             ))
                                                         }

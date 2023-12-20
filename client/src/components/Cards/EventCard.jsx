@@ -43,10 +43,21 @@ const EventCard = ({ data, width }) => {
 
     return (
         <>
-            <div className={`mx-1 ${width} rounded-md bg-[#F3F3F3] my-2`}>
+            <div onClick={(() => navigate(`/events/${data._id}`))} className={`cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] my-2`}>
                 <div className='image'>
                     <img className="rounded-md aspect-square" src={`${data.displayPhoto}`} alt="" />
                 </div>
+                <button onClick={(e) => {
+                    e.stopPropagation(); // Prevent click event from propagating
+                    favoriteFeature(data._id);
+                }} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
+                    {
+                        isLiked ?
+                            <img className='' src="/images/icons/heart-fav.svg" alt="" />
+                            :
+                            <img src="/images/icons/heart.svg" alt="" />
+                    }
+                </button>
                 <div className="content mx-1">
                     {
                         data.date.type == 'dateRange'
