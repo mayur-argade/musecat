@@ -6,6 +6,7 @@ import { setAuth } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios'
+import './vendorSignup.css'
 
 
 const VendorSignup = () => {
@@ -92,10 +93,7 @@ const VendorSignup = () => {
         else if (!logo) {
             return toast.error("Please provide company logo")
         }
-        if (mobile.length !== 8) {
-            return toast.error("Please input valid phone number")
-        }
-
+        
         const formData = new FormData();
         formData.append('file', Crfile);
 
@@ -158,7 +156,7 @@ const VendorSignup = () => {
                         <h2 className="text-xl font-bold text-white md:text-black">Hello there</h2>
                     </div>
 
-                    <div className='space-y-4 max-h-96  overflow-y-auto'>
+                    <div className='space-y-4 max-h-96 overflow-y-auto scrollbar'>
                         <div>
                             <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="email"
                                 value={email} onChange={(e) => setEmail(e.target.value)} for="email" id='email' placeholder="Email" />
@@ -187,7 +185,7 @@ const VendorSignup = () => {
                         </div>
                         <div>
                             <div>
-                                <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="number" for="text" id='text'
+                                <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="tel" for="text" id='text'
                                     pattern="\d{8}"
                                     value={mobile} onChange={(e) => setMobile(e.target.value)}
                                     placeholder="Mobile Number" />
@@ -294,7 +292,10 @@ const VendorSignup = () => {
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
 
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">{selectedCrImage ? `Selected File: ${selectedCrImage.name}` : 'Upload CR PDF'}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        {Crfile ? `Selected File: ${Crfile.name}` : 'Upload CR PDF'}
+                                    </p>
+
                                 </div>
                                 <input onChange={(e) => setCrfile(e.target.files[0])} accept="application/pdf" id="crimage" type="file" className="hidden" />
                             </label>

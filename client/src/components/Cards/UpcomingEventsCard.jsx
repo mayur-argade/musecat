@@ -43,7 +43,7 @@ const UpcomingEventsCard = ({ event }) => {
                 <Toaster />
                 <div onClick={(() => navigate(`/events/${event._id}`))} className="cursor-pointer relative rounded-2xl w-52 h-85 mx-2  md:w-72 mb-2 md:h-[30rem] max-h-[30rem] bg-[#F3F3F3] top-0 md:mt-5">
                     <div className='absolute bottom-0 left-0 flex flex-col rounded-lg'>
-                        <img className="rounded-lg object-cover bg-center rounded-lg h-96 w-52 md:h-96 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
+                        <img className="rounded-lg object-cover bg-center rounded-lg h-52 w-52 md:h-96 md:w-72 relative top-0" src={`${event.displayPhoto}`} alt="" />
                         <button onClick={(e) => {
                             e.stopPropagation();
                             favoriteFeature(event._id)

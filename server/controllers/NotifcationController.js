@@ -15,3 +15,23 @@ exports.getVendorNotification = async (req, res) => {
         data: messages
     })
 }
+
+exports.clearNotifications = async (req, res) => {
+
+    try {
+        const notifications = await notificationService.deleteMany({ receiverid: req.user._id })
+
+        return res.status(200).json({
+            success: true,
+            data: "Notification cleared"
+        })
+    } catch (error) {
+
+        console.log(error)
+        
+        return res.status(500).json({
+            success: true,
+            data: "Internal Server Error"
+        })
+    }
+}

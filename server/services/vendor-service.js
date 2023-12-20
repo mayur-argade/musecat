@@ -20,6 +20,9 @@ class VendorService {
     }
 
     async updateVendor(data) {
+        if(data.password){
+        data.password = await bcrypt.hash(data.password, 10)
+        }
         const vendor = VendorModel.findOneAndUpdate({ _id: data._id }, data)
         return vendor;
     }
@@ -32,6 +35,11 @@ class VendorService {
     async deleteVendor(filter) {
         const vendor = await VendorModel.deleteOne(filter)
         console.log(vendor)
+        return vendor
+    }
+
+    async findAndUpdateVendor(filter, data) {
+        const vendor = await VendorModel.findOneAndUpdate(filter, data)
         return vendor
     }
 

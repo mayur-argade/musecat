@@ -44,7 +44,7 @@ const EventCard = ({ data }) => {
     return (
         <>
             <div className='cursor-pointer' onClick={(() => navigate(`/events/${data._id}`))}>
-                <div className="relative rounded-md mb-6 w-52 h-80 mx-3 max-h-96 bg-[#F3F3F3] top-0">
+                <div className="relative rounded-md mb-6 s:w-52 m:w-44 l:w-52 h-80 mx-2 max-h-96 bg-[#F3F3F3] top-0">
                     <div className='absolute bottom-0 left-0 flex flex-col'>
                         <img className="relative rounded-lg h-52 w-52 object-cover" src={`${data.displayPhoto}`} alt="" />
                         <button onClick={(e) => {
@@ -62,16 +62,16 @@ const EventCard = ({ data }) => {
                             {
                                 data.date.type == 'dateRange'
                                     ?
-                                    <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd, Do MMMM YYYY")}</p>
+                                    <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd,DD MMMM YYYY")}</p>
                                     :
                                     <p className='text-xs mt-2 font-medium'>
                                         {data.date.recurring.days.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
                                     </p>
                             }
                             <p className='text-xs mt-2 font-medium'>
-                                {data.title.length > 25 ? data.title.substring(0, 25) + '...' : data.title},
+                                {data.title},
                             </p>
-                            <p className='text-xs mt-2 font-medium'>{data.location?.name || ""}</p>
+                            <p className='text-xs mt-2 font-medium'>{ data.location?.name.length > 25 ? data.location?.name.substring(0,25) : data.location.name }</p>
                             <p className="mt-1 mb-1 text-xs font-light">{data.type}</p>
                         </div>
                     </div>

@@ -130,9 +130,17 @@ exports.updateUserProfile = async (req, res) => {
         let uploadedPhoto = ''
 
         if (photo) {
-            uploadedPhoto = await cloudinary.v2.uploader.upload(photo, {
-                folder: "muscat/user",
-            })
+            const photoBuffer = Buffer.from(photo, 'base64');
+            if (photoBuffer.length <= 10485760) {
+                uploadedPhoto = await cloudinary.v2.uploader.upload(photo, {
+                    folder: "muscat/user",
+                })
+            } else {
+                return res.status(400).json({
+                    data: 'File size too large. Maximum is 10485760.',
+                    success: false
+                });
+            }
         }
 
         const data = {
@@ -258,26 +266,37 @@ exports.getEventDetails = async (req, res) => {
 
         let query = {
             verified: true,
-            type: 'event'
+            type: 'event',
+            archived: false
         };
         query['$or'] = [
             {
                 'date.dateRange.endDate': { $gte: today }
+            },
+            {
+                'date.dateRange.endDate': null
             }
             ,
             {
-                'date.recurring.days': { $in: [day] } // Replace with a function to get today's day
+                'date.recurring.endDate': { $gte: today } // Replace with a function to get today's day
+            },
+            {
+                'date.recurring.endDate': null // Replace with a function to get today's day
             }
         ];
 
         eventsOnDate = await eventService.findAllEvents(query, 4);
 
-        const offers = await offerService.findAllOffer({
+        const offers = await eventService.findAllEvents({
             verified: true,
             type: 'offer',
+            archived: false,
             $or: [
                 {
                     'data.dateRange.endDate': { $gte: today }
+                },
+                {
+                    'data.dateRange.endDate': null
                 },
                 {
                     $or: [
@@ -328,10 +347,13 @@ exports.getPastPurchase = async (req, res) => {
             })
         }
 
+        const filteredBookedTickets = user.BookedTickets.filter(ticket => ticket.eventid !== null);
+
+
         return res.status(200).json({
             success: true,
             data: {
-                pastpurchased: user, // Use the response array, not 'res'
+                pastpurchased: filteredBookedTickets, // Use the response array, not 'res'
             },
         });
     } catch (error) {

@@ -38,6 +38,9 @@ module.exports = {
                 black: '900'
             },
             screens: {
+                's': '320px',
+                'm': '375px',
+                'l':'425px',
                 'xs': '390px',
                 'large': '2230px',
                 // => @media (min-width: 390px) { ... }

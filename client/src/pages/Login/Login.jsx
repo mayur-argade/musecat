@@ -5,11 +5,19 @@ import toast, { Toaster } from 'react-hot-toast';
 import { setAuth } from "../../store/authSlice";
 import { ClientLogin, ClientGoogleLogin, googleLogin } from "../../http/index"
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
+// import { LoginSocialFacebook } from "reactjs-social-login";
+// import { FacebookLoginButton } from "react-social-login-buttons";
+import FacebookLogin from 'react-facebook-login';
 
 const Login = () => {
-    
+
 
     document.title = 'Login'
+
+    const responseFacebook = (response) => {
+        console.log(response);
+        // Handle the Facebook login response here
+      };
 
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
@@ -77,7 +85,7 @@ const Login = () => {
     return (
         <section class="relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button className='absolute top-10 left-10'>
-                <img onClick={(() => HandleBackClick())} src="/images/icons/login-back.svg" alt="" />
+                <img onClick={(() => navigate('/'))} src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
             <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">
@@ -122,12 +130,24 @@ const Login = () => {
                 </div>
 
                 <div className="max-w-sm w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
-                    <button type="button" class="text-gray-900 bg-white hover:bg-white md:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                        <img src="/images/icons/facebook-icon.png" alt="" />
-                        <span className='mx-auto text-center'>
-                            Continue with Facebook
-                        </span>
-                    </button>
+                    <FacebookLogin
+                        appId="785762826618684"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                    />
+                    {/* <LoginSocialFacebook
+                        appId="785762826618684"
+                        onResolve={(response) => {
+                            console.log(response);
+                            setProfile(response.data);
+                        }}
+                        onReject={(error) => {
+                            console.log(error);
+                        }}
+                    >
+                        <FacebookLoginButton />
+                    </LoginSocialFacebook> */}
                     <GoogleLogin
                         width={boxSize}
                         clientId="502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com" // Replace with your Google OAuth client ID

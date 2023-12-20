@@ -819,13 +819,18 @@ module.exports.getUpcomingEvents = async (req, res) => {
             verified: true
         };
         if (customDate) {
-            const today = new Date(customDate);
+            const timestampFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+            const filterDate = new Date(`${customDate}T23:00:00.000Z`)
+            const filterDate2 = new Date(`${customDate}T00:00:00.000Z`)
+
+            // // Convert the formatted date string to a JavaScript Date object
+            // const filterDate = new Date(endOfDay);
             console.log(filterDate)
             const currentDay = moment(filterDate).format('dddd').toLowerCase()
             query['$or'] = [
                 {
                     'date.dateRange.startDate': { $lte: filterDate },
-                    'date.dateRange.endDate': { $gte: filterDate }
+                    'date.dateRange.endDate': { $gte: filterDate2 }
                 }
                 ,
                 {
@@ -834,7 +839,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
                             $or: [
                                 {
                                     'date.recurring.startDate': { $lte: filterDate },
-                                    'date.recurring.endDate': { $gte: filterDate },
+                                    'date.recurring.endDate': { $gte: filterDate2 },
                                     'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
                                 },
                                 {
@@ -855,6 +860,9 @@ module.exports.getUpcomingEvents = async (req, res) => {
             query['$or'] = [
                 {
                     'date.dateRange.endDate': { $gte: todayDate }
+                },
+                {
+                    'date.dateRange.endDate': null
                 }
                 ,
                 {
@@ -884,7 +892,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
             data: eventsOnDate,
         });
     } catch (error) {
-        // console.error(error);
+        console.error(error);
         res.status(500).json({
             success: false,
             message: 'Internal server error',

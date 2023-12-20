@@ -10,7 +10,7 @@ const multer = require('multer');
 app.use(morgan('tiny'));
 
 // Regular middlewares
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // cookie parser

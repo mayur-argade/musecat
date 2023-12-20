@@ -129,12 +129,12 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     return (
         <>
-            <div className='sticky top-0 z-50 w-full bg-white'>
+            <div className='sticky top-0 z-50  w-full bg-white'>
                 <div class=" bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 lg:mr-48 lg:ml-48">
                     <Toaster />
-                    <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 pb-2 pt-2 shadow-md md:shadow-none">
+                    <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 py-4 md:pt-2 md:pb-1 shadow-md md:shadow-none">
 
-                        {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
+                        {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events")  || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
                             <div className='flex align-middle'>
                                 <button className="menu-bars md:hidden " onClick={handleBack} >
                                     <img src="/images/icons/back-arrow.svg" alt="" />
@@ -148,7 +148,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 </Link>
                             </div>
                         ) : (
-                            <div className='flex space-x-28 items-center md:space-x-0  align-middle'>
+                            <div className='flex align-middle'>
                                 <button className="menu-bars md:hidden" onClick={showSidebar}>
                                     <img src="/images/icons/menu.svg" alt="" />
                                 </button>
@@ -160,8 +160,20 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                             </div>
                         )}
+                        {
+                            category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid'
+                                ?
+                                <>
+                                </>
+                                :
+                                <div className='flex md:hidden'>
+                                    <Link to="/" class=" flex md:flex items-center">
+                                        <img src="/images/logo/logo-main.png" class="h-10 md:mr-3" alt="MWT Logo" />
+                                        <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                                    </Link>
+                                </div>
 
-
+                        }
                         <div class="hidden md:flex md:order-2 space-x-2">
                             {
                                 isAuth

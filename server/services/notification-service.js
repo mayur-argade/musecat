@@ -16,6 +16,11 @@ class NotificationService {
         return notification
     }
 
+    async deleteMany(filter){
+        const notification = await NotificationModel.deleteMany(filter)
+        return notification
+    }
+
     async countNotification(filter) {
         const notifications = await NotificationModel.countDocuments(filter)
         return notifications

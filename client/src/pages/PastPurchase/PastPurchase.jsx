@@ -7,6 +7,7 @@ import FavoriteCard from '../../components/Cards/FavoriteCard'
 import { ClientPastPurchaseApi, GetAllCategory } from '../../http'
 import Footer from '../../components/shared/Footer/Footer'
 import PastPurchaseCard from '../../components/Cards/PastPurchaseCard'
+import Features from '../../utils/Data'
 
 const PastPurchase = () => {
 
@@ -18,7 +19,7 @@ const PastPurchase = () => {
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedDistance, setSelectedDistance] = useState([])
     const [userCord, setUserCord] = useState({})
-
+    const [selectedFeatures, setSelectedFeatures] = useState([])
     const navigate = useNavigate();
     useEffect(() => {
         const fetchdata = async () => {
@@ -65,6 +66,16 @@ const PastPurchase = () => {
         }
     }
 
+    const handleFeaturesChange = (feature) => {
+        if (selectedFeatures.includes(feature)) {
+            // Remove the feature from selectedFeatures
+            setSelectedFeatures(selectedFeatures.filter((url) => url !== feature));
+        } else {
+            // Add the feature to selectedFeatures
+            setSelectedFeatures([...selectedFeatures, feature]);
+        }
+    }
+
     const handleCategoryChange = (categoryURL) => {
         // console.log(categoryURL)
         // Check if the categoryURL is already in selectedCategories
@@ -76,6 +87,7 @@ const PastPurchase = () => {
             setSelectedCategories([...selectedCategories, categoryURL]);
         }
     };
+
 
     const handleDistanceChange = (distance) => {
         getUserLocation()
@@ -108,9 +120,15 @@ const PastPurchase = () => {
     };
 
     if (response.data == null || categories.data == null) {
-        return (<div className='h-screen w-full flex justify-center align-middle items-center'>
-            <img src="/images/icons/loadmain.svg" alt="" />
-        </div>)
+        return (
+            <div className='h-screen w-full flex justify-center align-middle items-center'>
+                <div class="relative flex justify-center items-center">
+                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                    <img src="/images/logo/logo-main.png" class="h-16" />
+                </div>
+            </div>
+        )
+
     } else {
         return (
             <>
@@ -120,7 +138,7 @@ const PastPurchase = () => {
                 <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                     <div className="ml-3 hidden md:flex align-middle justify-between items-center">
                         <div className='flex align-middle items-center'>
-                            <button className=' mt-1'>
+                            <button onClick={() => navigate(-1)} className=' mt-1'>
                                 <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                             </button>
                             <p className='text-2xl font-bold'>Past Purchases</p>
@@ -150,10 +168,10 @@ const PastPurchase = () => {
                                                         categories.data.map((e) => (
                                                             <div class="flex items-center mb-1 mt-2">
                                                                 <input id={e.categoryURL} type="checkbox"
-                                                                    onChange={() => handleCategoryChange(e.categoryURL)}
-                                                                    checked={selectedCategories.includes(e.categoryURL)}
-                                                                    value={e.categoryURL} class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                <label for={e.categoryURL} class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                    onChange={() => handleCategoryChange(e)}
+                                                                    checked={selectedCategories.includes(e)}
+                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
                                                             </div>
                                                         ))
                                                     }
@@ -163,26 +181,21 @@ const PastPurchase = () => {
 
                                             <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
 
-                                            <div className="distance">
-                                                <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                                <div class="flex items-center mb-1 mt-2">
-                                                    <input onChange={() => handleDistanceChange(4)}
-                                                        checked={selectedDistance.includes(4)} id="4km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
-                                                </div>
+                                            <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
 
-                                                <div class="flex items-center mb-1">
-                                                    <input onChange={() => handleDistanceChange(10)}
-                                                        checked={selectedDistance.includes(10)} id="10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
-                                                </div>
-
-                                                <div class="flex items-center mb-1">
-                                                    <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                                </div>
-
-
+                                            <div className="popular">
+                                                <span className='ml-0 font-semibold text-sm'>Features</span>
+                                                {
+                                                    Features.list.map((e) => (
+                                                        <div class="flex items-center mb-1 mt-2">
+                                                            <input id={e} type="checkbox"
+                                                                onChange={() => handleFeaturesChange(e)}
+                                                                checked={selectedFeatures.includes(e)}
+                                                                value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                            <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
+                                                        </div>
+                                                    ))
+                                                }
                                             </div>
 
                                             <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
@@ -195,7 +208,40 @@ const PastPurchase = () => {
                     </div>
 
                     <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
-                        {response.data.pastpurchased.BookedTickets.filter((event) => event.eventid !== null).map((event) => (
+                        {response.data.pastpurchased.filter((event) => {
+                            const validEvents = event.eventid !== null
+
+                            const categoryMatch =
+                                selectedCategories.length === 0 ||
+                                selectedCategories.some((selectedCategory) => {
+                                    if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                        console.log("good")
+                                        return (
+                                            selectedCategory.subCategories &&
+                                            selectedCategory.subCategories.some((subCategory) =>
+                                                event.eventid.eventCategory &&
+                                                event.eventid.eventCategory.some((itemSubcategory) => (
+                                                    itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                )
+                                            )
+                                        );
+                                    }
+                                    else {
+                                        return (
+                                            event.eventid.eventCategory.some((itemSubcategory) =>
+                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                            )
+                                        );
+                                    }
+                                });
+
+
+                            const featureMatch =
+                                selectedFeatures.length == 0 ||
+                                event.eventid.features.some(feature => selectedFeatures.includes(feature));
+
+                            return validEvents && featureMatch && categoryMatch
+                        }).map((event) => (
                             <Link to={`/ticketstatus/${event._id}`}>
                                 <PastPurchaseCard data={event.eventid} />
                             </Link>

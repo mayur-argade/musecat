@@ -42,6 +42,7 @@ export const VendorCreateEvent = (data) => api.post("/vendor/create-event", data
 export const getAllVenues = (data) => api.get('venue/venues/all', data)
 export const VendorUpdateEvent = (data) => api.patch(`vendor/event/update-event`, data)
 export const GetVendorNotification = (data) => api.get(`notification/all`, data)
+export const DeleteVendorNotification = (data) => api.delete('notification/delete', data)
 export const VendorUpdateTicketStatus = (data) => api.patch(`ticket/update-payment-status`, data)
 export const VendorCreateVenue = (data) => api.post('venue/create-venue', data)
 export const vendorUpdateTicketStatus = (data) => api.patch('update-ticket-status', data)

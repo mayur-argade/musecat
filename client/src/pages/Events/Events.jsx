@@ -280,7 +280,7 @@ const Events = () => {
                                         </button>
                                         {isOpen && (
                                             <div
-                                                className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                                className="origin-top-right absolute left-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                                 ref={dropdownRef}
                                             >
                                                 <div className="p-5">
@@ -364,8 +364,8 @@ const Events = () => {
 
                             <div className='mainContainer grid grid-cols-1 lg:grid-cols-3'>
                                 <div className="1 col-span-2">
-                                    <div className="left w-full ">
-                                        <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
+                                    <div className="left w-full flex justify-center">
+                                        <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 s:grid-cols-1 m:grid-cols-1 l:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                                             {loading
                                                 ?
                                                 <>
@@ -383,7 +383,6 @@ const Events = () => {
                                                     response.data
                                                         .filter((item) => {
                                                             const searchResults = search.toLocaleLowerCase() === '' ? true : item.title.toLowerCase().includes(search);
-
 
                                                             const categoryMatch =
                                                                 selectedCategories.length === 0 ||
@@ -442,11 +441,11 @@ const Events = () => {
                                     </div>
                                 </div>
 
-                                <div className="2 flex md:justify-center lg:justify-end ">
+                                <div className="hidden 2 md:flex md:justify-center lg:justify-end ">
                                     <div className="relative mx-auto md:mx-0">
                                         <div>
                                             <div className='w-72 h-9/12 rounded-md'>
-                                                <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={10} />
+                                                <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
                                             </div>
                                         </div>
 

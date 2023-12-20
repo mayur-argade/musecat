@@ -20,6 +20,7 @@ const VerifyVendorAccount = () => {
             } catch (error) {
                 setLoading(false)
                 console.log(error)
+                setMessage(error.response.data)
             }
         }
         verifyUser()
@@ -43,7 +44,7 @@ const VerifyVendorAccount = () => {
                     <div className="bg-lime-200 rounded-full h-24 w-24 flex items-center justify-center mx-auto mb-4">
                         <i className="text-white text-5xl">✓</i>
                     </div>
-                    <h1 className="text-center text-green-600 font-semibold text-4xl mb-2">Success</h1>
+                    <h1 className="text-center text-green-600 font-semibold text-4xl mb-2"></h1>
                     <p className="text-gray-700 text-xl">
                         {message}
                     </p>

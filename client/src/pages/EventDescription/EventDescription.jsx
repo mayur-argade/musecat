@@ -341,11 +341,6 @@ const EventDescription = () => {
         window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
     }
 
-    const shareonInstagram = () => {
-        const instashareurl = `https://www.instagram.com/sharer/sharer.php?u=${window.location.origin + location.pathname}`;
-        window.open(instashareurl, '_blank');
-    }
-
     const shareonWhatsapp = () => {
         const shareonwhatsapp = `https://api.whatsapp.com/send?text=${window.location.origin + location.pathname}`;
         window.open(shareonwhatsapp, '_blank');
@@ -395,10 +390,16 @@ const EventDescription = () => {
                                     <button className="backlogo" onClick={handleBack}>
                                         <img className='h-16' src="/images/icons/back-button.png" alt="" />
                                     </button>
-                                    <span className='text-lg font-bold'>Event Description</span>
+                                    <span className='text-lg font-bold'>{
+                                        response.data.eventDetails.type == 'event'
+                                        ?
+                                        <>Event</>
+                                        :
+                                        <>Voucher</>
+                                    } Description</span>
                                 </div>
 
-                                <div className='text-center'>
+                                <div className='mt-5 text-center'>
                                     <p className='text-xl md:text-3xl font-bold'>{response.data.eventDetails.title}</p>
                                     <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
                                         <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
@@ -509,13 +510,13 @@ const EventDescription = () => {
                                             <div className="dropdown-container reltive">
                                                 <button
                                                     onClick={toggleDropdown}
-                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-blue-300 font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
                                                     <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
                                                     Share
                                                 </button>
                                                 {isDropdownOpen && (
                                                     <div
-                                                        className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
+                                                        className="z-50 dropdown absolute w-32 p-3 bg-white rounded-md drop-shadow-md"
                                                         ref={dropdownRef}
                                                     >
                                                         <div className="flex space-x-3 socialmedia">
@@ -523,9 +524,6 @@ const EventDescription = () => {
                                                             <img onClick={shareonWhatsapp} className='cursor-pointer h-7' src="/images/icons/wp-a.svg" alt="" />
 
                                                             <img onClick={shareonFacebook} className='cursor-pointer h-7' src="/images/icons/fb-a.svg" alt="" />
-
-
-                                                            <img onClick={shareonInstagram} className='cursor-pointer h-7' src="/images/icons/ig-a.svg" alt="" />
 
                                                             <img onClick={shareonMail} className='cursor-pointer h-7' src="/images/icons/emal-a.svg" alt="" />
                                                         </div>
@@ -641,7 +639,7 @@ const EventDescription = () => {
                                                                                 response.data.eventDetails.type == 'event'
                                                                                     ?
                                                                                     <>
-                                                                                        Book Seat
+                                                                                        Buy Ticket
                                                                                     </>
                                                                                     :
                                                                                     <>
@@ -686,7 +684,7 @@ const EventDescription = () => {
                                                                                 response.data.eventDetails.type == 'event'
                                                                                     ?
                                                                                     <>
-                                                                                        Book Seat
+                                                                                        Buy Ticket
                                                                                     </>
                                                                                     :
                                                                                     <>
@@ -735,7 +733,7 @@ const EventDescription = () => {
                                                                             response.data.eventDetails.type == 'event'
                                                                                 ?
                                                                                 <>
-                                                                                    Book Seat
+                                                                                    Buy Ticket
                                                                                 </>
                                                                                 :
                                                                                 <>
@@ -809,7 +807,7 @@ const EventDescription = () => {
                                     </span>
                                 </div>
                                 <div className='ml-2 mr-2 mt-5'>
-                                    <div className="mx-2 place-items-center grid grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
+                                    <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                         {response.data.upcomingEvents.map((event) => (
                                             <div >
                                                 < EventCard data={event} />
@@ -823,19 +821,19 @@ const EventDescription = () => {
                                     response.data.offers.length > 0
                                         ?
                                         <section>
-                                            <section className='mt-3 ml-3 mr-3'>
+                                            <section className=''>
                                                 <div className='flex justify-center items-center mt-5'>
                                                     <span className='text-2xl font-bold'>
                                                         Offers
                                                     </span>
                                                 </div>
 
-                                                <div className="ml-1 mr-1">
-                                                    <div className='md:flex md:justify-start carousel snap-x p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-12'>
+                                                <div className="">
+                                                    <div className='md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
                                                         {
                                                             response.data.offers.map((offer) => (
                                                                 <Link to={`/events/${offer._id}`}>
-                                                                    <img className='h-64 w-52 snap-start' src={`${offer.displayPhoto}`} alt="" />
+                                                                    <img className='w-44 h-64 md:w-56 md:h-72 snap-start rounded mx-2 ' src={`${offer.displayPhoto}`} alt="" />
                                                                 </Link>
                                                             ))
                                                         }
@@ -855,7 +853,7 @@ const EventDescription = () => {
                                     <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />
 
                                     <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                        <div className='flex justify-between mb-2'>
+                                        <div className='flex justify-center mb-2'>
                                             {
                                                 visible && (
                                                     <button onClick={() => window.scrollTo({

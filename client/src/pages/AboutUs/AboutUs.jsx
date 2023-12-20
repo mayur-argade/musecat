@@ -11,7 +11,7 @@ const AboutUs = () => {
                 <div className='h-40 md:h-64 justify-center items-center relative'>
 
                     <div className="relative ">
-                        <img className="h-72 md:h-80 xl:h-full object-cover" src="/images/assets/about2.jpg" alt="" />
+                        <img className="h-72 md:h-80 xl:h-full object-fit" src="/images/assets/about2.jpg" alt="" />
 
                         <div className="md:mr-52 md:ml-52 absolute top-16 left-0 p-8 space-y-4 text-white">
                             <p className="text-2xl font-bold md:text-3xl md:font-extrabold">About us</p>
@@ -21,7 +21,7 @@ const AboutUs = () => {
 
                 </div>
 
-                <section className='md:mr-52 md:ml-52 ml-3 mr-3 mt-40 mb-10 flex flex-col justify-center '>
+                <section className='md:mr-52 md:ml-52 ml-3 mr-3 mt-40 2xl:mt-72 mb-10 flex flex-col justify-center '>
                     <span className='ml-0 font-bold text-2xl text-center mb-2'>Muscat's Premier Event Hub: Discover, Book, Celebrate!</span>
                     <p className='text-center font-medium text-lg leading-8'>
                         Muscat Where To is a platform to discover the latest offers and events in Muscat.Browse through offers, find more info and directions. Find Muscat’s offers and events by type and filters like Eat & Drink, Kids Corner, Health and Beauty, Getaway Deals, Gym Memberships, Activities & Adventure and much more.

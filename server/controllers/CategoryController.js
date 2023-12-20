@@ -302,11 +302,11 @@ exports.getCategoryAllEvents = async (req, res) => {
     // taking parameters like categoryname, searchquery, date
     let categoryDisplayName = req.params.categoryname
     const search = req.query.search
-    console.log(search)
+    // console.log(search)
     const querydate = req.query.filterdate
     const today = new Date()
     const currentDay = moment().format('dddd').toLowerCase()
-    console.log("querydate --> ", req.query.filterdate)
+    console.log("querydate --> ", querydate)
     try {
         let events;
         if (categoryDisplayName != "events") {
@@ -392,9 +392,14 @@ exports.getCategoryAllEvents = async (req, res) => {
             }, [])
 
         } else {
-            const today = new Date();
+            let today ;
+            if(querydate == undefined || querydate == null || querydate == ""){
+                today = new Date();
+            }else {
+                today = new Date(querydate);
+            }
             const day = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
+            // const filterdate = new Date(querydate)
             let query = {
                 verified: true,
                 $or: [
@@ -420,10 +425,10 @@ exports.getCategoryAllEvents = async (req, res) => {
                 ],
             };
 
-            console.log("query before search block", query)
-            console.log("this is search --> ", search)
+            // console.log("query before search block", query)
+            // console.log("this is search --> ", search)
             if (search == undefined || search == 'undefined' || search == null) {
-                console.log("did noting")
+                // console.log("did noting")
             } else {
                 query.$and = query.$and || [];
 
@@ -440,7 +445,7 @@ exports.getCategoryAllEvents = async (req, res) => {
                 });
             }
 
-            console.log("query after if block", query);
+            // console.log("query after if block", query);
             events = await eventService.findAllEvents(query);
         }
 

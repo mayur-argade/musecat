@@ -339,7 +339,14 @@ exports.vendorLogin = async (req, res) => {
                 success: false,
                 data: "User does not found"
             })
-        } else {
+        }
+        else if (user.role == 'vendor' && user.emailVerified == false) {
+            return res.status(404).json({
+                success: false,
+                data: "Verify your Email address"
+            })
+        }
+        else {
             const isPasswordMatch = await bcrypt.compare(password, user.password);
 
             if (!isPasswordMatch) {
@@ -477,24 +484,28 @@ exports.vendorEmailVerify = async (req, res) => {
 
         const { token } = req.params
 
-        const filter = {
-            verificationToken: token
+        console.log(token)
+        const vendor = await vendorService.findVendor({ emailVerificationToken: token })
+        console.log(vendor)
+
+        if (!vendor) {
+            return res.status(404).json("Authentication Link expired")
         }
 
-        const data = { emailVerified: true, emailVerificationToken: null }
+        const data = { _id: vendor, emailVerified: true, emailVerificationToken: null }
 
-        const user = await userService.findAndUpdateUser(filter, data)
+        const updateVendor = await vendorService.updateVendor(data)
 
-        const verifiedUser = await userService.findUser({ _id: user._id })
+        const verifiedUser = await vendorService.findVendor({ _id: vendor._id })
 
-        if (verifiedUser.verificationToken == null && verifiedUser.isVerified == true) {
+        if (verifiedUser.emailVerificationToken == null && verifiedUser.emailVerified == true) {
             return res.status(statusCode.SUCCESS.code).json("Account Verification Successfull")
         } else {
             return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json("Failed to activate user Contact customer service")
         }
     } catch (error) {
         console.log(error)
-        return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json(statusCode.INTERNAL_SERVER_ERROR.message)
+        return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json(error)
     }
 }
 
