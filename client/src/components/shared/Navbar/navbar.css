@@ -25,10 +25,11 @@
   }
   
   .nav-menu.active {
-    position: absolute;
+    position: absolute fixed;
     z-index: 50;
     left: 0;
     transition: 450ms;
+    overflow: scroll;
   }
   
   .nav-text {

@@ -127,12 +127,15 @@ const AddVendorModal = ({ onClose }) => {
             const { data } = await VendorRegister(signupdata)
             console.log(data)
             setLoading(false)
-            onClose()
+            toast.success("Vendor is successfully added. Wait for vendor to verify its email")
+            setTimeout(() => {
+                onClose()
+            }, 2000);
+
         } catch (error) {
             setLoading(false)
             console.log(error)
-            toast.error(error.response.data.data)
-            onClose()
+            return toast.error(error.response.data.data)
         }
     }
     return (

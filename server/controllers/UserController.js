@@ -12,6 +12,7 @@ const venueService = require('../services/venue-service');
 const paymentService = require('../services/payment-service')
 const notificationService = require('../services/notification-service')
 
+
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
 
@@ -347,7 +348,7 @@ exports.getPastPurchase = async (req, res) => {
             })
         }
 
-        const filteredBookedTickets = user.BookedTickets.filter(ticket => ticket.eventid !== null);
+        const filteredBookedTickets = user.BookedTickets.filter(ticket => ticket.eventid !== null).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));;
 
 
         return res.status(200).json({
@@ -397,9 +398,8 @@ exports.verifyVendor = async (req, res) => {
 }
 
 exports.getAllUnverifiedVendors = async (req, res) => {
-
     try {
-        const vendors = await vendorService.findVendors({ isVerified: false }, 5)
+        const vendors = await vendorService.findVendors({ isVerified: false, emailVerified: true }, 5)
 
         return res.status(200).json({
             success: true,
@@ -433,7 +433,7 @@ exports.getAllUsers = async (req, res) => {
 }
 
 exports.getAllUsersList = async (req, res) => {
-    const users = await userService.findAllUsers()
+    const users = await userService.findAllUsers({ isVerified: true })
     return res.status(200).json({
         success: true,
         data: users
@@ -472,7 +472,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getAllVendorsList = async (req, res) => {
     try {
-        const vendors = await vendorService.findVendors({ role: 'vendor' })
+        const vendors = await vendorService.findVendors({ role: 'vendor', emailVerified: true })
         return res.status(200).json({
             success: true,
             data: vendors
@@ -512,7 +512,7 @@ exports.deleteVendor = async (req, res) => {
         console.log(error)
         return res.status(500).json({
             success: false,
-            data: error
+            data: "Internal server error"
         })
     }
 
@@ -589,7 +589,7 @@ exports.adminStats = async (req, res) => {
         console.log(error)
         return res.status(500).json({
             success: false,
-            data: error
+            data: "Internal server error"
         })
     }
 

@@ -34,12 +34,12 @@ router.route('/event/:eventid/customq').get(customQue)
 router.route('/offers/').get(getAllOffers)
 router.route('/trending-events').get(getTrendingEvents)
 
-router.route('/admin/create-event').post(isUserLoggedin, requiredRole("admin"), createEvent);
-router.route('/admin/create-offer').post(isUserLoggedin, requiredRole("admin"), createOffer)
+router.route('/admin/create-event').post(createEvent);
+router.route('/admin/create-offer').post(createOffer)
 router.route('/admin/delete-event').delete(deleteEvent)
 router.route('/admin/delete-offer').delete(deleteOffer)
 router.route('/admin/:vendorid/allevents').get(getVendorAllEvents)
-router.route('/admin/getAllEvents').get(getEventsForAdmin)
-router.route('/admin/getAlloffers').get(getOffersForAdmin)
+router.route('/admin/getAllEvents').get( getEventsForAdmin)
+router.route('/admin/getAlloffers').get( getOffersForAdmin)
 router.route('/admin/verify-event').patch(adminVerifyEvent)
 module.exports = router;

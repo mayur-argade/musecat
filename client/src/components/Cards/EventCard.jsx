@@ -50,7 +50,7 @@ const EventCard = ({ data, width }) => {
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent click event from propagating
                     favoriteFeature(data._id);
-                }} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
+                }} className="absolute top-2 right-2 bg-white text-black rounded-full  p-2">
                     {
                         isLiked ?
                             <img className='' src="/images/icons/heart-fav.svg" alt="" />

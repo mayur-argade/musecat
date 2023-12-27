@@ -51,25 +51,30 @@ const BookTicket = () => {
                 const dateList = [];
 
                 if (data.data.eventDetails.date.dateRange) {
-                    let endMoment;
+
+                    let startdate = moment(data.data.eventDetails.date.dateRange.startDate);
+                    let enddate;
 
                     if (data.data.eventDetails.date.dateRange.endDate != null && data.data.eventDetails.date.dateRange.endDate != undefined) {
-                        endMoment = moment(data.data.eventDetails.date.dateRange.endDate);
-                    } else {
-                        // If no end date, generate dates for the next 7 days
-                        endMoment = today.clone().add(7, 'days');
+                        enddate = moment(data.data.eventDetails.date.dateRange.endDate);
+                    }
+                    else {
+                        enddate = today.clone().add(7, 'days');
                     }
 
-                    // Check if endMoment is greater than the next 7 days
-                    if (endMoment.isAfter(today.clone().add(7, 'days'), 'day')) {
-                        endMoment = today.clone().add(7, 'days');
+                    if (enddate.isAfter(today.clone().add(7, 'days'), 'day')) {
+                        enddate = today.clone().add(7, 'days');
                     }
+
+                    console.log('startdate-->', startdate)
+                    console.log('enddate-->', enddate)
+
+                    startdate = moment(startdate).isAfter(today) ? startdate : today
 
                     // Generate date list till endMoment
-                    let currentMoment = today.clone();
-                    while (currentMoment.isSameOrBefore(endMoment, 'day')) {
-                        dateList.push(currentMoment.format('YYYY-MM-DD'));
-                        currentMoment.add(1, 'day');
+                    while (startdate.isSameOrBefore(enddate, 'day')) {
+                        dateList.push(startdate.format('YYYY-MM-DD'));
+                        startdate.add(1, 'day');
                     }
                 } else {
                     // Add dates for the current week based on recurring days to dateList array
@@ -208,7 +213,9 @@ const BookTicket = () => {
 
     async function submit() {
         if (!firstname || !lastname || !seats) {
-            return toast.error("All fields are mandatory")
+            return toast.error("All fields are mandatory", {
+                position: "bottom-center"
+            })
         }
         else if (seats <= 0) {
             return toast.error("Enter valid seat number")
@@ -232,7 +239,7 @@ const BookTicket = () => {
         // has price
         if (hasPrice.length != 0 && hasClassName.length != 0) {
             if (!ticketDate) {
-                return toast.error("Select date")
+                return toast.error("Select date",)
             }
             else if (!firstname) {
                 return toast.error("Firstname is missing")
@@ -451,10 +458,12 @@ const BookTicket = () => {
     else {
         return (
             <>
-                <div className='appmargine'>
-                    <Navbar />
-                    <Tabbar />
 
+                <Navbar />
+                <Toaster />
+
+                <div className=''>
+                    <Tabbar />
                     <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                         <div className="ml-3 hidden md:flex align-middle items-center">
                             <button onClick={handleBack} className='mt-1'>
@@ -471,7 +480,7 @@ const BookTicket = () => {
                                 <img src="/images/icons/show.svg" alt="" />
                             </button>
                         </div>
-                        <Toaster />
+
                         <div className="grid justify-items-center gap-4 grid-cols-1 md:grid-cols-2">
                             <div className="hidden  md:flex flex-col justify-center">
                                 <p className='text-xl text-center font-medium'>{response.data.eventDetails.title}</p>
@@ -507,8 +516,8 @@ const BookTicket = () => {
                                 </div>
                             )}
 
-
                             <div className=" w-full flex justify-center md:justify-start">
+                                {/* <Toaster /> */}
                                 <div className="heading">
                                     <p className='font-semibold text-xl'>Booking Form</p>
                                     <p className='font-light text-xs'>Please fill this form to receive your tickets on email</p>
@@ -689,29 +698,41 @@ const BookTicket = () => {
 
                                                 <div>
                                                     Select Card
-                                                    {
-                                                        savedCard != null
-                                                            ?
-                                                            savedCard.length > 0
-                                                                ?
-                                                                savedCard.map((card) => (
-                                                                    <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
-                                                                        <input id={card.id} name={card.id} value={card.id} onChange={((e) => setCardid(e.target.value))} type="radio" />
-                                                                        <label htmlFor={card.id} class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{card.masked_card}</label>
-                                                                    </div>
-                                                                ))
-                                                                :
-                                                                <></>
-                                                            :
-                                                            <>
-                                                                loading
-                                                            </>
+                                                    {savedCard != null
+                                                        ? savedCard.length > 0
+                                                            ? savedCard.map((card) => (
+                                                                <div key={card.id} className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                                                                    <input
+                                                                        id={card.id}
+                                                                        name="selectedCard"  // Set a common name for the radio group
+                                                                        value={card.id}
+                                                                        onChange={() => setCardid(card.id)}
+                                                                        type="radio"
+                                                                        checked={card.id === cardid}  // Set the checked attribute based on the selected card
+                                                                    />
+                                                                    <label htmlFor={card.id} className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                                        {card.masked_card}
+                                                                    </label>
+                                                                </div>
+                                                            ))
+                                                            : <></>
+                                                        : <>loading</>
                                                     }
-                                                    <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
-                                                        <input id="nocard" type="radio" name="bordered-radio" />
-                                                        <label htmlFor="nocard" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Proceed Without Selecting Card</label>
+
+                                                    <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+                                                        <input
+                                                            id="nocard"
+                                                            name="selectedCard"  // Set a common name for the radio group
+                                                            type="radio"
+                                                            onChange={() => setCardid(null)}  // Assuming setCardid(null) means selecting "Proceed Without Selecting Card"
+                                                            checked={cardid === null}  // Set the checked attribute based on the selected card
+                                                        />
+                                                        <label htmlFor="nocard" className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                            Proceed Without Selecting Card
+                                                        </label>
                                                     </div>
                                                 </div>
+
                                             </>
                                         )}
 

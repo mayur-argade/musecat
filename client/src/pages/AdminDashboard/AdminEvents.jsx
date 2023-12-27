@@ -65,12 +65,12 @@ const AdminEvents = () => {
             await toast.promise(promise, {
                 loading: 'Verifying Event...', // Optional loading message
                 success: 'Event Verified Successfully', // Optional success message
-                error: 'Error verifying event:', // Optional error message prefix
+                error: (error) => `Error: ${error.response.data.data}`,
             });
 
             setRefresh(!refresh)
         } catch (error) {
-            // Handle errors if needed
+            // toast.error(error.response.data.data);
         } finally {
             setLoading(false);
         }

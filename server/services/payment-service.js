@@ -48,9 +48,9 @@ class PaymentService {
                 mode: 'payment',
                 products: [{ name: paymentdata.name, quantity: paymentdata.quantity, unit_amount: paymentdata.unitAmout * 1000 }],
                 success_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
-                cancel_url: 'https://www.omanwhereto.com/',
+                cancel_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
+                // cancel_url: 'https://www.omanwhereto.com/',
                 // success_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
-                // cancel_url: 'http://localhost:3000',
 
                 metadata: { 'Customer name': 'user01', 'order id': '1' }
             }
@@ -78,13 +78,14 @@ class PaymentService {
                 amount: paymentdata.amount * 1000,
                 client_reference_id: paymentdata.email,
                 return_url: `https://www.omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
+                // return_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
                 metadata: { customer: 'thawani developers' }
             }
         };
 
         try {
             const { data } = await axios.request(options);
-            console.log(data);
+            console.log("create payment intent", data);
             return data
         } catch (error) {
             console.error(error);
@@ -106,7 +107,7 @@ class PaymentService {
 
         try {
             const { data } = await axios.request(options);
-            console.log(data);
+            console.log("confirm payment intent ", data);
             return data
         } catch (error) {
             console.error(error);
@@ -145,6 +146,25 @@ class PaymentService {
         const options = {
             method: 'GET',
             url: `https://uatcheckout.thawani.om/api/v1/payments?checkout_invoice=${invoiceId}`,
+            headers: {
+                Accept: 'application/json',
+                'thawani-api-key': 'rRQ26GcsZzoEhbrP2HZvLYDbn9C9et'
+            }
+        };
+
+        try {
+            const { data } = await axios.request(options);
+            // console.log(data);
+            return data
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async listPaymentByIntent(intentid) {
+        const options = {
+            method: 'GET',
+            url: `https://uatcheckout.thawani.om/api/v1/payments?payment_intent=${intentid}`,
             headers: {
                 Accept: 'application/json',
                 'thawani-api-key': 'rRQ26GcsZzoEhbrP2HZvLYDbn9C9et'

@@ -28,11 +28,11 @@ router.route('/admin/update-vendor').patch(isUserLoggedin, requiredRole("admin")
 
 router.route('/admin/delete-vendor').delete(deleteVendor)
 
-router.route('/admin/get-unverified-vendors').get(getAllUnverifiedVendors)
+router.route('/admin/get-unverified-vendors').get(isLoggedin, requiredRole("admin"), getAllUnverifiedVendors)
 
-router.route('/admin/getAllUsers').get(getAllUsers)
+router.route('/admin/getAllUsers').get(isLoggedin, requiredRole("admin"), getAllUsers)
 
-router.route('/admin/stats').get(adminStats)
+router.route('/admin/stats').get(isLoggedin, requiredRole("admin"), adminStats)
 
 router.route('/admin/list-all-users').get(getAllUsersList)
 router.route('/admin/delete-user').delete(deleteUser)

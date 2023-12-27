@@ -2,7 +2,7 @@ const NotificationModel = require('../models/NotificationModel')
 
 class NotificationService {
     async getAllNotifications(filter) {
-        const notifications = await NotificationModel.find(filter)
+        const notifications = await NotificationModel.find(filter).sort({ createdAt: -1 })
         return notifications
     }
 
@@ -16,7 +16,7 @@ class NotificationService {
         return notification
     }
 
-    async deleteMany(filter){
+    async deleteMany(filter) {
         const notification = await NotificationModel.deleteMany(filter)
         return notification
     }

@@ -11,7 +11,7 @@ const SearchPWA = () => {
 
     return (
         <>
-            <div className='contactmargine'>
+            <div className=''>
                 <div className='shadow-2xl'>
                     <Navbar />
                 </div>
@@ -75,6 +75,7 @@ const SearchPWA = () => {
 
                 </div>
             </div>
+            <div className='mb-24'></div>
             <div>
                 <BottomNav />
             </div>

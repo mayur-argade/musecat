@@ -9,18 +9,20 @@ class UserService {
     }
 
     async finduserAndPopulate(filter) {
-        const user = UserModel.findOne(filter).populate({
-            path: 'BookedTickets',
-            populate: {
-                path: 'eventid',
+        const user = await UserModel.findOne(filter)
+            .populate({
+                path: 'BookedTickets',
                 populate: {
-                    path: 'location'
+                    path: 'eventid',
+                    populate: {
+                        path: 'location'
+                    }
                 }
-            }
-        })
+            })
             .select('BookedTickets')
-            .sort({ createdAt: -1 })
-        return user
+            .sort({ 'BookedTickets.createdAt': -1 });
+
+        return user;
     }
 
     async findUsers(filter, limit) {
@@ -33,7 +35,9 @@ class UserService {
         return users
     }
     async createUser(data) {
-        data.password = await bcrypt.hash(data.password, 10)
+        if (data.password) {
+            data.password = await bcrypt.hash(data.password, 10)
+        }
         const user = UserModel.create(data);
         return user;
     }

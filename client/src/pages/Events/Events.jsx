@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, forwardRef } from 'react'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import EventCard from '../../components/Cards/EventCard'
@@ -13,6 +13,9 @@ import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
 import Features from '../../utils/Data'
 import './events.css'
+import DatePicker from "react-datepicker";
+import moment from 'moment'
+import "react-datepicker/dist/react-datepicker.css";
 
 const Events = () => {
     let [selectedLocation, setSelectedLocation] = useState({
@@ -59,6 +62,24 @@ const Events = () => {
     const [filterDate, setFilterDate] = useState(null)
     // console.log("selected distance", selectedDistance)
 
+    const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+        <button
+            onClick={onClick} ref={ref}
+            className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
+        >
+            <span className="hidden md:block text-gray-500">Calendar</span>
+            <span className="block md:hidden text-gray-500">Calendar</span>
+            <img className="ml-2 w-4 h-4" src="/images/icons/calendar.png" alt="" />
+        </button>
+
+    ));
+
+    const ChangeFilterDate = (date) => {
+        const format = new Date(date)
+        const datemoment = moment(format).format("YYYY-MM-DD")
+        // console.log(datemoment)
+        setFilterDate(format)
+    }
     const handleFeaturesChange = (feature) => {
         if (selectedFeatures.includes(feature)) {
             // Remove the feature from selectedFeatures
@@ -376,22 +397,17 @@ const Events = () => {
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                    <span className="datepicker-toggle mb-5">
-                                        <span className="datepicker-toggle-button">
-                                            <button
-                                                className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
-                                            >
-                                                <span className="hidden md:block text-gray-500">Calendar</span>
-                                                <span className="block md:hidden text-gray-500">Calendar</span>
-                                                <img className="ml-2 w-4 h-4" src="/images/icons/calendar.png" alt="" />
-                                            </button>
-                                        </span>
-                                        <input
-                                            id="calendarInput"
-                                            onChange={(e) => setFilterDate(e.target.value)}
-                                            className="datepicker-input cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-32 md:w-40"
-                                            type="date"
-                                            placeholder="Calendar"
+                                    <span className="datepicker-toggle ">
+                                        <DatePicker
+                                            className='z-50'
+                                            selected={filterDate}
+                                            onChange={(date) => ChangeFilterDate(date)}
+                                            customInput={<ExampleCustomInput />}
+                                            popperModifiers={{
+                                                preventOverflow: {
+                                                    enabled: true,
+                                                },
+                                            }}
                                         />
                                     </span>
                                 </div>

@@ -55,6 +55,9 @@ const ticketModel = new mongoose.Schema({
     },
     refundId: {
         type: String
+    },
+    payment_intent_id: {
+        type: String
     }
 },
     {

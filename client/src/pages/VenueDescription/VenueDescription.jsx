@@ -153,7 +153,7 @@ const VenueDescription = () => {
                                                 response.data.events.map((event) => (
                                                     <div className=''>
                                                         <Link className="" to={`/events/${event._id}`} >
-                                                            < EventCard data={event} />
+                                                            < EventCard width={'w-44 md:w-52'} data={event} />
                                                         </Link>
                                                     </div>
                                                 ))

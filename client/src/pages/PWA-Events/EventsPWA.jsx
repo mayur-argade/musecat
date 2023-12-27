@@ -6,7 +6,7 @@ import BottomNav from '../../components/shared/BottomNav/BottomNav'
 const EventsPWA = () => {
     return (
         <>
-            <div className='contactmargine'>
+            <div className=''>
                 <Navbar />
                 <div className='mt-5 flex md:flex-row flex-col justify-center items-center md:space-x-3'>
                     <div className="flex flex-col md:space-y-7 space-y-3">
@@ -44,7 +44,7 @@ const EventsPWA = () => {
                         </Link>
 
                         <Link to='/category/thingstodo'>
-                            <div className='relative'>
+                            <div className='relative '>
                                 <img className="h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply rounded" src="/images/assets/banner-thingstodo.jpeg" alt="" />
                                 <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Things to do</span>
 
@@ -53,6 +53,7 @@ const EventsPWA = () => {
                     </div>
 
                 </div>
+                <div className='mb-24'></div>
             </div>
             <div>
                     <BottomNav />

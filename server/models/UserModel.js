@@ -29,7 +29,10 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Please provide password"],
+        // required: [true, "Please provide password"],
+    },
+    google_refresh: {
+        type: String
     },
     mobilenumber: {
         type: Number

@@ -210,12 +210,12 @@ module.exports.generateTicket = async (req, res) => {
 
                         const notificationData = {
                             senderid: req.user._id,
-                            receiverid: event.vendorid,
+                            receiverid: event.vendorid._id,
                             msg: `Ticket has been booked for event ${event.title} please verify`
                         }
 
                         const userNotification = {
-                            senderid: event.vendorid,
+                            senderid: event.vendorid._id,
                             receiverid: req.user._id,
                             msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
                         }
@@ -240,7 +240,8 @@ module.exports.generateTicket = async (req, res) => {
 
                     const pendingTicketData = {
                         _id: ticket._id,
-                        status: 'pending'
+                        status: 'pending',
+                        payment_intent_id: paymentIntent.data.id
                     }
 
                     ticket = await ticketService.updateTicket(pendingTicketData)
@@ -249,14 +250,21 @@ module.exports.generateTicket = async (req, res) => {
                         paymet_intent_id: paymentIntent.data.id
                     })
 
+                    if (confirmPaymentIntent.success == false) {
+                        return res.status(200).json({
+                            success: false,
+                            data: "Unable to retrive payment intent"
+                        })
+                    }
+
                     const notificationData = {
                         senderid: req.user._id,
-                        receiverid: event.vendorid,
+                        receiverid: event.vendorid._id,
                         msg: `Ticket has been booked for event ${event.title} please verify`
                     }
 
                     const userNotication = {
-                        senderid: event.vendorid,
+                        senderid: event.vendorid._id,
                         receiverid: req.user._id,
                         msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
                     }
@@ -465,7 +473,8 @@ module.exports.generateTicket = async (req, res) => {
 
                             const pendingTicketData = {
                                 _id: ticket._id,
-                                status: 'pending'
+                                status: 'pending',
+                                payment_intent_id: paymentIntent.data.id
                             }
 
                             ticket = await ticketService.updateTicket(pendingTicketData)
@@ -474,17 +483,25 @@ module.exports.generateTicket = async (req, res) => {
                                 paymet_intent_id: paymentIntent.data.id
                             })
 
+                            if (confirmPaymentIntent.success == false) {
+                                return res.status(200).json({
+                                    success: false,
+                                    data: "Unable to retrive payment intent"
+                                })
+                            }
+
                             const notificationData = {
                                 senderid: req.user._id,
                                 receiverid: event.vendorid._id,
                                 msg: `Ticket has been booked for event ${event.title} please verify`
                             }
 
-                            const userNotification = {
+                            const userNotication = {
                                 senderid: event.vendorid._id,
                                 receiverid: req.user._id,
                                 msg: `Your ticket has been booked successfully for the ${event.title} please wait till vendor Verifies it`
                             }
+
                             const notification = await notificationService.createNotification(notificationData)
                             const usernotification = await notificationService.createNotification(userNotification)
 
@@ -902,30 +919,143 @@ exports.updateStatusUsingSessionId = async (req, res) => {
 
     let ticket = await ticketService.findTicket({ _id: ticketid })
 
-    // console.log(ticket)
-
     const sessionId = ticket.sessionId
 
-    const sessionInfo = await paymentService.getSessionInfo(sessionId)
-    if (sessionInfo.success == true && sessionInfo.data.payment_status == 'paid') {
-        const ticketdata = {
-            _id: ticket._id,
-            status: "Awaiting Approval"
+    if (sessionId != null || sessionId != undefined) {
+
+        const sessionInfo = await paymentService.getSessionInfo(sessionId)
+        if (sessionInfo.success == true && sessionInfo.data.payment_status == 'paid') {
+            const ticketdata = {
+                _id: ticket._id,
+                status: "Awaiting Approval"
+            }
+            ticket = await ticketService.updateTicket(ticketdata)
+            return res.status(200).json({
+                success: true,
+                data: ticket
+            })
         }
-        ticket = await ticketService.updateTicket(ticketdata)
+
+        else {
+            const event = await eventService.findEvent({ _id: ticket.eventid });
+
+            if (!event) {
+                return res.status(404).json({
+                    success: false,
+                    data: ticket,
+                });
+            }
+
+            const targetCategory = event.categories.find((category) => category.className === ticket.class);
+
+            if (targetCategory) {
+                const targetBooking = targetCategory.bookedSeats.find(
+                    (booking) => moment(ticket.date).format("DD-MM-YYYY") === moment(booking.date).format("DD-MM-YYYY")
+                );
+
+                if (targetBooking) {
+                    targetBooking.seats = targetBooking.seats.filter((seat) => !ticket.allotedSeats.includes(seat));
+                } else {
+                    console.log("Target booking date not found");
+                }
+            } else {
+                console.log("Target category not found");
+            }
+
+            const ticketData = {
+                _id: ticket._id,
+                allotedSeats: [],
+                status: "failed",
+            };
+
+            try {
+                await ticketService.updateTicket(ticketData);
+                return res.status(200).json({
+                    success: true,
+                    data: ticket,
+                });
+            } catch (error) {
+                console.error("Error updating ticket:", error);
+                return res.status(500).json({
+                    success: false,
+                    error: "Internal Server Error",
+                });
+            }
+
+        }
+    }
+    else if (ticket.payment_intent_id != null || ticket.payment_intent_id != undefined) {
+        const paymentInfo = await paymentService.listPaymentByIntent(ticket.payment_intent_id)
+
+        console.log(paymentInfo)
+
+        if (paymentInfo.data[0].status == "successful") {
+            const ticketdata = {
+                _id: ticket._id,
+                status: "Awaiting Approval"
+            }
+
+            ticket = await ticketService.updateTicket(ticketdata)
+
+            return res.status(200).json({
+                success: true,
+                data: ticket
+            })
+        } else {
+            const event = await eventService.findEvent({ _id: ticket.eventid });
+
+            if (!event) {
+                return res.status(404).json({
+                    success: false,
+                    data: ticket,
+                });
+            }
+
+            const targetCategory = event.categories.find((category) => category.className === ticket.class);
+
+            if (targetCategory) {
+                const targetBooking = targetCategory.bookedSeats.find(
+                    (booking) => moment(ticket.date).format("DD-MM-YYYY") === moment(booking.date).format("DD-MM-YYYY")
+                );
+
+                if (targetBooking) {
+                    targetBooking.seats = targetBooking.seats.filter((seat) => !ticket.allotedSeats.includes(seat));
+                } else {
+                    console.log("Target booking date not found");
+                }
+            } else {
+                console.log("Target category not found");
+            }
+
+            const ticketData = {
+                _id: ticket._id,
+                allotedSeats: [],
+                status: "failed",
+            };
+
+            try {
+                await ticketService.updateTicket(ticketData);
+                return res.status(200).json({
+                    success: true,
+                    data: ticket,
+                });
+            } catch (error) {
+                console.error("Error updating ticket:", error);
+                return res.status(500).json({
+                    success: false,
+                    error: "Internal Server Error",
+                });
+            }
+        }
+    }
+    else {
+        return res.status(200).json({
+            success: true,
+            data: ticket
+        })
     }
 
-
-
-    res.status(200).json({
-        success: true,
-        data: ticket
-    })
-
-    // console.log(sessionInfo)
-
 }
-
 
 exports.updateStatusOfTicketbyVendor = async (req, res) => {
     try {
@@ -1079,7 +1209,7 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
                     });
 
                 }
-            }else{
+            } else {
                 console.log("no session id")
             }
 

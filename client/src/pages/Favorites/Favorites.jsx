@@ -42,7 +42,7 @@ const Favorites = () => {
                 <Navbar />
                 <Tabbar />
 
-                <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
+                <section className='relative md:mr-48 md:ml-48 mt-5 l:ml-6 l:mr-6 mx-3'>
                     <div className="ml-3 hidden md:flex align-middle items-center">
                         <button  onClick={handleBack} className=' mt-1'>
                             <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
@@ -50,7 +50,7 @@ const Favorites = () => {
                         <p className='text-2xl font-bold'>Favorites</p>
                     </div>
 
-                    <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                    <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                         {
                             response.data == null
                                 ?

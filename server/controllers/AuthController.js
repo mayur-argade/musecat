@@ -8,6 +8,61 @@ const crypto = require('crypto')
 const passport = require('passport')
 const { transporter } = require('../services/mail-service')
 const { OAuth2Client } = require('google-auth-library');
+// const axios = require('axios')
+const { google } = require('googleapis')
+const moment = require('moment')
+
+const GOOGLE_CLIENT_ID = '502871150406-dr5vdb11majpgovhsksk6f4pacaj8fcq.apps.googleusercontent.com'
+const GOOGLE_CLIENT_SECRET = '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'
+
+const oauth2Client = new google.auth.OAuth2(
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    // 'http://localhost:3000',
+    'https://www.omanwhereto.com'
+)
+
+
+exports.addToCalender = async (req, res) => {
+    let { title, shortDescription, location, startTime, endTime } = req.body
+
+    console.log(startTime, endTime)
+    if (startTime == null) {
+        startTime = new Date()
+    }
+    if (endTime == null) {
+        const customeDate = moment(startTime).format("YYYY-MM-DD")
+        endTime = new Date(`${customeDate}T23:00:00.000Z`)
+    }
+    oauth2Client.setCredentials({ refresh_token: req.user.google_refresh })
+
+    const calenderasdf = google.calendar("v3")
+
+    const response = await calenderasdf.events.insert({
+        auth: oauth2Client,
+        calendarId: 'primary',
+        requestBody: {
+            summary: title,
+            description: shortDescription,
+            location: location,
+            colourId: '5',
+            start: {
+                dateTime: startTime
+            },
+            end: {
+                dateTime: endTime
+            }
+        }
+    })
+
+    console.log(response.status)
+    if (response.status == 200) {
+        return res.status(200).json({
+            success: true,
+            data: "Added To your calender"
+        })
+    }
+}
 
 // ##client 
 exports.clientLogin = async (req, res) => {
@@ -180,6 +235,104 @@ exports.register = async (req, res) => {
         })
     }
 
+}
+
+exports.facebookLogin = async (req, res) => {
+    try {
+        const { email, name } = req.body
+
+        const user = await userService.findUser({ email: email })
+
+        if (!user) {
+            // create user
+            let [username] = email.split("@")
+            const nameArray = name.split(' ')
+            const userNameExists = await userService.findUser({ username: username })
+
+            if (userNameExists) {
+                const randomNumber = Math.floor(Math.random() * 900) + 100;
+                username = `${username}${randomNumber}`
+            }
+
+            const data = {
+                email: email,
+                username: username,
+                firstname: nameArray[0],
+                lastname: nameArray[1],
+                isVerified: true
+            }
+
+            const saveUser = await userService.createUser(data)
+
+            const { accessToken, refreshToken } = tokenService.generateTokens({
+                _id: saveUser._id,
+                activated: false,
+            });
+
+            await tokenService.storeRefreshToken(refreshToken, user._id);
+
+            const userResponse = {
+                _id: user._id,
+                email: user.email,
+                username: user.username,
+                isVerified: user.isVerified,
+                mobilenumber: user.mobilenumber,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                photo: user.photo,
+                type: user.type
+            }
+            res
+                .status(200)
+                .cookie("refreshtoken", refreshToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .cookie("accessToken", accessToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .json({ user: userResponse });
+
+        }
+
+        const { accessToken, refreshToken } = tokenService.generateTokens({
+            _id: user._id,
+            activated: false,
+        });
+
+        await tokenService.storeRefreshToken(refreshToken, user._id);
+
+        const UserDto = {
+            _id: user._id,
+            email: user.email,
+            username: user.username,
+            isVerified: user.isVerified,
+            mobilenumber: user.mobilenumber,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            photo: user.photo,
+            type: user.type
+        }
+
+        res
+            .status(200)
+            .cookie("refreshtoken", refreshToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            })
+            .cookie("accessToken", accessToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            })
+            .json({ user: UserDto });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
 }
 
 exports.vendorRegister = async (req, res) => {
@@ -386,7 +539,146 @@ exports.vendorLogin = async (req, res) => {
 
 
 exports.clientGoogleLogin = async (req, res) => {
-    return res.status(200).json("ok google")
+    console.log(req.body)
+    const { code } = req.body
+
+    const getTokens = async (code) => {
+        try {
+            const response = await oauth2Client.getToken(code)
+            return response.tokens
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const getUserInfo = async (access_token) => {
+        const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        });
+
+        console.log(response)
+        if (!response.ok) {
+            console.log(response)
+            throw new Error('Failed to fetch user information from Google.');
+        }
+
+        const userData = await response.json();
+        return userData;
+    };
+
+    try {
+        const { access_token, refresh_token: google_refresh } = await getTokens(code)
+        const userInfo = await getUserInfo(access_token);
+        const user = await userService.findUser({ email: userInfo.email })
+
+        if (!user) {
+            // create user
+            let [username] = userInfo.email.split("@")
+            const userNameExists = await userService.findUser({ username: username })
+
+            if (userNameExists) {
+                const randomNumber = Math.floor(Math.random() * 900) + 100;
+                username = `${username}${randomNumber}`
+            }
+
+            let data = {
+                email: userInfo.email,
+                username: username,
+                firstname: userInfo.given_name,
+                lastname: userInfo.family_name,
+                isVerified: userInfo.verified_email,
+                photo: userInfo.picture
+            }
+
+            if (google_refresh) {
+                data.google_refresh = google_refresh
+            }
+
+            const saveUser = await userService.createUser(data)
+
+            const { accessToken, refreshToken } = tokenService.generateTokens({
+                _id: saveUser._id,
+                activated: false,
+            });
+
+            await tokenService.storeRefreshToken(refreshToken, saveUser._id);
+
+            const userResponse = {
+                _id: saveUser._id,
+                email: saveUser.email,
+                username: saveUser.username,
+                isVerified: saveUser.isVerified,
+                mobilenumber: saveUser.mobilenumber,
+                firstname: saveUser.firstname,
+                lastname: saveUser.lastname,
+                photo: saveUser.photo,
+                type: saveUser.type
+            }
+            return res
+                .status(200)
+                .cookie("refreshtoken", refreshToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .cookie("accessToken", accessToken, {
+                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    httpOnly: true,
+                })
+                .json({ user: userResponse });
+
+        }
+
+        if (google_refresh) {
+            const update_data = {
+                _id: user._id,
+                google_refresh: google_refresh
+            }
+
+            const updateUser = await userService.updateUser(update_data)
+        }
+
+        const { accessToken, refreshToken } = tokenService.generateTokens({
+            _id: user._id,
+            activated: false,
+        });
+
+        await tokenService.storeRefreshToken(refreshToken, user._id);
+
+        const UserDto = {
+            _id: user._id,
+            email: user.email,
+            username: user.username,
+            isVerified: user.isVerified,
+            mobilenumber: user.mobilenumber,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            photo: user.photo,
+            type: user.type
+        }
+
+        return res
+            .status(200)
+            .cookie("refreshtoken", refreshToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            })
+            .cookie("accessToken", accessToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            })
+            .json({ user: UserDto });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+    }
+
 }
 
 exports.refresh = async (req, res) => {

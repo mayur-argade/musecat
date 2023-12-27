@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { AdminGetUnverifiedVendors, AdminGetAllUsers, getEventsForAdmin, getOffersForAdmin, AdminStats, AdminVerifyVendor } from '../../http/index'
+import { vendorLogout, AdminGetUnverifiedVendors, AdminGetAllUsers, getEventsForAdmin, getOffersForAdmin, AdminStats, AdminVerifyVendor } from '../../http/index'
 import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment'
+import { useDispatch, useSelector } from 'react-redux'
+import { setAuth } from '../../store/authSlice'
 
 const AdminHome = () => {
     document.title = "Admin Dashboard"
@@ -14,103 +16,120 @@ const AdminHome = () => {
     const [stats, setStats] = useState({})
     const [loading, setLoading] = useState(false)
     const [offers, setOffers] = useState([])
+    const [refresh, setRefresh] = useState(false)
 
     useEffect(() => {
-        const fetchdata = async () => {
-            setLoading(true)
-            try {
-                const res = await AdminGetUnverifiedVendors()
-                setVendors(res.data)
-                // console.log(res)
-                setLoading(false)
-            } catch (error) {
-                // console.log(error)
-                setLoading(false)
+        let tokenExpiredHandled = false; // Flag to track whether token expired error has been handled
+
+        const handleError = (error) => {
+            setLoading(false);
+            if (error.response && error.response.status === 401) {
+                // Token expired error
+                if (!tokenExpiredHandled) {
+                    tokenExpiredHandled = true; // Set the flag to true to indicate the error has been handled
+                    toast.error("Token expired. Please log in again.");
+                }
+            } else {
+                toast.error(error.response?.data?.data || "An error occurred.");
             }
-        }
-        fetchdata()
+        };
+
+        const fetchdata = async () => {
+            setLoading(true);
+            try {
+                const res = await AdminGetUnverifiedVendors();
+                setVendors(res.data);
+            } catch (error) {
+                handleError(error);
+            }
+        };
 
         const fetchUsers = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const res = await AdminGetAllUsers()
-                setUsers(res.data)
-                setLoading(false)
+                const res = await AdminGetAllUsers();
+                setUsers(res.data);
             } catch (error) {
-                setLoading(false)
+                handleError(error);
             }
-        }
-
-        fetchUsers()
+        };
 
         const fetchevents = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const res = await getEventsForAdmin()
-                // console.log(data.data)
-                setResponse(res.data)
-                setLoading(false)
+                const res = await getEventsForAdmin();
+                setResponse(res.data);
             } catch (error) {
-                // console.log(error)
-                setLoading(false)
+                handleError(error);
             }
-        }
-
-        fetchevents()
+        };
 
         const fetchOffers = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const res = await getOffersForAdmin()
-                // console.log(data.data)
-                setOffers(res.data)
-                setLoading(false)
+                const res = await getOffersForAdmin();
+                setOffers(res.data);
             } catch (error) {
-                // console.log(error)
-                setLoading(false)
+                handleError(error);
             }
-        }
-
-        fetchOffers()
-
+        };
 
         const fetchCount = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const res = await AdminStats()
-                // console.log(data.data)
-                setStats(res.data)
-                setLoading(false)
+                const res = await AdminStats();
+                setStats(res.data);
             } catch (error) {
-                // console.log(error)
-                setLoading(false)
+                handleError(error);
             }
-        }
+        };
 
-        fetchCount()
-
+        // Execute all the fetch functions
+        Promise.all([fetchdata(), fetchUsers(), fetchevents(), fetchOffers(), fetchCount()])
+            .then(() => setLoading(false))
+            .catch(() => setLoading(false)); // Handle errors collectively after all requests are completed
 
     }, []);
 
     const verifyUsers = async (vendorid) => {
-        setLoading(true)
-        try {
+        setLoading(true);
 
+        try {
             const offerdata = {
                 vendorid: vendorid
-            }
+            };
 
-            const res = await AdminVerifyVendor(offerdata)
-            window.alert("Vendor Verified")
-            window.location.reload()
+            // Use toast.promise to display a promise-based toast
+            await toast.promise(AdminVerifyVendor(offerdata), {
+                loading: 'Verifying Vendor...',
+                success: 'Vendor Verified Successfully',
+                error: (error) => `Error: ${error.response.data.data}`,
+            });
+
+            // Refresh or update the UI as needed after successful verification
+            setRefresh(!refresh);
         } catch (error) {
-
+            toast.error(error.response.data.data);
+        }
+    };
+    const dispatch = useDispatch();
+    const { isAuth, user } = useSelector((state) => state.auth)
+    const funVendorLogout = async () => {
+        try {
+            const { data } = await vendorLogout()
+            dispatch(setAuth(data));
+            toast.success("logged out")
+            navigate("/vendor/login");
+        } catch (error) {
+            window.alert(error)
+            console.log(error)
         }
     }
 
     return (
         <>
             <div className=' '>
+                <Toaster />
                 <div className='flex flex-col w-full'>
                     <div className="navbar flex justify-between ml-10 mr-10 space-x-8">
                         <div className="left">
@@ -121,7 +140,7 @@ const AdminHome = () => {
                                 <img className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
                             </button>
                             <button>
-                                <img className='h-5 w-5' src="/images/icons/logout.png" alt="" />
+                                <img onClick={() => funVendorLogout()} className='h-5 w-5' src="/images/icons/logout.png" alt="" />
                             </button>
                         </div>
                     </div>
@@ -342,7 +361,7 @@ const AdminHome = () => {
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     <button onClick={() => verifyUsers(vendor._id)} className="text-white rounded-md h-6 w-6">
-                                                                    <img src="/images/icons/done.png" alt="" />
+                                                                        <img src="/images/icons/done.png" alt="" />
                                                                     </button>
                                                                 </td>
                                                             </tr>
@@ -658,7 +677,7 @@ const AdminHome = () => {
                                                                     </td>
                                                                     <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                         <button onClick={(() => navigate(`/admin/event/${offer._id}`))} className="h-6 w-6">
-                                                                        <img src="/images/icons/eye.png" alt="" />
+                                                                            <img src="/images/icons/eye.png" alt="" />
                                                                         </button>
                                                                     </td>
                                                                 </tr>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
 import { setAuth } from "../../store/authSlice";
-import { ClientLogin, ClientGoogleLogin, googleLogin } from "../../http/index"
+import { ClientLogin, ClientGoogleLogin, googleLogin, facebookLogin } from "../../http/index"
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 // import { LoginSocialFacebook } from "reactjs-social-login";
 // import { FacebookLoginButton } from "react-social-login-buttons";
@@ -15,9 +15,27 @@ const Login = () => {
 
     document.title = 'Login'
 
-    const responseFacebook = (response) => {
-        console.log(response);
-        // Handle the Facebook login response here
+    const responseFacebook = async (response) => {
+        try {
+            setLoading(true);
+
+            // Assuming facebookLogin is a function that returns a promise
+            const res = await toast.promise(facebookLogin(response), {
+                loading: 'Logging in...', // Message to display while the promise is pending
+                success: 'Login successful!', // Message to display on success
+            });
+
+            console.log('success', res);
+            setLoading(false);
+            // console.log('this is logged in details', res.data)
+            dispatch(setAuth(res.data));
+            const prevLocation = '/';
+            navigate(prevLocation);
+        } catch (error) {
+            console.error('Error during login:', error);
+            setLoading(false);
+            toast.error('Login failed. Please try again.');
+        }
     };
 
     const [loading, setLoading] = useState(false)
@@ -59,9 +77,35 @@ const Login = () => {
     const [user, setUser] = useState([]);
     const [profile, setProfile] = useState([]);
 
+    const googleLogin = async (codeResponse) => {
+        console.log(codeResponse)
+        try {
+            setLoading(true);
+
+            // Assuming facebookLogin is a function that returns a promise
+            const res = await toast.promise(ClientGoogleLogin(codeResponse), {
+                loading: 'Logging in...', // Message to display while the promise is pending
+                success: 'Login successful!', // Message to display on success
+            });
+
+            console.log('success', res);
+            setLoading(false);
+            // console.log('this is logged in details', res.data)
+            dispatch(setAuth(res.data));
+            const prevLocation = '/';
+            navigate(prevLocation);
+        } catch (error) {
+            console.error('Error during login:', error);
+            setLoading(false);
+            toast.error('Login failed. Please try again.');
+        }
+    }
+    const scopes = ['profile', 'email', 'calender'];
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) => setUser(codeResponse),
-        onError: (error) => console.log('Login Failed:', error)
+        onSuccess: (tokenResponse) => { googleLogin(tokenResponse) },
+        onError: (error) => { console.log('Login Failed:', error) },
+        scope: 'https://www.googleapis.com/auth/calendar',
+        flow: 'auth-code',
     });
 
     console.log("user -->", user)
@@ -132,16 +176,16 @@ const Login = () => {
 
                 <div className="max-w-sm w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
 
-                    <GoogleLogin
-                        width={boxSize}
-                        clientId="502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com" // Replace with your Google OAuth client ID
-                        onSuccess={login}
-                        onError={login}
-                        scope="profile email calender"
-                    // ux_mode="redirect"
-                    />
+                    <button
+                        onClick={() => login()}
+                        type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                        <img src="/images/icons/google-icon.png" alt="" />
+                        <span className='mx-auto text-center'>
+                            Continue with Google
+                        </span>
+                    </button>
                     <FacebookLogin
-                        appId="256981060503610"
+                        appId="1706610863166165"
                         autoLoad={false}
                         fields="name,email,picture"
                         callback={responseFacebook}

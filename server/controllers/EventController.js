@@ -816,7 +816,8 @@ module.exports.getUpcomingEvents = async (req, res) => {
         const customDate = req.query.date
         console.log(customDate)
         let query = {
-            verified: true
+            verified: true,
+            archived: false
         };
         if (customDate) {
             const timestampFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
@@ -831,6 +832,10 @@ module.exports.getUpcomingEvents = async (req, res) => {
                 {
                     'date.dateRange.startDate': { $lte: filterDate },
                     'date.dateRange.endDate': { $gte: filterDate2 }
+                },
+                {
+                    'date.dateRange.startDate': { $lte: filterDate },
+                    'date.dateRange.endDate': null
                 }
                 ,
                 {
@@ -855,7 +860,8 @@ module.exports.getUpcomingEvents = async (req, res) => {
             eventsOnDate = await eventService.findAllEvents(query);
 
         } else {
-            const todayDate = new Date();
+            const filterDate = moment().format("YYYY-MM-DD")
+            const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
             const day = moment(todayDate).format('dddd').toLowerCase()
             query['$or'] = [
                 {
@@ -971,16 +977,21 @@ exports.getAllOffers = async (req, res) => {
 
     try {
 
-        const today = new Date()
-        const day = moment(today).format('dddd').toLowerCase()
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+        const day = moment(todayDate).format('dddd').toLowerCase()
         offers = await eventService.findAllEvents(
             {
                 // Assuming you pass the vendor id as a route parameter
                 type: 'offer',
                 verified: true,
+                archived: false,
                 $or: [
                     {
-                        'date.dateRange.endDate': { $gte: today }
+                        'date.dateRange.endDate': { $gte: todayDate }
+                    },
+                    {
+                        'date.dateRange.endDate': null
                     }
                     ,
                     {
@@ -988,7 +999,7 @@ exports.getAllOffers = async (req, res) => {
                             {
                                 $or: [
                                     {
-                                        'date.recurring.endDate': { $gte: today },
+                                        'date.recurring.endDate': { $gte: todayDate },
                                         'date.recurring.days': { $in: day } // Replace with a function to get today's day
 
                                     },
@@ -1103,7 +1114,9 @@ exports.getEventsForAdmin = async (req, res) => {
             // verified: true
             type: 'event'
         };
-        const todayDate = new Date();
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
+        const day = moment(todayDate).format('dddd').toLowerCase()
 
         query['$or'] = [
             {
@@ -1154,7 +1167,9 @@ exports.getOffersForAdmin = async (req, res) => {
             // verified: true
             type: 'offer'
         };
-        const todayDate = new Date();
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
+        const day = moment(todayDate).format('dddd').toLowerCase()
 
         query['$or'] = [
             {
@@ -1205,13 +1220,18 @@ exports.adminVerifyEvent = async (req, res) => {
     try {
         let event = await eventService.findEvent({ _id: eventid })
         console.log(event)
+
         if (!event) {
             return res.status(404).json({
                 success: false,
                 data: "Event not found"
             })
+        }else if (event.location.verified == false){
+            return res.status(400).json({
+                succss: false,
+                data: `Please Verify Venue ${event.location.name} first which is associated with this event `
+            })
         }
-
 
         const updatedData = {
             _id: eventid,

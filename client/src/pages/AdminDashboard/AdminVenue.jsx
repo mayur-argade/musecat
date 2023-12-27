@@ -23,6 +23,7 @@ const AdminVenue = () => {
     }
 
     const closeCategoryModel = () => {
+        setRefresh(!refresh)
         setShowAddVenue(false)
     }
 

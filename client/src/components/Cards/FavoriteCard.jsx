@@ -5,7 +5,7 @@ import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, g
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
 
-const FavoriteCard = ({ data }) => {
+const FavoriteCard = ({ data, width }) => {
     document.title = 'favorites'
 
 
@@ -42,7 +42,11 @@ const FavoriteCard = ({ data }) => {
     }
     return (
         <>
-            <div onClick={(() => navigate(`/events/${data._id}`))} class="standalone:mb-5 relative my-3 h-auto lg:h-96 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div onClick={(() => navigate(`/events/${data._id}`))} className={`cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] my-2`}>
+
+                <div href="#">
+                    <img class="rounded-md aspect-square" src={`${data.displayPhoto}`} alt="" />
+                </div>
 
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent click event from propagating
@@ -56,15 +60,12 @@ const FavoriteCard = ({ data }) => {
                     }
                 </button>
 
-                <a href="#">
-                    <img class="h-72 w-full rounded-md object-fit" src={`${data.displayPhoto}`} alt="" />
-                </a>
                 <div class="p-1 pt-4 pb-2 mx-1">
                     <div class="">
-                        <p class="title text-md md:text-md font-bold text-left">
+                        <p class="text-xss m:text-xs mt-1  font-medium truncate">
                             {data.title} at
                         </p>
-                        <p className='text-md md:text-md font-bold text-left mb-1  leading-loose'>{data.location?.name || ""}</p>
+                        <p className='text-xss m:text-xs mt-1  font-medium truncate'>{data.location?.name || ""}</p>
                     </div>
                     <div>
                         <p class="text-xss font-light md:font-normal">

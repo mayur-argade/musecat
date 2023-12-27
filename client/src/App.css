@@ -16,7 +16,8 @@ body {
     display: none;
 }
 
-@media all and (display-mode: standalone) {
+
+/* @media all and (display-mode: standalone) {
     .body {
         margin-bottom: 50px;
     }
@@ -44,7 +45,11 @@ body {
     .MobileProfile {
         display: block;
     }
-}
+
+    .NoStandalone{
+        display: none
+    }
+} */
 
 .my-facebook-button-class {
     width: 100%;

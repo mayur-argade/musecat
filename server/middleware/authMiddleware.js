@@ -92,7 +92,7 @@ exports.requiredRole = (requiredRole) => {
 
             const userid = await tokenService.verifyAccessToken(accessToken);
             // console.log(userid)
-            const userData = await userService.findUser({ _id: userid._id });
+            const userData = await vendorService.findVendor({ _id: userid._id });
             // console.log(userData)
             if (userData.role === requiredRole) {
                 req.user = userData; // Attach user data to the request object

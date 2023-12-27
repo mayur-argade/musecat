@@ -14,10 +14,10 @@ const GuestRoute = (props) => {
     useEffect(() => {
         function specialTreatment() {
             if (isAuth === true && user.role == "admin") {
-                navigate("/admin/home")
+                // navigate("/admin/home")
             }
             else {
-                navigate("/login")
+                navigate("/vendor/login")
             }
         }
 

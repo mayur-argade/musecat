@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
-import { ClientEventDetailsApi, addToFavorites } from '../../http'
+import { ClientEventDetailsApi, addToFavorites, addToCalender } from '../../http'
 import EventCard from '../../components/Cards/EventCard'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
@@ -313,6 +313,36 @@ const EventDescription = () => {
 
     }
 
+    const addToGoogleCalender = async (vendorid) => {
+        setLoading(true);
+
+        try {
+            let startTime = response.data.eventDetails.date.type == 'dateRange' ? response.data.eventDetails.date.dateRange.startDate : response.data.eventDetails.date.recurring.startDate
+            let endTime = response.data.eventDetails.date.type == 'dateRange' ? response.data.eventDetails.date.dateRange.endDate : response.data.eventDetails.date.recurring.endDate
+            const calenderdata = {
+                title: response.data.eventDetails.title,
+                shortDescription: response.data.eventDetails.shortDescription,
+                location: response.data.eventDetails.location.name,
+                startTime: startTime,
+                endTime: endTime
+            }
+            await toast.promise(addToCalender(calenderdata), {
+                loading: 'Adding to you calender...',
+                success: 'Event Added to your calender',
+                error: (error) => `Error: ${error.response.data.data}`,
+            });
+
+            // Refresh or update the UI as needed after successful verification
+            // setRefresh(!refresh);
+        } catch (error) {
+            toast.error(error.response.data.data);
+            console.log("error", error)
+            if (error.response.status == 401) {
+                toast.error("Login to continue further")
+                navigate('/login')
+            }
+        }
+    };
 
     const location = useLocation();
 
@@ -387,15 +417,15 @@ const EventDescription = () => {
                         <section className=''>
                             <section>
                                 <div className="hidden md:flex align-middle items-center">
-                                    <button className="backlogo" onClick={handleBack}>
+                                    <button className="backlogo" onClick={() => navigate(-1)}>
                                         <img className='h-16' src="/images/icons/back-button.png" alt="" />
                                     </button>
                                     <span className='text-lg font-bold'>{
                                         response.data.eventDetails.type == 'event'
-                                        ?
-                                        <>Event</>
-                                        :
-                                        <>Voucher</>
+                                            ?
+                                            <>Event</>
+                                            :
+                                            <>Voucher</>
                                     } Description</span>
                                 </div>
 
@@ -412,14 +442,14 @@ const EventDescription = () => {
                                         {
                                             response.data.eventDetails.date.type == 'dateRange'
                                                 ?
-                                                <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
+                                                <p className='text-xs md:text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
                                                     {response.data.eventDetails.showEndDate
                                                         ?
                                                         <>
                                                             <span className="mx-3">
                                                                 to
                                                             </span>
-                                                            {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
+                                                            {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY")}
                                                         </>
                                                         :
                                                         <>
@@ -580,7 +610,7 @@ const EventDescription = () => {
                                                     <span>Add to Favorite</span>
                                                 </button>
                                                 {/* </Link> */}
-                                                <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                                <button onClick={() => addToGoogleCalender()} className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                                     <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
                                                     <span >Add to Calendar</span>
                                                 </button>

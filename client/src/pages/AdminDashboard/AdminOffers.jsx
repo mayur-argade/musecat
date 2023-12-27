@@ -64,7 +64,7 @@ const AdminOffers = () => {
             await toast.promise(promise, {
                 loading: 'Verifying Offer...', // Optional loading message
                 success: 'Offer Verified Successfully', // Optional success message
-                error: 'Error verifying offer:', // Optional error message prefix
+                error: (error) => `Error: ${error.response.data.data}`,
             });
 
             setRefresh(!refresh)

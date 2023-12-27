@@ -5,18 +5,20 @@ div.container {
     align-items: center;
     max-width: 810px;
     overflow: hidden
-  }
+}
 
-  .custom-qr-code {
-    background-color: transparent !important; /* Make the background transparent */
-  }
-  
-  /* Change black color to white */
-  .custom-qr-code svg rect {
-    fill: white !important; /* Change the fill color to white */
-  }
+.custom-qr-code {
+    background-color: transparent !important;
+    /* Make the background transparent */
+}
 
-  .container .item {
+/* Change black color to white */
+.custom-qr-code svg rect {
+    fill: white !important;
+    /* Change the fill color to white */
+}
+
+.container .item {
     width: 100%;
     height: 310px;
     float: left;
@@ -24,106 +26,325 @@ div.container {
     background: #fff;
     overflow: hidden;
     margin: 10px
-  }
-  .container .item-right, .container .item-left {
+}
+
+.container .item-right,
+.container .item-left {
     float: left;
-    padding: 15px 
-  }
-  .container .item-right {
+    padding: 15px
+}
+
+.container .item-right {
     background-color: #C0A04C;
     /* padding: 79px 50px; */
     /* margin-right: 20px; */
     width: 273px;
     position: relative;
     height: 330px
-  }
-  .container .item-right .up-border, .container .item-right .down-border {
-      padding: 14px 15px;
-      background-color: #ddd;
-      border-radius: 50%;
-      position: absolute
-  }
-  .container .item-right .up-border {
+}
+
+.container .item-right .up-border,
+.container .item-right .down-border {
+    padding: 14px 15px;
+    background-color: #ddd;
+    border-radius: 50%;
+    position: absolute
+}
+
+.container .item-right .up-border {
     top: -10px;
     right: 260px;
-  }
-  .container .item-right .down-border {
+}
+
+.container .item-right .down-border {
     bottom: 8px;
     right: 260px;
-  }
-  .container .item-right .num {
+}
+
+.container .item-right .num {
     font-size: 60px;
     text-align: center;
     color: #111
-  }
-  .container .item-right .day, .container .item-left .event {
+}
+
+.container .item-right .day,
+.container .item-left .event {
     color: #555;
     font-size: 20px;
     margin-bottom: 9px;
-  }
-  .container .item-right .day {
+}
+
+.container .item-right .day {
     text-align: center;
     font-size: 25px;
-  }
-  .container .item-left {
+}
+
+.container .item-left {
     width: 65%;
     padding: 34px 0px 19px 46px;
     border-right: 3px dotted #999;
-  } 
-  .container .item-left .title {
+}
+
+.container .item-left .title {
     color: #111;
     font-size: 34px;
     margin-bottom: 12px
-  }
-  .container .item-left .sce {
+}
+
+.container .item-left .sce {
     margin-top: 5px;
     display: block
-  }
-  .item-left .sce .icon, .item-left .sce p,
-  .item-left .loc .icon, .item-left .loc p{
-      float: left;
-      word-spacing: 5px;
-      letter-spacing: 1px;
-      color: #888;
-      margin-bottom: 10px;
-  }
-  .item-left .sce .icon,  .item-left .loc .icon {
+}
+
+.item-left .sce .icon,
+.item-left .sce p,
+.item-left .loc .icon,
+.item-left .loc p {
+    float: left;
+    word-spacing: 5px;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.item-left .sce .icon,
+.item-left .loc .icon {
     margin-right: 10px;
     font-size: 20px;
     color: #666
-  }
-    .item-left .loc {display: block}
-  .fix {clear: both}
-   .item .tickets, .booked, .cancel{
-      color: #fff;
-      padding: 6px 14px;
-      float: right;
-      margin-top: 10px;
-      font-size: 18px;
-      border: none;
-      cursor: pointer
-  }
-   .item .tickets {background: white}
-   .item .booked {background: #3D71E9}
-   .item .cancel {background: #DF5454}
-  .linethrough {text-decoration: line-through}
+}
 
-  @media only screen and (max-width: 1150px) {
-    .container .item {
-      width: 100%;
-      margin-right: 20px
-    }
-    div.container {
-      margin: 0 20px auto
-    }
-  }
+.item-left .loc {
+    display: block
+}
 
-  @media only screen and (max-width: 767px) {
+.fix {
+    clear: both
+}
+
+.item .tickets,
+.booked,
+.cancel {
+    color: #fff;
+    padding: 6px 14px;
+    float: right;
+    margin-top: 10px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer
+}
+
+.item .tickets {
+    background: white
+}
+
+.item .booked {
+    background: #3D71E9
+}
+
+.item .cancel {
+    background: #DF5454
+}
+
+.linethrough {
+    text-decoration: line-through
+}
+
+@media only screen and (max-width: 1150px) {
     .container .item {
         width: 100%;
         margin-right: 20px
-      }
-      div.container {
+    }
+
+    div.container {
         margin: 0 20px auto
-      }
-  }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .container .item {
+        width: 100%;
+        margin-right: 20px
+    }
+
+    div.container {
+        margin: 0 20px auto
+    }
+}
+
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pathway Extreme', sans-serif;
+    user-select: none;
+    transition: all .1s;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #ccc;
+    overflow: hidden;
+} */
+
+.msg {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #555;
+    text-transform: uppercase;
+    z-index: 4;
+}
+
+.m-ticket {
+    width: 350px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 25px #bbb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: move;
+}
+
+
+.m-ticket:before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 41%;
+    background: #eee;
+    box-shadow: inset 0 0 25px #bbb;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+}
+
+
+.m-ticket:after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: 41%;
+    background: #eee;
+    box-shadow: inset 0 0 25px #bbb;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+}
+
+
+.m {
+    position: absolute;
+    right: -5px;
+    top: 15%;
+    transform: rotate(270.5deg);
+    font-size: .80em;
+    color: #888;
+}
+
+
+.m-ticket>.movie-details {
+    display: flex;
+    gap: 20px;
+    padding: 20px 20px;
+}
+
+
+.m-ticket>.movie-details>.poster {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #888;
+}
+
+.m-ticket>.movie-details>.movie>h4 {
+    text-transfrom: capitalize;
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+
+.m-ticket>.movie-details>.movie>p {
+    font-size: .80em;
+    line-height: 19px;
+    color: #777;
+}
+
+
+.m-ticket>.info {
+    width: 93%;
+    border-radius: 20px;
+    background: #eee;
+    padding: 10px 0px;
+    text-align: center;
+    font-size: .72em;
+}
+
+
+
+.m-ticket>.ticket-details {
+    display: flex;
+    gap: 20px;
+    padding: 20px 20px;
+}
+
+
+.m-ticket>.ticket-details>.scan {
+    width: 100px;
+    height: 100px;
+}
+
+.m-ticket>.ticket-details>.ticket {
+    text-align: center;
+    width: 200px;
+}
+
+
+.m-ticket>.ticket-details>.ticket>p {
+    font-size: .80em;
+    line-height: 19px;
+    color: #777;
+}
+
+.m-ticket>.ticket-details>.ticket>b {
+    margin-top: 10px;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+
+.m-ticket>.ticket-details>.ticket>h6 {
+    text-transform: uppercase;
+    font-weight: 100;
+    font-size: .95em;
+    margin-top: 10px;
+}
+
+
+.m-ticket>.info-cancel {
+    width: 100%;
+    background: #eee;
+    color: #888;
+    padding: 10px 0px;
+    text-align: center;
+    font-size: .80em;
+}
+
+
+.m-ticket>.total-amount {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: .90em;
+    width: 100%;
+}

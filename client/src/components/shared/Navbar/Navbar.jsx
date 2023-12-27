@@ -125,16 +125,22 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     else if (window.location.pathname == '/ticketstatus/ticketid') {
         categoryName = "Ticket Status"
     }
+    else if (window.location.pathname.includes("/venue")) {
+        categoryName = "Venue Description"
+    }
+    else if (window.location.pathname.includes("/event")) {
+        categoryName = "Event Description"
+    }
 
 
     return (
         <>
-            <div className='sticky top-0 z-50  w-full bg-white'>
+            <div className='sticky top-0 z-40  w-full bg-white'>
                 <div class=" bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 lg:mr-48 lg:ml-48">
                     <Toaster />
                     <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 py-4 md:pt-2 md:pb-1 shadow-md md:shadow-none">
 
-                        {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events")  || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
+                        {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
                             <div className='flex align-middle'>
                                 <button className="menu-bars md:hidden " onClick={handleBack} >
                                     <img src="/images/icons/back-arrow.svg" alt="" />
@@ -161,7 +167,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             </div>
                         )}
                         {
-                            category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname == '/events/eventid' || window.location.pathname == '/venue/venueid' || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid'
+                            category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid'
                                 ?
                                 <>
                                 </>
@@ -438,7 +444,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 </div>
                             </div>
                             {isAccOpen && (
-                                <div className={`flex flex-col space-y-4 overflow-hidden transition-all duration-200 pl-3 mt-3`}>
+                                <div className={`flex flex-col space-y-4 overflow-y transition-all duration-200 pl-3 mt-3`}>
                                     <Link to="/category/events">
                                         <p className='font-medium'>
                                             Events
@@ -489,10 +495,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             )}
                         </div>
 
-                        {/* <Link to='/whereto' className={`${window.location.pathname == '/whereto' ? 'font-bold' : 'font-medium'}`}>
-                            <span className='  hover:border'>Where To? </span>
-                        </Link> */}
-
                         <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold' : 'font-medium '}`}>
                             <span className=' hover:border'>About</span>
                         </Link>
@@ -500,51 +502,71 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                         <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
                             <span className=' hover:border'>Contact</span>
                         </Link>
-                    </div>
-                    <div className='absolute w-10/12 flex justify-center items-center bottom-20'>
-
                         {
-                            isAuth
-                                ?
-                                <>
-                                    {
-                                        window.location.pathname == "/vendor/notification" ||
-                                            window.location.pathname == "/vendor/helpcenter" ||
-                                            window.location.pathname == "/vendor/home" ||
-                                            window.location.pathname == '/vendor/profile'
-                                            ?
-                                            <button onClick={funVendorLogout} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
-                                                <img className='h-5' src="/images/icons/logout.svg" alt="" />
-                                                <p>
-                                                    Sign up
-                                                </p>
-                                            </button>
-                                            :
-                                            <button onClick={handleOnclick} type="button" class="flex ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
-                                                <img className='h-5' src="/images/icons/logout.svg" alt="" />
-                                                <p>
-                                                    Log out
-                                                </p>
-                                            </button>
-                                    }
-                                </>
-                                :
-                                <>
-                                    <div className='w-full flex flex-col justify-start space-y-2 ml-4'>
-                                        <Link to="/login">
-                                            <button type="button" class="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
-                                        </Link>
-                                        <Link to="/signup">
-                                            <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
-                                        </Link>
-                                    </div>
-                                </>
+                            isAuth && (
+                                <div className='NoStandalone flex flex-col space-y-8 '>
+                                    <Link Link to='/profile' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                                        <span className=' hover:border'>profile</span>
+                                    </Link>
+                                    <Link Link to='/favorites' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                                        <span className=' hover:border'>Favorites</span>
+                                    </Link>
+                                    <Link Link to='/pastpurchase' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                                        <span className=' hover:border'>Past Purchased</span>
+                                    </Link>
+                                </div>
+
+                            )
+
                         }
 
+                        <div className='w-10/12 flex justify-center items-center bottom-20'>
+
+                            {
+                                isAuth
+                                    ?
+                                    <>
+                                        {
+                                            window.location.pathname == "/vendor/notification" ||
+                                                window.location.pathname == "/vendor/helpcenter" ||
+                                                window.location.pathname == "/vendor/home" ||
+                                                window.location.pathname == '/vendor/profile'
+                                                ?
+                                                <button onClick={funVendorLogout} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                                    <img className='h-5' src="/images/icons/logout.svg" alt="" />
+                                                    <p>
+                                                        Sign up
+                                                    </p>
+                                                </button>
+                                                :
+                                                <button onClick={handleOnclick} type="button" class="flex ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                                    <img className='h-5' src="/images/icons/logout.svg" alt="" />
+                                                    <p>
+                                                        Log out
+                                                    </p>
+                                                </button>
+                                        }
+                                    </>
+                                    :
+                                    <>
+                                        <div className='w-full flex flex-col justify-start space-y-2 ml-4'>
+                                            <Link to="/login">
+                                                <button type="button" class="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
+                                            </Link>
+                                            <Link to="/signup">
+                                                <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                            </Link>
+                                        </div>
+                                    </>
+                            }
+
+                        </div>
+
                     </div>
+
                 </ul>
 
-            </ nav>
+            </ nav >
         </>
     );
 }

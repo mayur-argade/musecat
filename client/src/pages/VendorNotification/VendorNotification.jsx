@@ -30,7 +30,7 @@ const VendorNotification = () => {
             // Use toast.promise to display a promise-based toast
             const promise = DeleteVendorNotification();
             const res = await toast.promise(promise, {
-                loading: 'Deleting User...',
+                loading: 'Deleting notification...',
                 success: (response) => response.data.data,
                 error: (error) => `Error: ${error.response.data.data}`,
             });

@@ -10,13 +10,13 @@ import ScrollToTop from './utils/ScrollToTop'
 import { persistor, store } from './store/index';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux'
-const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <GoogleOAuthProvider clientId="502871150406-c94l5jjpuo75vcq08can75k9um2lfh2f.apps.googleusercontent.com">
+                <GoogleOAuthProvider clientId="502871150406-dr5vdb11majpgovhsksk6f4pacaj8fcq.apps.googleusercontent.com">
                     <App />
                 </GoogleOAuthProvider>
             </PersistGate>

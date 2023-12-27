@@ -20,6 +20,25 @@ const TicketStatus = () => {
 
     const location = useLocation();
 
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                // Show the button when the user scrolls down 100 pixels
+                setVisible(true);
+            } else {
+                // Hide the button when the user scrolls up
+                setVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     useEffect(() => {
         const fetchdata = async () => {
@@ -85,108 +104,99 @@ const TicketStatus = () => {
             <>
                 <Navbar />
                 <Tabbar />
-
-                <section className='relative md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
-                    <div className="ml-3 hidden md:flex align-middle items-center">
-                        <button onClick={handleBack} className=' mt-1'>
-                            <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
-                        </button>
-                        <p className='text-2xl font-bold'>{response.data.event.type == 'event' ? "Ticket" : "Voucher"} Status</p>
-                    </div>
-
-                    <div className='flex flex-col justify-start align-middle items-stretch md:flex-row '>
-
-                        <div className="left">
-                            <TicketStatusCard data={response.data.event} />
-                        </div>
-
-                        <div className="right">
-                            <form action="" className=' md:w-full mt-4 space-y-2'>
-                                <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
-                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">First name</label>
-                                        <input
-                                            type="text"
-                                            className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                            placeholder={response.data.ticket.firstname}
-                                            disabled
-                                        />
-                                    </div>
-                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Last name</label>
-                                        <input
-                                            type="text"
-                                            className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                            placeholder={response.data.ticket.lastname}
-                                            disabled
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                    <label className='text-xs mt-1' htmlFor="first name">Email</label>
-                                    <input
-                                        type="text"
-                                        className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
-                                        placeholder={response.data.ticket.email}
-                                        disabled
-                                    />
-                                </div>
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
-                                    <label className='text-xs mt-1' htmlFor="first name">Class</label>
-                                    <input
-                                        type="text"
-                                        className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
-                                        placeholder={response.data.ticket.class}
-                                        disabled
-                                    />
-                                </div>
-                                <div className="flex  md:space-y-0 space-x-3 mt-3">
-                                    <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
-                                        <label className='text-xs mt-1' htmlFor="first name">No. of seats</label>
-                                        <input
-                                            type="number"
-                                            className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                            placeholder={response.data.ticket.seats}
-                                            disabled
-                                        />
-                                    </div>
-                                    <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
-                                        <label className='text-xs mt-1' htmlFor="first name">Ticket Status</label>
-                                        <input
-                                            type="number"
-                                            className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
-                                            placeholder={response.data.ticket.status}
-                                            disabled
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex justify-start mt-8">
-                                    <button
-                                        type="button"
-                                        onClick={openModal}
-                                        className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
-                                    >
-                                        View Ticket
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div className='hidden md:flex justify-end flex-col absolute right-2 bottom-12'>
-                        <div className='flex justify-between mb-2'>
-                            {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button> */}
-                            {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
-                            <button>
+                <section className='px-5 w-full flex justify-center'>
+                    <section className='w-full md:w-11/12 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
+                        <div className="ml-3 hidden md:flex align-middle items-center">
+                            <button onClick={handleBack} className=' mt-1'>
+                                <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                             </button>
+                            <p className='text-2xl font-bold'>{response.data.event.type == 'event' ? "Ticket" : "Voucher"} Status</p>
                         </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                    </div>
 
+                        <div className='flex flex-col justify-center align-middle items-stretch md:flex-row '>
+
+                            <div className="left">
+                                <TicketStatusCard data={response.data.event} />
+                            </div>
+
+                            <div className="right">
+                                <form action="" className=' md:w-full mt-4 space-y-2'>
+                                    <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
+                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">First name</label>
+                                            <input
+                                                type="text"
+                                                className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                placeholder={response.data.ticket.firstname}
+                                                disabled
+                                            />
+                                        </div>
+                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Last name</label>
+                                            <input
+                                                type="text"
+                                                className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                placeholder={response.data.ticket.lastname}
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-xs mt-1' htmlFor="first name">Email</label>
+                                        <input
+                                            type="text"
+                                            className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
+                                            placeholder={response.data.ticket.email}
+                                            disabled
+                                        />
+                                    </div>
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <label className='text-xs mt-1' htmlFor="first name">Class</label>
+                                        <input
+                                            type="text"
+                                            className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
+                                            placeholder={response.data.ticket.class}
+                                            disabled
+                                        />
+                                    </div>
+                                    <div className="flex  md:space-y-0 space-x-3 mt-3">
+                                        <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                            <label className='text-xs mt-1' htmlFor="first name">No. of seats</label>
+                                            <input
+                                                type="number"
+                                                className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                placeholder={response.data.ticket.seats}
+                                                disabled
+                                            />
+                                        </div>
+                                        <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Ticket Status</label>
+                                            <input
+                                                type="number"
+                                                className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                placeholder={response.data.ticket.status}
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-start mt-8">
+                                        <button
+                                            type="button"
+                                            onClick={openModal}
+                                            className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                                        >
+                                            View Ticket
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+
+                    </section>
                 </section>
 
                 {isModalOpen && (
@@ -203,7 +213,24 @@ const TicketStatus = () => {
                         </div>
                     </div>
                 )}
+                <div className='fixed hidden lg:flex justify-center flex-col right-5 bottom-10'>
+                    <div className='flex justify-center mb-2'>
+                        {
+                            visible && (
+                                <button onClick={() => window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                    <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                </button>
+                            )
+                        }
 
+                        <button>
+                        </button>
+                    </div>
+                    <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                </div>
                 <div className=''>
                     < Footer />
                 </div>
