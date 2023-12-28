@@ -17,40 +17,6 @@ body {
 }
 
 
-/* @media all and (display-mode: standalone) {
-    .body {
-        margin-bottom: 50px;
-    }
-
-    .NoFooter {
-        display: none;
-    }
-
-    .NoHeader {
-        display: none;
-    }
-
-    .appmargine {
-        margin-bottom: 3rem;
-    }
-
-    .contactmargine {
-        margin-bottom: 6rem;
-    }
-
-    .selectoption {
-        display: none;
-    }
-
-    .MobileProfile {
-        display: block;
-    }
-
-    .NoStandalone{
-        display: none
-    }
-} */
-
 .my-facebook-button-class {
     width: 100%;
     text-decoration: none;
