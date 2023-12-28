@@ -27,6 +27,26 @@ const EventDescription = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
 
+    const [isStandalone, setIsStandalone] = useState(false);
+
+    useEffect(() => {
+        // Check if the PWA is in standalone mode
+        const mediaQuery = window.matchMedia('(display-mode: standalone)');
+        setIsStandalone(mediaQuery.matches);
+
+        // Listen for changes to the display mode
+        const handleChange = (event) => {
+            setIsStandalone(event.matches);
+        };
+
+        mediaQuery.addEventListener('change', handleChange);
+
+        // Clean up the event listener
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
+    }, []);
+
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const toggleDropdown = () => {
@@ -862,9 +882,7 @@ const EventDescription = () => {
                                                     <div className='gap-3 md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
                                                         {
                                                             response.data.offers.map((offer) => (
-                                                                <Link to={`/events/${offer._id}`}>
-                                                                    <img className='w-36 h-48 m:w-44 m:52 md:w-52 md:h-72 rounded mx-2' src={`${offer.displayPhoto}`} alt="" />
-                                                                </Link>
+                                                                < EventCard width={'w-44 md:w-52'} data={offer} />
                                                             ))
                                                         }
                                                     </div>
@@ -879,8 +897,12 @@ const EventDescription = () => {
                                 }
 
 
-                                <div className="standalone:hidden relative mt-8 ml-6 mr-6">
-                                    <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />
+                                <div className="relative mt-8 ml-6 mr-6">
+                                    {
+                                        !isStandalone && (
+                                            <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />
+                                        )
+                                    }
 
                                     <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
                                         <div className='flex justify-center mb-2'>

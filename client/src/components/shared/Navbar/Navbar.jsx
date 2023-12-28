@@ -406,7 +406,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <>
                                 </>
                             )}
-                            <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification.svg" alt="" />
+                            <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification-1.svg" alt="" />
                         </div>
                     </div>
                 </div >
@@ -505,13 +505,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                         {
                             isAuth && (
                                 <div className='NoStandalone flex flex-col space-y-8 '>
-                                    <Link Link to='/profile' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                                    <Link Link to='/profile' className={`${window.location.pathname == '/profile' ? 'font-bold' : 'font-medium '}`}>
                                         <span className=' hover:border'>profile</span>
                                     </Link>
-                                    <Link Link to='/favorites' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                                    <Link Link to='/favorites' className={`${window.location.pathname == '/favorites' ? 'font-bold' : 'font-medium '}`}>
                                         <span className=' hover:border'>Favorites</span>
                                     </Link>
-                                    <Link Link to='/pastpurchase' className={`${window.location.pathname == '/contactus' ? 'font-bold' : 'font-medium '}`}>
+                                    <Link Link to='/pastpurchase' className={`${window.location.pathname == '/pastpurchased' ? 'font-bold' : 'font-medium '}`}>
                                         <span className=' hover:border'>Past Purchased</span>
                                     </Link>
                                 </div>

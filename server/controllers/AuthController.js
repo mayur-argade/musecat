@@ -18,7 +18,6 @@ const GOOGLE_CLIENT_SECRET = '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'
 const oauth2Client = new google.auth.OAuth2(
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
-    // 'http://localhost:3000',
     'https://www.omanwhereto.com'
 )
 

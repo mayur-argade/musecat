@@ -185,7 +185,7 @@ const Login = () => {
                         </span>
                     </button>
                     <FacebookLogin
-                        appId="1706610863166165"
+                        appId="1346318836020986"
                         autoLoad={false}
                         fields="name,email,picture"
                         callback={responseFacebook}

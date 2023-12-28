@@ -87,7 +87,7 @@ function App() {
                     <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
                     <Route path="/events" exact element={<EventsPWA />} />
                     <Route path="/searchpage" exact element={<SearchPWA />} />
-                    <Route path="/user/notification" exact element={<UserNotification />} />
+                    <Route path="/user/notification" exact element={<SemiProtected Component={UserNotification} />} />
                     <Route path="/user/cookies" exact element={<Cookies />} />
                     <Route path="/user/privacypolicy" exact element={<PrivacyPolicy />} />
                     <Route path="/user/termsandconditions" exact element={<TermsAndCondition />} />
