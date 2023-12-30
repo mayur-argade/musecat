@@ -25,6 +25,12 @@ class NotificationService {
         const notifications = await NotificationModel.countDocuments(filter)
         return notifications
     }
+
+    async updateNotification(filter) {
+        const notifications = await NotificationModel.updateMany({ receiverid: filter.receiverid }, { status: filter.status })
+
+        return notifications
+    }
 }
 
 module.exports = new NotificationService();

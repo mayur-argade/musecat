@@ -1,12 +1,13 @@
 import React from 'react'
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import './navbar.css'
 import { useParams } from 'react-router-dom';
-import { clientLogout, vendorLogout } from '../../../http';
+import { clientLogout, vendorLogout, GetNotificationCount } from '../../../http';
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../../store/authSlice'
 import toast, { Toaster } from 'react-hot-toast';
+
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
@@ -72,6 +73,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         }
     }
 
+
+
+
     const [sidebar, setSidebar] = useState(false);
 
     const showSidebar = () => setSidebar(!sidebar);
@@ -132,6 +136,23 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         categoryName = "Event Description"
     }
 
+    const [unread, setUnread] = useState(false)
+
+    useEffect(() => {
+        const getNotificationCountFunction = async () => {
+            try {
+                const notificationCount = await GetNotificationCount();
+                console.log(notificationCount)
+                if (notificationCount.data.data > 0) {
+                    setUnread(true)
+                }
+            } catch (error) {
+
+            }
+        }
+
+        getNotificationCountFunction()
+    }, [categoryName])
 
     return (
         <>
@@ -406,7 +427,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <>
                                 </>
                             )}
-                            <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification-1.svg" alt="" />
+                            {
+                                unread
+                                    ?
+                                    <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification.svg" alt="" />
+                                    :
+                                    <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification-1.svg" alt="" />
+
+                            }
                         </div>
                     </div>
                 </div >

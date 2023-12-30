@@ -12,11 +12,17 @@ const notificationSchema = new mongoose.Schema({
     msg: {
         type: String,
         required: true,
-    }
+    }, 
+    status: {
+        type: String,
+        enum: ['read', 'unread'],
+        default: 'unread', // Set 'unread' as the default value
+    },
+
 },
-{
-    timestamps: true
-}
+    {
+        timestamps: true
+    }
 
 )
 

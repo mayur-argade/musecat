@@ -64,6 +64,13 @@ exports.clearUserNotification = async (req, res) => {
 
 exports.getUserNotification = async (req, res) => {
     try {
+        const data = {
+            receiverid: req.user._id,
+            status: "read"
+        }
+
+        const updatedResult = await notificationService.updateNotification(data)
+
         const notifications = await notificationService.getAllNotifications({ receiverid: req.user._id })
 
         let messages = [];
@@ -77,8 +84,28 @@ exports.getUserNotification = async (req, res) => {
             data: messages
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
+            data: "Internal server error"
+        })
+    }
+}
+
+exports.countunreadNotifications = async (req, res) => {
+    try {
+
+        const notificationCount = await notificationService.countNotification({ receiverid: req.user._id, status: "unread" })
+
+        return res.status(200).json({
+            success: true,
+            data: notificationCount
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            status: false,
             data: "Internal server error"
         })
     }
