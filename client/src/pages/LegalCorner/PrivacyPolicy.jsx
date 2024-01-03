@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,6 +6,28 @@ import { Link, useNavigate } from 'react-router-dom'
 const PrivacyPolicy = () => {
 
     const navigate = useNavigate()
+    const one = useRef(null)
+    const two = useRef(null)
+    const three = useRef(null)
+    const four = useRef(null)
+    const five = useRef(null)
+    const six = useRef(null)
+    const seven = useRef(null)
+    const eight = useRef(null)
+    const nine = useRef(null)
+    const ten = useRef(null)
+    const eleven = useRef(null)
+    const twelve = useRef(null)
+    const thirteen = useRef(null)
+    const fourteen = useRef(null)
+    const fifteen = useRef(null)
+
+    const scrollToElement = (elementRef) => {
+        window.scrollTo({
+            top: elementRef.current.offsetTop - 25,
+            behavior: 'smooth'
+        })
+    }
 
     return (
         <div>
@@ -82,98 +104,98 @@ const PrivacyPolicy = () => {
 
                                 <span className='ml-0 text-xl font-semibold'> Table Of Contents </span>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(one)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#1'>
                                         1. WHAT INFORMATION DO WE COLLECT?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(two)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         2. HOW DO WE PROCESS YOUR INFORMATION?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(three)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR PERSONAL INFORMATION?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(four)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(five)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         5. WHAT IS OUR STANCE ON THIRD-PARTY WEBSITES?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(six)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         6. DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(seven)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         7. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(eight)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         8. HOW LONG DO WE KEEP YOUR INFORMATION?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(nine)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         9. HOW DO WE KEEP YOUR INFORMATION SAFE?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(ten)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         10. WHAT ARE YOUR PRIVACY RIGHTS?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(eleven)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         11. CONTROLS FOR DO-NOT-TRACK FEATURES
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(twelve)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         12. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(thirteen)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         13. DO WE MAKE UPDATES TO THIS NOTICE?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(fourteen)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         14. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
                                     </Link>
                                 </li>
 
-                                <li className='list-none text-blue-500 mb-1'>
+                                <li onClick={() => scrollToElement(fifteen)} className='list-none text-blue-500 mb-1'>
                                     <Link to='#'>
                                         15. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
                                     </Link>
                                 </li>
 
                             </div>
-                            <div className='mb-5'></div>
+                            <div ref={one} className='mb-5'></div>
                             <div id='#1'>
                                 <span className='ml-0 text-xl font-semibold'>1. WHAT INFORMATION DO WE COLLECT?</span>
                                 <div>
@@ -251,7 +273,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={two} className='mb-10'></div>
                             <div id='#2'>
                                 <span className='ml-0 text-xl font-semibold'>2. HOW DO WE PROCESS YOUR INFORMATION?</span>
                                 <div>
@@ -281,9 +303,9 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={three} className='mb-10'></div>
                             <div id='#3'>
-                                <span className='ml-0 text-xl font-semibold'>WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?</span>
+                                <span className='ml-0 text-xl font-semibold'>3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?</span>
                                 <div>
 
                                     <br />
@@ -370,7 +392,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={four} className='mb-10'></div>
                             <div id='#4'>
                                 <span className='ml-0 text-xl font-semibold'>4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</span>
                                 <div>
@@ -397,7 +419,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={five} className='mb-10'></div>
                             <div id='#5'>
                                 <span className='ml-0 text-xl font-semibold'>5. WHAT IS OUR STANCE ON THIRD-PARTY WEBSITES?</span>
                                 <div>
@@ -410,7 +432,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={six} className='mb-10'></div>
                             <div id='#6'>
                                 <span className='ml-0 text-xl font-semibold'>6. DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?</span>
                                 <div>
@@ -423,7 +445,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={seven} className='mb-10'></div>
                             <div id='#7'>
                                 <span className='ml-0 text-xl font-semibold'>7. HOW DO WE HANDLE YOUR SOCIAL LOGINS?</span>
                                 <div>
@@ -438,7 +460,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={eight} className='mb-10'></div>
                             <div id='#8'>
                                 <span className='ml-0 text-xl font-semibold'>8. HOW LONG DO WE KEEP YOUR INFORMATION?</span>
                                 <div>
@@ -453,7 +475,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={nine} className='mb-10'></div>
                             <div id='#9'>
                                 <span className='ml-0 text-xl font-semibold'>9. HOW DO WE KEEP YOUR INFORMATION SAFE?</span>
                                 <div>
@@ -466,7 +488,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={ten} className='mb-10'></div>
                             <div id='#10'>
                                 <span className='ml-0 text-xl font-semibold'>10. WHAT ARE YOUR PRIVACY RIGHTS?</span>
                                 <div>
@@ -511,7 +533,7 @@ const PrivacyPolicy = () => {
                             </div>
 
 
-                            <div className='mb-10'></div>
+                            <div ref={eleven} className='mb-10'></div>
                             <div id='#11'>
                                 <span className='ml-0 text-xl font-semibold'>11. CONTROLS FOR DO-NOT-TRACK FEATURES</span>
                                 <div>
@@ -520,12 +542,12 @@ const PrivacyPolicy = () => {
                             </div>
 
 
-                            <div className='mb-10'></div>
+                            <div ref={twelve} className='mb-10'></div>
                             <div id='#12'>
                                 <span className='ml-0 text-xl font-semibold'>12. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</span>
                                 <div>
                                     <br />
-                                    <span className='ml-0 font-medium'>In Short:</span> Yes, if you are a resident of California, you are granted specific rights regarding access to your personal information.
+                                    <span className='ml-0 font-medium'>In Short:</span> yes, if you are a resident of California, you are granted specific rights regarding access to your personal information.
 
                                     <br />
                                     <br />
@@ -533,11 +555,204 @@ const PrivacyPolicy = () => {
                                     California Civil Code Section 1798.83, also known as the "Shine The Light" law, permits our users who are California residents to request and obtain from us, once a year and free of charge, information about categories of personal information (if any) we disclosed to third parties for direct marketing purposes and the names and addresses of all third parties with which we shared personal information in the immediately preceding calendar year. If you are a California resident and would like to make such a request, please submit your request in writing to us using the contact information provided below.
                                     <br /><br />
                                     If you are under 18 years of age, reside in California, and have a registered account with Services, you have the right to request removal of unwanted data that you publicly post on the Services. To request removal of such data, please contact us using the contact information provided below and include the email address associated with your account and a statement that you reside in California. We will make sure the data is not publicly displayed on the Services, but please be aware that the data may not be completely or comprehensively removed from all our systems (e.g., backups, etc.).
+                                    <br /><br />
 
+                                    <span className='ml-0 font-semibold text-md'>CCPA Privacy Notice</span>
+                                    <br />
+                                    The California Code of Regulations defines a "resident" as:
+                                    <ul>
+                                        <li className=''>
+                                            (1) every individual who is in the State of California for other than a temporary or transitory purpose and
+                                        </li>
+                                        <li>
+                                            (2) every individual who is domiciled in the State of California who is outside the State of California for a temporary or transitory purpose
+                                        </li>
+                                    </ul>
+
+                                    All other individuals are defined as "non-residents."
+
+                                    If this definition of "resident" applies to you, we must adhere to certain rights and obligations regarding your personal information.
+                                    <br />
+                                    <span className='ml-0 font-semibold'>
+                                        What categories of personal information do we collect?
+                                    </span>
+                                    <br />
+                                    We have collected the following categories of personal information in the past twelve (12) months:
+
+                                    <div className="w-full flex justify-center mt-5 overflow-x-auto">
+                                        <table className="w-full ">
+                                            <thead>
+                                                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                                    <th className="py-2 px-4">Category</th>
+                                                    <th className="py-2 px-4">Examples</th>
+                                                    <th className="py-2 px-4">Collected</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="text-gray-600 text-sm font-light">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">A. Identifiers</td>
+                                                    <td className="py-2 px-4">Contact details, such as real name, alias, postal address, telephone or mobile contact number, unique personal identifier, online identifier, Internet Protocol address, email address, and account name</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">B. Personal information categories listed in the California Customer Records statute</td>
+                                                    <td className="py-2 px-4">Name, contact information, education, employment, employment history, and financial information</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">C. Protected classification characteristics under California or federal law</td>
+                                                    <td className="py-2 px-4">Gender and date of birth</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">D. Commercial information</td>
+                                                    <td className="py-2 px-4">Transaction information, purchase history, financial details, and payment information</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">E. Biometric information</td>
+                                                    <td className="py-2 px-4">Fingerprints and voiceprints</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">F. Internet or other similar network activity</td>
+                                                    <td className="py-2 px-4">Browsing history, search history, online behavior, interest data, and interactions with our and other websites, applications, systems, and advertisements</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">G. Geolocation data</td>
+                                                    <td className="py-2 px-4">Device location</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">H. Audio, electronic, visual, thermal, olfactory, or similar information</td>
+                                                    <td className="py-2 px-4">Images and audio, video or call recordings created in connection with our business activities</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">I. Professional or employment-related information</td>
+                                                    <td className="py-2 px-4">Business contact details in order to provide you our Services at a business level or job title, work history, and professional qualifications if you apply for a job with us</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">J. Education Information</td>
+                                                    <td className="py-2 px-4">Student records and directory information</td>
+                                                    <td className="py-2 px-4">NO</td>
+                                                </tr>
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                    <td className="py-2 px-4">K. Inferences drawn from other personal information</td>
+                                                    <td className="py-2 px-4">Inferences drawn from any of the collected personal information listed above to create a profile or summary about, for example, an individual’s preferences and characteristics</td>
+                                                    <td className="py-2 px-4">YES</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br /><br />
+                                    We may also collect other personal information outside of these categories through instances where you interact with us in person, online, or by phone or mail in the context of:
+                                    <ul>
+                                        <li className="list-disk">
+                                            Receiving help through our customer support channels;
+                                        </li>
+                                        <li className="list-disk">
+                                            Participation in customer surveys or contests; and
+                                        </li>
+                                        <li className="list-disk">
+                                            Facilitation in the delivery of our Services and to respond to your inquiries.
+                                        </li>
+                                    </ul>
+                                    <br />
+                                    <span className="ml-0 font-semibold">
+                                        How do we use and share your personal information?
+                                    </span>
+                                    <br />
+                                    More information about our data collection and sharing practices can be found in this privacy notice.
+                                    <br /><br />
+                                    You may contact us by email at info@muscatwhereto.com, by visiting https://muscatwhereto.com/contact-us/, or by referring to the contact details at the bottom of this document.
+                                    <br /><br />
+                                    If you are using an authorized agent to exercise your right to opt out we may deny a request if the authorized agent does not submit proof that they have been validly authorized to act on your behalf.
+                                    <br /><br />
+                                    <span className="ml-0 font-semibold">
+                                        Will your information be shared with anyone else?
+                                    </span>
+
+                                    We may disclose your personal information with our service providers pursuant to a written contract between us and each service provider. Each service provider is a for-profit entity that processes the information on our behalf.
+                                    <br /><br />
+                                    We may use your personal information for our own business purposes, such as for undertaking internal research for technological development and demonstration. This is not considered to be "selling" of your personal information.
+                                    <br /><br />
+                                    Integrated Business International has not disclosed or sold any personal information to third parties for a business or commercial purpose in the preceding twelve (12) months. Integrated Business International will not sell personal information in the future belonging to website visitors, users, and other consumers.
+                                    <br /><br />
+                                    <span className="ml-0 font-semibold">
+                                        Your rights with respect to your personal data
+                                    </span>
+                                    <br /><br />
+                                    <span className="ml-0 underline underline-offset-1">
+                                        Right to request deletion of the data — Request to delete
+                                    </span>
+                                    <br /><br />
+                                    You can ask for the deletion of your personal information. If you ask us to delete your personal information, we will respect your request and delete your personal information, subject to certain exceptions provided by law, such as (but not limited to) the exercise by another consumer of his or her right to free speech, our compliance requirements resulting from a legal obligation, or any processing that may be required to protect against illegal activities.
+                                    <br /><br />
+                                    <span className="ml-0 underline underline-offset-1">
+                                        Right to be informed — Request to know
+                                    </span>
+                                    <br /><br />
+                                    Depending on the circumstances, you have a right to know:
+                                    <ul>
+                                        <li className='list-disc'>
+                                            whether we collect and use your personal information;
+                                        </li>
+                                        <li className='list-disc'>
+                                            the categories of personal information that we collect;
+                                        </li>
+                                        <li className='list-disc'>
+                                            the purposes for which the collected personal information is used;
+                                        </li>
+                                        <li className='list-disc'>
+                                            whether we sell your personal information to third parties;
+                                        </li>
+                                        <li className='list-disc'>
+                                            the categories of personal information that we sold or disclosed for a business purpose;
+                                        </li>
+                                        <li className='list-disc'>
+                                            the categories of third parties to whom the personal information was sold or disclosed for a business purpose; and
+                                        </li>
+                                        <li className='list-disc'>
+                                            the business or commercial purpose for collecting or selling personal information.
+                                        </li>
+                                    </ul>
+                                    <br />
+                                    In accordance with applicable law, we are not obligated to provide or delete consumer information that is de-identified in response to a consumer request or to re-identify individual data to verify a consumer request.
+                                    <br /><br />
+                                    Right to Non-Discrimination for the Exercise of a Consumer’s Privacy Rights
+                                    <br /><br />
+                                    We will not discriminate against you if you exercise your privacy rights.
+                                    <br /><br />
+                                    Verification process
+                                    <br /><br />
+                                    Upon receiving your request, we will need to verify your identity to determine you are the same person about whom we have the information in our system. These verification efforts require us to ask you to provide information so that we can match it with information you have previously provided us. For instance, depending on the type of request you submit, we may ask you to provide certain information so that we can match the information you provide with the information we already have on file, or we may contact you through a communication method (e.g., phone or email) that you have previously provided to us. We may also use other verification methods as the circumstances dictate.
+                                    <br /><br />
+                                    We will only use personal information provided in your request to verify your identity or authority to make the request. To the extent possible, we will avoid requesting additional information from you for the purposes of verification. However, if we cannot verify your identity from the information already maintained by us, we may request that you provide additional information for the purposes of verifying your identity and for security or fraud-prevention purposes. We will delete such additionally provided information as soon as we finish verifying you.
+                                    <br /><br />
+                                    Other privacy rights
+                                    <br />
+                                    <ul>
+                                        <li className="list-disc">
+                                            You may object to the processing of your personal information.
+                                        </li>
+                                        <li className="list-disc">
+                                            You may request correction of your personal data if it is incorrect or no longer relevant, or ask to restrict the processing of the information.
+                                        </li>
+                                        <li className="list-disc">
+                                            You can designate an authorized agent to make a request under the CCPA on your behalf. We may deny a request from an authorized agent that does not submit proof that they have been validly authorized to act on your behalf in accordance with the CCPA.
+                                        </li>
+                                        <li className="list-disc">
+                                            You may request to opt out from future selling of your personal information to third parties. Upon receiving an opt-out request, we will act upon the request as soon as feasibly possible, but no later than fifteen (15) days from the date of the request submission.
+                                            To exercise these rights, you can contact us by email at info@muscatwhereto.com, by visiting https://muscatwhereto.com/contact-us/, or by referring to the contact details at the bottom of this document. If you have a complaint about how we handle your data, we would like to hear from you.
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={thirteen} className='mb-10'></div>
                             <div id='#13'>
                                 <span className='ml-0 text-xl font-semibold'>13. DO WE MAKE UPDATES TO THIS NOTICE?</span>
                                 <div>
@@ -549,7 +764,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={fourteen} className='mb-10'></div>
                             <div id='#14'>
                                 <span className='ml-0 text-xl font-semibold'>14. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</span>
                                 <div>
@@ -565,7 +780,7 @@ const PrivacyPolicy = () => {
                                 </div>
                             </div>
 
-                            <div className='mb-10'></div>
+                            <div ref={fifteen} className='mb-10'></div>
                             <div id='#15'>
                                 <span className='ml-0 text-xl font-semibold'>15. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</span>
                                 <div>
