@@ -447,7 +447,7 @@ const BookTicket = () => {
 
     if (response.data == null) {
         return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
+            <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
                     <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                     <img src="/images/logo/logo-main.png" class="h-16" />
@@ -457,7 +457,7 @@ const BookTicket = () => {
     }
     else {
         return (
-            <>
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
 
                 <Navbar />
                 <Toaster />
@@ -524,21 +524,21 @@ const BookTicket = () => {
 
                                     <form action="" className=' md:w-full mt-4'>
                                         <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
-                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                                 <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                                 <input
                                                     type="text"
-                                                    className='font-medium border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                    className='font-medium border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
                                                     onChange={(e) => setFirstname(e.target.value)}
                                                     onClick={closePrice}
                                                     placeholder='John'
                                                 />
                                             </div>
-                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                            <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md dark:bg-[#454545]'>
                                                 <label className='text-xs mt-1' htmlFor="first name">Last name</label>
                                                 <input
                                                     type="text"
-                                                    className='font-medium  border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                    className='font-medium  border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                     onChange={(e) => setLastname(e.target.value)}
                                                     onClick={closePrice}
                                                     placeholder='Doe'
@@ -547,21 +547,21 @@ const BookTicket = () => {
                                             </div>
                                         </div>
 
-                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg mb-4'>
+                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg mb-4 dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="first name">Email</label>
                                             <input
                                                 type="text"
-                                                className='font-medium  w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className='font-medium  w-full border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 onClick={closePrice}
                                                 placeholder='John@email.com'
                                             />
                                         </div>
 
-                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="first name">Select Date</label>
                                             <select
-                                                className='font-medium w-full md:w-full border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className='font-medium w-full md:w-full border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 onChange={(e) => setTicketDate(e.target.value)}
                                                 onClick={closePrice}
                                             >
@@ -578,12 +578,12 @@ const BookTicket = () => {
                                         </div>
 
                                         {response.data.eventDetails.categories && response.data.eventDetails.categories.length > 0 && response.data.eventDetails.categories[0].className != null && (
-                                            <div className="w-full flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3">
-                                                <div className='w-full flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                            <div className="w-full flex md:flex-row flex-col space-y-3 md:space-y-0 md:space-x-3 mt-3 ">
+                                                <div className='w-full flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                                     <label className='text-xs mt-1' htmlFor="classSelect">Select Class</label>
                                                     <select
                                                         id="classSelect"
-                                                        className='font-medium w-full  border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                        className='font-medium w-full  border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                         onChange={(e) => setTicketclass(e.target.value)}
                                                         onClick={closePrice}
                                                     >
@@ -600,7 +600,7 @@ const BookTicket = () => {
                                                 </div>
                                             </div>
                                         )}
-                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="seatInput">
                                                 {
                                                     response.data.eventDetails.type == 'event'
@@ -617,13 +617,13 @@ const BookTicket = () => {
                                             <input
                                                 type="number"
                                                 id="seatInput"
-                                                className='font-medium border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className='font-medium border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 onChange={(e) => setSeats(e.target.value)}
                                                 onClick={closePrice}
                                                 placeholder='5'
                                             />
                                         </div>
-                                        <div className='flex flex-col justify-between mt-3'>
+                                        <div className='flex flex-col justify-between mt-3 dark:bg-[#454545]'>
                                             {
                                                 response.data.eventDetails.custom &&
                                                 response.data.eventDetails.custom.map((custom, index) => (
@@ -791,7 +791,7 @@ const BookTicket = () => {
                         < Footer />
                     </div>
                 </div >
-            </>
+            </div>
         )
     }
 }

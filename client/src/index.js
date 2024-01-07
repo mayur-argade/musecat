@@ -13,7 +13,7 @@ import { Provider } from 'react-redux'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <GoogleOAuthProvider clientId="502871150406-dr5vdb11majpgovhsksk6f4pacaj8fcq.apps.googleusercontent.com">
@@ -21,7 +21,7 @@ root.render(
                 </GoogleOAuthProvider>
             </PersistGate>
         </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

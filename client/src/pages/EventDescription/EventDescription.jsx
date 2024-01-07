@@ -178,7 +178,7 @@ const EventDescription = () => {
                 if (data.data.eventDetails.description) {
                     newAccordions.push({
                         title: 'Event Details',
-                        content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
+                        content: <div className='dark:bg-[#2c2c2c] dark:text-white' dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
                         isOpened: true,
                     });
                 }
@@ -187,7 +187,7 @@ const EventDescription = () => {
                 if (data.data.eventDetails.venueInfo) {
                     newAccordions.push({
                         title: 'Venue Details',
-                        content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.venueInfo }} />,
+                        content: <div className='dark:bg-[#2c2c2c] dark:text-white' dangerouslySetInnerHTML={{ __html: data.data.eventDetails.venueInfo }} />,
                         isOpened: false,
                     });
                 }
@@ -428,7 +428,7 @@ const EventDescription = () => {
         )
     } else {
         return (
-            <div className='appmargine'>
+            <div className='h-full dark:bg-[#2c2c2c] dark:text-white'>
                 <Toaster />
                 <Navbar />
                 <Tabbar />
@@ -620,19 +620,20 @@ const EventDescription = () => {
                                                 {/* <Link to='/favorites' className='w-full'> */}
                                                 <button
                                                     onClick={favoriteFeature}
-                                                    className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                                    className='dark:bg-[#454545] flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
                                                     {
                                                         isLiked ?
                                                             <img className='h-4' src="/images/icons/heart-fav.svg" alt="" />
                                                             :
                                                             <img className='h-4' src="/images/icons/heart.svg" alt="" />
                                                     }
-                                                    <span>Add to Favorite</span>
+                                                    <span className='dark:text-white'>Add to Favorite</span>
                                                 </button>
                                                 {/* </Link> */}
-                                                <button onClick={() => addToGoogleCalender()} className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                                    <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
-                                                    <span >Add to Calendar</span>
+                                                <button onClick={() => addToGoogleCalender()} className='dark:bg-[#454545] flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
+                                                    <img className='flex dark:hidden h-4' src="/images/icons/eventcal.svg" alt="" />
+                                                    <img className='dark:flex hidden h-4' src="/images/icons/eventcal-light.svg" alt="" />
+                                                    <span className='dark:text-white'>Add to Calendar</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -642,7 +643,7 @@ const EventDescription = () => {
                                         <div className="eventdesc w-full ">
                                             {accordions.map((accordion, index) => (
                                                 <Accordian
-                                                    className='mx-auto'
+                                                    className='mx-auto dark:bg-[#454545] dark:text-white'
                                                     textcol={'font-semibold'}
                                                     contentfont={'font-medium text-gray-500'}
                                                     key={index}

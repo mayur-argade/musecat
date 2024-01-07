@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { ClientProfileApi, ClientUpdateProfileApi, getCustomersSavedCards } from '../../http/index'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import toast, { Toaster } from 'react-hot-toast';
+import DarkModeToggle from '../../components/shared/DarkModeToggle/DarkModeToggle'
 
 const Profile = () => {
     document.title = 'Profile'
@@ -95,6 +96,21 @@ const Profile = () => {
         }
     }
 
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    const isShareSupported = navigator.share !== undefined;
+
+    const handleShare = async () => {
+        try {
+            await navigator.share({
+                title: 'My App',
+                text: 'Check out this awesome app!',
+                url: 'https://mayurargade.netlify.app',
+            });
+        } catch (error) {
+            console.error('Error sharing:', error.message);
+        }
+    };
+
     if (response.data == null) {
         return (
             <div className='h-screen w-full flex justify-center align-middle items-center'>
@@ -106,241 +122,257 @@ const Profile = () => {
         )
     } else {
         return (
-            <>
-                <div className="relative">
+            <div className="dark:bg-[#2c2c2c] h-screen">
+                <div className="relative  dark:text-white">
                     <Navbar />
-                    <section className='w-full flex justify-center'>
-                        <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
-                            <Toaster />
-                            <div className="mt-5 profie flex flex-col md:flex-row justify-center align-middle items-center space-x-2">
-                                <div className=" w-full right bg-neutral-200 pl-2 pr-2 py-2 rounded-lg">
-                                    <p className='text-sm'>Profile card</p>
-                                    <div className='flex justify-start align-middle items-center space-x-3 '>
 
-                                        <div className="left w-2/6 md:w-auto">
-
-                                            <button onClick={ImageModal} className="profile">
-                                                <img className='h-20 w-20 object-cover rounded-full' src={response.data.photo} alt="" />
-                                            </button>
-                                        </div>
-
-                                        <div className="right">
-                                            <div className="flex-col md:flex-row flex md:space-x-20  md:justify-center md:items-center w-52">
-                                                <div>
-                                                    <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">First name</label>
-                                                    <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
-                                                        placeholder={`${response.data.firstname}`} disabled />
-                                                </div>
-                                                <div>
-                                                    <label for="last_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Last name</label>
-                                                    <input type="text" id="last_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
-                                                        placeholder={`${response.data.lastname}`} disabled />
-                                                </div>
-                                            </div>
-
-                                            <div className="ml-1 email">
-                                                <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Email</label>
-                                                <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-full p-1 " placeholder={`${response.data.email}`}
-                                                    disabled />
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div className="w-full left mt-3 space-y-5">
-                                    <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="first name">first name</label>
-                                        <div className="relative flex align-middle">
-                                            <input
-                                                type="text"
-                                                className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
-                                                onChange={(e) => {
-                                                    setFirstname(e.target.value)
-                                                    handleInputChange()
-                                                }}
-                                                placeholder='John'
-                                            />
-                                            <button onClick={handleUpdate} className='h-6 absoulte right-0'>
-                                                <img className='h-6 absoulte right-0' src="/images/icons/edit.svg" alt="" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
-                                        <label className='text-xs mt-1' htmlFor="last name">last name</label>
-                                        <div className="relative flex align-middle">
-                                            <input
-                                                type="text"
-                                                className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
-                                                onChange={(e) => {
-                                                    setLastname(e.target.value)
-                                                    handleInputChange()
-                                                }}
-                                                placeholder='doe'
-                                            />
-                                            <button onClick={handleUpdate} className='h-6 absoulte right-0'>
-                                                <img className='h-6 absoulte right-0' src="/images/icons/edit.svg" alt="" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="email mt-3">
-                                <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
-                                    <label className='text-xs mt-1' htmlFor="first name">email</label>
-                                    <div className="relative flex w-full">
-                                        <input
-                                            type="text"
-                                            className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200 outline-0 text-sm font-medium text-black'
-                                            onChange={(e) => {
-                                                setEmail(e.target.value);
-                                                handleInputChange();
-                                            }}
-                                            placeholder='John@gmail.com'
-                                        />
-                                        <button onClick={handleUpdate} className='h-6 absoulte right-0'>
-                                            <img className='h-6 absoulte right-0' src="/images/icons/edit.svg" alt="" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="savedCards mt-10 ">
-                                <div className="text-2xl">Saved Cards</div>
-                                <div className="mx-2 grid place-items-center grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                                    {
-                                        savedCard != null
-                                            ?
-                                            savedCard.length > 0
-                                                ?
-                                                savedCard.map((card) => (
-                                                    <div className='mt-5'>
-                                                        <DebitCard data={card} index={Math.floor(Math.random() * 3) + 1} />
-                                                    </div>
-                                                ))
-                                                :
-                                                <></>
-                                            :
-                                            <>
-                                                loading
-                                            </>
-                                    }
-                                </div>
-
-                            </div>
-                        </section>
-                    </section>
                     {
-                        displayModal
+                        isStandalone
                             ?
-                            <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                                <div className="relative rounded-lg ">
-                                    <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
-                                        <div className='w-96 md:w-[1000px]'>
-                                            <div className="modal bg-white px-5 py-5">
-                                                <div className='space-y-4 max-h-auto  overflow-y-auto'>
-                                                    <div className="flex items-center justify-center w-full">
-                                                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                                            <div className="flex flex-col items-center justify-center ">
-                                                                <img src="/images/icons/upload-image.svg" alt="" />
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">{selectedPhoto ? `Selected File: ${selectedPhoto.name}` : 'Upload Profile Photo'}</p>
-                                                            </div>
-                                                            <input onChange={capturePhoto}
-                                                                id="dropzone-file" type="file" className="hidden" />
-                                                        </label>
+                            <>
+                                <section className=''>
+                                    <div className="header flex justify-between items-center align-middle">
+                                        <div className='flex align-middle items-center'>
+                                            <div className="m-3 profile">
+                                                <img src={response.data.photo || "/images/assets/profile.png"} alt="profile-photo" className='h-24 w-24 object-cover rounded-full' />
+                                            </div>
+
+                                            <div className="name flex flex-col">
+                                                <span className='font-bold text-xl'>
+                                                    {`${response.data.firstname} ${response.data.lastname}`}
+                                                </span>
+                                                <span className='font-light text-sm'>
+                                                    {response.data.email}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col mr-5">
+                                            <DarkModeToggle />
+                                        </div>
+                                    </div>
+
+                                    <div className="ml-8 mr-8">
+                                        <ul className='space-y-4'>
+                                            <Link to='/favorites'>
+                                                <li className='flex align-middle'>
+                                                    <img className="flex dark:hidden" src="/images/icons/heart.svg" alt="" />
+                                                    <img className="hidden dark:flex" src="/images/icons/heart-light.svg" alt="" />
+                                                    <span>Favorites</span>
+                                                </li>
+                                            </Link>
+
+                                            <hr />
+
+                                            <Link to='/contactus' className='mt-2'>
+                                                <li className='flex align-middle mt-2'>
+                                                    <img className="flex dark:hidden" src="/images/icons/star.svg" alt="" />
+                                                    <img className="hidden dark:flex" src="/images/icons/star-light.svg" alt="" />
+                                                    <span>Rate us</span>
+                                                </li>
+                                            </Link>
+                                            <hr />
+
+                                            <Link to='/user/privacypolicy'>
+                                                <li className='flex align-middle mt-2'>
+                                                    <img className="flex dark:hidden" src="/images/icons/policy.svg" alt="" />
+                                                    <img className="hidden dark:flex" src="/images/icons/policy-light.svg" alt="" />
+                                                    <span>Privacy Policy</span>
+                                                </li>
+                                            </Link>
+                                            <hr />
+
+                                            <Link onClick={isShareSupported ? handleShare : undefined} disabled={!isShareSupported}>
+                                                <li className='flex align-middle mt-2 '>
+                                                    <img className='flex dark:hidden' src="/images/icons/share.svg" alt="" />
+                                                    <img className='hidden dark:flex' src="/images/icons/share-light.svg" alt="" />
+                                                    <span>Invite a Friend</span>
+                                                </li>
+                                            </Link>
+                                            <hr />
+
+                                            <Link to='/aboutus'>
+                                                <li className='flex align-middle mt-2 '>
+                                                    <img className="flex dark:hidden" src="/images/icons/aboutus.svg" alt="" />
+                                                    <img className="hidden dark:flex" src="/images/icons/aboutus-light.svg" alt="" />
+                                                    <span>About Us</span>
+                                                </li>
+                                            </Link>
+                                            <hr />
+                                        </ul>
+                                    </div>
+                                </section>
+
+                            </>
+                            :
+                            <>
+                                <section className='w-full flex justify-center'>
+                                    <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                                        <Toaster />
+                                        <div className="mt-5 profie flex flex-col md:flex-row justify-center align-middle items-center space-x-2">
+                                            <div className=" w-full right bg-neutral-200 pl-2 pr-2 py-2 rounded-lg">
+                                                <p className='text-sm'>Profile card</p>
+                                                <div className='flex justify-start align-middle items-center space-x-3 '>
+
+                                                    <div className="left w-2/6 md:w-auto">
+
+                                                        <button onClick={ImageModal} className="profile">
+                                                            <img className='h-20 w-20 object-cover rounded-full' src={response.data.photo} alt="" />
+                                                        </button>
                                                     </div>
 
-                                                    <div>
-                                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate} >Upload</button>
+                                                    <div className="right">
+                                                        <div className="flex-col md:flex-row flex md:space-x-20  md:justify-center md:items-center w-52">
+                                                            <div>
+                                                                <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">First name</label>
+                                                                <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
+                                                                    placeholder={`${response.data.firstname}`} disabled />
+                                                            </div>
+                                                            <div>
+                                                                <label for="last_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Last name</label>
+                                                                <input type="text" id="last_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
+                                                                    placeholder={`${response.data.lastname}`} disabled />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="ml-1 email">
+                                                            <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Email</label>
+                                                            <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-full p-1 " placeholder={`${response.data.email}`}
+                                                                disabled />
+                                                        </div>
                                                     </div>
 
                                                 </div>
                                             </div>
+
+                                            <div className="w-full left mt-3 space-y-5">
+                                                <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
+                                                    <label className='text-xs mt-1' htmlFor="first name">first name</label>
+                                                    <div className="relative flex align-middle">
+                                                        <input
+                                                            type="text"
+                                                            className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
+                                                            onChange={(e) => {
+                                                                setFirstname(e.target.value)
+                                                                handleInputChange()
+                                                            }}
+                                                            placeholder='John'
+                                                        />
+                                                        <button onClick={handleUpdate} className='h-6 absoulte right-0'>
+                                                            <img className='h-6 absoulte right-0' src="/images/icons/edit.svg" alt="" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
+                                                    <label className='text-xs mt-1' htmlFor="last name">last name</label>
+                                                    <div className="relative flex align-middle">
+                                                        <input
+                                                            type="text"
+                                                            className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
+                                                            onChange={(e) => {
+                                                                setLastname(e.target.value)
+                                                                handleInputChange()
+                                                            }}
+                                                            placeholder='doe'
+                                                        />
+                                                        <button onClick={handleUpdate} className='h-6 absoulte right-0'>
+                                                            <img className='h-6 absoulte right-0' src="/images/icons/edit.svg" alt="" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="email mt-3">
+                                            <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
+                                                <label className='text-xs mt-1' htmlFor="first name">email</label>
+                                                <div className="relative flex w-full">
+                                                    <input
+                                                        type="text"
+                                                        className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200 outline-0 text-sm font-medium text-black'
+                                                        onChange={(e) => {
+                                                            setEmail(e.target.value);
+                                                            handleInputChange();
+                                                        }}
+                                                        placeholder='John@gmail.com'
+                                                    />
+                                                    <button onClick={handleUpdate} className='h-6 absoulte right-0'>
+                                                        <img className='h-6 absoulte right-0' src="/images/icons/edit.svg" alt="" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="savedCards mt-10 ">
+                                            <div className="text-2xl">Saved Cards</div>
+                                            <div className="mx-2 grid place-items-center grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                                                {
+                                                    savedCard != null
+                                                        ?
+                                                        savedCard.length > 0
+                                                            ?
+                                                            savedCard.map((card) => (
+                                                                <div className='mt-5'>
+                                                                    <DebitCard data={card} index={Math.floor(Math.random() * 3) + 1} />
+                                                                </div>
+                                                            ))
+                                                            :
+                                                            <></>
+                                                        :
+                                                        <>
+                                                            loading
+                                                        </>
+                                                }
+                                            </div>
+
                                         </div>
                                     </section>
-                                    <button
-                                        onClick={ImageModal}
-                                        className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                                    >
-                                        <img src="/images/icons/cancel-icon.png" alt="" />
-                                    </button>
-                                </div>
-                            </div>
+                                </section>
+                                {
+                                    displayModal
+                                        ?
+                                        <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                                            <div className="relative rounded-lg ">
+                                                <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
+                                                    <div className='w-96 md:w-[1000px]'>
+                                                        <div className="modal bg-white px-5 py-5">
+                                                            <div className='space-y-4 max-h-auto  overflow-y-auto'>
+                                                                <div className="flex items-center justify-center w-full">
+                                                                    <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                                        <div className="flex flex-col items-center justify-center ">
+                                                                            <img src="/images/icons/upload-image.svg" alt="" />
+                                                                            <p className="text-xs text-gray-500 dark:text-gray-400">{selectedPhoto ? `Selected File: ${selectedPhoto.name}` : 'Upload Profile Photo'}</p>
+                                                                        </div>
+                                                                        <input onChange={capturePhoto}
+                                                                            id="dropzone-file" type="file" className="hidden" />
+                                                                    </label>
+                                                                </div>
 
-                            :
-                            <></>
+                                                                <div>
+                                                                    <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate} >Upload</button>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <button
+                                                    onClick={ImageModal}
+                                                    className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                                                >
+                                                    <img src="/images/icons/cancel-icon.png" alt="" />
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        :
+                                        <></>
+                                }
+                            </>
                     }
 
-                    {/* <section className='MobileProfile'>
-                        <div className="header flex items-center align-middle">
-                            <div className="profile">
-                                <img src="/images/assets/profile.png" alt="" />
-                            </div>
 
-                            <div className="name flex flex-col">
-                                <span className='font-bold text-xl'>
-                                    John Doe
-                                </span>
-                                <span className='font-light text-sm'>
-                                    johndoe@email.com
-                                </span>
-                            </div>
 
-                            <div className="ml-8 flex flex-col">
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" value="" class="sr-only peer" />
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                </label>
-                                <span>light</span>
-                            </div>
-                        </div>
-
-                        <div className="ml-8">
-                            <ul className='space-y-4'>
-                                <Link to='/favorites'>
-                                    <li className='flex align-middle  '>
-                                        <img src="/images/icons/heart.svg" alt="" />
-                                        <span>Favorites</span>
-                                    </li>
-                                </Link>
-
-                                <hr />
-
-                                <Link to='/contactus' className='mt-2'>
-                                    <li className='flex align-middle  mt-2'>
-                                        <img src="/images/icons/star.svg" alt="" />
-                                        <span>Rate us</span>
-                                    </li>
-                                </Link>
-                                <hr />
-
-                                <Link to='/aboutus'>
-                                    <li className='flex align-middle mt-2 '>
-                                        <img src="/images/icons/policy.svg" alt="" />
-                                        <span>Privacy Policy</span>
-                                    </li>
-                                </Link>
-                                <hr />
-
-                                <Link to='/contactus'>
-                                    <li className='flex align-middle mt-2 '>
-                                        <img src="/images/icons/share.svg" alt="" />
-                                        <span>Invite a Friend</span>
-                                    </li>
-                                </Link>
-                                <hr />
-
-                                <Link to='/aboutus'>
-                                    <li className='flex align-middle mt-2 '>
-                                        <img src="/images/icons/aboutus.svg" alt="" />
-                                        <span>About Us</span>
-                                    </li>
-                                </Link>
-                                <hr />
-                            </ul>
-                        </div>
-                    </section> */}
 
                     <div className="">
                         <Footer />
@@ -350,7 +382,7 @@ const Profile = () => {
                 <div>
                     <BottomNav />
                 </div>
-            </>
+            </div>
         )
     }
 

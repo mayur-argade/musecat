@@ -61,7 +61,11 @@ const EditEventModal = ({ onClose, data }) => {
 
     if (data.date.type == 'dateRange') {
         eventstartdate = moment(data.date.dateRange.startDate).format('YYYY-MM-DDTHH:mm')
-        eventenddate = moment(data.date.dateRange.endDate).format('YYYY-MM-DDTHH:mm')
+        if (data.date.dateRange.endDate) {
+            eventenddate = moment(data.date.dateRange.endDate).format('YYYY-MM-DDTHH:mm')
+        }else{
+            eventenddate = undefined
+        }
     } else {
         eventstartdate = data.date.recurring.startDate
         eventenddate = data.date.recurring.endDate
@@ -816,7 +820,7 @@ const EditEventModal = ({ onClose, data }) => {
                                 <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
                                     accept="video/*"
-                                    onChange={captureVideo}
+                                    onChange={(e) => setCrfile(e.target.files[0])}
                                     type="file" />
 
                                 <div className="button flex justify-center items-center mt-5">

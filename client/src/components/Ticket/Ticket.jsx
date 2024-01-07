@@ -58,7 +58,7 @@ const Ticket = ({ event, ticket, download }) => {
     };
     return (
         <>
-            <div ref={componentRef} id="ticketContent" class="hidden md:block container bg-white rounded-lg">
+            <div ref={componentRef} id="ticketContent" class="dark:bg-[#454545] dark:text-white hidden md:block container bg-white rounded-lg">
                 <div class="item rounded-2xl">
                     <div class="item-left">
                         <div className='flex justify-between items-center align-middle '>
@@ -107,13 +107,13 @@ const Ticket = ({ event, ticket, download }) => {
 
             </div>
 
-            <div ref={mobileComponentRef} id='mobileTicketContent' className='block md:hidden'>
+            <div ref={mobileComponentRef} id='mobileTicketContent' className=' block md:hidden'>
 
                 <p class="msg"></p>
 
                 <div class="m-ticket">
 
-                    <div class="movie-details p-3">
+                    <div class="movie-details p-3 mx-5">
                         <QRCode value={qrCodeValue} className='mt-5'
                             bgColor="white" fgColor="black" level='L' onScan={handleQRCodeScan} />
 
@@ -135,13 +135,13 @@ const Ticket = ({ event, ticket, download }) => {
 
 
                         <div class="ticket">
-                            <p>class: {ticket.class}</p>
+                            <p className='text-black'>class: {ticket.class}</p>
 
-                            <b>{ticket.seats}</b>
+                            <b className='text-black'>{ticket.seats}</b>
 
-                            <p>{ticket.status}</p>
+                            <p className='text-black'>{ticket.status}</p>
 
-                            <h6>BOOKING ID: {ticket._id}</h6>
+                            <h6 className='text-black'>BOOKING ID: {ticket._id}</h6>
 
                         </div>
 

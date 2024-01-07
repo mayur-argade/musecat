@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Demo from './pages/Demo'
 
@@ -43,6 +43,8 @@ import SearchPWA from './pages/SearchPWA/SearchPWA';
 import AdminCheckProfile from './pages/AdminDashboard/AdminCheckProfile';
 import UserNotification from './pages/UserNotification/UserNotification'
 import VerifyVendorAccount from './pages/VerifyUserAccount/VerifyVendorAccount'
+import Notifications from './pages/AdminDashboard/Notifications'
+import NotFound from './pages/NotFound'
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -77,15 +79,15 @@ function App() {
                     <Route path="/whereto" exact element={<WhereToMap />} />
                     <Route path="/contactus" exact element={<Contactus />} />
                     <Route path="/events/:eventid" exact element={<EventDescription />} />
-                    <Route path="/bookticket/:eventid" element={<SemiProtected Component={BookTicket} />} />
-                    <Route path="/verifyaccount/:token" element={<VerifyUserAccount />} />
-                    <Route path="/reset" element={<InputEmail />} />
-                    <Route path="/user/reset-password/:token" element={<ResetPassword />} />
+                    <Route path="/bookticket/:eventid" exact element={<SemiProtected Component={BookTicket} />} />
+                    <Route path="/verifyaccount/:token" exact element={<VerifyUserAccount />} />
+                    <Route path="/reset" exact element={<InputEmail />} />
+                    <Route path="/user/reset-password/:token" exact element={<ResetPassword />} />
                     <Route path="/venue/:venueid" exact element={<VenueDescription />} />
                     <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
                     <Route path="/faq" exact element={<FAQ />} />
                     <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
-                    <Route path="/events" exact element={<EventsPWA />} />
+                    <Route path="/event" exact element={<EventsPWA />} />
                     <Route path="/searchpage" exact element={<SearchPWA />} />
                     <Route path="/user/notification" exact element={<SemiProtected Component={UserNotification} />} />
                     <Route path="/user/cookies" exact element={<Cookies />} />
@@ -95,8 +97,8 @@ function App() {
 
 
                     {/* vendor pages */}
-                    <Route path="/vendor/login" element={<VendorLogin />} />
-                    <Route path="/vendor/signup" element={<VendorSignup />} />
+                    <Route path="/vendor/login" exact element={<VendorLogin />} />
+                    <Route path="/vendor/signup" exact element={<VendorSignup />} />
                     <Route path="/vendor/home" exact element={<GuestRoute Component={VendorHome} />} />
                     <Route path="/vendor/activation" exact element={<VendorActivation />} />
                     <Route path="/vendor/hostedevents" exact element={<GuestRoute Component={VendorHostedEvents} />} />
@@ -105,10 +107,11 @@ function App() {
                     <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
                     <Route path="/vendor/notification" exact element={<VendorNotification />} />
                     <Route path="/vendor/verify-account/:token" exact element={<VerifyVendorAccount />} />
-                    <Route path="/vendor/reset" element={<InputEmailVendor />} />
-                    <Route path="/vendor/reset-password/:token" element={<ResetPasswordVendor />} />
+                    <Route path="/vendor/reset" exact element={<InputEmailVendor />} />
+                    <Route path="/vendor/reset-password/:token" exact element={<ResetPasswordVendor />} />
+
                     {/* admin pages */}
-                    <Route path="/admin/profile/:userid" element={<AdminCheckProfile />} />
+                    <Route path="/admin/profile/:userid" exact element={<AdminCheckProfile />} />
                     <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
                     <Route path="/admin/users" exact element={<AdminUsers />} />
                     <Route path="/admin/vendors" exact element={<AdminVendors />} />
@@ -118,7 +121,9 @@ function App() {
                     <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
                     <Route path="/admin/categories" exact element={<AdminCategory />} />
                     <Route path="/admin/venue" exact element={<AdminVenue />} />
-                    <Route path="/demo" element={<Demo />} />
+                    <Route path="/demo" exact element={<Demo />} />
+                    <Route path='/admin/notifications'exact element={<Notifications />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>
         </div>

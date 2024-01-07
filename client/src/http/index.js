@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const api = axios.create({
     baseURL: "https://omanwhereto.com/api/v1/",
     // baseURL: "http://localhost:5000/api/v1/",
@@ -20,6 +21,7 @@ export const VedorDetails = (data) => api.get(`vendor/details/${data}`, data)
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)
 export const ClientGoogleLogin = (data) => api.post("auth/user/googlelogin", data)
+export const vendorGoogleLogin = (data) => api.post("auth/vendor/googlelogin", data)
 export const ClienVerify = (data) => api.patch(`auth/user/verify/${data}`, data)
 export const VendorVerify = (data) => api.patch(`auth/vendor/verify/${data}`, data)
 export const ClientProfileApi = (data) => api.get("user/profile", data)
@@ -32,6 +34,7 @@ export const resetVendorPassword = (data) => api.patch(`auth/vendor/reset-passwo
 export const getCustomersSavedCards = (data) => api.get('user/get-payment-methods', data)
 export const googleLogin = (data) => api.post('auth/google/callback', data)
 export const facebookLogin = (data) => api.post('auth/user/facebook/login', data)
+export const vendorFacebookLogin = (data) => api.post('auth/vendor/facebook/login', data)
 export const addToCalender = (data) => api.post('auth/google/addToCalender', data)
 
 export const VendorHomeApi = (data) => api.get("vendor/home", data)
@@ -136,17 +139,21 @@ api.interceptors.response.use(
                 });
 
                 const response = await refreshApi.post("auth/refresh");
-                if (response.response.status == 401) {
-
-                }
+                console.log("this is axios response -> ", response)
                 console.log(response);
                 return api.request(originalRequest);
             } catch (err) {
-                console.log(err.message);
+                console.log(err);
+                if (err.response.status == 401) {
+                    // window.location.href = '/login'
+                }
             }
+        } else {
+            window.location.href = "/login"
         }
         throw error;
     }
 );
+
 
 export default api;

@@ -44,7 +44,7 @@ const Contactus = () => {
     }
 
     return (
-        <div className='contactmargine'>
+        <div className='contactmargine dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
             <section className='md:mr-48 md:ml-48 mt-3'>
                 <Toaster />

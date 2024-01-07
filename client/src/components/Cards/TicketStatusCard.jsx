@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const TicketStatusCard = ({data}) => {
     return (
         <>
-            <div class="relative md:m-3 h-auto w-54 md:w-44 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="dark:text-white relative md:m-3 h-auto w-54 md:w-44 lg:w-72 bg-[#F3F3F3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <button class="absolute top-2 right-2 bg-white rounded-full w-7 h-7 flex items-center justify-center align-middle text-white">
                     <img src="/images/icons/heart-fav.svg" alt="" />

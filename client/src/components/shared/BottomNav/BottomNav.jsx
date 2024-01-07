@@ -33,33 +33,51 @@ const BottomNav = () => {
             {
                 isStandalone
                     ?
-                    <div class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+                    <div class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-[#2c2c2c] dark:border-gray-600">
                         <div class="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
                             <button onClick={() => (navigate("/"))} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                                 {
                                     window.location.pathname == "/" ?
-                                        <img src="/images/icons/pwa-home-active.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-home-active.svg" alt="" />
+                                            <img className='hidden dark:flex' src="/images/icons/home-light.svg" alt="" />
+                                        </>
                                         :
-                                        <img src="/images/icons/pwa-home.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-home.svg" alt="" />
+                                            <img className="hidden dark:flex" src="/images/icons/home-dark.svg" alt="" />
+                                        </>
                                 }
 
                                 <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:font-bold dark:group-hover:text-blue-500">Home</p>
                             </button>
-                            <button onClick={() => navigate('/events')} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                            <button onClick={() => navigate('/event')} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                                 {
-                                    window.location.pathname == "/events" ?
-                                        <img src="/images/icons/pwa-events-active.svg" alt="" />
+                                    window.location.pathname == "/event" ?
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-events-active.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/calender-light.svg" alt="" />
+                                        </>
                                         :
-                                        <img src="/images/icons/pwa-events.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-events.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/calender-dark.svg" alt="" />
+                                        </>
                                 }
                                 <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:font-bold dark:group-hover:text-blue-500">Events</p>
                             </button>
                             <button onClick={() => navigate("/searchpage")} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                                 {
                                     window.location.pathname == "/searchpage" ?
-                                        <img src="/images/icons/pwa-search-active.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-search-active.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/search-light.svg" alt="" />
+                                        </>
                                         :
-                                        <img src="/images/icons/pwa-search.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-search.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/search-dark.svg" alt="" />
+                                        </>
                                 }
                                 <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:font-bold dark:group-hover:text-blue-500">Search</p>
                             </button>
@@ -67,9 +85,15 @@ const BottomNav = () => {
                             <button onClick={() => navigate('/favorites')} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                                 {
                                     window.location.pathname == "/favorites" ?
-                                        <img src="/images/icons/pwa-favorites-active.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-favorites-active.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/heart-light.svg" alt="" />
+                                        </>
                                         :
-                                        <img src="/images/icons/pwa-favorites.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-favorites.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/heart-dark.svg" alt="" />
+                                        </>
                                 }
                                 <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:font-bold dark:group-hover:text-blue-500">Favorites</p>
                             </button>
@@ -77,9 +101,15 @@ const BottomNav = () => {
                             <button onClick={() => navigate('/profile')} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                                 {
                                     window.location.pathname == "/profile" ?
-                                        <img src="/images/icons/pwa-profile-active.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-profile-active.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/profile-light.svg" alt="" />
+                                        </>
                                         :
-                                        <img src="/images/icons/pwa-profile.svg" alt="" />
+                                        <>
+                                            <img className='flex dark:hidden' src="/images/icons/pwa-profile.svg" alt="" />
+                                            <img className='dark:flex hidden' src="/images/icons/profile-dark.svg" alt="" />
+                                        </>
                                 }
                                 <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:font-bold dark:group-hover:text-blue-500">Profile</p>
                             </button>

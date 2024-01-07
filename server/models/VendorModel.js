@@ -18,6 +18,9 @@ const vendorSchema = new mongoose.Schema({
         validate: [validator.isEmail, 'Please enter email in the correct format'],
         unique: true,
     },
+    google_refresh: {
+        type: String
+    },
     isVerified: {
         type: Boolean,
         required: true,

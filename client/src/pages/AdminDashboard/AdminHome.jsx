@@ -17,6 +17,7 @@ const AdminHome = () => {
     const [loading, setLoading] = useState(false)
     const [offers, setOffers] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [unread, setUnread] = useState(false)
 
     useEffect(() => {
         let tokenExpiredHandled = false; // Flag to track whether token expired error has been handled
@@ -136,9 +137,17 @@ const AdminHome = () => {
                             <img src="/images/logo/logo.png" alt="" />
                         </div>
                         <div className='space-x-8'>
-                            <button>
-                                <img className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
-                            </button>
+                            {
+                                unread
+                                    ?
+                                    <button>
+                                        <img onClick={(() => navigate('/admin/notifications'))} className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
+                                    </button>
+                                    :
+                                    <button>
+                                        <img onClick={(() => navigate('/admin/notifications'))} className='h-5 w-5' src="/images/icons/notification-1.svg" alt="" />
+                                    </button>
+                            }
                             <button>
                                 <img onClick={() => funVendorLogout()} className='h-5 w-5' src="/images/icons/logout.png" alt="" />
                             </button>

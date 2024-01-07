@@ -2,7 +2,7 @@ import React from 'react'
 
 const CategorySkeleton = () => {
     return (
-        <div>
+        <div className='dark:bg-[#2c2c2c]'>
             <div>
                 <div role="status" class=" w-44 h-60 md:w-56 md:h-72 p-4 pt-0 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
                     <div class="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">

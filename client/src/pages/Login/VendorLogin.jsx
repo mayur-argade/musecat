@@ -1,17 +1,77 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { vendorLogin } from '../../http/index'
+import { vendorLogin, vendorFacebookLogin, vendorGoogleLogin } from '../../http/index'
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
+import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+
 
 const VendorLogin = () => {
+    const fb_clientId = process.env.REACT_APP_FB_CLIENT_ID
+    console.log(fb_clientId)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const responseFacebook = async (response) => {
+        try {
+            setLoading(true);
+
+            // Assuming vendorFacebookLogin is a function that returns a promise
+            const res = await toast.promise(vendorFacebookLogin(response), {
+                loading: 'Logging in...',
+                success: 'Login successful!',
+                error: (error) => `${error.response?.data?.data || 'An error occurred. Please try again.'}`
+            });
+
+            setLoading(false);
+            // console.log('this is logged in details', res.data)
+            dispatch(setAuth(res.data));
+            const prevLocation = '/';
+            navigate(prevLocation);
+        } catch (error) {
+            console.error(error);
+
+        }
+    };
+
+    const googleLogin = async (codeResponse) => {
+        console.log(codeResponse)
+        try {
+            setLoading(true);
+
+            // Assuming facebookLogin is a function that returns a promise
+            const res = await toast.promise(vendorGoogleLogin(codeResponse), {
+                loading: 'Logging in...', // Message to display while the promise is pending
+                success: 'Login successful!', // Message to display on success
+                error: (error) => `${error.response?.data?.data || 'An error occurred. Please try again.'}`
+            });
+
+            console.log('success', res);
+            setLoading(false);
+            // console.log('this is logged in details', res.data)
+            dispatch(setAuth(res.data));
+            const prevLocation = '/';
+            navigate(prevLocation);
+        } catch (error) {
+            // console.error('Error during login:', error);
+            // setLoading(false);
+            // toast.error('Login failed. Please try again.');
+        }
+    }
+
+    const login = useGoogleLogin({
+        onSuccess: (tokenResponse) => { googleLogin(tokenResponse) },
+        onError: (error) => { console.log('Login Failed:', error) },
+        scope: 'https://www.googleapis.com/auth/calendar',
+        flow: 'auth-code',
+    });
 
     async function submit() {
         if (!email || !password) {
@@ -70,18 +130,31 @@ const VendorLogin = () => {
                 </div>
 
                 <div className="max-w-xs w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
-                    <button type="button" className="text-gray-900 bg-white hover:bg-white md:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                        <img src="/images/icons/facebook-icon.png" alt="" />
-                        <span className='mx-auto text-center'>
-                            Continue with Facebook
-                        </span>
-                    </button>
-                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                    <button
+                        onClick={() => login()}
+                        type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                         <img src="/images/icons/google-icon.png" alt="" />
                         <span className='mx-auto text-center'>
                             Continue with Google
                         </span>
                     </button>
+                    <FacebookLogin
+                        appId="1346318836020986"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                        render={renderProps => (
+                            <button
+                                onClick={renderProps.onClick}
+                                type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                                <img src="/images/icons/facebook-icon.png" alt="" />
+                                <span className='mx-auto text-center'>
+                                    Continue with Facebook
+                                </span>
+                            </button>
+                        )
+                        }
+                    />
                     <button onClick={() => navigate("/vendor/signup")} type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                         <img src="/images/icons/email-icon.png" alt="" />
                         <span className='mx-auto text-center'>

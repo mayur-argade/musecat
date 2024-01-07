@@ -156,33 +156,37 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     return (
         <>
-            <div className='sticky top-0 z-40  w-full bg-white'>
-                <div class=" bg-white border-gray-200 dark:bg-gray-900 md:mr-2 md:ml-2 lg:mr-48 lg:ml-48">
+            <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40  w-full bg-white'>
+                <div class="bg-white border-gray-200 dark:bg-[#2c2c2c] md:mr-2 md:ml-2 lg:mr-48 lg:ml-48">
                     <Toaster />
                     <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 py-4 md:pt-2 md:pb-1 shadow-md md:shadow-none">
 
                         {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
                             <div className='flex align-middle'>
                                 <button className="menu-bars md:hidden " onClick={handleBack} >
-                                    <img src="/images/icons/back-arrow.svg" alt="" />
+                                    <img className='flex dark:hidden' src="/images/icons/back-arrow.svg" alt="" />
+                                    <img className='dark:flex hidden' src="/images/icons/back-arrow-light.svg" alt="" />
                                 </button>
                                 <span className='capitalize md:hidden text-xl font-bold'>
                                     {categoryName}
                                 </span>
                                 <Link to="/" class="hidden flex md:flex items-center">
-                                    <img src="/images/logo/logo-main.png" class="h-10 md:mr-3" alt="MWT Logo" />
-                                    <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                                 </Link>
                             </div>
                         ) : (
                             <div className='flex align-middle'>
                                 <button className="menu-bars md:hidden" onClick={showSidebar}>
-                                    <img src="/images/icons/menu.svg" alt="" />
+                                    <img className='flex dark:hidden' src="/images/icons/menu.svg" alt="" />
+                                    <img className='dark:flex hidden' src="/images/icons/menu-light.svg" alt="" />
                                 </button>
 
                                 <Link to="/" class="hidden flex md:flex items-center">
-                                    <img src="/images/logo/logo-main.png" class="h-10 md:mr-3" alt="MWT Logo" />
-                                    <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                                 </Link>
 
                             </div>
@@ -195,8 +199,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 :
                                 <div className='flex md:hidden'>
                                     <Link to="/" class=" flex md:flex items-center">
-                                        <img src="/images/logo/logo-main.png" class="h-10 md:mr-3" alt="MWT Logo" />
-                                        <img src="/images/logo/logo.png" class="h-6 mr-3" alt="MWT Logo" />
+                                        <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
+                                        <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                        <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                                     </Link>
                                 </div>
 
@@ -209,7 +214,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         <img className='m-1 h-10' src="/images/icons/navprofile.png" alt="" />
                                         {isOpen && (
                                             <div
-                                                className="origin-top-right absolute right-60 mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
+                                                className="origin-top-right absolute right-60 mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50 dark:bg-[#2c2c2c] "
                                                 ref={dropdownRef}
                                             >
                                                 <div className="px-3 flex flex-col">
@@ -323,7 +328,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         }
                                     </div>
                                     <div>
-                                        <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                        <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-[#2c2c2c] md:dark:bg-[#2c2c2c] dark:border-gray-700">
 
                                             <li>
                                                 <Link to='/vendor/home' className={`${window.location.pathname == '/' ? 'text-blue-500' : ''}`}>
@@ -347,7 +352,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 </div>
                                 :
                                 <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
-                                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-[#2c2c2c] md:dark:bg-[#2c2c2c] dark:border-gray-700">
                                         <li>
                                             <Link to='/' className={`${window.location.pathname == '/' ? 'font-bold' : ''}`}>
                                                 <a href="#" className={`block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Home</a>
@@ -366,7 +371,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                     </span>
                                                     {isDropdownOpen && (
                                                         <div
-                                                            className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
+                                                            className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
                                                             onMouseEnter={() => openDropdown()}
                                                             onMouseLeave={() => closeDropdown()}
                                                         >
@@ -430,9 +435,15 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             {
                                 unread
                                     ?
-                                    <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification.svg" alt="" />
+                                    <>
+                                        <img onClick={(() => navigate('/user/notification'))} className='flex dark:hidden' src="/images/icons/notification.svg" alt="" />
+                                        <img onClick={(() => navigate('/user/notification'))} className='dark:flex hidden' src="/images/icons/notification-1-light.svg" alt="" />
+                                    </>
                                     :
-                                    <img onClick={(() => navigate('/user/notification'))} src="/images/icons/notification-1.svg" alt="" />
+                                    <>
+                                        <img onClick={(() => navigate('/user/notification'))} className='flex dark:hidden' src="/images/icons/notification-1.svg" alt="" />
+                                        <img onClick={(() => navigate('/user/notification'))} className='dark:flex hidden' src="/images/icons/notification-light.png" alt="" />
+                                    </>
 
                             }
                         </div>
@@ -442,15 +453,17 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
 
             {/* sidebar for mobile view */}
-            < nav className={sidebar ? "nav-menu active" : "nav-menu"} >
-                <ul className="relative nav-menu-items" >
-                    <li className="navbar-toggle flex justify-between justify-items-end">
+            < nav className={sidebar ? "nav-menu active dark:bg-[#2c2c2c]" : "nav-menu dark:bg-[#2c2c2c]"} >
+                <ul className="relative nav-menu-items dark:text-white" >
+                    <li className="dark:bg-[#2c2c2c] navbar-toggle flex justify-between justify-items-end">
                         <div className="">
-                            <img className='ml-6' src="/images/logo/logo.png" alt="" />
+                        <img src="/images/logo/logo.png" className=" ml-4 dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                        <img src="/images/icons/logo-light.svg" className=" ml-4 dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                         </div>
                         <div>
-                            <Link to="#" className="menu-bars " onClick={showSidebar}>
-                                <img className='mr-2' src="/images/icons/cancel-icon.png" alt="" />
+                            <Link to="#" className="menu-bars dark:bg-[#2c2c2c]" onClick={showSidebar}>
+                                <img className='mr-2 flex dark:hidden' src="/images/icons/cancel-icon.png" alt="" />
+                                <img className='mr-2 dark:flex hidden' src="/images/icons/cancel-icon-light.png" alt="" />
                             </Link>
                         </div>
                     </li>

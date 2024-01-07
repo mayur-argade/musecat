@@ -5,13 +5,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { setAuth } from "../../store/authSlice";
 import { ClientLogin, ClientGoogleLogin, googleLogin, facebookLogin } from "../../http/index"
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
-// import { LoginSocialFacebook } from "reactjs-social-login";
-// import { FacebookLoginButton } from "react-social-login-buttons";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
 
 const Login = () => {
-
 
     document.title = 'Login'
 
@@ -37,46 +34,6 @@ const Login = () => {
             toast.error('Login failed. Please try again.');
         }
     };
-
-    const [loading, setLoading] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const screenWidth = window.innerWidth;
-
-    console.log("screenwidth-->", screenWidth)
-    let boxSize;
-
-    if (screenWidth < 500) {
-        boxSize = "290px"
-    } else {
-        boxSize = "345px"
-    }
-
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    async function submit() {
-        if (!email || !password) {
-            return toast.error("email and password is mandatory")
-        }
-        setLoading(true)
-        try {
-            const res = await ClientLogin({ email, password })
-            console.log("success", res)
-            setLoading(false)
-            // console.log("this is logged in details",res.data)
-            dispatch(setAuth(res.data));
-            const prevLocation = sessionStorage.getItem('prevLocation') || '/';
-            navigate(prevLocation);
-        } catch (error) {
-            setLoading(false)
-            toast.error(error.response.data.data)
-        }
-    }
-
-    const [user, setUser] = useState([]);
-    const [profile, setProfile] = useState([]);
-
     const googleLogin = async (codeResponse) => {
         console.log(codeResponse)
         try {
@@ -108,27 +65,36 @@ const Login = () => {
         flow: 'auth-code',
     });
 
-    console.log("user -->", user)
-    async function HandleBackClick() {
-        console.log("button clicked")
-        if (sessionStorage.getItem('prevLocation')) {
-            const prevLocation = sessionStorage.getItem('prevLocation');
-            // Check if the URL of prevLocation starts with "/bookticket"
-            if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/favorites') || prevLocation.startsWith('/profile')) {
-                // Go back two pages (navigate -2)
-                navigate(-3);
-            } else {
-                // Go back one page (navigate -1)
-                navigate(-1);
-            }
-        } else {
-            navigate('/')
+    const [loading, setLoading] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [user, setUser] = useState([]);
+    const [profile, setProfile] = useState([]);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    async function submit() {
+        if (!email || !password) {
+            return toast.error("email and password is mandatory")
+        }
+        setLoading(true)
+        try {
+            const res = await ClientLogin({ email, password })
+            console.log("success", res)
+            setLoading(false)
+            // console.log("this is logged in details",res.data)
+            dispatch(setAuth(res.data));
+            const prevLocation = sessionStorage.getItem('prevLocation') || '/';
+            navigate(prevLocation);
+        } catch (error) {
+            setLoading(false)
+            toast.error(error.response.data.data)
         }
     }
 
-
     return (
-        <section class="relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+        <section class="dark:bg-[#2c2c2c] dark:text-white relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button className='absolute top-10 left-10'>
                 <img onClick={(() => navigate('/'))} src="/images/icons/login-back.svg" alt="" />
             </button>

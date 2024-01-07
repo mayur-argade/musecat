@@ -261,7 +261,7 @@ const Events = () => {
     // console.log("trending events", trending)
     if (response.data == null || trending.data == null) {
         return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
+            <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
                     <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                     <img src="/images/logo/logo-main.png" class="h-16" />
@@ -270,7 +270,7 @@ const Events = () => {
         )
     } else {
         return (
-            <div className='contactmargine'>
+            <div className='dark:bg-[#2c2c2c] dark:text-white contactmargine'>
                 <Navbar />
                 <div className="hidden md:block">
                     <Tabbar />

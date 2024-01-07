@@ -6,7 +6,7 @@ import BottomNav from '../../components/shared/BottomNav/BottomNav'
 const EventsPWA = () => {
     return (
         <>
-            <div className=''>
+            <div className='h-screen dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <section className='flex justify-center items-center align-middle mt-5'>
                     <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>

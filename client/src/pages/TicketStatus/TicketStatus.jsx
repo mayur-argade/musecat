@@ -101,7 +101,7 @@ const TicketStatus = () => {
         )
     } else {
         return (
-            <>
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <Tabbar />
                 <section className='px-5 w-full flex justify-center'>
@@ -122,59 +122,59 @@ const TicketStatus = () => {
                             <div className="right">
                                 <form action="" className=' md:w-full mt-4 space-y-2'>
                                     <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
-                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                             <input
                                                 type="text"
-                                                className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className=' placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.firstname}
                                                 disabled
                                             />
                                         </div>
-                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="first name">Last name</label>
                                             <input
                                                 type="text"
-                                                className='border bg-transparent border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className=' placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.lastname}
                                                 disabled
                                             />
                                         </div>
                                     </div>
 
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                         <label className='text-xs mt-1' htmlFor="first name">Email</label>
                                         <input
                                             type="text"
-                                            className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
+                                            className='w-full  placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
                                             placeholder={response.data.ticket.email}
                                             disabled
                                         />
                                     </div>
-                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg dark:bg-[#454545]'>
                                         <label className='text-xs mt-1' htmlFor="first name">Class</label>
                                         <input
                                             type="text"
-                                            className='w-fullborder bg-transparent border-[#E7E7E7] focus:border-gray-100 focus:ring-gray-100  outline-0'
+                                            className='w-full placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
                                             placeholder={response.data.ticket.class}
                                             disabled
                                         />
                                     </div>
-                                    <div className="flex  md:space-y-0 space-x-3 mt-3">
-                                        <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                    <div className="flex md:space-y-0 space-x-3 mt-3 ">
+                                        <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="first name">No. of seats</label>
                                             <input
                                                 type="number"
-                                                className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className=' placeholder:text-white border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.seats}
                                                 disabled
                                             />
                                         </div>
-                                        <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md'>
+                                        <div className=' w-1/2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-md dark:bg-[#454545]'>
                                             <label className='text-xs mt-1' htmlFor="first name">Ticket Status</label>
                                             <input
                                                 type="number"
-                                                className='border bg-[#E7E7E7] border-[#E7E7E7] focus:border-[#E7E7E7] focus:ring-[#E7E7E7]  outline-0'
+                                                className=' placeholder:text-white border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.status}
                                                 disabled
                                             />
@@ -235,7 +235,7 @@ const TicketStatus = () => {
                     < Footer />
                 </div>
 
-            </>
+            </div>
         )
     }
 }

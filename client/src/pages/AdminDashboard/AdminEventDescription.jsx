@@ -403,7 +403,7 @@ const AdminEventDescription = () => {
 
                                                                             {/* Top-right Edit and View Sales */}
                                                                             <div className="absolute flex top-0 right-0 mt-4 mr-4 space-x-2">
-                                                                                <button onClick={() => navigate(`/vendor/${response.data.eventDetails._id}/bookedtickets`)} className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
+                                                                                <button onClick={() => navigate(`/admin/${response.data.eventDetails._id}/bookedtickets`)} className="bg-white text-black text-sm rounded-lg w-15 h-8 pl-3 pr-3 flex items-center justify-center ">
                                                                                     View Sales
                                                                                 </button>
                                                                                 <button onClick={handleShowModal} className="bg-white text-white rounded-full w-8 h-8 flex items-center justify-center ">

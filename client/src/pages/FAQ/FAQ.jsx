@@ -61,7 +61,7 @@ const FAQ = () => {
         setAccordions(updatedAccordions);
     };
     return (
-        <>
+        <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
             <Tabbar />
             <section className='relative md:mr-52 md:ml-52 mt-5 ml-6 mr-6'>
@@ -109,7 +109,7 @@ const FAQ = () => {
                 < Footer />
             </div>
 
-        </>
+        </div>
     )
 }
 

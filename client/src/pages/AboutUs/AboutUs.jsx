@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const AboutUs = () => {
     document.title = 'About Us'
     return (
-        <>
+        <div className="dark:bg-[#2c2c2c] dark:text-white">
             <Navbar />
             <section className='contactmargine flex flex-col'>
                 <div className='h-40 md:h-64 justify-center items-center relative'>
@@ -71,7 +71,7 @@ const AboutUs = () => {
                 < Footer />
             </div>
 
-        </>
+        </div>
     )
 }
 

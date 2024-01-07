@@ -131,10 +131,9 @@ const PastPurchase = () => {
 
     } else {
         return (
-            <>
+            <div className=''>
                 <Navbar />
                 <Tabbar />
-
                 <section className='relative md:mr-48 md:ml-48 mt-5 l:ml-6 l:mr-6 mx-2'>
                     <div className="ml-3 hidden md:flex align-middle justify-between items-center">
                         <div className='flex align-middle items-center'>
@@ -265,7 +264,7 @@ const PastPurchase = () => {
                 <div className=''>
                     < Footer />
                 </div>
-            </>
+            </div>
         )
     }
 }

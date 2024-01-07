@@ -38,7 +38,7 @@ const Favorites = () => {
     };
     return (
         <>
-            <div className='appmargine'>
+            <div className='dark:bg-[#2c2c2c] dark:text-white appmargine'>
                 <Navbar />
                 <Tabbar />
 

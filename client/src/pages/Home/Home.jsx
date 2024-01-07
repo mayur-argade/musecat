@@ -13,6 +13,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import UpcomingEventsCard from '../../components/Cards/UpcomingEventsCard'
 import CategorySkeleton from '../../components/shared/skeletons/CategorySkeleton'
+import DarkModeToggle from '../../components/shared/DarkModeToggle/DarkModeToggle'
 
 const Home = () => {
 
@@ -276,7 +277,7 @@ const Home = () => {
 
     return (
         <>
-            <div className='appmargine '>
+            <div className='dark:bg-[#2c2c2c] dark:text-white appmargine '>
                 <Navbar />
                 {
                     isStandalone
@@ -381,7 +382,7 @@ const Home = () => {
                                         </div>
 
                                         <div className='hidden md:flex items-center justify-center '>
-                                            <div className='bg-white border-2 w-11/12 md:w-2/3 flex items-center justify-center flex-col p-3 rounded-lg'>
+                                            <div className='bg-white border-2 w-11/12 md:w-2/3 flex items-center justify-center flex-col p-3 rounded-lg dark:bg-[#2c2c2c] '>
                                                 <div>
                                                     <span className='text-xl font-bold'>
                                                         Where To ?
@@ -399,7 +400,7 @@ const Home = () => {
                                                                 navigate(`/Category/events?search=${query}`);
                                                             }
                                                         }}
-                                                            type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:[#A48533] font-medium rounded-lg text-sm px-8 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-[#C0A04C] flex align-middle justify-center items-center">
+                                                            type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:[#A48533] font-medium rounded-lg text-sm px-8 py-2 text-center mr-3 md:mr-0 dark:bg-[#454545] dark:hover:bg-gray-500 dark:focus:ring-[#C0A04C] flex align-middle justify-center items-center">
                                                             <img src="/images/icons/search1.svg" className="h-4 w-4" alt="" srcset="" />
                                                             <span>Search</span>
                                                         </button>
@@ -412,7 +413,6 @@ const Home = () => {
                                                         <p className='hidden font-bold text-md md:block text-left align-middle mb-1'>
                                                             Popular Searches
                                                         </p>
-
                                                         <div className='hidden md:flex flex-wrap justify-between space-y-2 md:space-x-52'>
                                                             <div className='flex flex-wrap justify-center md:space-x-2  '>
                                                                 <Link className='my-1' to='/category/staycation'>
