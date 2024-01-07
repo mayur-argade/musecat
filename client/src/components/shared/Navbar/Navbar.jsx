@@ -7,7 +7,7 @@ import { clientLogout, vendorLogout, GetNotificationCount } from '../../../http'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../../store/authSlice'
 import toast, { Toaster } from 'react-hot-toast';
-
+// import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
@@ -132,7 +132,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     else if (window.location.pathname.includes("/venue")) {
         categoryName = "Venue Description"
     }
-    else if (window.location.pathname.includes("/event")) {
+    else if (window.location.pathname.includes("/events/")) {
         categoryName = "Event Description"
     }
 
@@ -272,7 +272,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                                         <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
                                                                         logout
                                                                     </button>
-                                                                </>
+                                                                                                                                    </>
                                                         }
 
                                                     </ul>
