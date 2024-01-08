@@ -148,8 +148,6 @@ api.interceptors.response.use(
                     // window.location.href = '/login'
                 }
             }
-        } else {
-            window.location.href = "/login"
         }
         throw error;
     }
