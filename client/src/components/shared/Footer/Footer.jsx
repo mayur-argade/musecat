@@ -55,20 +55,20 @@ const Footer = () => {
                                             <p class="max-w-xs mt-2 text-sm text-gray-600">
                                                 Follow us on social media
                                             </p>
-                                            <div class="flex mt-3 space-x-3 text-gray-600">
+                                            <div href="https://wa.me/+96891738405" class="flex mt-3 space-x-3 text-gray-600">
                                                 <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> whatsapp </span>
                                                     <img className='h-8' src="/images/icons/whatsapp.svg" alt="" />
                                                 </a>
-                                                <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
+                                                <a class="hover:opacity-75 cursor-pointer" target="_blank" href="https://www.facebook.com/muscatwhereto" rel="noreferrer">
                                                     <span class="sr-only"> facebook </span>
                                                     <img className='h-8' src="/images/icons/facebook.svg" alt="" />
                                                 </a>
-                                                <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
+                                                <a class="hover:opacity-75 cursor-pointer" href="https://www.instagram.com/muscat_whereto/" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> Instagram </span>
                                                     <img className='h-8' src="/images/icons/instagram.svg" alt="" />
                                                 </a>
-                                                <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
+                                                <a class="hover:opacity-75 cursor-pointer" href="mailto:info@muscatwhereto.com" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> Email </span>
                                                     <img className='h-8' src="/images/icons/email.svg" alt="" />
                                                 </a>

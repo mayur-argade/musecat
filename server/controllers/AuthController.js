@@ -83,7 +83,7 @@ exports.clientLogin = async (req, res) => {
             res
                 .status(200)
                 .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    maxAge: 1000 * 60 * 60 * 24 * 365,
                     httpOnly: true,
                 })
                 .cookie("accessToken", accessToken, {
@@ -230,7 +230,7 @@ exports.facebookLogin = async (req, res) => {
             res
                 .status(200)
                 .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    maxAge: 1000 * 60 * 60 * 24 * 365,
                     httpOnly: true,
                 })
                 .cookie("accessToken", accessToken, {
@@ -263,7 +263,7 @@ exports.facebookLogin = async (req, res) => {
         res
             .status(200)
             .cookie("refreshtoken", refreshToken, {
-                maxAge: 1000 * 60 * 60 * 24 * 30,
+                maxAge: 1000 * 60 * 60 * 24 * 365,
                 httpOnly: true,
             })
             .cookie("accessToken", accessToken, {
@@ -362,7 +362,7 @@ exports.clientGoogleLogin = async (req, res) => {
             return res
                 .status(200)
                 .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    maxAge: 1000 * 60 * 60 * 24 * 365,
                     httpOnly: true,
                 })
                 .cookie("accessToken", accessToken, {
@@ -404,7 +404,7 @@ exports.clientGoogleLogin = async (req, res) => {
         return res
             .status(200)
             .cookie("refreshtoken", refreshToken, {
-                maxAge: 1000 * 60 * 60 * 24 * 30,
+                maxAge: 1000 * 60 * 60 * 24 * 365,
                 httpOnly: true,
             })
             .cookie("accessToken", accessToken, {
@@ -458,7 +458,7 @@ exports.refresh = async (req, res) => {
         res
             .status(200)
             .cookie("refreshtoken", refreshToken, {
-                maxAge: 1000 * 60 * 60 * 24 * 30,
+                maxAge: 1000 * 60 * 60 * 24 * 365,
                 httpOnly: true,
             })
             .cookie("accessToken", accessToken, {
@@ -834,7 +834,7 @@ exports.vendorLogin = async (req, res) => {
             res
                 .status(200)
                 .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    maxAge: 1000 * 60 * 60 * 24 * 365,
                     httpOnly: true,
                 })
                 .cookie("accessToken", accessToken, {
@@ -884,7 +884,7 @@ exports.vendorFacebookLogin = async (req, res) => {
             res
                 .status(200)
                 .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    maxAge: 1000 * 60 * 60 * 24 * 365,
                     httpOnly: true,
                 })
                 .cookie("accessToken", accessToken, {
@@ -973,7 +973,7 @@ exports.vendorGoogleLogin = async (req, res) => {
             res
                 .status(200)
                 .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
+                    maxAge: 1000 * 60 * 60 * 24 * 365,
                     httpOnly: true,
                 })
                 .cookie("accessToken", accessToken, {

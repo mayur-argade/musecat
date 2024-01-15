@@ -27,8 +27,8 @@ class VendorService {
         return vendor;
     }
 
-    async countVendors() {
-        const vendors = await VendorModel.countDocuments()
+    async countVendors(filter) {
+        const vendors = await VendorModel.countDocuments(filter)
         return vendors
     }
 

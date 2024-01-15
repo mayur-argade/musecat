@@ -93,7 +93,7 @@ const VendorSignup = () => {
         else if (!logo) {
             return toast.error("Please provide company logo")
         }
-        
+
         const formData = new FormData();
         formData.append('file', Crfile);
 
@@ -132,7 +132,13 @@ const VendorSignup = () => {
             console.log(data)
             setLoading(false)
             dispatch(setAuth(data));
-            navigate('/vendor/home');
+
+            toast.success(`Verification mail has been sent to your email ${email} kindly verify your email address`)
+            
+            setTimeout(() => {
+                navigate('/vendor/home');
+            }, 2000);
+
         } catch (error) {
             setLoading(false)
             console.log(error)
@@ -257,7 +263,7 @@ const VendorSignup = () => {
                         <div>
                             <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyname" id='companyname'
                                 value={companyName} onChange={(e) => {
-                                    const alphabetsOnly = e.target.value.replace(/[^A-Za-z]/g, '')
+                                    const alphabetsOnly = e.target.value.replace(/[^A-Za-z ]+/g, ' ');
                                     setCompanyName(alphabetsOnly);
                                 }}
                                 placeholder="Company Name (as per CR)" />

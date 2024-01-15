@@ -1,5 +1,11 @@
-add to calender 
-in app offer discount
-
-admin contact us
-edit form video upload
+1. Chatbot integration
+when user is not logged in then pop will open asking his email address
+after entering email address he will redirected to the chat page
+if user is logged in then directly chat page will open
+2. discount in app handling
+3. Date manegment 
+4. Add to calender
+5. DB and cloudinary
+6. Emails and notificaitions
+7. FAQ management
+8. production environment and testing environment

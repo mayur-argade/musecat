@@ -120,14 +120,14 @@ api.interceptors.response.use(
         return config;
     },
     async (error) => {
-        const originalRequest = error.config;
+        let originalRequest = error.config;
         if (
-            error.response.status === 401 && originalRequest &&
-            !originalRequest.isretry
+            error.response.status === 401 &&
+            originalRequest &&
+            !originalRequest._isRetry
         ) {
-            originalRequest.isRetry = true;
+            originalRequest._isRetry = true;
             try {
-                // Create a new axios instance for the refresh request
                 const refreshApi = axios.create({
                     baseURL: "https://omanwhereto.com/api/v1/",
                     // baseURL: "http://localhost:5000/api/v1/",
@@ -137,21 +137,54 @@ api.interceptors.response.use(
                         Accept: "application/json",
                     },
                 });
-
                 const response = await refreshApi.post("auth/refresh");
-                console.log("this is axios response -> ", response)
-                console.log(response);
+
                 return api.request(originalRequest);
             } catch (err) {
-                console.log(err);
-                if (err.response.status == 401) {
-                    // window.location.href = '/login'
-                }
+                console.log(err.message);
             }
         }
         throw error;
     }
 );
+
+// api.interceptors.response.use(
+//     (config) => {
+//         return config;
+//     },
+//     async (error) => {
+//         const originalRequest = error.config;
+//         if (
+//             error.response.status === 401 && originalRequest &&
+//             !originalRequest.isretry
+//         ) {
+//             originalRequest.isRetry = true;
+//             try {
+//                 // Create a new axios instance for the refresh request
+//                 const refreshApi = axios.create({
+//                     // baseURL: "https://omanwhereto.com/api/v1/",
+//                     baseURL: "http://localhost:5000/api/v1/",
+//                     withCredentials: true, // Set withCredentials here
+//                     headers: {
+//                         "Content-Type": "application/json",
+//                         Accept: "application/json",
+//                     },
+//                 });
+
+//                 const response = await refreshApi.post("auth/refresh");
+//                 console.log("this is axios response -> ", response)
+//                 console.log(response);
+//                 return api.request(originalRequest);
+//             } catch (err) {
+//                 console.log(err);
+//                 if (err.response.status == 401) {
+//                     // window.location.href = '/login'
+//                 }
+//             }
+//         }
+//         throw error;
+//     }
+// );
 
 
 export default api;

@@ -7,7 +7,7 @@ import { clientLogout, vendorLogout, GetNotificationCount } from '../../../http'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../../store/authSlice'
 import toast, { Toaster } from 'react-hot-toast';
-// import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
@@ -272,7 +272,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                                         <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
                                                                         logout
                                                                     </button>
-                                                                                                                                    </>
+                                                                </>
                                                         }
 
                                                     </ul>
@@ -281,12 +281,16 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         )}
                                     </button>
                                     :
-                                    <div className='space-x-2'>
+                                    <div className='space-x-2 flex align-middle items-center justify-center'>
+                                        <div className='flex justify-center'>
+                                            {/* <span className='m-0 text-xs mr-1'>Toggle Dark-Mode</span> */}
+                                            <DarkModeToggle />
+                                        </div>
                                         <Link to="/login">
                                             <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
                                         </Link>
                                         <Link to="/signup">
-                                            <button type="button" class="border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
                                         </Link>
                                     </div>
                             }
@@ -457,8 +461,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 <ul className="relative nav-menu-items dark:text-white" >
                     <li className="dark:bg-[#2c2c2c] navbar-toggle flex justify-between justify-items-end">
                         <div className="">
-                        <img src="/images/logo/logo.png" className=" ml-4 dark:hidden flex h-6 mr-3" alt="MWT Logo" />
-                                        <img src="/images/icons/logo-light.svg" className=" ml-4 dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
+                            <img src="/images/logo/logo.png" className=" ml-4 dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                            <img src="/images/icons/logo-light.svg" className=" ml-4 dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                         </div>
                         <div>
                             <Link to="#" className="menu-bars dark:bg-[#2c2c2c]" onClick={showSidebar}>
@@ -597,6 +601,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                             <Link to="/signup">
                                                 <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
                                             </Link>
+
                                         </div>
                                     </>
                             }

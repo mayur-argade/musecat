@@ -62,8 +62,8 @@ class UserService {
         return user
     }
 
-    async countUsers() {
-        const users = await UserModel.countDocuments()
+    async countUsers(filter) {
+        const users = await UserModel.countDocuments(filter)
         return users
     }
 }
