@@ -130,7 +130,7 @@ const Profile = () => {
                         isStandalone
                             ?
                             <>
-                                <section className=''>
+                                <section className='dark:bg-[#2c2c2c]'>
                                     <div className="header flex justify-between items-center align-middle">
                                         <div className='flex align-middle items-center'>
                                             <div className="m-3 profile">
@@ -205,12 +205,12 @@ const Profile = () => {
 
                             </>
                             :
-                            <>
+                            <div className='dark:bg-[#2c2c2c] '>
                                 <section className='w-full flex justify-center'>
                                     <section className='w-full mx-6 md:w-11/12 sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                                         <Toaster />
                                         <div className="mt-5 profie flex flex-col md:flex-row justify-center align-middle items-center space-x-2">
-                                            <div className=" w-full right bg-neutral-200 pl-2 pr-2 py-2 rounded-lg">
+                                            <div className=" w-full right bg-neutral-200 dark:bg-[#454545] pl-2 pr-2 py-2 rounded-lg">
                                                 <p className='text-sm'>Profile card</p>
                                                 <div className='flex justify-start align-middle items-center space-x-3 '>
 
@@ -225,19 +225,19 @@ const Profile = () => {
                                                         <div className="flex-col md:flex-row flex md:space-x-20  md:justify-center md:items-center w-52">
                                                             <div>
                                                                 <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">First name</label>
-                                                                <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
+                                                                <input type="text" id="first_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
                                                                     placeholder={`${response.data.firstname}`} disabled />
                                                             </div>
                                                             <div>
                                                                 <label for="last_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Last name</label>
-                                                                <input type="text" id="last_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
+                                                                <input type="text" id="last_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
                                                                     placeholder={`${response.data.lastname}`} disabled />
                                                             </div>
                                                         </div>
 
                                                         <div className="ml-1 email">
                                                             <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Email</label>
-                                                            <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-full p-1 " placeholder={`${response.data.email}`}
+                                                            <input type="text" id="first_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-full p-1 " placeholder={`${response.data.email}`}
                                                                 disabled />
                                                         </div>
                                                     </div>
@@ -245,13 +245,13 @@ const Profile = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="w-full left mt-3 space-y-5">
-                                                <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
+                                            <div className="w-full left mt-3 -mt-0 space-y-5">
+                                                <div className='flex flex-col bg-neutral-200 dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                                     <label className='text-xs mt-1' htmlFor="first name">first name</label>
                                                     <div className="relative flex align-middle">
                                                         <input
                                                             type="text"
-                                                            className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
+                                                            className='dark:text-white w-full border bg-neutral-200 dark:bg-[#454545] dark:border-0 dark:focus:border-0 ring-0 border-neutral-200  focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
                                                             onChange={(e) => {
                                                                 setFirstname(e.target.value)
                                                                 handleInputChange()
@@ -263,12 +263,12 @@ const Profile = () => {
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
+                                                <div className='flex flex-col bg-neutral-200 dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                                     <label className='text-xs mt-1' htmlFor="last name">last name</label>
                                                     <div className="relative flex align-middle">
                                                         <input
                                                             type="text"
-                                                            className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
+                                                            className='w-full border bg-neutral-200 dark:bg-[#454545] dark:border-0 ring-0 dark:text-white border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
                                                             onChange={(e) => {
                                                                 setLastname(e.target.value)
                                                                 handleInputChange()
@@ -284,12 +284,12 @@ const Profile = () => {
                                         </div>
 
                                         <div className="email mt-3">
-                                            <div className='flex flex-col bg-neutral-200 pl-2 pr-2 rounded-lg'>
+                                            <div className='flex flex-col bg-neutral-200 dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                                 <label className='text-xs mt-1' htmlFor="first name">email</label>
                                                 <div className="relative flex w-full">
                                                     <input
                                                         type="text"
-                                                        className='w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200 outline-0 text-sm font-medium text-black'
+                                                        className='w-full border bg-neutral-200 dark:bg-[#454545] dark:border-0 ring-0 dark:text-white border-neutral-200  focus:border-neutral-200 focus:ring-neutral-200 outline-0 text-sm font-medium text-black'
                                                         onChange={(e) => {
                                                             setEmail(e.target.value);
                                                             handleInputChange();
@@ -368,7 +368,7 @@ const Profile = () => {
                                         :
                                         <></>
                                 }
-                            </>
+                            </div>
                     }
 
 

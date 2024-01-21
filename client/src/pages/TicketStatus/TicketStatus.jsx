@@ -126,7 +126,7 @@ const TicketStatus = () => {
                                             <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                             <input
                                                 type="text"
-                                                className=' placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
+                                                className=' dark:placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.firstname}
                                                 disabled
                                             />
@@ -135,7 +135,7 @@ const TicketStatus = () => {
                                             <label className='text-xs mt-1' htmlFor="first name">Last name</label>
                                             <input
                                                 type="text"
-                                                className=' placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
+                                                className=' dark:placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.lastname}
                                                 disabled
                                             />
@@ -146,7 +146,7 @@ const TicketStatus = () => {
                                         <label className='text-xs mt-1' htmlFor="first name">Email</label>
                                         <input
                                             type="text"
-                                            className='w-full  placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
+                                            className='w-full  dark:placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
                                             placeholder={response.data.ticket.email}
                                             disabled
                                         />
@@ -155,7 +155,7 @@ const TicketStatus = () => {
                                         <label className='text-xs mt-1' htmlFor="first name">Class</label>
                                         <input
                                             type="text"
-                                            className='w-full placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
+                                            className='w-full dark:placeholder:text-white border bg-transparent border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545] outline-0'
                                             placeholder={response.data.ticket.class}
                                             disabled
                                         />
@@ -165,7 +165,7 @@ const TicketStatus = () => {
                                             <label className='text-xs mt-1' htmlFor="first name">No. of seats</label>
                                             <input
                                                 type="number"
-                                                className=' placeholder:text-white border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
+                                                className=' dark:placeholder:text-white border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.seats}
                                                 disabled
                                             />
@@ -174,7 +174,7 @@ const TicketStatus = () => {
                                             <label className='text-xs mt-1' htmlFor="first name">Ticket Status</label>
                                             <input
                                                 type="number"
-                                                className=' placeholder:text-white border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
+                                                className=' dark:placeholder:text-white border bg-[#E7E7E7] border-0 focus:border-0 focus:ring-0 dark:focus:ring-0 dark:bg-[#454545]  outline-0'
                                                 placeholder={response.data.ticket.status}
                                                 disabled
                                             />
@@ -185,7 +185,7 @@ const TicketStatus = () => {
                                         <button
                                             type="button"
                                             onClick={openModal}
-                                            className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                                            className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0"
                                         >
                                             View Ticket
                                         </button>
@@ -229,7 +229,7 @@ const TicketStatus = () => {
                         <button>
                         </button>
                     </div>
-                    <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                    <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                 </div>
                 <div className=''>
                     < Footer />

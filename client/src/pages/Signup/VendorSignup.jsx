@@ -147,7 +147,7 @@ const VendorSignup = () => {
     }
 
     return (
-        <section className="relative h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+        <section className="md:bg-gray-400 dark:md:bg-blend-multiply relative h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
             <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
                 <img src="/images/icons/login-back.svg" alt="" />
             </button>
@@ -157,41 +157,41 @@ const VendorSignup = () => {
                     <img className='h-6 md:h-12' src="/images/assets/vendorlogin.png" alt="" />
                 </div>
 
-                <div className="max-w-xs w-full h-auto bg:white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-lg p-4 space-y-4 border border-white">
+                <div className="dark:bg-[#2c2c2c] dark:border-0 max-w-xs w-full h-auto bg:white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-lg p-4 space-y-4 border border-white">
                     <div className="mb-4">
-                        <h2 className="text-xl font-bold text-white md:text-black">Hello there</h2>
+                        <h2 className="dark:text-white text-xl font-bold text-white md:text-black">Hello there</h2>
                     </div>
 
                     <div className='space-y-4 max-h-96 overflow-y-auto scrollbar'>
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="email"
+                            <input className="dark:text-white w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="email"
                                 value={email} onChange={(e) => setEmail(e.target.value)} for="email" id='email' placeholder="Email" />
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
                                 value={firstname} onChange={(e) => setFirstname(e.target.value)}
                                 placeholder="First Name" />
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
                                 value={lastname} onChange={(e) => setLastname(e.target.value)}
                                 placeholder="Last Name" />
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" for="password" id='password'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" for="password" id='password'
                                 value={password} onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Password" />
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" for="password" id='password' placeholder="Confirm Password" />
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" for="password" id='password' placeholder="Confirm Password" />
                         </div>
                         <div>
                             <div>
-                                <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="tel" for="text" id='text'
+                                <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="tel" for="text" id='text'
                                     pattern="\d{8}"
                                     value={mobile} onChange={(e) => setMobile(e.target.value)}
                                     placeholder="Mobile Number" />
@@ -199,7 +199,7 @@ const VendorSignup = () => {
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="address" id='address'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="address" id='address'
                                 value={registerAddress} onChange={(e) => setRegisterAddress(e.target.value)} placeholder="Registerd Address" />
                         </div>
 
@@ -214,7 +214,7 @@ const VendorSignup = () => {
                                 checked={accountType === "business"} // Check if "Business" is selected
                                 id="business"
                             />
-                            <label className="text-sm font-normal" htmlFor="business">
+                            <label className="dark:text-white text-sm font-normal" htmlFor="business">
                                 Business
                             </label>
                         </div>
@@ -229,7 +229,7 @@ const VendorSignup = () => {
                                 checked={accountType === "individual"} // Check if "Individual" is selected
                                 id="individual"
                             />
-                            <label className="text-sm font-normal" htmlFor="individual">
+                            <label className="dark:text-white  text-sm font-normal" htmlFor="individual">
                                 Individual
                             </label>
                         </div>
@@ -240,17 +240,17 @@ const VendorSignup = () => {
                                 ?
                                 <div className="business space-y-2">
                                     <div>
-                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
                                             value={Baddress} onChange={(e) => setBaddress(e.target.value)}
                                             placeholder="Address" />
                                     </div>
                                     <div>
-                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
                                             value={poBox} onChange={(e) => setPoBox(e.target.value)}
                                             placeholder="P.O. Box" />
                                     </div>
                                     <div>
-                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
+                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="lastname" id='lastname'
                                             value={postcode} onChange={(e) => setPostcode(e.target.value)}
                                             placeholder="Post code" />
                                     </div>
@@ -261,7 +261,7 @@ const VendorSignup = () => {
 
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyname" id='companyname'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyname" id='companyname'
                                 value={companyName} onChange={(e) => {
                                     const alphabetsOnly = e.target.value.replace(/[^A-Za-z ]+/g, ' ');
                                     setCompanyName(alphabetsOnly);
@@ -270,14 +270,14 @@ const VendorSignup = () => {
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyDisplayName" id='companyDisplayName'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="companyDisplayName" id='companyDisplayName'
                                 value={companyDisplayName} onChange={(e) => setCompanyDisplayName(e.target.value)}
                                 placeholder="Company Display Name" />
                         </div>
 
 
                         <div className="flex items-center justify-center w-full">
-                            <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                            <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-[#454545] hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
                                     <p className="text-xs text-gray-500 dark:text-gray-400">{selectedLogo ? `Selected File: ${selectedLogo.name}` : 'Upload logo'}</p>
@@ -288,13 +288,13 @@ const VendorSignup = () => {
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="number" for="crNo" id='crNo'
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="number" for="crNo" id='crNo'
                                 value={crNo} onChange={(e) => setCrNo(e.target.value)}
                                 placeholder="CR. No" />
                         </div>
 
                         <div className="flex items-center justify-center w-full">
-                            <label for="crimage" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                            <label for="crimage" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-[#454545] hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div className="flex flex-col items-center justify-center ">
                                     <img src="/images/icons/upload-image.svg" alt="" />
 
@@ -308,7 +308,7 @@ const VendorSignup = () => {
                         </div>
 
                         <div>
-                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="website"
+                            <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:text-white dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="website"
                                 value={website} onChange={(e) => setWebsite(e.target.value)}
                                 id='username' placeholder="Website (optional)" />
                         </div>

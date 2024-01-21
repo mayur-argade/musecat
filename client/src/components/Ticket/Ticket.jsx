@@ -58,8 +58,8 @@ const Ticket = ({ event, ticket, download }) => {
     };
     return (
         <>
-            <div ref={componentRef} id="ticketContent" class="dark:bg-[#454545] dark:text-white hidden md:block container bg-white rounded-lg">
-                <div class="item rounded-2xl">
+            <div ref={componentRef} id="ticketContent" class="bg-transparent dark:text-black hidden md:block container rounded-lg">
+                <div class="item rounded-md">
                     <div class="item-left">
                         <div className='flex justify-between items-center align-middle '>
                             <img className='mt-5 h-5' src="/images/logo/logo.png" alt="" />
@@ -100,8 +100,8 @@ const Ticket = ({ event, ticket, download }) => {
                         {/* <img className='h-60 mt-5' src="/images/assets/qrcode.png" alt="" /> */}
                         <QRCode value={qrCodeValue} className='mt-5'
                             bgColor="#C0A04C" fgColor="#ffff" level='L' size={qrCodeSize} onScan={handleQRCodeScan} />
-                        <span class="up-border"></span>
-                        <span class="down-border"></span>
+                        <span class="up-border dark:bg-[#454545] dark:opacity-100 "></span>
+                        <span class="down-border dark:bg-[#454545] dark:opacity-100 "></span>
                     </div>
                 </div>
 

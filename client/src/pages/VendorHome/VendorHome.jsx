@@ -63,7 +63,7 @@ const VendorHome = () => {
 
 
     return (
-        <div>
+        <div className="dark:bg-[#2c2c2c] dark:text-white">
             <div className="z-50 sticky top-0 shadow-lg">
                 <Navbar />
             </div>
@@ -71,18 +71,18 @@ const VendorHome = () => {
             <section className='lg:mr-48 lg:ml-48 mt-5 ml-6 mr-6'>
                 <div className="grid md:grid-cols-2 header">
                     <div className='drop-shadow-xl'>
-                        <div className='h-56 m-3 rounded-lg bg-white flex flex-col space-y-2 justify-center items-center align-middle pb-6 '>
+                        <div className='dark:bg-[#454545] h-56 m-3 rounded-lg bg-white flex flex-col space-y-2 justify-center items-center align-middle pb-6 '>
                             <img className='' src="/images/assets/vendoraddevent.png" alt="" />
-                            <button type="button" onClick={handleClick} className="w-52 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4  font-medium rounded-lg px-4 py-2 text-center mr-3 md:mr-0  dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 flex align-middle items-center justify-center ">
+                            <button type="button" onClick={handleClick} className="w-52 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white font-medium rounded-lg px-4 py-2 text-center mr-3 md:mr-0  dark:bg-[#C0A04C] dark:hover:bg-[#A48533] flex align-middle items-center justify-center ">
                                 <img className='h-3 mr-3' src="/images/icons/+.svg" alt="" />
                                 <p className='font-bold leading-5'>Add Event / Offer</p>
                             </button>
                         </div>
                     </div>
                     <div className='drop-shadow-xl'>
-                        <div className='h-56 m-3 rounded-lg bg-white flex flex-col space-y-2 justify-center items-center align-middle pb-4 '>
+                        <div className='dark:bg-[#454545]  h-56 m-3 rounded-lg bg-white flex flex-col space-y-2 justify-center items-center align-middle pb-4 '>
                             <img className='h-36' src="/images/assets/vendoraddoffer.png" alt="" />
-                            <button type="button" onClick={handleOfferClick} className="w-52 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4  font-medium rounded-lg px-4 py-2 text-center mr-3 md:mr-0  dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 flex align-middle items-center justify-center ">
+                            <button type="button" onClick={handleOfferClick} className="w-52 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white font-medium rounded-lg px-4 py-2 text-center mr-3 md:mr-0  dark:bg-[#C0A04C] dark:hover:bg-[#A48533] flex align-middle items-center justify-center ">
                                 <img className='h-3 mr-3' src="/images/icons/+.svg" alt="" />
                                 <p className='font-bold leading-5'>Add Voucher</p>
                             </button>
@@ -119,7 +119,7 @@ const VendorHome = () => {
                                             </div>
                                             <Link className='flex justify-end text-right' to="/vendor/hostedevents">
                                                 {
-                                                    response.data.ongoingEvents != 0 ? <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500'>view all</span> : <span></span>
+                                                    response.data.ongoingEvents != 0 ? <span className='text-right underline underline-gray-500 mr-3 cursor-pointer text-sm text-gray-500 dark:gray-100 '>view all</span> : <span></span>
                                                 }
 
                                             </Link>
@@ -134,11 +134,11 @@ const VendorHome = () => {
                                             <div className="pl-2 flex overflow-x-auto ">
                                                 {response.data.ongoingOffers.map((offer) => (
                                                     <>
-                                                    <div key={offer._id} className="mx-2 flex-shrink-0">
-                                                        <Link to={`/vendor/event/${offer._id}`}>
-                                                            <VendorOfferCard data={offer} />
-                                                        </Link>
-                                                    </div>
+                                                        <div key={offer._id} className="mx-2 flex-shrink-0">
+                                                            <Link to={`/vendor/event/${offer._id}`}>
+                                                                <PastPurchaseCard width={'w-72'} data={offer} />
+                                                            </Link>
+                                                        </div>
                                                     </>
                                                 ))
                                                 }

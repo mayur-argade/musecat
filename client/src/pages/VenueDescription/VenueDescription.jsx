@@ -102,14 +102,14 @@ const VenueDescription = () => {
     }
     else {
         return (
-            <>
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <Tabbar />
 
                 <section className='flex justify-center mt-3'>
                     <section className='mx-5 sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         <div className="hidden md:flex align-middle items-center">
-                            <button className="backlogo rounded-full shadow-md shadow-gray-500">
+                            <button className="bg-white backlogo rounded-full shadow-md shadow-gray-500">
                                 <img onClick={(() => navigate(-1))} className='h-6' src="/images/icons/backarrow.svg" alt="" />
                             </button>
                             <span className='text-lg font-bold'>Venue Description</span>
@@ -138,9 +138,7 @@ const VenueDescription = () => {
                                     <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                         {loading
                                             ?
-                                            <div className='md:flex md:justify-start md:space-x-3 md:flex-wrap snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide '>
-                                                <SkeletonCard />
-                                                <SkeletonCard />
+                                            <div className='flex'>
                                                 <SkeletonCard />
                                             </div>
                                             :
@@ -178,49 +176,53 @@ const VenueDescription = () => {
                                         </p>
                                     </div>
 
-                                    <div className="md:flex flex-col ">
-                                        <div className="mt-3">
-                                            <p className="text-xl font-bold mt-3">
-                                                You may also like
-                                            </p>
-                                        </div>
-                                        <div className=''>
-                                            {
-                                                trending.data.map((event) => (
-                                                    <>
-                                                        {
-                                                            event != null && (
-                                                                <TrendingCard data={event} />
-                                                            )
-                                                        }
-                                                    </>
-                                                ))
-                                            }
-                                        </div>
-
-                                        <div className="standalone:hidden relative mt-8 ml-6 mr-6">
-
-                                            <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                                <div className='flex justify-center mb-2'>
-                                                    {
-                                                        visible && (
-                                                            <button onClick={() => window.scrollTo({
-                                                                top: 0,
-                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                            </button>
-                                                        )
-                                                    }
-
-                                                    <button>
-                                                    </button>
+                                    {
+                                        trending.data.length != 0 && (
+                                            <div className="md:flex flex-col ">
+                                                <div className="mt-3">
+                                                    <p className="text-xl font-bold mt-3">
+                                                        You may also like
+                                                    </p>
                                                 </div>
-                                                <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                                                <div className=''>
+                                                    {
+                                                        trending.data.map((event) => (
+                                                            <>
+                                                                {
+                                                                    event != null && (
+                                                                        <TrendingCard data={event} />
+                                                                    )
+                                                                }
+                                                            </>
+                                                        ))
+                                                    }
+                                                </div>
+
                                             </div>
+                                        )
+                                    }
+
+                                    <div className="standalone:hidden relative mt-8 ml-6 mr-6">
+
+                                        <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
+                                            <div className='flex justify-center mb-2'>
+                                                {
+                                                    visible && (
+                                                        <button onClick={() => window.scrollTo({
+                                                            top: 0,
+                                                            behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                                        })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                                        </button>
+                                                    )
+                                                }
+
+                                                <button>
+                                                </button>
+                                            </div>
+                                            <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -231,7 +233,7 @@ const VenueDescription = () => {
                 <div className=''>
                     < Footer />
                 </div>
-            </>
+            </div>
         )
     }
 

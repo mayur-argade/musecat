@@ -11,7 +11,9 @@ const { OAuth2Client } = require('google-auth-library');
 const { google } = require('googleapis')
 const moment = require('moment');
 const { userSignupEmail, vendorSignupEmail } = require('../data/emailTemplates');
+const StreamChat = require('stream-chat').StreamChat;
 
+const serverClient = StreamChat.getInstance(process.env.STREAM_API_KEY, process.env.STREAM_API_SECRET);
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
@@ -20,6 +22,88 @@ const oauth2Client = new google.auth.OAuth2(
     GOOGLE_CLIENT_SECRET,
     process.env.GOOGLE_REDIRECT_URL
 )
+
+// streamchat usertoken
+exports.GetStreamUserToken = async (req, res) => {
+    const user = req.user;
+
+    let streamChatUser = await serverClient.queryUsers({ id: user.username })
+
+    if (streamChatUser.length == 0) {
+        // console.log(, user.email, user.firstname)
+        streamChatUser = await serverClient.upsertUser({ id: user.username, name: user.email })
+    }
+
+
+    const token = serverClient.createToken(user.username);
+
+    if (!token) {
+        return res.status(500).json({
+            success: false,
+            data: "Unable to intitate a token, try again later"
+        })
+    }
+
+    const channel = serverClient.channel('messaging', user.username, {
+        name: `Chat with ${user.username}`,
+        created_by: { id: 'internet' },
+        members: [user.username, 'internet']
+    });
+
+    await channel.create();
+    await channel.addMembers([user.username, 'internet']);
+
+    return res.status(200).json({
+        success: true,
+        data: { token: token, user: streamChatUser }
+    })
+}
+
+// stream admin token
+exports.GetStreamVendorToken = async (req, res) => {
+    const user = req.user;
+
+    let queryUser;
+    if (user.email == process.env.STREAM_ADMIN_EMAIL) {
+        queryUser = process.env.STREAM_ADMIN_USERNAME
+    } else {
+        queryUser = user.email.split('@')[0]
+    }
+    let streamChatUser = await serverClient.queryUsers({ id: queryUser })
+
+    console.log("line 74", streamChatUser)
+
+    if (streamChatUser.users.length == 0) {
+        // console.log(, user.email, user.firstname)
+        streamChatUser = await serverClient.upsertUser({ id: queryUser, name: user.email })
+    }
+    console.log("line 75", streamChatUser)
+
+    const token = serverClient.createToken(queryUser);
+
+    if (!token) {
+        return res.status(500).json({
+            success: false,
+            data: "Unable to intitate a token, try again later"
+        })
+    }
+
+    if (queryUser != process.env.STREAM_ADMIN_USERNAME) {
+        const channel = serverClient.channel('messaging', queryUser, {
+            name: `Chat with ${queryUser}`,
+            created_by: { id: process.env.STREAM_ADMIN_USERNAME },
+            members: [queryUser, process.env.STREAM_ADMIN_USERNAME]
+        });
+
+        await channel.create();
+        await channel.addMembers([queryUser, process.env.STREAM_ADMIN_USERNAME]);
+    }
+
+    return res.status(200).json({
+        success: true,
+        data: { token: token, user: streamChatUser }
+    })
+}
 
 // client APIS
 exports.clientLogin = async (req, res) => {

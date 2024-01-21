@@ -9,6 +9,8 @@ import validator from 'validator';
 const Contactus = () => {
     document.title = 'Contact Us'
 
+    const navigate = useNavigate();
+    
     const [loading, setLoading] = useState(false)
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -143,7 +145,7 @@ const Contactus = () => {
                     <div className="ml-36 flex space-x-3 socialmedia">
 
                         <a href="https://wa.me/+96891738405" target="_blank" rel="noopener noreferrer">
-                        <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
+                            <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
                         </a>
 
                         <a href="https://www.facebook.com/muscatwhereto" target="_blank" rel="noopener noreferrer">
@@ -169,7 +171,7 @@ const Contactus = () => {
                             <button>
                             </button>
                         </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                        <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                     </div>
                 </div>
             </section>

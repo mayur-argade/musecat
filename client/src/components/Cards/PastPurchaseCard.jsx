@@ -43,9 +43,9 @@ const PastPurchaseCard = ({ data, width, height }) => {
 
     return (
         <>
-            <div className={`cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] my-2`}>
+            <div className={`cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] my-2`}>
 
-                <button class="absolute top-2 right-2 l:py-3.5 bg-white rounded-md w-16 h-3 px-2 py-2 l:w-24 l:h-5 flex items-center justify-center align-middle text-white">
+                <button class="dark:bg-[#454545] absolute top-2 right-2 l:py-3.5 bg-white rounded-md w-16 h-3 px-2 py-2 l:w-24 l:h-5 flex items-center justify-center align-middle text-white">
                     <p className={`text-xss l:text-sm font-semibold ${status == 'Expired' || status == 'Archived' || status == 'Unverified' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
                 </button>
 
@@ -53,7 +53,7 @@ const PastPurchaseCard = ({ data, width, height }) => {
                     <img class="rounded-md aspect-square " src={`${data.displayPhoto}`} alt="" />
                 </div>
 
-                <div class="p-1 pt-2 pb-2 mx-1">
+                <div class="p-1 pt-2 pb-2 mx-1 dark:text-white">
                     <div class="">
                         <p class="text-xss m:text-xs mt-1  font-medium truncate">
                             {data.title} at

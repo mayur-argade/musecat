@@ -12,6 +12,8 @@ const api = axios.create({
     },
 });
 
+export const streamToken = (data) => api.patch('auth/user/stream-token', data)
+export const vendorStreamToken = (data) => api.patch('auth/vendor/stream-token', data)
 export const vendorLogin = (data) => api.post("auth/vendor/login", data);
 export const VendorRegister = (data) => api.post("auth/vendor/register", data)
 export const vendorProfileApi = (data) => api.get('vendor/profile', data)
@@ -70,6 +72,7 @@ export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
 export const ClientGetOffers = (data) => api.get("/offers/", data)
 export const CategoryCount = (data) => api.get(`category/eventcounts${data}`, data)
+
 
 export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`, data)
 export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)

@@ -16,7 +16,7 @@ const VendorEventDescripton = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [images, setImages] = useState([]);
     const [refresh, setRefresh] = useState(false)
-    
+
     const handleShowNextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     };
@@ -303,7 +303,7 @@ const VendorEventDescripton = () => {
     const handleAccordionClick = (index) => {
         const updatedAccordions = accordions.map((accordion, i) => ({
             ...accordion,
-            isOpened: i === index ? !accordion.isOpened : false,
+            isOpened: i === index ? !accordion.isOpened : accordion.isOpened,
         }));
         setAccordions(updatedAccordions);
     };
@@ -329,7 +329,7 @@ const VendorEventDescripton = () => {
         window.open(shareonwhatsapp, '_blank');
     }
     return (
-        <>
+        <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <div className="z-50 sticky top-0 shadow-lg">
                 <Navbar />
             </div>
@@ -365,7 +365,8 @@ const VendorEventDescripton = () => {
                                                     </span>
                                                 </Link></p>
                                             <div className='mt-4 flex justify-center space-x-2 text-center'>
-                                                <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
+                                                <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
+                                                <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
                                                 {
                                                     response.data.eventDetails.date.type == 'dateRange'
                                                         ?
@@ -373,7 +374,7 @@ const VendorEventDescripton = () => {
                                                             {response.data.eventDetails.showEndDate
                                                                 ?
                                                                 <>
-                                                                    to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
+                                                                    <span className='ml-1 mr-1'>to</span> {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY")}
                                                                 </>
                                                                 :
                                                                 <>
@@ -440,7 +441,8 @@ const VendorEventDescripton = () => {
                                                     <div className="dropdown-container reltive">
                                                         <button
                                                             onClick={toggleDropdown}
-                                                            className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-[#C0A04C]'>
+                                                            // hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-[#C0A04C]
+                                                            className='flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                             <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
                                                             Share
                                                         </button>
@@ -470,7 +472,8 @@ const VendorEventDescripton = () => {
                                                     <div className='card w-full h- pl-4 pr-4 py-4 flex flex-col rounded-xl  border shadow-2xl shadow-[#F3F3F3] rounded-lg '>
                                                         <Link to="/whereto">
                                                             <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
-                                                                <img className='h-5' src="/images/icons/map-1.svg" alt="" />
+                                                                <img className='h-5 flex dark:hidden' src="/images/icons/map-1.svg" alt="" />
+                                                                <img className='h-5 hidden dark:flex' src="/images/icons/map-light.svg" alt="" />
                                                                 <p className='text-md'>{response.data.eventDetails.location?.name || ""}</p>
                                                                 <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                                             </div>
@@ -503,8 +506,9 @@ const VendorEventDescripton = () => {
                                                         {/* <Link to='/favorites' className='w-full'> */}
 
                                                         {/* </Link> */}
-                                                        <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                                            <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
+                                                        <button onClick={() => toast("User specific function")} className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white dark:bg-[#454545] p-2'>
+                                                            <img className='h-4 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
+                                                            <img className='h-4 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
                                                             <span >Add to Calendar</span>
                                                         </button>
                                                     </div>
@@ -534,32 +538,35 @@ const VendorEventDescripton = () => {
                                                             moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
                                                                 ?
                                                                 <>
-                                                                    {
-                                                                        response.data.eventDetails.whatsapp
-                                                                            ?
-                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
-                                                                                {/* <button type="button" class=""> */}
-                                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                                Call On Whatsapp
-                                                                                {/* </button> */}
-                                                                            </a>
-                                                                            :
-                                                                            <></>
-                                                                    }
-                                                                    {
-                                                                        response.data.eventDetails.phoneNo
-                                                                            ?
-                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
-                                                                                {/* <button type="button" class=""> */}
-                                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                                Contact On Number
-                                                                                {/* </button> */}
-                                                                            </a>
-                                                                            :
-                                                                            <></>
-                                                                    }
+                                                                    <div className='w-full flex'>
+
+                                                                        {
+                                                                            response.data.eventDetails.whatsapp
+                                                                                ?
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
+                                                                                    {/* <button type="button" class=""> */}
+                                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                                    Call On Whatsapp
+                                                                                    {/* </button> */}
+                                                                                </a>
+                                                                                :
+                                                                                <></>
+                                                                        }
+                                                                        {
+                                                                            response.data.eventDetails.phoneNo
+                                                                                ?
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
+                                                                                    {/* <button type="button" class=""> */}
+                                                                                    <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                                    Contact On Number
+                                                                                    {/* </button> */}
+                                                                                </a>
+                                                                                :
+                                                                                <></>
+                                                                        }
+                                                                    </div>
                                                                     <div className="booknow">
-                                                                        <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                        <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533]  hover:bg-[#A48533]">Book Now</button>
                                                                     </div>
                                                                 </>
                                                                 :
@@ -569,7 +576,7 @@ const VendorEventDescripton = () => {
                                                                             response.data.eventDetails.whatsapp
                                                                                 ?
 
-                                                                                <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
                                                                                     {/* <button type="button" class=""> */}
                                                                                     <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                                     Call On Whatsapp
@@ -582,7 +589,7 @@ const VendorEventDescripton = () => {
                                                                         {
                                                                             response.data.eventDetails.phoneNo
                                                                                 ?
-                                                                                <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
                                                                                     {/* <button type="button" class=""> */}
                                                                                     <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
                                                                                     Contact On Number
@@ -593,7 +600,7 @@ const VendorEventDescripton = () => {
                                                                         }
                                                                     </div>
                                                                     <div className="booknow">
-                                                                        <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
+                                                                        <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-0 focus:outline-none  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] hover:bg-[#A48533] dark:hover:bg-[#A48533]">Book Now</button>
                                                                     </div>
                                                                 </>
                                                             :
@@ -656,7 +663,7 @@ const VendorEventDescripton = () => {
                                                     <button>
                                                     </button>
                                                 </div>
-                                                <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                                                <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                                             </div>
                                         </div>
 
@@ -685,7 +692,7 @@ const VendorEventDescripton = () => {
             <div className=''>
                 < Footer />
             </div>
-        </>
+        </div>
     )
 
 }

@@ -99,7 +99,7 @@ const VendorHostedEvents = () => {
     };
 
     return (
-        <div>
+        <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <div className="z-50 sticky top-0 shadow-lg">
                 <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
@@ -142,7 +142,7 @@ const VendorHostedEvents = () => {
                                 </button>
                                 {isOpen && (
                                     <div
-                                        className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                        className="origin-top-right absolute right-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white dark:bg-[#454545] dark:text-white ring-1 ring-black ring-opacity-5 z-50"
                                         ref={dropdownRef}
                                     >
                                         <div className="p-5">
@@ -186,7 +186,7 @@ const VendorHostedEvents = () => {
                                                                 <input id={e.categoryURL} type="checkbox"
                                                                     onChange={() => handleCategoryChange(e)}
                                                                     checked={selectedCategories.includes(e)}
-                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    value={e} class="w-4 h-4 text-[#C0A04C] rounded dark:focus:ring-[#C0A04C] " />
                                                                 <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
                                                             </div>
                                                         ))

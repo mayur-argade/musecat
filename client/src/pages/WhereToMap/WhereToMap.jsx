@@ -68,7 +68,7 @@ const WhereToMap = () => {
         )
     }
     return (
-        <>
+        <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
             <Tabbar />
             <section className='md:mr-12 md:ml-12 '>
@@ -93,23 +93,19 @@ const WhereToMap = () => {
                         }
                     </div>
                 </div>
-                <div className='w-full hidden md:flex justify-end items-end flex-col '>
-                    <div className='flex justify-end mb-2 mr-8 mt-3'>
-                        {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                        </button> */}
-                        {/* <img className='h-10 ml-12 ' src="/images/icons/whatsapp-color.svg" alt="" /> */}
+                <div className='fixed hidden lg:flex justify-center flex-col right-5 bottom-10'>
+                    <div className='flex justify-center mb-2'>
                         <button>
                         </button>
                     </div>
-                    <button className='mr-8 rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                    <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                 </div>
             </section>
 
             <div className="">
                 <Footer />
             </div>
-        </>
+        </div>
     )
 }
 

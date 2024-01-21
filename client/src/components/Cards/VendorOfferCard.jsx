@@ -32,7 +32,7 @@ const VendorOfferCard = ({ data }) => {
                     src={data.displayPhoto}
                     alt=""
                 />
-                <div className="absolute top-1 right-1 bg-white text-white p-1 pl-2 pr-2 rounded-md font-bold">
+                <div className="absolute top-1 right-1 bg-white dark:bg-[#454545] text-white p-1 pl-2 pr-2 rounded-md font-bold">
                     <p className={`text-sm font-semibold ${status == 'Inactive' ? 'text-red-500' : 'text-green-500'}`}>{status}</p>
                 </div>
             </div>

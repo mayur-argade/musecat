@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
     lastname: {
         type: String,
     },
+    streamToken: {
+        type: String,
+    },
     username: {
         type: String,
         required: [true, "Please provide username"],

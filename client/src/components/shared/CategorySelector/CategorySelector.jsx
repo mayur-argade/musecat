@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 const CategorySelector = ({ categories, selectedCategories, onChange }) => {
@@ -38,6 +38,22 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
         label: category.name,
     }));
 
+    const [darkMode, setDarkMode] = useState(false);
+
+    useEffect(() => {
+        // Check if user prefers dark mode
+        if (
+            localStorage.getItem('color-theme') === 'dark' ||
+            (!('color-theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
+    }, []);
+
+
     const handleChange = (selectedOptions) => {
         const selectedCategories = selectedOptions.map(option => {
             const category = categories.find(category => category.categoryURL === option.value);
@@ -65,6 +81,32 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
         onChange(selectedCategories);
     };
 
+    const customStyles = {
+        control: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: darkMode ? '#454545' : 'white',
+            color: darkMode ? 'white' : 'black',
+            borderColor: state.isFocused ? (darkMode ? '#555' : '#C0A04C') : (darkMode ? '#555' : '#C0A04C'),
+            '&:hover': {
+                borderColor: darkMode ? '#555' : '#A48533',
+            },
+        }),
+        menu: baseStyles => ({
+            ...baseStyles,
+            backgroundColor: darkMode ? '#454545' : 'white',
+            color: darkMode ? 'white' : 'black',
+        }),
+        option: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: state.isFocused ? (darkMode ? '#333' : '#f0f0f0') : 'transparent',
+            color: state.isFocused ? (darkMode ? 'white' : 'black') : (darkMode ? 'white' : 'black'),
+            '&:active': {
+                backgroundColor: darkMode ? '#A48533' : '#C0A04C',
+            },
+        }),
+        // Add more styles for other components as needed...
+    };
+
 
     return (
         <Select
@@ -72,6 +114,7 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
             options={options}
             value={selectedOptions}
             onChange={handleChange}
+            styles={customStyles}
         />
     );
 };

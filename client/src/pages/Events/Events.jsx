@@ -8,7 +8,7 @@ import Footer from '../../components/shared/Footer/Footer'
 import TrendingCard from '../../components/Cards/TrendingCard'
 import { getCategoryEvents, GetAllCategory, GetTrendingEvents } from '../../http/index'
 import { useParams, useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SkeletonCard from '../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
 import Features from '../../utils/Data'
@@ -18,6 +18,9 @@ import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 
 const Events = () => {
+
+    const navigate = useNavigate()
+
     let [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
         lng: 58.37132692337036,
@@ -326,7 +329,7 @@ const Events = () => {
                                         </button>
                                         {isOpen && (
                                             <div
-                                                className="origin-top-right absolute left-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                                className="dark:bg-[#454545] dark:text-white origin-top-right absolute left-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
                                                 ref={dropdownRef}
                                             >
                                                 <div className="p-5">
@@ -538,7 +541,7 @@ const Events = () => {
                                                     <button>
                                                     </button>
                                                 </div>
-                                                <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                                                <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                                             </div>
                                         </div>
 

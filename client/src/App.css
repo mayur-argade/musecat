@@ -2,6 +2,23 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+.str-chat__main-panel {
+    padding: 0 !important;
+}
+
+.str-chat-channel .str-chat__container {
+    height: 90% !important;
+}
+
+.str-chat.messaging,
+.str-chat.commerce {
+    background-color: white !important;
+}
+
+.str-chat__fileupload-wrapper {
+    display: none !important;
+}
+
 .container {
     width: 1200px;
     max-width: 90%;

@@ -1,11 +1,18 @@
-1. Chatbot integration
-when user is not logged in then pop will open asking his email address
-after entering email address he will redirected to the chat page
-if user is logged in then directly chat page will open
-2. discount in app handling
-3. Date manegment 
-4. Add to calender
-5. DB and cloudinary
-6. Emails and notificaitions
-7. FAQ management
-8. production environment and testing environment
+1. Chatbot integration (done)
+2. Dark mode toggle for the vendor
+3. discount in app handling
+4. Date manegment 
+5. Add to calender
+6. DB and cloudinary
+7. Emails and notificaitions
+8. FAQ management
+9. production environment and testing environment
+10. Change footer icons for social media in dark mode
+11. Change the logic for showing the profile option
+12. Give option to add features through admin side
+13. Give option to add trending event through admin side
+14. Book ticket page maybe redirecting to the users profile
+15. Check for the new logic for the hooks and navbar displaying
+16. Handle website in the signup form
+17. vendor profile page 
+# verifyUserAccount

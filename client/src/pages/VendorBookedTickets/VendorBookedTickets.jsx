@@ -142,7 +142,7 @@ const VendorBookedTickets = () => {
         )
     } else {
         return (
-            <>
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <div className='shadow-md'>
                     <Navbar />
                 </div>
@@ -161,16 +161,16 @@ const VendorBookedTickets = () => {
                                 <div className="relative inline-block text-left">
                                     <button
                                         onClick={toggleDropdown}
-                                        className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg  block w-28 md:w-52 p-1.5  dark:bg-[#454545] dark:border-[#454545] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#A48533] dark:focus:border-[#A48533]"
                                     >
-                                        <span className='hidden md:block text-gray-500'>Filter by Categories</span>
-                                        <span className='md:hidden block text-gray-500'>Filter</span>
+                                        <span className='hidden md:block dark:text-white text-gray-500'>Filter by Categories</span>
+                                        <span className='md:hidden block dark:text-white text-gray-500'>Filter</span>
 
                                         <img src="/images/icons/filter.svg" alt="" />
                                     </button>
                                     {isOpen && (
                                         <div
-                                            className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
+                                            className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white dark:bg-[#454545] ring-1 ring-black ring-opacity-5 w-52 z-50"
                                             ref={dropdownRef}
                                         >
                                             <div className="p-5">
@@ -203,7 +203,7 @@ const VendorBookedTickets = () => {
 
                             <ReactHTMLTableToExcel
                                 id="exportbutton"
-                                className="flex justify-center items-center align-middle space-x-1 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                                className="flex justify-center items-center align-middle space-x-1 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533]"
                                 table="ticketTable"
                                 filename="tickets"
                                 sheet="tickets"
@@ -215,7 +215,7 @@ const VendorBookedTickets = () => {
                     <div className="">
                         <div class="relative overflow-x-auto rounded-lg">
                             <table id="ticketTable" class="rounded-lg w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
-                                <thead class="text-xs text-gray-700 uppercase bg-[#EEEEEE] dark:bg-gray-700 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-[#EEEEEE] dark:bg-[#454545] dark:text-white">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
                                             <p className='text-xss'>
@@ -279,47 +279,47 @@ const VendorBookedTickets = () => {
                                         return categoryMatch
                                     })
                                         .map((ticket, index) => (
-                                            <tr key={ticket._id} class="bg-[#EEEEEE] border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <tr key={ticket._id} class="bg-[#EEEEEE] border-b dark:bg-[#454545] dark:border-gray-500 dark:text-white">
                                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     {index + 1}
                                                 </th>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.firstname}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.lastname}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.email}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.class}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.seats}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.allotedSeats.join(', ')}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.status}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <p className='text-xs text-black font-medium'>
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.totalPrice}
                                                     </p>
                                                 </td>
@@ -367,7 +367,7 @@ const VendorBookedTickets = () => {
                                 <button>
                                 </button>
                             </div>
-                            <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                            <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
                         </div>
                         :
                         <></>
@@ -378,7 +378,7 @@ const VendorBookedTickets = () => {
                 <div className=''>
                     < Footer />
                 </div>
-            </>
+            </div>
         )
     }
 

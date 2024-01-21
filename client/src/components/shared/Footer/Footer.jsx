@@ -7,7 +7,7 @@ const Footer = () => {
     const navigate = useNavigate()
 
     async function submit() {
-        toast.success("Added to newsletter")
+        // toast.success("Added to newsletter")
     }
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     return (

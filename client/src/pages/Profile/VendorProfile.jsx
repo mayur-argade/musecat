@@ -57,7 +57,7 @@ const Profile = () => {
             setLoading(true)
             const { data } = await VendorUpdateProfileApi(updatedata)
             if (data.success == true) {
-                toast.success("User updated Successfully")
+                toast.success("vendor updated Successfully")
                 window.location.reload()
             }
             console.log(data)

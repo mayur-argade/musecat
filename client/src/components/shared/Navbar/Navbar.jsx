@@ -45,6 +45,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const dispatch = useDispatch();
     const { isAuth, user } = useSelector((state) => state.auth)
 
+    
+
+
     const onClick = () => {
         setIsAccOpen(!isAccOpen)
     }
@@ -210,87 +213,80 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             {
                                 isAuth
                                     ?
-                                    <button onClick={toggleDropdown}>
-                                        <img className='m-1 h-10' src="/images/icons/navprofile.png" alt="" />
-                                        {isOpen && (
-                                            <div
-                                                className="origin-top-right absolute right-60 mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50 dark:bg-[#2c2c2c] "
-                                                ref={dropdownRef}
-                                            >
-                                                <div className="px-3 flex flex-col">
-                                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                                                        <Link to={
-                                                            window.location.pathname == "/vendor/home" ||
-                                                                window.location.pathname == "/vendor/notification" ||
-                                                                window.location.pathname == "/vendor/helpcenter" ||
-                                                                window.location.pathname == "/vendor/home" ||
-                                                                window.location.pathname == `/vendor/event/${eventid}` ||
-                                                                window.location.pathname == '/vendor/profile'
-                                                                ?
-                                                                `/vendor/profile`
-                                                                :
-                                                                `/profile`
-                                                        }>
-                                                            <a href="#" class="flex block px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                                <img src="/images/icons/user.svg" className="h-5 mr-2" alt="" />
-                                                                Profile</a>
-                                                        </Link>
-                                                        {
-                                                            window.location.pathname == "/vendor/notification" ||
-                                                                window.location.pathname == "/vendor/helpcenter" ||
-                                                                window.location.pathname == "/vendor/home" ||
-                                                                window.location.pathname == '/vendor/profile' ||
-                                                                window.location.pathname == `/vendor/event/${eventid}` ||
-                                                                window.location.pathname == '/vendor/hostedevents'
-
-                                                                ?
-                                                                <>
-                                                                    <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                        <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
-                                                                        logout
-                                                                    </button>
-                                                                    <button onClick={() => navigate('/vendor/hostedevents')} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                        <img src="/images/icons/hostedevents.png" className='h-5 mr-2 ' alt="" />
-                                                                        Hosted Events
-                                                                    </button>
-                                                                </>
-                                                                :
-                                                                <>
-                                                                    <Link to="/favorites">
-                                                                        <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                            <img src="/images/icons/heartNav.svg" className='h-5 mr-2 ' alt="" />
-                                                                            Favorites
+                                    <div className='space-x-2 flex align-middle items-center justify-center'>
+                                        <div className='flex justify-center'>
+                                            <DarkModeToggle />
+                                        </div>
+                                        <button onClick={toggleDropdown}>
+                                            <img className='m-1 h-10' src="/images/icons/navprofile.png" alt="" />
+                                            {isOpen && (
+                                                <div
+                                                    className="origin-top-right absolute right-60 mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50 dark:bg-[#2c2c2c] "
+                                                    ref={dropdownRef}
+                                                >
+                                                    <div className="px-3 flex flex-col">
+                                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                                                            <Link to={
+                                                                window.location.pathname.includes('/vendor/')
+                                                                    ?
+                                                                    `/vendor/profile`
+                                                                    :
+                                                                    `/profile`
+                                                            }>
+                                                                <a href="#" class="flex block px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                    <img src="/images/icons/user.svg" className="h-5 mr-2" alt="" />
+                                                                    Profile</a>
+                                                            </Link>
+                                                            {
+                                                                window.location.pathname.includes('/vendor/')
+                                                                    ?
+                                                                    <>
+                                                                        <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                            <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
+                                                                            logout
                                                                         </button>
-                                                                    </Link>
-                                                                    <Link to="/pastpurchase">
-                                                                        <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                            <img src="/images/icons/pastpurchased.svg" className='h-5 mr-2 ' alt="" />
-                                                                            Past Purchased
+                                                                        <button onClick={() => navigate('/vendor/hostedevents')} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                            <img src="/images/icons/hostedevents.png" className='h-5 mr-2 ' alt="" />
+                                                                            Hosted Events
                                                                         </button>
-                                                                    </Link>
-                                                                    <button onClick={userLogout} className='flex space-x-2 align-middle w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                        <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
-                                                                        logout
-                                                                    </button>
-                                                                </>
-                                                        }
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                        <Link to="/favorites">
+                                                                            <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                                <img src="/images/icons/heartNav.svg" className='h-5 mr-2 ' alt="" />
+                                                                                Favorites
+                                                                            </button>
+                                                                        </Link>
+                                                                        <Link to="/pastpurchase">
+                                                                            <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                                <img src="/images/icons/pastpurchased.svg" className='h-5 mr-2 ' alt="" />
+                                                                                Past Purchased
+                                                                            </button>
+                                                                        </Link>
+                                                                        <button onClick={userLogout} className='flex space-x-2 align-middle w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                            <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
+                                                                            logout
+                                                                        </button>
+                                                                    </>
+                                                            }
 
-                                                    </ul>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
-                                    </button>
+                                            )}
+                                        </button>
+                                    </div>
                                     :
                                     <div className='space-x-2 flex align-middle items-center justify-center'>
                                         <div className='flex justify-center'>
-                                            {/* <span className='m-0 text-xs mr-1'>Toggle Dark-Mode</span> */}
                                             <DarkModeToggle />
                                         </div>
                                         <Link to="/login">
-                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
+                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0" >Sign in</button>
                                         </Link>
                                         <Link to="/signup">
-                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0">Sign up</button>
                                         </Link>
                                     </div>
                             }
@@ -304,6 +300,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 window.location.pathname == "/vendor/hostedevents" ||
                                 window.location.pathname == `/vendor/event/${eventid}` ||
                                 window.location.pathname == '/vendor/profile' ||
+                                window.location.pathname == '/vendor/helpcenter' ||
                                 window.location.pathname == `/vendor/${eventid}/bookedtickets` ?
                                 <div class="items-center md:space-x-10 justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
                                     <div>
@@ -335,19 +332,19 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-[#2c2c2c] md:dark:bg-[#2c2c2c] dark:border-gray-700">
 
                                             <li>
-                                                <Link to='/vendor/home' className={`${window.location.pathname == '/' ? 'text-blue-500' : ''}`}>
-                                                    <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 md:dark:text-blue-500`} aria-current="page"><span className='text-sm'>Home</span></a>
+                                                <Link to='/vendor/home' className={`${window.location.pathname == '/vendor/home' ? 'font-bold' : ''}`}>
+                                                    <a href="#" className={`block py-2 pl-3 pr-4 md:p-0 `} aria-current="page"><span className='text-sm'>Home</span></a>
                                                 </Link>
 
                                             </li>
                                             <li>
-                                                <Link to='/vendor/notification' className={`${window.location.pathname == '/vendor/notification' ? 'text-blue-500' : ''}`}>
-                                                    <a href="#" className="block py-2 pl-3 pr-4  md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Notification</span></a>
+                                                <Link to='/vendor/notification' className={`${window.location.pathname == '/vendor/notification' ? 'font-bold' : ''}`}>
+                                                    <a href="#" className="block py-2 pl-3 pr-4  md:p-0  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Notification</span></a>
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to='/vendor/helpcenter' className={`${window.location.pathname == '/helpcenter' ? 'text-blue-500' : ''}`}>
-                                                    <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Help Center</span></a>
+                                                <Link to='/vendor/helpcenter' className={`${window.location.pathname == '/vendor/helpcenter' ? 'font-bold' : ''}`}>
+                                                    <a href="#" className="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Help Center</span></a>
                                                 </Link>
                                             </li>
 
@@ -572,10 +569,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     ?
                                     <>
                                         {
-                                            window.location.pathname == "/vendor/notification" ||
-                                                window.location.pathname == "/vendor/helpcenter" ||
-                                                window.location.pathname == "/vendor/home" ||
-                                                window.location.pathname == '/vendor/profile'
+                                            window.location.pathname.includes('/vendor/')
                                                 ?
                                                 <button onClick={funVendorLogout} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
                                                     <img className='h-5' src="/images/icons/logout.svg" alt="" />

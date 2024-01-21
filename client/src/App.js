@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import './App.css';
 import { createBrowserRouter, RouterProvider, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Demo from './pages/Demo'
 
 // pages
 import Home from './pages/Home/Home';
@@ -45,6 +44,7 @@ import UserNotification from './pages/UserNotification/UserNotification'
 import VerifyVendorAccount from './pages/VerifyUserAccount/VerifyVendorAccount'
 import Notifications from './pages/AdminDashboard/Notifications'
 import NotFound from './pages/NotFound'
+import SupportChat from './pages/AdminDashboard/SupportChat';
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -60,6 +60,10 @@ import PrivacyPolicy from './pages/LegalCorner/PrivacyPolicy';
 import TermsAndCondition from './pages/LegalCorner/TermsAndCondition';
 import InputEmailVendor from './pages/ForgotPasswordVendor/InputEmailVendor';
 import ResetPasswordVendor from './pages/ForgotPasswordVendor/ResetPasswordVendor';
+import UserHelpCenter from './pages/SuportEngine/UserHelpCenter';
+import VendorHelpCenter from './pages/SuportEngine/VendorHelpCenter';
+
+
 
 
 function App() {
@@ -93,6 +97,7 @@ function App() {
                     <Route path="/user/cookies" exact element={<Cookies />} />
                     <Route path="/user/privacypolicy" exact element={<PrivacyPolicy />} />
                     <Route path="/user/termsandconditions" exact element={<TermsAndCondition />} />
+                    <Route path="/user/helpcenter" exact element={<SemiProtected Component={UserHelpCenter} />} />
 
 
 
@@ -109,6 +114,7 @@ function App() {
                     <Route path="/vendor/verify-account/:token" exact element={<VerifyVendorAccount />} />
                     <Route path="/vendor/reset" exact element={<InputEmailVendor />} />
                     <Route path="/vendor/reset-password/:token" exact element={<ResetPasswordVendor />} />
+                    <Route path="/vendor/helpcenter" exact element={<GuestRoute Component={VendorHelpCenter} />} />
 
                     {/* admin pages */}
                     <Route path="/admin/profile/:userid" exact element={<AdminCheckProfile />} />
@@ -121,8 +127,8 @@ function App() {
                     <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
                     <Route path="/admin/categories" exact element={<AdminCategory />} />
                     <Route path="/admin/venue" exact element={<AdminVenue />} />
-                    <Route path="/demo" exact element={<Demo />} />
-                    <Route path='/admin/notifications'exact element={<Notifications />} />
+                    <Route path='/admin/notifications' exact element={<Notifications />} />
+                    <Route path='/admin/helpcenter' element={<SupportChat />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>

@@ -3,10 +3,13 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
 import Footer from '../../components/shared/Footer/Footer'
+import { useNavigate } from 'react-router-dom'
 
 const FAQ = () => {
 
     document.title = 'FAQs'
+
+    const navigate = useNavigate()
 
     const [accordions, setAccordions] = useState([
         {
@@ -94,16 +97,16 @@ const FAQ = () => {
                 </div>
 
                 <div className='hidden md:flex justify-end flex-col absolute -right-44 bottom-0'>
-                        <div className='flex justify-between mb-2'>
-                            {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                    <div className='flex justify-between mb-2'>
+                        {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
                             <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
                         </button> */}
-                            {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
-                            <button>
-                            </button>
-                        </div>
-                        <button className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                        {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
+                        <button>
+                        </button>
                     </div>
+                    <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                </div>
             </section>
             <div className='standalone:hidden'>
                 < Footer />

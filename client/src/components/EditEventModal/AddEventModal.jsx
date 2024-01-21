@@ -14,6 +14,19 @@ const AddEventModal = ({ onClose }) => {
 
     const editor = useRef(null);
     const navigate = useNavigate()
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    useEffect(() => {
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (
+            localStorage.getItem('color-theme') === 'dark' ||
+            (!('color-theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setIsDarkMode(true);
+        } else {
+            setIsDarkMode(false);
+        }
+    }, []);
     const config = {
         placeholder: "Enter Event Specific Details in brief..",
         buttons: [
@@ -436,13 +449,13 @@ const AddEventModal = ({ onClose }) => {
             {
                 !subLoading
                     ?
-                    <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
+                    <section className=' md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
                         <div className='w-96 md:w-[1000px]'>
-                            <div className="modal bg-white px-10 py-5">
+                            <div className="dark:bg-[#2c2c2c] dark:text-white modal bg-white px-10 py-5">
                                 <div className='text-left flex justify-start items-start align-middle'>
                                     <p className='text-xl font-bold'>Event/Offer Details</p>
                                 </div>
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name *">
                                         <div className="flex w-full">
                                             <span className='text-sm font-semibold mt-1 ml-0'>
@@ -454,13 +467,13 @@ const AddEventModal = ({ onClose }) => {
                                     <input
                                         type="text"
                                         value={title}
-                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                        className='dark:bg-[#454545] px-0 py-0.5 w-full border bg-transparent border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                         onChange={((e) => setTitle(e.target.value))}
                                         placeholder='Please enter the title for your event here'
                                     />
                                 </div>
 
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                         <div className="flex w-full">
                                             <span className='ml-0'>
@@ -471,16 +484,16 @@ const AddEventModal = ({ onClose }) => {
                                     <input
                                         type="text"
                                         value={shortDesc}
-                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                        className='px-0 py-0.5 w-full border  bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                         placeholder='Enter a short description to let the users know about your event in a summary.'
                                         onChange={((e) => setShortDesc(e.target.value))}
                                     />
                                 </div>
 
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] dark:text-black pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                         <div className="flex w-full">
-                                            <span className='ml-0'>
+                                            <span className='ml-0 dark:text-white'>
                                                 Event/Offer Information <span className='ml-0 text-lg font-bold'> * </span></span>
                                             <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
                                         </div>
@@ -489,8 +502,8 @@ const AddEventModal = ({ onClose }) => {
                                         ref={editor}
                                         value={content}
                                         config={config}
-                                        tabIndex={1} // tabIndex of textarea
-                                        onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        tabIndex={1}
+                                        onBlur={newContent => setContent(newContent)}
                                     />
                                 </div>
 
@@ -504,7 +517,7 @@ const AddEventModal = ({ onClose }) => {
                                 </p>
                                 <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                     <div className="flex w-full row1 space-x-4 ">
-                                        <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full  flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='input-container text-xs mt-1' htmlFor="first name">Start Date <span className='ml-0 text-lg font-bold'> * </span></label>
                                             <input
                                                 type="datetime-local"
@@ -512,13 +525,13 @@ const AddEventModal = ({ onClose }) => {
                                                 min={minDateTime}
                                                 id="session-date"
                                                 onChange={((e) => setStartDate(e.target.value))}
-                                                className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                                                className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm text-sm font-medium'
                                             />
                                         </div>
                                     </div>
                                     <p className='text-center'>to</p>
                                     <div className="flex w-full row1 space-x-4 ">
-                                        <div className='w-full  flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full  flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">End Date</label>
                                             <input
                                                 type="datetime-local"
@@ -526,7 +539,7 @@ const AddEventModal = ({ onClose }) => {
                                                 min={minDateTime}
                                                 id="session-date"
                                                 onChange={((e) => setEndDate(e.target.value))}
-                                                className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm text-sm font-medium'
+                                                className='px-0 py-0.5 w-full placeholder:text-sm border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm text-sm font-medium'
                                             />
                                         </div>
                                     </div>
@@ -534,7 +547,7 @@ const AddEventModal = ({ onClose }) => {
 
                                 <div className="flex space-x-2 align-middle ml-2 mt-1 mb-3">
                                     <label className="block">
-                                        <input type="checkbox" className="w-4 h-4 rounded" name="recurring" id="recurring" onChange={((e) => setDatetype(!e.target.checked))} />
+                                        <input type="checkbox" className="text-[#A48533] focus:ring-[#A48533] w-4 h-4 rounded" name="recurring" id="recurring" onChange={((e) => setDatetype(!e.target.checked))} />
                                         <span className='ml-1 text-sm '>
                                             Recurring Event ?
                                         </span>
@@ -555,7 +568,7 @@ const AddEventModal = ({ onClose }) => {
                                                         <div className='mx-2'>
                                                             <label key={index} className="block">
                                                                 <input
-                                                                    className='rounded-sm mr-1'
+                                                                    className='rounded mr-1 text-[#A48533] focus:ring-[#A48533]'
                                                                     type="checkbox"
                                                                     value={day}
                                                                     checked={selectedDays.includes(day)}
@@ -570,15 +583,15 @@ const AddEventModal = ({ onClose }) => {
                                                 }
 
                                                 <div className='flex'>
-                                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 mr-2 rounded-lg'>
+                                                    <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 mr-2 rounded-lg'>
                                                         <label className='input-container text-xs mt-1' htmlFor="first name">Start Time</label>
-                                                        <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
+                                                        <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
                                                             onChange={((e) => setStartTime(e.target.value))}
                                                         />
                                                     </div>
-                                                    <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                                    <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                                         <label className='input-container text-xs mt-1' htmlFor="first name">End Time</label>
-                                                        <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
+                                                        <input type="time" className="px-0 py-0.5 placeholder:text-sm border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm text-sm font-medium" name="" id="session-time"
                                                             onChange={((e) => setEndTime(e.target.value))}
                                                         />
                                                     </div>
@@ -592,7 +605,7 @@ const AddEventModal = ({ onClose }) => {
                                     <input
                                         type="checkbox"
                                         value=""
-                                        className="sr-only peer"
+                                        className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
                                         onChange={handleCheckboxChange}
                                         checked={showEndDate} // Bind the checked state to the showEndDate state
                                     />
@@ -601,7 +614,7 @@ const AddEventModal = ({ onClose }) => {
                                 </label>
 
 
-                                <div className='flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                         <div className="flex w-full">
                                             <span className='ml-0'>
@@ -613,26 +626,22 @@ const AddEventModal = ({ onClose }) => {
                                     <select
                                         value={location}
                                         type="text"
-                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 text-sm font-medium text-gray-500'
-                                        onChange={((e) => setLocation(e.target.value))}
+                                        className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 text-sm font-medium text-gray-500 dark:text-white hover:bg-[#A48533]'
+                                        onChange={(e) => setLocation(e.target.value)}
                                         placeholder='Theatre of Arts'
                                     >
-                                        {
-                                            listVenues.length == 0
-                                                ?
-                                                <option className=' text-sm font-medium' >Select Venue
-                                                </option>
-                                                :
-                                                <>
-                                                    <option className=' text-sm font-medium' >Select Venue
+                                        {listVenues.length === 0 ? (
+                                            <option className='text-sm font-medium'>Select Venue</option>
+                                        ) : (
+                                            <>
+                                                <option className='text-sm font-medium'>Select Venue</option>
+                                                {listVenues.map((venue) => (
+                                                    <option className='dark:text-white text-sm font-medium' key={venue._id} value={venue._id}>
+                                                        {venue.name}
                                                     </option>
-                                                    {
-                                                        listVenues.map((venue) => (
-                                                            <option className=' text-sm font-medium' key={venue._id} value={venue._id}>{venue.name}</option>
-                                                        ))
-                                                    }
-                                                </>
-                                        }
+                                                ))}
+                                            </>
+                                        )}
                                     </select>
                                 </div>
                                 <button onClick={(() => setShowVenuecreate(!showVenuecreate))}>
@@ -640,12 +649,12 @@ const AddEventModal = ({ onClose }) => {
                                         showVenuecreate
                                             ?
                                             <p className='mt-1'>
-                                                <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Close Add Venue form</span>
+                                                <span className='ml-0  bg-[#E7E7E7] dark:bg-[#454545] w-28 px-2 py-1 rounded-md text-sm'>+ Close Add Venue form</span>
                                             </p>
                                             :
                                             <>
                                                 <p className='mt-1'>
-                                                    <span className='ml-0  bg-[#E7E7E7] w-28 px-2 py-1 rounded-md text-sm'>+ Add Venue</span> <span className='ml-0 text-xs'>(If your Venue is NOT in the above list)</span>
+                                                    <span className='ml-0  bg-[#E7E7E7] dark:bg-[#454545] w-28 px-2 py-1 rounded-md text-sm'>+ Add Venue</span> <span className='ml-0 text-xs'>(If your Venue is NOT in the above list)</span>
                                                 </p>
                                             </>
 
@@ -661,10 +670,10 @@ const AddEventModal = ({ onClose }) => {
                                 }
 
 
-                                <div className='mt-3 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] dark:text-black pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                         <div className="flex w-full">
-                                            <span className='ml-0'>
+                                            <span className='ml-0 dark:text-white'>
                                                 Venue Information  <span className='ml-0 text-lg font-bold'> * </span>
                                             </span>
                                             <Tooltip data={"Add specific information about venue, This information is Event Specific"} />
@@ -679,7 +688,7 @@ const AddEventModal = ({ onClose }) => {
                                     />
                                 </div>
 
-                                <div className='mt-3 flex flex-col  pl-2 pr-2 rounded-lg'>
+                                <div className='mt-3 flex flex-col pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                         <div className="flex w-full">
                                             <span className='ml-0'>
@@ -715,7 +724,7 @@ const AddEventModal = ({ onClose }) => {
                                                             value={feature}
                                                             checked={selectedFeature.includes(feature)}
                                                             onChange={() => handleFeaturesClick(feature)}
-                                                            class="w-4 h-4 rounded" />
+                                                            class="w-4 h-4 rounded text-[#A48533] focus:ring-[#A48533]" />
                                                         <label for={feature} class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{feature}</label>
                                                     </div>
                                                 </li>
@@ -735,66 +744,66 @@ const AddEventModal = ({ onClose }) => {
 
                                 <div className=' mb-3 flex flex-col justify-between'>
                                     <div className='w-full flex justify-between'>
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg '>
                                             <label className='text-xs mt-1' htmlFor="first name">Facebook URL</label>
                                             <input
                                                 value={fb}
                                                 type="url"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Link for FB page'
                                                 onChange={((e) => setFb(e.target.value))}
                                             />
                                         </div>
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Instagram URL</label>
                                             <input
                                                 value={insta}
                                                 type='url'
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Link for Instagram page'
                                                 onChange={((e) => setInsta(e.target.value))}
                                             />
                                         </div>
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Email</label>
                                             <input
                                                 value={mail}
                                                 type="email"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Your email address'
                                                 onChange={((e) => setMail(e.target.value))}
                                             />
                                         </div>
                                     </div>
                                     <div className="w-full flex justify-between">
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code * </label>
                                             <input
                                                 value={number}
-                                                type='number'
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                type='tel'
+                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Phone number'
                                                 onChange={((e) => setNumber(e.target.value))}
                                             />
                                         </div>
 
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
                                             <input
                                                 value={wpNumber}
-                                                type="number"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                type="tel"
+                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Whatsapp number'
                                                 onChange={((e) => setWpNumber(e.target.value))}
                                             />
                                         </div>
 
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Website URL</label>
                                             <input
                                                 value={website}
                                                 type="link"
-                                                className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Website Link'
                                                 onChange={((e) => setWebsite(e.target.value))}
                                             />
@@ -812,32 +821,32 @@ const AddEventModal = ({ onClose }) => {
                                 <div>
                                     {categories.map((category, index) => (
                                         <div key={index} className='w-full flex flex-row  '>
-                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg '>
                                                 <label className='text-xs mt-3' >Ticket Type</label>
                                                 <input
                                                     type='text'
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium flex-grow mx-2'
+                                                    className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm font-medium flex-grow mx-2'
                                                     placeholder='Class Name'
                                                     value={category.className}
                                                     onChange={(e) => handleCategoryChange(index, 'className', e.target.value)}
                                                 />
                                             </div>
-                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg '>
                                                 <label className='text-xs mt-3' >No of seats</label>
                                                 <input
                                                     type='number'
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                                                    className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm font-medium ml-2'
                                                     placeholder='No of Seats'
                                                     value={category.seats}
                                                     onChange={(e) => handleCategoryChange(index, 'seats', e.target.value)}
                                                 />
                                             </div>
-                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] pl-2 pr-2 rounded-lg '>
+                                            <div className='w-full mx-1 my-1 bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg '>
                                                 <label className='text-xs mt-3' >Price</label>
                                                 <input
                                                     type='number'
                                                     min="100"
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium ml-2'
+                                                    className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm font-medium ml-2'
                                                     placeholder='Price'
                                                     value={category.price}
                                                     onChange={(e) => handleCategoryChange(index, 'price', e.target.value)}
@@ -856,7 +865,7 @@ const AddEventModal = ({ onClose }) => {
                                     </button>
                                 </div>
 
-                                <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'>
+                                <div className='mt-3 mb-2 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm font-semibold mt-1' htmlFor="first name">
                                         <div className="flex w-full">
                                             <span className='ml-0'>
@@ -868,7 +877,7 @@ const AddEventModal = ({ onClose }) => {
                                     <input
                                         value={termsAndConditions}
                                         type="text"
-                                        className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent  outline-0 placeholder:text-sm font-medium '
+                                        className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                         placeholder='Link for terms and condition'
                                         onChange={((e) => setTermsAndConditions(e.target.value))}
                                     />
@@ -888,7 +897,7 @@ const AddEventModal = ({ onClose }) => {
                                     {inputFields.map((value, index) => (
                                         <div
                                             key={index}
-                                            className='flex mt-1 flex flex-col bg-[#E7E7E7] pl-2 pr-2 rounded-lg'
+                                            className='flex mt-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'
                                         >
                                             <label className='text-xs mt-1' htmlFor={`field-${index}`}>
                                                 Terms or condition {index + 1}
@@ -898,7 +907,7 @@ const AddEventModal = ({ onClose }) => {
                                                 <input
                                                     type='text'
                                                     id={`field-${index}`}
-                                                    className='px-0 py-0.5 w-full border bg-transparent border-[#E7E7E7] focus:border-transparent focus:ring-transparent outline-0 placeholder:text-sm font-medium'
+                                                    className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm font-medium'
                                                     placeholder={`Enter term or condition ${index + 1}`}
                                                     value={value}
                                                     onChange={(e) => handleInputChange(index, e.target.value)}
@@ -934,7 +943,7 @@ const AddEventModal = ({ onClose }) => {
                                     <Tooltip data={"Featured Image is Main Poster of your event which will be visible to the clients "} />
                                 </div>
 
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:placeholder-gray-400 mb-1"
                                     onChange={capturePhoto}
                                     accept="image/*"
                                     id="photo" type="file" />
@@ -947,7 +956,7 @@ const AddEventModal = ({ onClose }) => {
                                     <Tooltip data={"You can add multiple images about your event which will be visible on Event Description page"} />
                                 </div>
 
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545]  dark:placeholder-gray-400 mb-1"
                                     onChange={captureAdditionalPhotos}
                                     accept="image/*"
                                     multiple id="photo" type="file" />
@@ -961,7 +970,7 @@ const AddEventModal = ({ onClose }) => {
                                     <Tooltip data={"Add seating map image for your venue"} />
                                 </div>
 
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1"
+                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545]  mb-1"
 
                                     onChange={captureSeatingMap}
                                     accept="image/*"
@@ -975,7 +984,7 @@ const AddEventModal = ({ onClose }) => {
                                     <Tooltip data={"Add Banner image for your event"} />
                                 </div>
 
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545]  dark:placeholder-gray-400 mb-1" id="file_input"
 
                                     onChange={captureBanner}
                                     accept="image/*"
@@ -989,7 +998,7 @@ const AddEventModal = ({ onClose }) => {
                                     <Tooltip data={"Add sample video of the event"} />
                                 </div>
 
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-1" id="file_input"
+                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545]  dark:placeholder-gray-400 mb-1" id="file_input"
                                     accept="video/*"
                                     onChange={(e) => setCrfile(e.target.files[0])}
                                     type="file" />
@@ -998,7 +1007,7 @@ const AddEventModal = ({ onClose }) => {
                                     <button
                                         type="button"
                                         onClick={handleSave}
-                                        className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800"
+                                        className="w-full md:w-44 text-white bg-[#C0A04C] hover:bg-[#A48533] dark:hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-semibold rounded-lg text-md px-4 py-4 text-center md:mr-3 md:mr-0 dark:bg-[#C0A04C]"
                                     >
                                         Save
                                     </button>
@@ -1010,7 +1019,7 @@ const AddEventModal = ({ onClose }) => {
                         </div>
                     </section>
                     :
-                    <div className='h-screen w-full flex justify-center align-middle items-center'>
+                    <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
                         <div class="relative flex justify-center items-center">
                             <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                             <img src="/images/logo/logo-main.png" class="h-16" />
