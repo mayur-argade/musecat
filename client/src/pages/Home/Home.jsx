@@ -296,12 +296,12 @@ const Home = () => {
                                     >
                                         <div className='flex justify-center md: pt-0 md:p-10'>
                                             <p className='pb-5 leading-loose text-4xl md:text-4xl text-center text-white font-bold'>
-                                                <span>Find the</span>
+                                                <span className='dark:text-black'>Find the</span>
                                                 <br className='block md:hidden' />
-                                                <span>perfect</span>
+                                                <span className='dark:text-black'>perfect</span>
                                                 <br className='block md:hidden' />
 
-                                                <span>experience</span>
+                                                <span className='dark:text-black'>experience</span>
 
 
                                                 {/* <div className='md:hidden absolute top-0 right-0'>
@@ -342,19 +342,19 @@ const Home = () => {
                                                     </div>
                                                 </div>
 
-                                                <span className=''>in</span>
+                                                <span className='dark:text-black'>in</span>
                                                 <br className='md:block hidden' />
-                                                <span> any </span>
+                                                <span className='dark:text-black'> any </span>
                                                 <br className='block md:hidden' />
 
-                                                <span>destination</span>
+                                                <span className='dark:text-black'>destination</span>
                                             </p>
                                         </div>
 
                                         <div onClick={() => setShowLinks(!showLinks)} className='hidden md:block z-50 '>
                                             <button
                                                 ref={followButtonRef}
-                                                className='m-0 -right-10 absolute  text-white bg-[#C0A04C] text-sm font-semibold py-2 pl-7 pr-6 rounded-l-full'>
+                                                className='m-0 -right-10 absolute  text-white bg-[#C0A04C] hover:bg-[#A48533] text-sm font-semibold py-2 pl-7 pr-6 rounded-l-full'>
                                                 Follow Us
                                             </button>
                                             {showLinks
@@ -382,7 +382,7 @@ const Home = () => {
                                         </div>
 
                                         <div className='hidden md:flex items-center justify-center '>
-                                            <div className='bg-white border-2 w-11/12 md:w-2/3 flex items-center justify-center flex-col p-3 rounded-lg dark:bg-[#2c2c2c] '>
+                                            <div className='bg-white dark:border-0 border-2 w-11/12 md:w-2/3 flex items-center justify-center flex-col p-3 rounded-lg dark:bg-[#2c2c2c] '>
                                                 <div>
                                                     <span className='text-xl font-bold'>
                                                         Where To ?
@@ -390,7 +390,7 @@ const Home = () => {
                                                 </div>
                                                 <div className='flex w-full justify-center'>
                                                     <div className='w-full flex grow '>
-                                                        <input onChange={((e) => setQuery(e.target.value))} type="text" id="default-input" placeholder='Search by experience, Food & wine, Live Events, Attractions, e.g. ' class="bg-[#E7E7E7] border border-gray-300 focus:ring-[#C0A04C] focus:border-[#C0A04C] text-gray-900 text-xs rounded-lg block md:w-full p-3 mx-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]" />
+                                                        <input onChange={((e) => setQuery(e.target.value))} type="text" id="default-input" placeholder='Search by experience, Food & wine, Live Events, Attractions, e.g. ' class="bg-[#E7E7E7] border border-gray-300 focus:ring-[#C0A04C] focus:border-[#C0A04C] text-gray-900 text-xs rounded-lg block md:w-full p-3 mx-3 dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]" />
                                                     </div>
 
                                                     <div className='flex mx-auto justify-center'>
@@ -416,25 +416,25 @@ const Home = () => {
                                                         <div className='hidden md:flex flex-wrap justify-between space-y-2 md:space-x-52'>
                                                             <div className='flex flex-wrap justify-center md:space-x-2  '>
                                                                 <Link className='my-1' to='/category/staycation'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>staycation</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>staycation</button>
                                                                 </Link>
                                                                 <Link className='my-1' to='/category/events'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>friday bunch</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>friday bunch</button>
                                                                 </Link>
                                                                 <Link className='my-1' to='/category/thingstodo'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Things to do</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Things to do</button>
                                                                 </Link>
                                                                 <Link className='my-1' to='/category/kidscorner'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>kids corner</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>kids corner</button>
                                                                 </Link>
                                                                 <Link className='my-1' to='/category/weeklyoffers'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Weekly Offers</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Weekly Offers</button>
                                                                 </Link>
                                                                 <Link className='my-1' to='/category/ladiesnight'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Ladies Night</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Ladies Night</button>
                                                                 </Link>
                                                                 <Link className='my-1' to='/category/editorspick'>
-                                                                    <button className='rounded-full border border-black pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Editor's Pick</button>
+                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>Editor's Pick</button>
                                                                 </Link>
                                                             </div>
                                                         </div>
@@ -465,7 +465,7 @@ const Home = () => {
                                     daysAndDates.map((e) => (
                                         <button
                                             onClick={() => setDayforCategory(e.date)}
-                                            className={`md:block hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date
+                                            className={`md:block hover:bg-black hover:text-white rounded-full border-black dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
                                                 ? 'bg-black text-white'
                                                 : ''
                                                 }`}
@@ -573,7 +573,8 @@ const Home = () => {
                             <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
                             <div className="flex items-center align-middle ">
                                 <div onClick={(() => setShowCalender(true))} className="calender date-picker ">
-                                    <img className="calender h-8 mr-2" src="/images/assets/calender-icon.png" alt="" />
+                                    <img className="calender h-8 mr-2 flex dark:hidden" src="/images/assets/calender-icon.png" alt="" />
+                                    <img className="calender h-8 mr-2 hidden dark:flex" src="/images/icons/eventcal-light.svg" alt="" />
                                 </div>
                                 {
                                     showCalender && (
@@ -609,7 +610,7 @@ const Home = () => {
                                 <div>
                                     <div className='hidden md:block flex space-x-1'>
                                         {next7Days.map((item) => (
-                                            <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                            <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
                                                 ? 'bg-black text-white'
                                                 : ''
                                                 }`}>

@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
     }
 
     return (
-        <div>
+        <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
             <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                 <div className='flex align-middle items-center  justify-between'>
@@ -582,64 +582,64 @@ const PrivacyPolicy = () => {
                                     <div className="w-full flex justify-center mt-5 overflow-x-auto">
                                         <table className="w-full ">
                                             <thead>
-                                                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                                <tr className="bg-gray-200 dark:bg-[#454545] dark:text-white text-gray-600 uppercase text-sm leading-normal">
                                                     <th className="py-2 px-4">Category</th>
                                                     <th className="py-2 px-4">Examples</th>
                                                     <th className="py-2 px-4">Collected</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="text-gray-600 text-sm font-light">
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">A. Identifiers</td>
                                                     <td className="py-2 px-4">Contact details, such as real name, alias, postal address, telephone or mobile contact number, unique personal identifier, online identifier, Internet Protocol address, email address, and account name</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">B. Personal information categories listed in the California Customer Records statute</td>
                                                     <td className="py-2 px-4">Name, contact information, education, employment, employment history, and financial information</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">C. Protected classification characteristics under California or federal law</td>
                                                     <td className="py-2 px-4">Gender and date of birth</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">D. Commercial information</td>
                                                     <td className="py-2 px-4">Transaction information, purchase history, financial details, and payment information</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">E. Biometric information</td>
                                                     <td className="py-2 px-4">Fingerprints and voiceprints</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">F. Internet or other similar network activity</td>
                                                     <td className="py-2 px-4">Browsing history, search history, online behavior, interest data, and interactions with our and other websites, applications, systems, and advertisements</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">G. Geolocation data</td>
                                                     <td className="py-2 px-4">Device location</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">H. Audio, electronic, visual, thermal, olfactory, or similar information</td>
                                                     <td className="py-2 px-4">Images and audio, video or call recordings created in connection with our business activities</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">I. Professional or employment-related information</td>
                                                     <td className="py-2 px-4">Business contact details in order to provide you our Services at a business level or job title, work history, and professional qualifications if you apply for a job with us</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">J. Education Information</td>
                                                     <td className="py-2 px-4">Student records and directory information</td>
                                                     <td className="py-2 px-4">NO</td>
                                                 </tr>
-                                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                                <tr className="border-b border-gray-200 hover:bg-gray-100 dark:bg-[#454545] dark:text-white">
                                                     <td className="py-2 px-4">K. Inferences drawn from other personal information</td>
                                                     <td className="py-2 px-4">Inferences drawn from any of the collected personal information listed above to create a profile or summary about, for example, an individual’s preferences and characteristics</td>
                                                     <td className="py-2 px-4">YES</td>

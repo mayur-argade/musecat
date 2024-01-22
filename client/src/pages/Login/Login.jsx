@@ -104,23 +104,23 @@ const Login = () => {
                     <img className='h-6 md:h-12' src="/images/logo/login-logo.png" alt="" />
                 </div>
 
-                <div class="max-w-sm max-h-64 w-full bg:white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-xl p-4 space-y-3 border border-white">
+                <div class="max-w-sm max-h-64 w-full bg:white dark:bg-[#2c2c2c] dark:text-white dark:border-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-xl p-4 space-y-3 border border-white">
                     <div class="mb-4">
-                        <h2 class="text-xl font-bold text-white md:text-black">Welcome Back</h2>
+                        <h2 class="text-xl font-bold dark:text-white text-white md:text-black">Welcome Back</h2>
                     </div>
                     <div>
-                        <input class="w-full p-2 text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                        <input class="w-full p-2 text-sm bg-white md:bg-gray-100 focus:outline-none dark:text-white dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md text-gray-600"
                             value={email} onChange={(e) => setEmail(e.target.value)}
                             type="text" placeholder="Email" />
                     </div>
                     <div>
-                        <input class="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                        <input class="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 dark:text-white dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600"
                             value={password} onChange={(e) => setPassword(e.target.value)}
                             type="password" placeholder="Password" />
                     </div>
                     <div className='flex justify-items-end justify-end'>
 
-                        <Link to='/reset' class="justify-self-end text-sm font-medium text-white md:text-black underline" href="#">Forgot password?</Link>
+                        <Link to='/reset' class="justify-self-end text-sm font-medium dark:text-white text-white md:text-black underline" href="#">Forgot password?</Link>
                     </div>
                     <div>
                         {

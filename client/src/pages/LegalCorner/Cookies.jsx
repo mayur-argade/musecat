@@ -8,7 +8,7 @@ const Cookies = () => {
     const navigate = useNavigate()
 
     return (
-        <div>
+        <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
             <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                 <div className='flex align-middle items-center  justify-between'>

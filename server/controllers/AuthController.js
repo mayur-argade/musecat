@@ -725,7 +725,16 @@ exports.addToCalender = async (req, res) => {
         const customeDate = moment(startTime).format("YYYY-MM-DD")
         endTime = new Date(`${customeDate}T23:00:00.000Z`)
     }
+
+    if (!req.user.google_refresh) {
+        return res.status(404).json({
+            success: false,
+            data: "login using google to avail this feature"
+        })
+    }
+
     oauth2Client.setCredentials({ refresh_token: req.user.google_refresh })
+
 
     const calenderasdf = google.calendar("v3")
 

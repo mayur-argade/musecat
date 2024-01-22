@@ -64,7 +64,7 @@ const SearchLocationInput = ({ handleLocationSelect }) => {
             <label>Search Your location to view on map</label>
             <input
                 ref={autoCompleteRef}
-                className="w-full w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                className="w-full w-full p-2.5 text-xs bg-white dark:bg-[#454545] dark:text-white dark:border-0 dark:ring-0 md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600"
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search Places ..."
                 value={query}

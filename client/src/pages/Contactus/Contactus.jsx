@@ -57,7 +57,7 @@ const Contactus = () => {
 
                 <div className="flex justify-center mt-5">
 
-                    <div className="m-4 space-y-4 bg-[#D0D0D0] border border-b-4 border-b-[#C0A04C] p-5 rounded-lg ">
+                    <div className="m-4 space-y-4 bg-[#D0D0D0] dark:bg-[#454545] dark:border-[#454545] dark:text-white border border-b-4 border-b-[#C0A04C] dark:border-b-[#C0A04C] p-5 rounded-lg ">
 
                         <div className="space-y-5 ">
                             <div className="flex flex-col text-center justify-center items-center space-y-2">
@@ -73,22 +73,22 @@ const Contactus = () => {
                             <div className=" mx-auto  ">
                                 <div className="flex flex-col md:flex-row md:space-x-5">
                                     <div className="md:w-1/2">
-                                        <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
+                                        <div className='flex flex-col bg-white dark:bg-[#2c2c2c] pl-2 pr-2 rounded-md'>
                                             <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                             <input
                                                 type="text"
-                                                className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                                className='ring-0 dark:border-0 dark:text-white border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setFirstname(e.target.value)}
                                                 required
                                             />
                                         </div>
                                     </div>
                                     <div className="md:w-1/2 mt-5 md:mt-0">
-                                        <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
+                                        <div className='flex flex-col bg-white dark:bg-[#2c2c2c] pl-2 pr-2 rounded-md'>
                                             <label className='text-xs mt-1' htmlFor="first name">last name</label>
                                             <input
                                                 type="text"
-                                                className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                                className='ring-0 dark:border-0 dark:text-white border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setLastname(e.target.value)}
                                                 required
                                             />
@@ -97,11 +97,11 @@ const Contactus = () => {
 
                                 </div>
                                 <div className="row2 mt-4">
-                                    <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
+                                    <div className='flex flex-col bg-white dark:bg-[#2c2c2c] pl-2 pr-2 rounded-md'>
                                         <label className='text-xs mt-1' htmlFor="first name">email</label>
                                         <input
                                             type="email"
-                                            className='border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                            className='ring-0 dark:border-0 dark:text-white border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
                                         />
@@ -109,11 +109,11 @@ const Contactus = () => {
                                 </div>
                                 <div className="row3 mt-4 ">
 
-                                    <div className='flex flex-col bg-white pl-2 pr-2 rounded-md'>
+                                    <div className='flex flex-col bg-white dark:bg-[#2c2c2c] pl-2 pr-2 rounded-md'>
                                         <label className='text-xs mt-1' htmlFor="first name">message</label>
                                         <textarea
                                             type="text"
-                                            className='border h-24 bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
+                                            className='ring-0 dark:border-0 dark:text-white border h-24 bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setMessage(e.target.value)}
                                             required
                                         />

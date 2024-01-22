@@ -76,34 +76,76 @@ exports.getVenueDetails = async (req, res) => {
 
         const today = new Date()
 
+        let events;
         let query = {
-            // type: 'event',
+            archived: false,
             verified: true,
             location: venueid,
-            $or: [
-                { // Events with start date greater than or equal to today
-                    'date.dateRange.endDate': { $gte: today }
-                },
-                { // Events with recurring field containing today's day
-                    $and: [
-                        {
-                            $or: [
-                                {
-                                    'date.recurring.endDate': null
-                                },
-                                {
-                                    'date.recurring.endDate': { $gte: today }
+        };
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
+        const day = moment(todayDate).format('dddd').toLowerCase()
 
-                                }
-                            ]
-                        },
-                        {
-                            'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
-                        }
-                    ]
-                },
-            ],
-        }
+        query['$or'] = [
+            {
+                $or: [
+                    {
+                        'date.dateRange.endDate': { $gte: todayDate }
+                    },
+                    {
+                        'date.dateRange.endDate': null
+                    }
+                ]
+            }
+            ,
+            {
+                $and: [
+                    {
+                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
+                    },
+                    {
+                        $or: [
+                            {
+                                'date.recurring.endDate': { $gte: todayDate }
+                            },
+                            {
+                                'date.recurring.endDate': null
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // let query = {
+        //     // type: 'event',
+        //     archived: false,
+        //     verified: true,
+        //     location: venueid,
+        //     $or: [
+        //         { // Events with start date greater than or equal to today
+        //             'date.dateRange.endDate': { $gte: today }
+        //         },
+        //         { // Events with recurring field containing today's day
+        //             $and: [
+        //                 {
+        //                     $or: [
+        //                         {
+        //                             'date.recurring.endDate': null
+        //                         },
+        //                         {
+        //                             'date.recurring.endDate': { $gte: today }
+
+        //                         }
+        //                     ]
+        //                 },
+        //                 {
+        //                     'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] },
+        //                 }
+        //             ]
+        //         },
+        //     ],
+        // }
 
         events = await eventService.findAllEvents(query)
 

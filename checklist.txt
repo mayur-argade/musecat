@@ -1,5 +1,5 @@
 1. Chatbot integration (done)
-2. Dark mode toggle for the vendor
+2. Dark mode toggle for the vendor (done)
 3. discount in app handling
 4. Date manegment 
 5. Add to calender
@@ -14,5 +14,7 @@
 14. Book ticket page maybe redirecting to the users profile
 15. Check for the new logic for the hooks and navbar displaying
 16. Handle website in the signup form
-17. vendor profile page 
+17. vendor profile page (done) 
+18. home page offers editors event 
+19. Handle add to calender (done)
 # verifyUserAccount

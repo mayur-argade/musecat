@@ -68,7 +68,7 @@ const Events = () => {
     const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
         <button
             onClick={onClick} ref={ref}
-            className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
+            className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-[#454545] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
         >
             <span className="hidden md:block text-gray-500">Calendar</span>
             <span className="block md:hidden text-gray-500">Calendar</span>
@@ -306,7 +306,7 @@ const Events = () => {
                                                 ref={searchInputRef}
                                                 type="text"
                                                 id="table-search"
-                                                className={`placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
+                                                className={`dark:bg-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
                                                 onChange={(e) => setSearch(e.target.value)}
                                                 placeholder="Search "
                                                 onFocus={toggleSearch}
@@ -320,7 +320,7 @@ const Events = () => {
                                     <div className="relative inline-block text-left">
                                         <button
                                             onClick={toggleDropdown}
-                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 dark:bg-[#454545] dark:text-white text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
                                         >
                                             <span className='hidden md:block text-gray-500'>Filter by Features</span>
                                             <span className='hidden block text-gray-500'>Filter</span>
@@ -505,25 +505,32 @@ const Events = () => {
                                         </div>
 
                                         <div className="md:flex flex-col ">
-                                            <div className="mt-3">
-                                                <p className="text-xl font-bold mt-3">
-                                                    Trending In Muscat
-                                                </p>
-                                            </div>
-                                            <div className=''>
-                                                {
-                                                    trending.data.map((event) => (
-                                                        <>
-                                                            {
-                                                                event != null && (
-                                                                    <TrendingCard data={event} />
-                                                                )
-                                                            }
-                                                        </>
-                                                    ))
-                                                }
+                                            {trending.data.length != 0
+                                                ?
+                                                <>
+                                                    <div className="mt-3">
+                                                        <p className="text-xl font-bold mt-3">
+                                                            Trending In Muscat
+                                                        </p>
+                                                    </div>
+                                                    <div className=''>
+                                                        {
+                                                            trending.data.map((event) => (
+                                                                <>
+                                                                    {
+                                                                        event != null && (
+                                                                            <TrendingCard data={event} />
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
 
-                                            </div>
+                                                    </div>
+                                                </>
+                                                :
+                                                <></>
+                                            }
 
                                             <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
                                                 <div className='flex justify-center mb-2'>

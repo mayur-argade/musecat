@@ -81,7 +81,7 @@ const AddVenueModal = ({ onClose }) => {
                     {
                         !loading
                             ?
-                            <div className="modal bg-white px-3 py-4">
+                            <div className="modal bg-white dark:bg-[#2c2c2c] px-3 py-4">
                                 <div className='space-y-4 max-h-auto  overflow-y-auto'>
                                     <div className='text-left flex justify-start items-start align-middle'>
                                         <p className='text-md font-bold'>Add Venue </p>
@@ -89,19 +89,19 @@ const AddVenueModal = ({ onClose }) => {
 
 
                                     <div>
-                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
+                                        <input className="w-full p-2.5 text-xs bg-white dark:bg-[#454545] dark:text-white dark:border-0 dark:ring-0 md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
                                             value={name} onChange={(e) => setName(e.target.value)}
                                             placeholder="Venue Name" />
                                     </div>
 
                                     <div>
-                                        <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
+                                        <input className="w-full p-2.5 text-xs bg-white dark:bg-[#454545] dark:text-white dark:border-0 dark:ring-0 md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
                                             value={address} onChange={(e) => setAddress(e.target.value)}
                                             placeholder="Venue short description" />
                                     </div>
 
                                     <div className="flex items-center justify-center w-full">
-                                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-[#454545] hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                             <div className="flex flex-col items-center justify-center ">
                                                 <img src="/images/icons/upload-image.svg" alt="" />
                                                 <p className="text-xs text-gray-500 dark:text-gray-400">

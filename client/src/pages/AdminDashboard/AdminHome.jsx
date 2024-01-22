@@ -129,7 +129,7 @@ const AdminHome = () => {
 
     return (
         <>
-            <div className=' '>
+            <div className='dark:bg-white dark:text-black'>
                 <Toaster />
                 <div className='flex flex-col w-full'>
                     <div className="navbar flex justify-between ml-10 mr-10 space-x-8">

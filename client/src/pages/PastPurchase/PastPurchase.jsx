@@ -121,7 +121,7 @@ const PastPurchase = () => {
 
     if (response.data == null || categories.data == null) {
         return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
+            <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
                     <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                     <img src="/images/logo/logo-main.png" class="h-16" />
@@ -131,7 +131,7 @@ const PastPurchase = () => {
 
     } else {
         return (
-            <div className=''>
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <Tabbar />
                 <section className='relative md:mr-48 md:ml-48 mt-5 l:ml-6 l:mr-6 mx-2'>
@@ -147,7 +147,7 @@ const PastPurchase = () => {
                             <div className="relative inline-block text-left">
                                 <button
                                     onClick={toggleDropdown}
-                                    className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-14 md:w-52 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#A48533] focus:border-[#A48533] block w-14 md:w-52 p-1.5  dark:bg-[#454545] dark:border-gray-600 dark:placeholder-white dark:text-white dark:focus:ring-[#A48533] dark:focus:border-[#A48533]"
                                 >
                                     <span className='hidden md:block text-gray-500'>Filter by Features</span>
                                     <span className='hidden block text-gray-500'>Filter</span>
@@ -156,7 +156,7 @@ const PastPurchase = () => {
                                 </button>
                                 {isOpen && (
                                     <div
-                                        className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50"
+                                        className="origin-top-right absolute h-80 overflow-y-auto right-0 mt-2 w-36 rounded-md shadow-lg bg-white dark:bg-[#454545] dark:text-white ring-1 ring-black ring-opacity-5 w-52 z-50"
                                         ref={dropdownRef}
                                     >
                                         <div className="p-5">

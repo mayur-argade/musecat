@@ -334,7 +334,7 @@ const BookTicket = () => {
                     toast((t) => (
                         <div className="flex space-x-3">
                             <b>Token Expired</b>
-                            <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
+                            <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
                                 Login
                             </button>
                         </div>
@@ -414,7 +414,7 @@ const BookTicket = () => {
                     toast((t) => (
                         <div className="flex space-x-3">
                             <b>Token Expired</b>
-                            <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
+                            <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
                                 Login
                             </button>
                         </div>
@@ -737,7 +737,7 @@ const BookTicket = () => {
                                         )}
 
                                         <div onClick={handleBookNowClick} className="flex justify-center w-full mt-3">
-                                            <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                            <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:ring-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] ">
                                                 {
                                                     submissionLoading
                                                         ?

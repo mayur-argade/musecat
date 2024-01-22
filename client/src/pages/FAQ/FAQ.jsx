@@ -78,7 +78,7 @@ const FAQ = () => {
                 <div>
                     {accordions.map((accordion, index) => (
                         <Accordian
-                            color={'bg-[#DDDDDD] py-2.5 px-4 rounded-md'}
+                            color={'bg-[#DDDDDD] dark:bg-[#454545] dark:text-white py-2.5 px-4 rounded-md'}
                             className='mx-auto'
                             textcol={'font-normal text-sm'}
                             key={index}
@@ -92,7 +92,7 @@ const FAQ = () => {
 
                 <div className='flex justify-center'>
                     <div className="booknow">
-                        <button type="button" class="w-44 md:w-96 text-white bg-[#A48533] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Chat with us</button>
+                        <button onClick={() => navigate('/user/helpcenter')} type="button" class="w-44 md:w-96 text-white bg-[#A48533] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0">Chat with us</button>
                     </div>
                 </div>
 

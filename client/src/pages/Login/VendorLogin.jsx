@@ -93,7 +93,7 @@ const VendorLogin = () => {
     }
 
     return (
-        <section className="relative h-screen bg-center bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692776288/mwt/login_djjlaa.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+        <section className="dark:bg-[#2c2c2c] dark:text-white relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button onClick={() => navigate("/")} className='absolute top-10 left-10'>
                 <img src="/images/icons/login-back.svg" alt="" />
             </button>
@@ -103,19 +103,19 @@ const VendorLogin = () => {
                     <img className='h-6 md:h-14' src="/images/assets/vendorlogin.png" alt="" />
                 </div>
 
-                <div className="max-w-xs w-full bg:white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-lg p-4 space-y-4 border border-white">
+                <div className="max-w-xs w-full bg:white dark:bg-[#2c2c2c] dark:border-0 dark:text-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-lg p-4 space-y-4 border border-white">
                     <div className="mb-4">
-                        <h2 className="text-xl font-bold text-white md:text-black">Welcome Back</h2>
+                        <h2 className="text-xl font-bold dark:text-white text-white md:text-black">Welcome Back</h2>
                     </div>
                     <div>
-                        <input className="w-full p-2 text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                        <input className="w-full p-2 text-sm bg-white md:bg-gray-100 dark:text-white dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                     </div>
                     <div>
-                        <input className="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                        <input className="w-full p-2 text-sm text-sm bg-white md:bg-gray-100 dark:text-white dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0  focus:outline-none border border-gray-200 rounded-md text-gray-600" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                     </div>
                     <Link to='/vendor/reset'>
                         <div className='flex justify-items-end justify-end'>
-                            <span className="justify-self-end text-sm text-white md:text-black hover:underline" href="#">Forgot password?</span>
+                            <span className="justify-self-end text-sm text-white md:text-black hover:underline dark:text-white " href="#">Forgot password?</span>
                         </div>
                     </Link>
 

@@ -349,14 +349,14 @@ const EventDescription = () => {
             await toast.promise(addToCalender(calenderdata), {
                 loading: 'Adding to you calender...',
                 success: 'Event Added to your calender',
-                error: (error) => `Error: ${error.response.data.data}`,
+                error: (error) => `${error.response.data.data || "something went wrong"}`,
             });
 
             // Refresh or update the UI as needed after successful verification
             // setRefresh(!refresh);
         } catch (error) {
-            toast.error(error.response.data.data);
-            console.log("error", error)
+            // toast.error(error.response.data.data);
+            // console.log("error", error)
             if (error.response.status == 401) {
                 toast.error("Login to continue further")
                 navigate('/login')
@@ -458,7 +458,8 @@ const EventDescription = () => {
                                             </span>
                                         </Link></p>
                                     <div className='mt-4 flex justify-center space-x-2 text-center'>
-                                        <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
+                                        <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
+                                        <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
                                         {
                                             response.data.eventDetails.date.type == 'dateRange'
                                                 ?
@@ -560,7 +561,7 @@ const EventDescription = () => {
                                             <div className="dropdown-container reltive">
                                                 <button
                                                     onClick={toggleDropdown}
-                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800'>
+                                                    className='flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                     <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
                                                     Share
                                                 </button>
@@ -587,7 +588,8 @@ const EventDescription = () => {
                                             <div className='card w-full h- pl-4 pr-4 py-4 flex flex-col rounded-xl  border shadow-2xl shadow-[#F3F3F3] rounded-lg '>
                                                 <Link to="/whereto">
                                                     <div className='p-3 pt-0 flex items-center align-middle space-x-2'>
-                                                        <img className='h-5' src="/images/icons/map-1.svg" alt="" />
+                                                        <img className='h-5 flex dark:hidden' src="/images/icons/map-1.svg" alt="" />
+                                                        <img className='h-5 hidden dark:flex' src="/images/icons/map-light.svg" alt="" />
                                                         <p className='text-md'>{response.data.eventDetails.location?.name || ""}</p>
                                                         <span className='text-xs underline underline-offset-1 text-[#C0A04C]'>View on maps</span>
                                                     </div>
@@ -664,7 +666,7 @@ const EventDescription = () => {
                                                         <>
                                                             {
                                                                 response.data.eventDetails.whatsapp && (
-                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
                                                                         {/* <button type="button" class=""> */}
                                                                         <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                         Call On Whatsapp
@@ -674,7 +676,7 @@ const EventDescription = () => {
                                                             }
                                                             {
                                                                 response.data.eventDetails.phoneNo && (
-                                                                    <a className="cursor-pointer w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                         {/* <button type="button" class=""> */}
                                                                         <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
                                                                         Contact On Number
@@ -685,7 +687,7 @@ const EventDescription = () => {
                                                             {
                                                                 showBooking && (
                                                                     <div className="booknow">
-                                                                        <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                        <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                             {
                                                                                 response.data.eventDetails.type == 'event'
                                                                                     ?
@@ -708,7 +710,7 @@ const EventDescription = () => {
                                                             <div className="flex">
                                                                 {
                                                                     response.data.eventDetails.whatsapp && (
-                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
                                                                             {/* <button type="button" class=""> */}
                                                                             <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                             Contact On Whatsapp
@@ -718,7 +720,7 @@ const EventDescription = () => {
                                                                 }
                                                                 {
                                                                     response.data.eventDetails.phoneNo && (
-                                                                        <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                             {/* <button type="button" class=""> */}
                                                                             <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
                                                                             Contact On Number
@@ -730,7 +732,7 @@ const EventDescription = () => {
                                                             {
                                                                 showBooking && (
                                                                     <div className="booknow">
-                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                             {
                                                                                 response.data.eventDetails.type == 'event'
                                                                                     ?
@@ -755,7 +757,7 @@ const EventDescription = () => {
                                                             response.data.eventDetails.whatsapp
                                                                 ?
 
-                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
                                                                     {/* <button type="button" class=""> */}
                                                                     <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                     Call On Whatsapp
@@ -767,7 +769,7 @@ const EventDescription = () => {
                                                         }
                                                         {
                                                             response.data.eventDetails.phoneNo && (
-                                                                <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                     {/* <button type="button" class=""> */}
                                                                     <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
                                                                     Contact On Number
@@ -779,7 +781,7 @@ const EventDescription = () => {
                                                         {
                                                             showBooking && (
                                                                 <div className="booknow">
-                                                                    <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                    <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                         {
                                                                             response.data.eventDetails.type == 'event'
                                                                                 ?
@@ -809,7 +811,7 @@ const EventDescription = () => {
                                 {
                                     showNumber && (
                                         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                                            <div className="bg-white p-4 rounded-lg relative  ml-3 mr-3">
+                                            <div className="bg-white dark:bg-[#454545] dark:text-white p-4 rounded-lg relative  ml-3 mr-3">
 
                                                 <button
                                                     onClick={() => setShowNumber(false)}
