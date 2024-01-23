@@ -149,6 +149,9 @@ const AdminHome = () => {
                                     </button>
                             }
                             <button>
+                                <img onClick={() => navigate('/admin/helpcenter')} className='h-5 w-5' src="/images/icons/chat.png" alt="" />
+                            </button>
+                            <button>
                                 <img onClick={() => funVendorLogout()} className='h-5 w-5' src="/images/icons/logout.png" alt="" />
                             </button>
                         </div>

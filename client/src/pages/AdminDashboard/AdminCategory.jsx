@@ -54,6 +54,14 @@ const AdminCategory = () => {
 
     const DeleteCategory = async (categoryId) => {
         try {
+            // Display a confirmation dialog
+            const userConfirmed = window.confirm('Are you sure you want to delete this category?');
+
+            if (!userConfirmed) {
+                // User canceled the deletion
+                return;
+            }
+
             const body = {
                 categoryId: categoryId
             };

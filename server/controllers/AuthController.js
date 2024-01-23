@@ -415,7 +415,7 @@ exports.clientGoogleLogin = async (req, res) => {
                 username: username,
                 firstname: userInfo.given_name,
                 lastname: userInfo.family_name,
-                isVerified: userInfo.verified_email,
+                isVerified: true,
                 photo: userInfo.picture
             }
 
