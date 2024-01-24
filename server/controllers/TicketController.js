@@ -1146,35 +1146,33 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
             if (ticket.sessionId) {
                 status = "refunded"
 
-                const paymentInfo = await paymentService.refundPayment(ticket.sessionId)
+                // const paymentInfo = await paymentService.refundPayment(ticket.sessionId)
 
                 // console.log("paymentInfo`"`)
 
-                if (paymentInfo.success == true) {
+                const ticketdata = {
+                    _id: ticket._id,
+                    status: status,
+                    // refundId: paymentInfo.data.refund_id || null
+                }
 
-                    const ticketdata = {
-                        _id: ticket._id,
-                        status: status,
-                        refundId: paymentInfo.data.refund_id
-                    }
+                ticket = await ticketService.updateTicket(ticketdata)
 
-                    ticket = await ticketService.updateTicket(ticketdata)
+                // send notification 
+                const notification = {
+                    senderid: req.user._id,
+                    receiverid: ticket.userid,
+                    msg: `Your Ticket has been canceled by the vendor Ticket ID: ${ticket._id}. Refund for your ticket will be processed shortly`
+                }
 
-                    // send notification 
-                    const notification = {
-                        senderid: req.user._id,
-                        receiverid: ticket.userid,
-                        msg: `Your Ticket has been canceled by the vendor Ticket ID: ${ticket._id}. Refund for your ticket will be processed shortly`
-                    }
+                const sentNotification = await notificationService.createNotification(notification)
 
-                    const sentNotification = await notificationService.createNotification(notification)
-
-                    // send mail
-                    const mailOptions = {
-                        from: 'argademayur2002@gmail.com',
-                        to: ticket.email,
-                        subject: 'Ticket cancellation mail',
-                        html: `
+                // send mail
+                const mailOptions = {
+                    from: 'argademayur2002@gmail.com',
+                    to: ticket.email,
+                    subject: 'Ticket cancellation mail',
+                    html: `
                       <html>
                       <body>
                       <p>Dear ${ticket.firstname},</p>
@@ -1190,25 +1188,25 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
                     </body>                    
                       </html>
                     `,
-                    };
+                };
 
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.log(error)
-                            return res
-                                .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
-                                    success: false,
-                                    data: "Ticket update But failed to send to mail.."
-                                });
-                        } else {
-                            return res.status(200).json({
-                                success: true,
-                                data: ticket
-                            })
-                        }
-                    });
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.log(error)
+                        return res
+                            .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                                success: false,
+                                data: "Ticket update But failed to send to mail.."
+                            });
+                    } else {
+                        return res.status(200).json({
+                            success: true,
+                            data: ticket
+                        })
+                    }
+                });
 
-                }
+
             } else {
                 console.log("no session id")
             }

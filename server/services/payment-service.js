@@ -137,7 +137,9 @@ class PaymentService {
 
     async refundPayment(sessionId) {
         const sessionInfo = await this.getSessionInfo(sessionId);
+        console.log("session info", sessionInfo)
         const paymentData = await this.listPayments(sessionInfo.data.invoice)
+        console.log("payment data", paymentData)
         const refundData = await this.createRefund(paymentData.data[0].payment_id)
         return refundData;
     }

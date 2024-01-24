@@ -324,45 +324,68 @@ const VendorHostedEvents = () => {
                     </div>
 
                     <div>
-                        <span className='lg:mx-9 text-2xl font-bold '>Offers</span>
-                        <div className=' md:flex md:justify-start carousel snap-x flex items-center justify-start overflow-x-auto scroll-smooth  lg:mx-9 scrollbar-hide space-x-3 md:space-x-5'>
-                            {
-                                response.data == null
-                                    ?
-                                    <>
-                                    </>
-                                    :
-                                    <>
-                                        {
-                                            showArchived
-                                                ?
-                                                <>
-                                                    {
-                                                        response.data.expiredOffers.map((offer) => (
-                                                            <div className='w-full'>
-                                                                <Link to={`/vendor/offer/${offer._id}`}>
-                                                                    <VendorOfferCard data={offer} />
-                                                                </Link>
+                        {
+                            response.data == null
+                                ?
+                                <>
+                                </>
+                                :
+                                <>
+                                    {
+                                        showArchived
+                                            ?
+                                            <>
+                                                {
+                                                    response.data.expiredOffers.length != 0
+                                                        ?
+                                                        <>
+                                                            <div>
+                                                                <span className='lg:mx-9 text-2xl font-bold '>Offers</span>
+                                                                <div className='grid grid-flow-row gap:8 md:mx-3 md:gap-3 text-neutral-600 grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
+                                                                    {
+                                                                        response.data.expiredOffers.map((offer) => (
+                                                                            <div className='w-full'>
+                                                                                <Link to={`/vendor/offer/${offer._id}`}>
+                                                                                    <PastPurchaseCard data={offer} />
+                                                                                </Link>
+                                                                            </div>
+                                                                        ))
+                                                                    }
+                                                                </div>
                                                             </div>
-                                                        ))
-                                                    }
-                                                </>
-                                                :
-                                                <>
-                                                    {
-                                                        response.data.offers.map((offer) => (
-                                                            <div className='w-full'>
-                                                                <Link to={`/vendor/event/${offer._id}`}>
-                                                                    <VendorOfferCard data={offer} />
-                                                                </Link>
+                                                        </>
+                                                        :
+                                                        <></>
+                                                }
+
+                                            </>
+                                            :
+                                            <div>
+                                                {
+                                                    response.data.offers.length != 0
+                                                        ?
+                                                        <>
+                                                            <span className='lg:mx-9 text-2xl font-bold '>Offers</span>
+                                                            <div className='grid grid-flow-row gap:8 md:mx-3 md:gap-3 text-neutral-600 grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4'>
+                                                                {
+                                                                    response.data.offers.map((offer) => (
+                                                                        <div className='w-full'>
+                                                                            <Link to={`/vendor/event/${offer._id}`}>
+                                                                                <PastPurchaseCard data={offer} />
+                                                                            </Link>
+                                                                        </div>
+                                                                    ))
+                                                                }
                                                             </div>
-                                                        ))
-                                                    }
-                                                </>
-                                        }
-                                    </>
-                            }
-                        </div>
+                                                        </>
+                                                        :
+                                                        <></>
+                                                }
+
+                                            </div>
+                                    }
+                                </>
+                        }
                     </div>
 
                 </section >

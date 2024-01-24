@@ -626,7 +626,7 @@ const AddEventModal = ({ onClose }) => {
                                     <select
                                         value={location}
                                         type="text"
-                                        className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 text-sm font-medium text-gray-500 dark:text-white hover:bg-[#A48533]'
+                                        className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 text-sm font-medium text-gray-500 dark:text-white '
                                         onChange={(e) => setLocation(e.target.value)}
                                         placeholder='Theatre of Arts'
                                     >
