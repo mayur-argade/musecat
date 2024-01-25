@@ -2,3 +2,5 @@ TODO.txt
 server.zip
 notes.txt
 .env
+/client/.env
+/server/.env
