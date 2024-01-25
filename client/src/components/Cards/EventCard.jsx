@@ -34,7 +34,7 @@ const EventCard = ({ data, width }) => {
         } catch (error) {
             console.log(error)
             if (error.response.status == 401) {
-                toast.error("Token Expired Login again")
+                toast.error("session expired Login again")
                 navigate('/login')
             }
         }

@@ -292,7 +292,7 @@ const BookTicket = () => {
                     if (error.response.status == 401) {
                         toast((t) => (
                             <span>
-                                <b>Token Expired</b>
+                                <b>session expired</b>
                                 <button onClick={() => navigate('/login')}>
                                     Login
                                 </button>
@@ -333,7 +333,7 @@ const BookTicket = () => {
                 if (error.response.status == 401) {
                     toast((t) => (
                         <div className="flex space-x-3">
-                            <b>Token Expired</b>
+                            <b>session expired</b>
                             <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
                                 Login
                             </button>
@@ -374,7 +374,7 @@ const BookTicket = () => {
                 if (error.response.status == 401) {
                     toast((t) => (
                         <span>
-                            <b>Token Expired</b>
+                            <b>session expired</b>
                             <button onClick={() => navigate('/login')}>
                                 Login
                             </button>
@@ -413,7 +413,7 @@ const BookTicket = () => {
                 if (error.response.status == 401) {
                     toast((t) => (
                         <div className="flex space-x-3">
-                            <b>Token Expired</b>
+                            <b>session expired</b>
                             <button className="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800" onClick={() => navigate('/login')}>
                                 Login
                             </button>

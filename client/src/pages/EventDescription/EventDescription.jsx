@@ -550,37 +550,39 @@ const EventDescription = () => {
                                         </div>
 
                                         <div className='flex mt-3 w-full align-middle justify-between items-center space-x-2'>
-                                            <div className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
-                                                <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
-                                            </div>
+                                            {
+                                                response.data.eventDetails.phoneNo && (
+                                                    <div onClick={() => handleCalling(response.data.eventDetails.phoneNo)} className="relative rounded-full bg-green-100 h-8 w-8 flex items-center justify-center">
+                                                        <img className='h-5 w-5' src="/images/icons/call.svg" alt="" />
+                                                    </div>
+                                                )
+                                            }
 
                                             <div>
                                                 <p className='font-light text-wrap text-xs'></p>
                                             </div>
 
-                                            <div className="dropdown-container reltive">
+                                            <div className="dropdown-container relative">
                                                 <button
                                                     onClick={toggleDropdown}
-                                                    className='flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
+                                                    className='relative flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                     <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
                                                     Share
                                                 </button>
                                                 {isDropdownOpen && (
                                                     <div
-                                                        className="z-50 dropdown absolute w-32 p-3 bg-white rounded-md drop-shadow-md"
+                                                        className="z-50 dropdown absolute right-0 top-full mt-2 w-32 p-3 bg-white rounded-md drop-shadow-md"
                                                         ref={dropdownRef}
                                                     >
                                                         <div className="flex space-x-3 socialmedia">
-
                                                             <img onClick={shareonWhatsapp} className='cursor-pointer h-7' src="/images/icons/wp-a.svg" alt="" />
-
                                                             <img onClick={shareonFacebook} className='cursor-pointer h-7' src="/images/icons/fb-a.svg" alt="" />
-
                                                             <img onClick={shareonMail} className='cursor-pointer h-7' src="/images/icons/emal-a.svg" alt="" />
                                                         </div>
                                                     </div>
                                                 )}
                                             </div>
+
                                         </div>
 
 
@@ -679,7 +681,7 @@ const EventDescription = () => {
                                                                     <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                         {/* <button type="button" class=""> */}
                                                                         <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
-                                                                        Contact On Number
+                                                                        Call On Number
                                                                         {/* </button> */}
                                                                     </a>
                                                                 )
@@ -723,7 +725,7 @@ const EventDescription = () => {
                                                                         <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                             {/* <button type="button" class=""> */}
                                                                             <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
-                                                                            Contact On Number
+                                                                            Call On Number
                                                                             {/* </button> */}
                                                                         </a>
                                                                     )
@@ -772,7 +774,7 @@ const EventDescription = () => {
                                                                 <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
                                                                     {/* <button type="button" class=""> */}
                                                                     <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
-                                                                    Contact On Number
+                                                                    Call On Number
                                                                     {/* </button> */}
                                                                 </a>
                                                             )

@@ -20,15 +20,15 @@ const AdminHome = () => {
     const [unread, setUnread] = useState(false)
 
     useEffect(() => {
-        let tokenExpiredHandled = false; // Flag to track whether token expired error has been handled
+        let tokenExpiredHandled = false; // Flag to track whether session expired error has been handled
 
         const handleError = (error) => {
             setLoading(false);
             if (error.response && error.response.status === 401) {
-                // Token expired error
+                // session expired error
                 if (!tokenExpiredHandled) {
                     tokenExpiredHandled = true; // Set the flag to true to indicate the error has been handled
-                    toast.error("Token expired. Please log in again.");
+                    toast.error("session expired. Please log in again.");
                 }
             } else {
                 toast.error(error.response?.data?.data || "An error occurred.");

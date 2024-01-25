@@ -27,7 +27,7 @@ exports.isLoggedin = async (req, res, next) => {
         console.log(error);
         return res.status(statusCode.UNAUTHORIZED.code).json({
             success: false,
-            data: "Token expired please login"
+            data: "session expired please login"
         });
     }
 };
@@ -58,7 +58,7 @@ exports.isUserLoggedin = async (req, res, next) => {
         console.log(error);
         return res.status(statusCode.UNAUTHORIZED.code).json({
             success: false,
-            data: "Token expired please login"
+            data: "session expired please login"
         });
     }
 };
@@ -107,7 +107,7 @@ exports.requiredRole = (requiredRole) => {
             // console.log(error)
             res.status(statusCode.UNAUTHORIZED.code).json({
                 success: false,
-                data: "Token expired please login"
+                data: "session expired please login"
             });
         }
     };
