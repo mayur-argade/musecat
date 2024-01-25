@@ -45,7 +45,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const dispatch = useDispatch();
     const { isAuth, user } = useSelector((state) => state.auth)
 
-    
+
 
 
     const onClick = () => {
@@ -461,11 +461,17 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             <img src="/images/logo/logo.png" className=" ml-4 dark:hidden flex h-6 mr-3" alt="MWT Logo" />
                             <img src="/images/icons/logo-light.svg" className=" ml-4 dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                         </div>
-                        <div>
-                            <Link to="#" className="menu-bars dark:bg-[#2c2c2c]" onClick={showSidebar}>
-                                <img className='mr-2 flex dark:hidden' src="/images/icons/cancel-icon.png" alt="" />
-                                <img className='mr-2 dark:flex hidden' src="/images/icons/cancel-icon-light.png" alt="" />
-                            </Link>
+
+                        <div className="flex  justify-end align-middle items-center">
+                            <div className="flex flex-col mr-5">
+                                <DarkModeToggle />
+                            </div>
+                            <div>
+                                <Link to="#" className="menu-bars dark:bg-[#2c2c2c]" onClick={showSidebar}>
+                                    <img className='mr-2 flex dark:hidden' src="/images/icons/cancel-icon.png" alt="" />
+                                    <img className='mr-2 dark:flex hidden' src="/images/icons/cancel-icon-light.png" alt="" />
+                                </Link>
+                            </div>
                         </div>
                     </li>
 
@@ -571,7 +577,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         {
                                             window.location.pathname.includes('/vendor/')
                                                 ?
-                                                <button onClick={funVendorLogout} type="button" class="ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">
+                                                <button onClick={funVendorLogout} type="button" class="dark:bg-white dark:border-[#C0A04C] dark:text-[#C0A04C] ml-3 space-x-3 flex align-middle justify-center w-full border border-[#C0A04C] border-1.5 text-white hover:text-white bg-[#C0A04C] hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0">
                                                     <img className='h-5' src="/images/icons/logout.svg" alt="" />
                                                     <p>
                                                         Sign up
@@ -593,7 +599,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                 <button type="button" class="w-10/12 text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800" >Sign in</button>
                                             </Link>
                                             <Link to="/signup">
-                                                <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Sign up</button>
+                                                <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 ">Sign up</button>
                                             </Link>
 
                                         </div>

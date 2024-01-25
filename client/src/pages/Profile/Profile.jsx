@@ -133,8 +133,8 @@ const Profile = () => {
                                 <section className='dark:bg-[#2c2c2c]'>
                                     <div className="header flex justify-between items-center align-middle">
                                         <div className='flex align-middle items-center'>
-                                            <div className="m-3 profile">
-                                                <img src={response.data.photo || "/images/assets/profile.png"} alt="profile-photo" className='h-24 w-24 object-cover rounded-full' />
+                                            <div className="m-3 profile h-auto rounded-full">
+                                                <img src={response.data.photo || "/images/assets/profile.png"} alt="profile-photo" className='h-14 w-14 object-cover rounded-full' />
                                             </div>
 
                                             <div className="name flex flex-col">
@@ -145,10 +145,6 @@ const Profile = () => {
                                                     {response.data.email}
                                                 </span>
                                             </div>
-                                        </div>
-
-                                        <div className="flex flex-col mr-5">
-                                            <DarkModeToggle />
                                         </div>
                                     </div>
 

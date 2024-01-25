@@ -306,7 +306,7 @@ const Events = () => {
                                                 ref={searchInputRef}
                                                 type="text"
                                                 id="table-search"
-                                                className={`dark:bg-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
+                                                className={`dark:bg-[#454545] dark:placeholder-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
                                                 onChange={(e) => setSearch(e.target.value)}
                                                 placeholder="Search "
                                                 onFocus={toggleSearch}
@@ -399,6 +399,7 @@ const Events = () => {
                                         )}
                                     </div>
                                 </div>
+
                                 <div className="flex items-center space-x-2">
                                     <span className="datepicker-toggle ">
                                         <DatePicker

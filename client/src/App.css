@@ -2,6 +2,23 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+.PhoneInputInput {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-color: transparent !important;
+}
+
+.PhoneInput--focus{
+    border: 0;
+    border-width: 0px;
+    border-color: transparent !important;
+}
+
+.PhoneInput--focus {
+    border-color: transparent !important;
+}
+
 .str-chat__main-panel {
     padding: 0 !important;
 }

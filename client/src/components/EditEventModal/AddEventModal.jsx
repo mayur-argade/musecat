@@ -9,12 +9,16 @@ import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import Tooltip from '../shared/Tooltip/Tooltip'
 import moment from 'moment'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 const AddEventModal = ({ onClose }) => {
-
     const editor = useRef(null);
     const navigate = useNavigate()
     const [isDarkMode, setIsDarkMode] = useState(false);
+    // `value` will be the parsed phone number in E.164 format.
+    // Example: "+12133734253".
+    const [value, setValue] = useState()
     useEffect(() => {
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
         if (
@@ -414,7 +418,7 @@ const AddEventModal = ({ onClose }) => {
             email: mail,
             whatsapp: wpNumber,
             website: website,
-            phone: number,
+            phone: number.split("+")[1],
             showEndDate: showEndDate
         }
         console.log(eventdata)
@@ -776,7 +780,7 @@ const AddEventModal = ({ onClose }) => {
                                         </div>
                                     </div>
                                     <div className="w-full flex justify-between">
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
+                                        {/* <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code * </label>
                                             <input
                                                 value={number}
@@ -785,7 +789,16 @@ const AddEventModal = ({ onClose }) => {
                                                 placeholder='Phone number'
                                                 onChange={((e) => setNumber(e.target.value))}
                                             />
+                                        </div> */}
+
+                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
+                                            <PhoneInput
+                                                placeholder="Enter phone number"
+                                                value={number}
+                                                onChange={setNumber} />
                                         </div>
+
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
