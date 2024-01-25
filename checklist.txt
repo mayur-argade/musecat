@@ -1,3 +1,27 @@
+checklist 2
+1. Vendor 
+    a) Change CSS of input phone no
+    b) date management and event show query
+    c) Refund issue
+    d) verify ticket 
+    e) create a video of everything working
+    f) check with the todolist that we have covered everything and all the features are working fine 
+2. Admin
+    a) Add pop up asking you want to delete or verify
+    b) create a detailed list of admin functions
+    c) change the icons and create a default admin credentials which you can use for admin
+    d) check with the todolist that we have covered everything and all the features are working 
+    e) create a video of everything working
+3. User
+    a) change the search bar
+    b) dark mode icons 
+    c) calender back option and refresh the api option
+    d) make everything dynamic and dont make any static fields
+    e) start putting so manny events and each type of event
+    d) check with the todolist that we have covered everything and all the features are working
+    e) crate a video of everything working
+
+
 1. Chatbot integration (done)
 2. Dark mode toggle for the vendor (done)
 3. discount in app handling
@@ -18,3 +42,4 @@
 18. home page offers editors event 
 19. Handle add to calender (done)
 # verifyUserAccount
+

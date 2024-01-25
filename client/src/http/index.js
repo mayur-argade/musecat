@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "https://omanwhereto.com/api/v1/",
+    baseURL: process.env.REACT_APP_IP,
     // baseURL: "http://localhost:5000/api/v1/",
     withCredentials: true,
     credentials: "include",
@@ -132,7 +132,7 @@ api.interceptors.response.use(
             originalRequest._isRetry = true;
             try {
                 const refreshApi = axios.create({
-                    baseURL: "https://omanwhereto.com/api/v1/",
+                    baseURL: process.env.REACT_APP_IP,
                     // baseURL: "http://localhost:5000/api/v1/",
                     withCredentials: true, // Set withCredentials here
                     headers: {
