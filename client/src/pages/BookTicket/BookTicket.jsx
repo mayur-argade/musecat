@@ -457,7 +457,7 @@ const BookTicket = () => {
     }
     else {
         return (
-            <div className='dark:bg-[#2c2c2c] dark:text-white'>
+            <div className='min-h-screen dark:bg-[#2c2c2c] dark:text-white'>
 
                 <Navbar />
                 <Toaster />

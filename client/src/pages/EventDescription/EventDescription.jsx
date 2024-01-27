@@ -419,7 +419,7 @@ const EventDescription = () => {
 
     if (response.data == null) {
         return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
+            <div className='h-screen dark:bg-[#2c2c2c] w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
                     <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                     <img src="/images/logo/logo-main.png" class="h-16" />

@@ -49,7 +49,7 @@ const UserNotification = () => {
         <>
             <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
-                <section className='md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
+                <section className='min-h-screen md:mr-48 md:ml-48 mt-5 ml-6 mr-6'>
                     <div className='flex align-middle items-center  justify-between'>
                         <div className="flex align-middle items-center">
                             <button onClick={() => navigate(-1)} className=' mt-1'>
@@ -57,7 +57,7 @@ const UserNotification = () => {
                             </button>
                             <p className='text-xl font-bold'>Notification center</p>
                         </div>
-                        <button onClick={() => deleteNotification()} type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800">Clear All</button>
+                        <button onClick={() => deleteNotification()} type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] ">Clear All</button>
                     </div>
                     <div className='w-full flex flex-col space-y-4 '>
                         {
@@ -74,8 +74,12 @@ const UserNotification = () => {
                                     {
                                         response.data.length == 0
                                             ?
-                                            <div className='flex justify-center align-middle items-center'>
-                                                <img className='h-52 md:h-60' src="/images/assets/logo-main.png" alt="" />
+                                            <div className='grid grid-flow-row grid-cols-1 '>
+                                                <div className='h-80 flex flex-col justify-center items-center'>
+                                                    <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Not a peep! Your notifications are enjoying some quiet time.</span>
+                                                </div>
+
                                             </div>
                                             :
                                             <>

@@ -68,26 +68,26 @@ const Signup = () => {
                         <h2 class="text-xl font-bold text-white md:text-black dark:text-white ">Hello there</h2>
                     </div>
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md dark:text-white"
                             value={email} onChange={(e) => setEmail(e.target.value)}
                             type="email" name='username' autocomplete="email" for="email" id='email' placeholder="Email" />
                     </div>
 
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md dark:text-white"
                             value={username} onChange={(e) => setUsername(e.target.value)}
                             type="text" for="username" id='username' placeholder="Username" />
                     </div>
 
                     <div>
-                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md text-gray-600"
+                        <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md dark:text-white"
                             value={password} onChange={(e) => setPassword(e.target.value)}
                             type="password" for="password" id='password' placeholder="Password" />
                     </div>
 
                     <div>
                         <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md 
-                        text-gray-600" type="password" for="password" id='password'
+                        dark:text-white" type="password" for="password" id='password'
                             value={cpassword} onChange={(e) => setCpassword(e.target.value)}
                             placeholder="Confirm Password" />
 
@@ -98,10 +98,15 @@ const Signup = () => {
                         <p className='mb-1 dark:text-white text-white text-xs font-light md:font-regular md:text-slate-400 md:text-xs'>
                             (Optional) if you wish to receive updates on whatsapp
                         </p>
-                        <div>
-                            <input class="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md text-gray-600" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)}
-                                type="tel" for="text" id='text' placeholder="Mobile Number" />
-                        </div>
+                        <input
+                            className="w-full p-2.5 text-xs bg-white md:bg-[#E7E7E7] dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md dark:text-white"
+                            value={mobileNumber}
+                            onChange={(e) => setMobileNumber(e.target.value)}
+                            type="number"  // This is the change!
+                            id="text"
+                            placeholder="Mobile Number"
+                        />
+
                     </div>
 
                     <div className='flex justify-items-end justify-end'>

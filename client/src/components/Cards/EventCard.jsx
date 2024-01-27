@@ -58,7 +58,7 @@ const EventCard = ({ data, width }) => {
                             <img src="/images/icons/heart.svg" alt="" />
                     }
                 </button>
-                <div className="content mx-1">
+                <div className="p-1 pt-4 pb-2 mx-1">
                     {
                         data.date.type == 'dateRange'
                             ?

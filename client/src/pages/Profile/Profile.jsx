@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import DebitCard from '../../components/Debit-Card/DebitCard'
 import Footer from '../../components/shared/Footer/Footer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ClientProfileApi, ClientUpdateProfileApi, getCustomersSavedCards } from '../../http/index'
 import BottomNav from '../../components/shared/BottomNav/BottomNav'
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,6 +10,8 @@ import DarkModeToggle from '../../components/shared/DarkModeToggle/DarkModeToggl
 
 const Profile = () => {
     document.title = 'Profile'
+
+    const navigate = useNavigate()
 
     const [displayModal, setDisplayModal] = useState(false)
     const [response, setReponse] = useState({});
@@ -102,9 +104,9 @@ const Profile = () => {
     const handleShare = async () => {
         try {
             await navigator.share({
-                title: 'My App',
+                title: 'Muscat Where To',
                 text: 'Check out this awesome app!',
-                url: 'https://mayurargade.netlify.app',
+                url: 'https://omanwhereto.com',
             });
         } catch (error) {
             console.error('Error sharing:', error.message);
@@ -113,7 +115,7 @@ const Profile = () => {
 
     if (response.data == null) {
         return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
+            <div className='h-screen dark:bg-[#2c2c2c] dark:text-white w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
                     <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                     <img src="/images/logo/logo-main.png" class="h-16" />
@@ -132,7 +134,7 @@ const Profile = () => {
                             <>
                                 <section className='dark:bg-[#2c2c2c]'>
                                     <div className="header flex justify-between items-center align-middle">
-                                        <div className='flex align-middle items-center'>
+                                        <div className='mt-3 ml-5 mr-5 flex align-middle items-center'>
                                             <div className="m-3 profile h-auto rounded-full">
                                                 <img src={response.data.photo || "/images/assets/profile.png"} alt="profile-photo" className='h-14 w-14 object-cover rounded-full' />
                                             </div>
@@ -148,53 +150,38 @@ const Profile = () => {
                                         </div>
                                     </div>
 
-                                    <div className="ml-8 mr-8">
-                                        <ul className='space-y-4'>
-                                            <Link to='/favorites'>
-                                                <li className='flex align-middle'>
-                                                    <img className="flex dark:hidden" src="/images/icons/heart.svg" alt="" />
-                                                    <img className="hidden dark:flex" src="/images/icons/heart-light.svg" alt="" />
-                                                    <span>Favorites</span>
-                                                </li>
-                                            </Link>
+                                    <div className="ml-9 mr-9">
+                                        <ul className=''>
+                                            <button onClick={() => navigate('/favorites')} className='w-full border border-t-0 border-r-0 border-l-0 py-4 border-b-white flex align-middle items-center'>
+                                                <img className="flex dark:hidden" src="/images/icons/heart.svg" alt="" />
+                                                <img className="hidden dark:flex" src="/images/icons/heart-light.svg" alt="" />
+                                                <span>Favorites</span>
+                                            </button>
 
-                                            <hr />
+                                            <button onClick={() => navigate('/contactus')} className='w-full border border-t-0 border-r-0 border-l-0 py-4 border-b-white flex align-middle items-center'>
+                                                <img className="flex dark:hidden" src="/images/icons/star.svg" alt="" />
+                                                <img className="hidden dark:flex" src="/images/icons/star-light.svg" alt="" />
+                                                <span>Rate us</span>
+                                            </button>
 
-                                            <Link to='/contactus' className='mt-2'>
-                                                <li className='flex align-middle mt-2'>
-                                                    <img className="flex dark:hidden" src="/images/icons/star.svg" alt="" />
-                                                    <img className="hidden dark:flex" src="/images/icons/star-light.svg" alt="" />
-                                                    <span>Rate us</span>
-                                                </li>
-                                            </Link>
-                                            <hr />
+                                            <button onClick={() => navigate('/user/privacypolicy')} className='w-full border border-t-0 border-r-0 border-l-0 py-4 border-b-white flex align-middle items-center'>
+                                                <img className="flex dark:hidden" src="/images/icons/policy.svg" alt="" />
+                                                <img className="hidden dark:flex" src="/images/icons/policy-light.svg" alt="" />
+                                                <span>Privacy Policy</span>
+                                            </button>
 
-                                            <Link to='/user/privacypolicy'>
-                                                <li className='flex align-middle mt-2'>
-                                                    <img className="flex dark:hidden" src="/images/icons/policy.svg" alt="" />
-                                                    <img className="hidden dark:flex" src="/images/icons/policy-light.svg" alt="" />
-                                                    <span>Privacy Policy</span>
-                                                </li>
-                                            </Link>
-                                            <hr />
+                                            <button onClick={isShareSupported ? handleShare : undefined} disabled={!isShareSupported} className='w-full border border-t-0 border-r-0 border-l-0 py-4 border-b-white flex align-middle items-center'>
+                                                <img className='flex dark:hidden' src="/images/icons/share.svg" alt="" />
+                                                <img className='hidden dark:flex' src="/images/icons/share-light.svg" alt="" />
+                                                <span>Invite a Friend</span>
+                                            </button>
 
-                                            <Link onClick={isShareSupported ? handleShare : undefined} disabled={!isShareSupported}>
-                                                <li className='flex align-middle mt-2 '>
-                                                    <img className='flex dark:hidden' src="/images/icons/share.svg" alt="" />
-                                                    <img className='hidden dark:flex' src="/images/icons/share-light.svg" alt="" />
-                                                    <span>Invite a Friend</span>
-                                                </li>
-                                            </Link>
-                                            <hr />
+                                            <button onClick={() => navigate('/aboutus')} className='w-full border border-t-0 border-r-0 border-l-0 py-4 border-b-white flex align-middle items-center'>
+                                                <img className="flex dark:hidden" src="/images/icons/aboutus.svg" alt="" />
+                                                <img className="hidden dark:flex" src="/images/icons/aboutus-light.svg" alt="" />
+                                                <span>About Us</span>
+                                            </button>
 
-                                            <Link to='/aboutus'>
-                                                <li className='flex align-middle mt-2 '>
-                                                    <img className="flex dark:hidden" src="/images/icons/aboutus.svg" alt="" />
-                                                    <img className="hidden dark:flex" src="/images/icons/aboutus-light.svg" alt="" />
-                                                    <span>About Us</span>
-                                                </li>
-                                            </Link>
-                                            <hr />
                                         </ul>
                                     </div>
                                 </section>

@@ -51,15 +51,15 @@ const InputEmail = () => {
             </button>
             <Toaster />
             <div className='flex-row items-center align-middle '>
-                <div class="max-w-lg mx-auto bg-white p-7 rounded-xl shadow shadow-slate-300 flex-row align-middle items-center">
+                <div class="max-w-lg mx-auto bg-white dark:bg-[#2c2c2c] p-7 rounded-xl shadow shadow-slate-300 flex-row align-middle items-center">
                     <h1 class="text-4xl font-medium">Reset password</h1>
                     <p class="text-slate-500">Fill up the form to reset the password</p>
 
                     <div action="" class="my-10">
                         <div class="flex flex-col space-y-5">
                             <label for="email">
-                                <p class="font-medium text-slate-700 pb-2">Email address</p>
-                                <input id="email" name="email" type="email" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" placeholder="Enter email address"
+                                <p class="font-medium text-slate-700 dark:text-slate-300 pb-2">Email address</p>
+                                <input id="email" name="email" type="email" class="dark:bg-[#454545] dark:border-0 dark:outilne-0 w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow " placeholder="Enter email address"
                                     onChange={((e) => setEmail(e.target.value))} />
                             </label>
 

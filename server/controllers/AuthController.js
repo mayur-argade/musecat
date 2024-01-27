@@ -125,7 +125,7 @@ exports.clientLogin = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 success: false,
-                data: "User does not found"
+                data: "User not found. Please register to continue."
             })
         } else {
             const isPasswordMatch = await bcrypt.compare(password, user.password);
@@ -243,7 +243,7 @@ exports.register = async (req, res) => {
                 return res
                     .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
                         success: false,
-                        data: "failed to send email try again"
+                        data: "failed to send a email, Please check your input email"
                     });
             } else {
                 return res
@@ -641,7 +641,7 @@ exports.sendMailForgotPassword = async (req, res) => {
                     return res
                         .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
                             success: false,
-                            data: "failed to send email try again"
+                            data: "failed to send a email, Please check your input email"
                         });
                 } else {
                     return res
@@ -858,7 +858,7 @@ exports.vendorRegister = async (req, res) => {
                 return res
                     .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
                         success: false,
-                        data: "failed to send email try again"
+                        data: "failed to send a email, Please check your input email"
                     });
             } else {
                 return res
@@ -898,7 +898,7 @@ exports.vendorLogin = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 success: false,
-                data: "User does not found"
+                data: "Vendor not found. Please register to continue."
             })
         }
         else if (user.role == 'vendor' && user.emailVerified == false) {
@@ -1161,7 +1161,7 @@ exports.sendForgetMailToVendor = async (req, res) => {
                     return res
                         .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
                             success: false,
-                            data: "failed to send email try again"
+                            data: "failed to send a email, Please check your input email"
                         });
                 } else {
                     return res
