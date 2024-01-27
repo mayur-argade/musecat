@@ -493,27 +493,6 @@ const Events = () => {
                                                         }).map((event) => (
                                                             <div className='' key={event._id}>
                                                                 <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-                                                                <EventCard data={event} />
-
-                                                                <EventCard data={event} />
                                                             </div>
                                                         ))
                                             }

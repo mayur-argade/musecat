@@ -21,7 +21,7 @@ const Footer = () => {
                     :
                     <div className='NoFooter'>
                         <Toaster />
-                        <div className='standalone:hidden bg-[#F3F3F3] dark:bg-[#2c2c2c] dark:border-r-0 dark:border-l-0 dark:border-b-0 border border-2 border-t-indigo-500 mt-8'>
+                        <div className='standalone:hidden bg-[#F3F3F3] dark:bg-[#2c2c2c] dark:border-r-0 dark:border-l-0 dark:border-b-0 border border-2 border-t-indigo-500'>
                             <footer class="md:pr-44 md:pl-44 pt-5 pl-6 pr-6">
                                 <div class=" bg-[#F3F3F3] dark:bg-[#2c2c2c] max-w-screen  py-6 sm:px-6 lg:px-8">
                                     <div className='flex flex-col mb-8 items-center md:items-start space-y-2'>
