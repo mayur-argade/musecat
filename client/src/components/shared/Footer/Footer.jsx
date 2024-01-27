@@ -15,7 +15,7 @@ const Footer = () => {
             {
                 isStandalone
                     ?
-                    <div className='mb-10'>
+                    <div className='h-10 dark:bg-[#2c2c2c] dark:text-white'>
 
                     </div>
                     :

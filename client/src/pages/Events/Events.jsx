@@ -273,13 +273,13 @@ const Events = () => {
         )
     } else {
         return (
-            <div className='dark:bg-[#2c2c2c] dark:text-white contactmargine'>
+            <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
                 <Navbar />
                 <div className="hidden md:block">
                     <Tabbar />
                 </div>
 
-                <section>
+                <section className='dark:bg-[#2c2c2c] dark:text-white '>
                     <section className="screenWrapper flex justify-center items-center align-middle mt-5">
                         <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-9/12  xl:w-9/12 2xl:w-8/12'>
                             <div className="hidden md:flex justify-center mt-3  ">
@@ -435,7 +435,7 @@ const Events = () => {
                                                     <div className='col-span-3 flex items-center justify-center'>
                                                         <div className='h-80 flex flex-col justify-center items-center'>
                                                             <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
-                                                            <span className='text-md text-center mt-1 font-semibold text-gray-700'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
+                                                            <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300 '>Looks like this category is taking a little break. Check back later for exciting updates!</span>
                                                         </div>
                                                     </div>
                                                     :
@@ -564,7 +564,7 @@ const Events = () => {
 
                 </section>
 
-                <div className=''>
+                <div className='dark:bg-[#2c2c2c] dark:text-white'>
                     < Footer />
                 </div>
             </div>

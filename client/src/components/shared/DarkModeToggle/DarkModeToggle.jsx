@@ -28,9 +28,6 @@ const DarkModeToggle = () => {
 
         // Update state
         setIsDarkMode(newDarkModeState);
-
-        // Change website background color only for PWA
-        document.body.style.backgroundColor = newDarkModeState ? '#2C2C2C' : '#FFFFFF';
     };
 
     return (

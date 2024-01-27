@@ -10,7 +10,7 @@ const SearchPWA = () => {
 
 
     return (
-        <div className='h-full dark:bg-[#2c2c2c] dark:text-white'>
+        <div className='h-screen dark:bg-[#2c2c2c] dark:text-white'>
             <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
 
@@ -73,7 +73,7 @@ const SearchPWA = () => {
 
                 </div>
             </div>
-            <div className='mb-24'></div>
+            <div className='h-24 dark:bg-[#2c2c2c] dark:text-white'></div>
             <div>
                 <BottomNav />
             </div>
