@@ -798,7 +798,7 @@ login page
 3. empty form submission handled
 4. incorrect password submission handled
 5. forget password link is working
-6. continue with email is working
+6. continue for Signup is working
 --> no google login
 --> no facebook login
 
