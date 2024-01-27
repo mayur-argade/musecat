@@ -420,7 +420,7 @@ const Events = () => {
 
                             <div className='mainContainer grid grid-cols-1 lg:grid-cols-3'>
                                 <div className="1 col-span-2">
-                                    <div className="left w-full flex justify-center">
+                                    <div className="min-h-screen left w-full flex justify-center">
                                         <div className="mx-2 grid grid-flow-row text-neutral-600 grid-cols-2 m:grid-cols-2 l:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                                             {loading
                                                 ?
@@ -432,7 +432,7 @@ const Events = () => {
                                                 :
                                                 response.data.length == 0
                                                     ?
-                                                    <div className='col-span-3 flex items-center justify-center'>
+                                                    <div className='h-screen col-span-3 flex items-center justify-center'>
                                                         <div className='h-80 flex flex-col justify-center items-center'>
                                                             <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
                                                             <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300 '>Looks like this category is taking a little break. Check back later for exciting updates!</span>
@@ -492,6 +492,27 @@ const Events = () => {
                                                             }
                                                         }).map((event) => (
                                                             <div className='' key={event._id}>
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+                                                                <EventCard data={event} />
+
                                                                 <EventCard data={event} />
                                                             </div>
                                                         ))
