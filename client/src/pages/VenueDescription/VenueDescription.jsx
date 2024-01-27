@@ -145,7 +145,7 @@ const VenueDescription = () => {
                                             response.data.events.length == 0
                                                 ?
                                                 <div className='ml-60 mt-20 flex items-center justify-center w-full'>
-                                                    <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                                    <img className='h-60' src="/images/assets/logo-main.png" alt="" />
                                                 </div>
                                                 :
                                                 response.data.events.map((event) => (

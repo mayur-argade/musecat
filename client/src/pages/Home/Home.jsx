@@ -519,7 +519,7 @@ const Home = () => {
                                                 ?
                                                 <>
                                                     <div className='flex justify-center'>
-                                                        <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                                        <img className='h-60' src="/images/assets/logo-main.png" alt="" />
                                                     </div>
                                                 </>
                                                 :
@@ -663,7 +663,7 @@ const Home = () => {
                                             : upcomingEvents.data.length === 0
                                                 ?
                                                 <div className='flex justify-center'>
-                                                    <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                                    <img className='h-60' src="/images/assets/logo-main.png" alt="" />
                                                 </div>
                                                 :
                                                 upcomingEvents.data.map((event) => (
@@ -739,7 +739,7 @@ const Home = () => {
                                                     : editorpick.data.length === 0
                                                         ?
                                                         <div className='flex justify-center'>
-                                                            <img className='h-60' src="/images/assets/nothing.png" alt="" />
+                                                            <img className='h-60' src="/images/assets/logo-main.png" alt="" />
                                                         </div>
                                                         :
                                                         editorpick.data.map((event) => (

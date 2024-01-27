@@ -77,7 +77,7 @@ const VendorNotification = () => {
                                     response.data.length == 0
                                         ?
                                         <div className='flex justify-center align-middle items-center'>
-                                            <img className='h-52 md:h-60' src="/images/assets/nothing.png" alt="" />
+                                            <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
                                         </div>
                                         :
                                         <>

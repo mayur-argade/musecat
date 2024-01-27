@@ -207,44 +207,58 @@ const PastPurchase = () => {
                     </div>
 
                     <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
-                        {response.data.pastpurchased.filter((event) => {
-                            const validEvents = event.eventid !== null
+                        {
+                            response.data.pastpurchased.length == 0 ?
+                                <div className='col-span-3 flex items-center justify-center'>
+                                    <div className='h-80 flex flex-col justify-center items-center'>
+                                        <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                        <span className='text-md text-center mt-1 font-semibold text-gray-700'>Zero past purchases – time for some new experiences</span>
+                                    </div>
+                                </div>
+                                :
+                                <>
+                                    {
+                                        response.data.pastpurchased.filter((event) => {
+                                            const validEvents = event.eventid !== null
 
-                            const categoryMatch =
-                                selectedCategories.length === 0 ||
-                                selectedCategories.some((selectedCategory) => {
-                                    if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
-                                        console.log("good")
-                                        return (
-                                            selectedCategory.subCategories &&
-                                            selectedCategory.subCategories.some((subCategory) =>
-                                                event.eventid.eventCategory &&
-                                                event.eventid.eventCategory.some((itemSubcategory) => (
-                                                    itemSubcategory.categoryURL === subCategory.categoryURL)
-                                                )
-                                            )
-                                        );
+                                            const categoryMatch =
+                                                selectedCategories.length === 0 ||
+                                                selectedCategories.some((selectedCategory) => {
+                                                    if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                        console.log("good")
+                                                        return (
+                                                            selectedCategory.subCategories &&
+                                                            selectedCategory.subCategories.some((subCategory) =>
+                                                                event.eventid.eventCategory &&
+                                                                event.eventid.eventCategory.some((itemSubcategory) => (
+                                                                    itemSubcategory.categoryURL === subCategory.categoryURL)
+                                                                )
+                                                            )
+                                                        );
+                                                    }
+                                                    else {
+                                                        return (
+                                                            event.eventid.eventCategory.some((itemSubcategory) =>
+                                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                            )
+                                                        );
+                                                    }
+                                                });
+
+
+                                            const featureMatch =
+                                                selectedFeatures.length == 0 ||
+                                                event.eventid.features.some(feature => selectedFeatures.includes(feature));
+
+                                            return validEvents && featureMatch && categoryMatch
+                                        }).map((event) => (
+                                            <Link to={`/ticketstatus/${event._id}`}>
+                                                <PastPurchaseCard data={event.eventid} />
+                                            </Link>
+                                        ))
                                     }
-                                    else {
-                                        return (
-                                            event.eventid.eventCategory.some((itemSubcategory) =>
-                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
-                                            )
-                                        );
-                                    }
-                                });
+                                </>
 
-
-                            const featureMatch =
-                                selectedFeatures.length == 0 ||
-                                event.eventid.features.some(feature => selectedFeatures.includes(feature));
-
-                            return validEvents && featureMatch && categoryMatch
-                        }).map((event) => (
-                            <Link to={`/ticketstatus/${event._id}`}>
-                                <PastPurchaseCard data={event.eventid} />
-                            </Link>
-                        ))
                         }
 
                     </div>

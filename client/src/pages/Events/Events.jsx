@@ -432,8 +432,11 @@ const Events = () => {
                                                 :
                                                 response.data.length == 0
                                                     ?
-                                                    <div className='mb-10 md:ml-60 md:mt-20  flex items-center justify-center w-full'>
-                                                        <img className='h-52 md:h-60' src="/images/assets/nothing.png" alt="" />
+                                                    <div className='col-span-3 flex items-center justify-center'>
+                                                        <div className='h-80 flex flex-col justify-center items-center'>
+                                                            <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                            <span className='text-md text-center mt-1 font-semibold text-gray-700'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
+                                                        </div>
                                                     </div>
                                                     :
                                                     response.data

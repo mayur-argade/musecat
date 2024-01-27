@@ -37,19 +37,30 @@ const Favorites = () => {
         navigate(-1); // This function will take you back to the previous page
     };
     return (
-        <>
+        <div className="!h-screen dark:bg-[#2c2c2c] dark:text-white">
             <div className='dark:bg-[#2c2c2c] dark:text-white appmargine'>
                 <Navbar />
                 <Tabbar />
 
                 <section className='relative md:mr-48 md:ml-48 mt-5 l:ml-6 l:mr-6 mx-3'>
                     <div className="ml-3 hidden md:flex align-middle items-center">
-                        <button  onClick={handleBack} className=' mt-1'>
+                        <button onClick={handleBack} className=' mt-1'>
                             <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                         </button>
                         <p className='text-2xl font-bold'>Favorites</p>
                     </div>
 
+                    {
+                        response.data != null && response.data.length == 0 && (
+                            <div className='grid grid-flow-row grid-cols-1 '>
+                                <div className='h-80 flex flex-col justify-center items-center'>
+                                    <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Favorites list looking bare? Add some events to bring it to life!</span>
+                                </div>
+
+                            </div>
+                        )
+                    }
                     <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                         {
                             response.data == null
@@ -63,8 +74,7 @@ const Favorites = () => {
                                     <SkeletonCard />
                                 </>
                                 :
-                                response.data.length > 0
-                                    ?
+                                response.data.length > 0 && (
                                     <>
                                         {
                                             response.data.map((event) => (
@@ -72,10 +82,7 @@ const Favorites = () => {
                                             ))
                                         }
                                     </>
-                                    :
-                                    <div className='mb-10 md:ml-80 md:mt-20  flex items-center justify-center w-full'>
-                                        <img className='h-52 md:h-60' src="/images/assets/nothing.png" alt="" />
-                                    </div>
+                                )
                         }
                     </div>
 
@@ -99,7 +106,7 @@ const Favorites = () => {
             <div>
                 <BottomNav />
             </div>
-        </>
+        </div>
     )
 
 }

@@ -120,7 +120,7 @@ exports.clientLogin = async (req, res) => {
 
     let updatedUser;
     try {
-        let user = await userService.findUser({ email: email })
+        let user = await userService.findUser({ email: email.toLowerCase() })
 
         if (!user) {
             return res.status(404).json({
@@ -154,7 +154,7 @@ exports.clientLogin = async (req, res) => {
 
             const UserDto = {
                 _id: user._id,
-                email: user.email,
+                email: user.email.toLowerCase(),
                 username: user.username,
                 isVerified: user.isVerified,
                 mobilenumber: user.mobilenumber,
@@ -197,7 +197,7 @@ exports.register = async (req, res) => {
     }
 
     try {
-        let user = await userService.findUser({ email: email })
+        let user = await userService.findUser({ email: email.toLowerCase() })
         if (user) {
             return res.status(statusCode.CONFLICT.code).json({
                 success: false,
@@ -217,7 +217,7 @@ exports.register = async (req, res) => {
         const token = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
 
         const data = {
-            email: email,
+            email: email.toLowerCase(),
             username: username,
             password: password,
             verificationToken: token,
@@ -270,7 +270,7 @@ exports.facebookLogin = async (req, res) => {
     try {
         const { email, name } = req.body
 
-        const user = await userService.findUser({ email: email })
+        const user = await userService.findUser({ email: email.toLowerCase() })
 
         if (!user) {
             // create user
@@ -284,7 +284,7 @@ exports.facebookLogin = async (req, res) => {
             }
 
             const data = {
-                email: email,
+                email: email.toLowerCase(),
                 username: username,
                 firstname: nameArray[0],
                 lastname: nameArray[1],
@@ -302,7 +302,7 @@ exports.facebookLogin = async (req, res) => {
 
             const userResponse = {
                 _id: user._id,
-                email: user.email,
+                email: user.email.toLowerCase(),
                 username: user.username,
                 isVerified: user.isVerified,
                 mobilenumber: user.mobilenumber,
@@ -334,7 +334,7 @@ exports.facebookLogin = async (req, res) => {
 
         const UserDto = {
             _id: user._id,
-            email: user.email,
+            email: user.email.toLowerCase(),
             username: user.username,
             isVerified: user.isVerified,
             mobilenumber: user.mobilenumber,
@@ -398,7 +398,7 @@ exports.clientGoogleLogin = async (req, res) => {
     try {
         const { access_token, refresh_token: google_refresh } = await getTokens(code)
         const userInfo = await getUserInfo(access_token);
-        const user = await userService.findUser({ email: userInfo.email })
+        const user = await userService.findUser({ email: userInfo.email.toLowerCase() })
 
         if (!user) {
             // create user
@@ -411,7 +411,7 @@ exports.clientGoogleLogin = async (req, res) => {
             }
 
             let data = {
-                email: userInfo.email,
+                email: userInfo.email.toLowerCase(),
                 username: username,
                 firstname: userInfo.given_name,
                 lastname: userInfo.family_name,
@@ -434,7 +434,7 @@ exports.clientGoogleLogin = async (req, res) => {
 
             const userResponse = {
                 _id: saveUser._id,
-                email: saveUser.email,
+                email: saveUser.email.toLowerCase(),
                 username: saveUser.username,
                 isVerified: saveUser.isVerified,
                 mobilenumber: saveUser.mobilenumber,
@@ -475,7 +475,7 @@ exports.clientGoogleLogin = async (req, res) => {
 
         const UserDto = {
             _id: user._id,
-            email: user.email,
+            email: user.email.toLowerCase(),
             username: user.username,
             isVerified: user.isVerified,
             mobilenumber: user.mobilenumber,
@@ -781,7 +781,7 @@ exports.vendorRegister = async (req, res) => {
     }
 
     try {
-        let user = await vendorService.findVendor({ email: email })
+        let user = await vendorService.findVendor({ email: email.toLowerCase() })
         if (user) {
             return res.status(statusCode.CONFLICT.code).json({
                 success: false,
@@ -807,7 +807,7 @@ exports.vendorRegister = async (req, res) => {
             data = {
                 firstname: firstname,
                 lastname: lastname,
-                email: email,
+                email: email.toLowerCase(),
                 isVerified: true,
                 emailVerified: true,
                 password: password,
@@ -818,7 +818,7 @@ exports.vendorRegister = async (req, res) => {
             data = {
                 firstname: firstname,
                 lastname: lastname,
-                email: email,
+                email: email.toLowerCase(),
                 isVerified: isVerified,
                 password: password,
                 role: role,
@@ -893,7 +893,7 @@ exports.vendorLogin = async (req, res) => {
 
     let updatedUser;
     try {
-        let user = await vendorService.findVendor({ email: email })
+        let user = await vendorService.findVendor({ email: email.toLowerCase() })
 
         if (!user) {
             return res.status(404).json({
@@ -949,7 +949,7 @@ exports.vendorFacebookLogin = async (req, res) => {
     try {
         const { email, name } = req.body
 
-        const user = await vendorService.findVendor({ email: email })
+        const user = await vendorService.findVendor({ email: email.toLowerCase() })
 
         if (!user) {
             return res.status(404).json({
@@ -1029,7 +1029,7 @@ exports.vendorGoogleLogin = async (req, res) => {
     try {
         const { access_token, refresh_token: google_refresh } = await getTokens(code)
         const userInfo = await getUserInfo(access_token);
-        const user = await vendorService.findVendor({ email: userInfo.email })
+        const user = await vendorService.findVendor({ email: userInfo.email.toLowerCase() })
 
         if (!user) {
             return res.status(404).json({

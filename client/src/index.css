@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    background-color: #ffffff;
+    /* Set the default background color */
+    color: #000000;
+    /* Set the default text color */
+}
+
+body.dark {
+    background-color: #2c2c2c;
+    color: #ffffff;
+    /* Set the text color for better visibility */
+}
 
 /* Customize the scrollbar for WebKit browsers */
 ::-webkit-scrollbar {
@@ -26,5 +38,5 @@
 
 
 .backlogo {
-    filter :drop-shadow(10px 4px 30px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(10px 4px 30px rgba(0, 0, 0, 0.25));
 }

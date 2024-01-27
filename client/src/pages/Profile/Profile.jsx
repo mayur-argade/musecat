@@ -139,7 +139,7 @@ const Profile = () => {
 
                                             <div className="name flex flex-col">
                                                 <span className='font-bold text-xl'>
-                                                    {`${response.data.firstname} ${response.data.lastname}`}
+                                                    {`${response.data.username}`}
                                                 </span>
                                                 <span className='font-light text-sm'>
                                                     {response.data.email}
