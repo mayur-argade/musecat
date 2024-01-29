@@ -129,8 +129,8 @@ const Profile = () => {
                     <Navbar />
 
                     {
-                        isStandalone
-                            ?
+                        isStandalone || window.isNative == true
+                            ? 
                             <>
                                 <section className='dark:bg-[#2c2c2c]'>
                                     <div className="header flex justify-between items-center align-middle">

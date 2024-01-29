@@ -904,7 +904,7 @@ const EventDescription = () => {
 
                                 <div className="relative mt-8 ml-6 mr-6">
                                     {
-                                        !isStandalone && (
+                                        !isStandalone || window.isNative == true && (
                                             <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" />
                                         )
                                     }

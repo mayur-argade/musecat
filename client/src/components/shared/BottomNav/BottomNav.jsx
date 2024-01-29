@@ -31,7 +31,7 @@ const BottomNav = () => {
     return (
         <>
             {
-                isStandalone
+                isStandalone || window.isNative == true
                     ?
                     <div class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-[#2c2c2c] dark:border-gray-600">
                         <div class="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">

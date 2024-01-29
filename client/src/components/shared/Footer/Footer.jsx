@@ -13,7 +13,7 @@ const Footer = () => {
     return (
         <>
             {
-                isStandalone
+                isStandalone || window.isNative == true
                     ?
                     <div className='h-10 dark:bg-[#2c2c2c] dark:text-white'>
 

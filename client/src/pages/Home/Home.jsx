@@ -280,7 +280,7 @@ const Home = () => {
             <div className='dark:bg-[#2c2c2c] dark:text-white appmargine '>
                 <Navbar />
                 {
-                    isStandalone
+                    isStandalone || window.isNative == true
                         ?
                         <>
                         </>
@@ -542,7 +542,7 @@ const Home = () => {
                             <div className=" hidden md:flex  justify-center items-center space-x-4">
                                 <button onClick={scrollLeft}>
                                     <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
-                                    
+
                                 </button>
                                 <button onClick={scrollRight}>
                                     <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
@@ -579,14 +579,15 @@ const Home = () => {
                                 </div>
                                 {
                                     showCalender && (
-                                        <div >
+                                        <div>
                                             <div ref={calendarRef}>
                                                 <div className='calendar-overlay'>
-                                                    <div>
-                                                        <div className='absolute top-0 right-0' >cancel</div>
+                                                    <div className='relative text-black'>
+                                                        <div className='absolute top-0 left-0'>
+                                                            <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
+                                                        </div>
                                                         <Calendar
-                                                            className='relative z-50 w-80 rounded-lg
-                     border-none drop-shadow-md text-xs'
+                                                            className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
                                                             value={date}
                                                             onChange={handleDateChange}
                                                             tileContent={({ date, view }) =>
@@ -605,7 +606,6 @@ const Home = () => {
                                                 </div>
                                             </div>
                                         </div>
-
                                     )
                                 }
                                 <div>

@@ -683,7 +683,7 @@ const BookTicket = () => {
                                                     </div>
                                                     <hr />
                                                     {
-                                                        isStandalone && (
+                                                        isStandalone || window.isNative == true && (
                                                             <div className="w-full baseprice flex justify-between">
                                                                 <p className='font-semibold'>Discount % on App</p>
                                                                 <p className='font-semibold'>{discountPercent} OMR</p>
