@@ -4,7 +4,8 @@ const ticketService = require("../services/ticket-service");
 const userService = require("../services/user-service");
 const notificationService = require('../services/notification-service')
 const moment = require('moment')
-const { transporter } = require('../services/mail-service')
+const { transporter } = require('../services/mail-service');
+const TicketModel = require("../models/TicketModel");
 
 module.exports.generateTicket = async (req, res) => {
     try {
@@ -921,13 +922,19 @@ exports.updateStatusUsingSessionId = async (req, res) => {
 
     const sessionId = ticket.sessionId
 
-    if (sessionId != null || sessionId != undefined) {
+    if (ticket.status == "verified") {
+        return res.status(200).json({
+            success: true,
+            data: ticket
+        })
+    }
+    else if (sessionId != null || sessionId != undefined) {
 
         const sessionInfo = await paymentService.getSessionInfo(sessionId)
         if (sessionInfo.success == true && sessionInfo.data.payment_status == 'paid') {
             const ticketdata = {
                 _id: ticket._id,
-                status: "Awaiting Approval"
+                status: "verified"
             }
             ticket = await ticketService.updateTicket(ticketdata)
             return res.status(200).json({
@@ -992,7 +999,7 @@ exports.updateStatusUsingSessionId = async (req, res) => {
         if (paymentInfo.data[0].status == "successful") {
             const ticketdata = {
                 _id: ticket._id,
-                status: "Awaiting Approval"
+                status: "verified"
             }
 
             ticket = await ticketService.updateTicket(ticketdata)
@@ -1061,18 +1068,26 @@ exports.updateStatusOfTicketbyVendor = async (req, res) => {
     try {
         let { ticketid, status } = req.body
 
+        // console.log(ticketid)
+
         let ticket = await ticketService.findTicket({ _id: ticketid })
         // console.log(ticket)
         let event;
         if (status == 'verified') {
 
             const ticketdata = {
-                _id: ticket._id,
-                status: status
+                _id: ticketid,
+                status: 'verified'
             }
+            let updatedTicket;
+            try {
+                updatedTicket = await TicketModel.updateOne({ _id: ticketid }, { status: "verified" })
+            } catch (error) {
+                console.log(error)
+            }
+            // const updatedTicket = await ticketService.updateTicket({ _id: ticketid, status: 'verified' })
 
-            ticket = await ticketService.updateTicket(ticketdata)
-
+            console.log("updated ticket data", updatedTicket)
             // send notification 
             const notification = {
                 senderid: req.user._id,

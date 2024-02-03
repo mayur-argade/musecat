@@ -416,7 +416,7 @@ const AddEventModal = ({ onClose }) => {
             facebook: fb,
             instagram: insta,
             email: mail,
-            whatsapp: wpNumber,
+            whatsapp: wpNumber.split("+")[1],
             website: website,
             phone: number.split("+")[1],
             showEndDate: showEndDate
@@ -792,7 +792,7 @@ const AddEventModal = ({ onClose }) => {
                                         </div> */}
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
+                                            <label className='text-xs mt-1' htmlFor="first name">Contact No. with Country code</label>
                                             <PhoneInput
                                                 placeholder="Enter phone number"
                                                 value={number}
@@ -802,13 +802,10 @@ const AddEventModal = ({ onClose }) => {
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
-                                            <input
+                                            <PhoneInput
+                                                placeholder="Enter Whatsapp number"
                                                 value={wpNumber}
-                                                type="tel"
-                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Whatsapp number'
-                                                onChange={((e) => setWpNumber(e.target.value))}
-                                            />
+                                                onChange={setWpNumber} />
                                         </div>
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>

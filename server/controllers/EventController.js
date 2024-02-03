@@ -576,7 +576,10 @@ exports.vendorHome = async (req, res) => {
     const { _id } = req.user
 
     try {
-        const today = new Date()
+        const filterDate = moment().format("YYYY-MM-DD")
+        const today = new Date(`${filterDate}T23:00:00.000Z`)
+        console.log(today)
+        // const today = new Date()
         const currentDay = moment().format('dddd').toLowerCase()
         const events = await eventService.findAllEvents(
             {
@@ -1226,7 +1229,7 @@ exports.adminVerifyEvent = async (req, res) => {
                 success: false,
                 data: "Event not found"
             })
-        }else if (event.location.verified == false){
+        } else if (event.location.verified == false) {
             return res.status(400).json({
                 succss: false,
                 data: `Please Verify Venue ${event.location.name} first which is associated with this event `

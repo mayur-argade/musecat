@@ -19,7 +19,7 @@ const Footer = () => {
 
                     </div>
                     :
-                    <div className='NoFooter'>
+                    <div className='mt-10 NoFooter'>
                         <Toaster />
                         <div className='standalone:hidden bg-[#F3F3F3] dark:bg-[#2c2c2c] dark:border-r-0 dark:border-l-0 dark:border-b-0 border border-2 border-t-indigo-500'>
                             <footer class="md:pr-44 md:pl-44 pt-5 pl-6 pr-6">

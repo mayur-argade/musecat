@@ -4,33 +4,33 @@ import { createBrowserRouter, RouterProvider, BrowserRouter as Router, Routes, R
 
 
 // pages
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import Signup from './pages/Signup/Signup';
-import AboutUs from './pages/AboutUs/AboutUs';
-import Contactus from './pages/Contactus/Contactus';
-import Profile from './pages/Profile/Profile';
-import WhereToMap from './pages/WhereToMap/WhereToMap';
-import Events from './pages/Events/Events';
-import EventDescription from './pages/EventDescription/EventDescription';
-import VenueDescription from './pages/VenueDescription/VenueDescription';
-import Favorites from './pages/Favorites/Favorites';
-import PastPurchase from './pages/PastPurchase/PastPurchase';
-import FAQ from './pages/FAQ/FAQ';
-import BookTicket from './pages/BookTicket/BookTicket';
-import TicketStatus from './pages/TicketStatus/TicketStatus';
-import VerifyUserAccount from './pages/VerifyUserAccount/VerifyUserAccount';
-import VendorLogin from './pages/Login/VendorLogin';
-import VendorSignup from './pages/Signup/VendorSignup';
-import VendorNotification from './pages/VendorNotification/VendorNotification';
-import VendorActivation from './pages/VendorActivation/VendorActivation';
-import VendorHostedEvents from './pages/VendorHostedEvents/VendorHostedEvents';
-import VendorHome from './pages/VendorHome/VendorHome';
-import VendorEventDescripton from './pages/VendorEventDescription/VendorEventDescripton';
-import VendorBookedTickets from './pages/VendorBookedTickets/VendorBookedTickets';
-import VendorProfile from './pages/Profile/VendorProfile'
+import Home from './pages/User/Home/Home'
+import Login from './pages/User/Login/Login'
+import Signup from './pages/User/Signup/Signup'
+import AboutUs from './pages/User/AboutUs/AboutUs'
+import Contactus from './pages/User/Contactus/Contactus'
+import Profile from './pages/User/Profile/Profile'
+import WhereToMap from './pages/User/WhereToMap/WhereToMap'
+import Events from './pages/User/Events/Events'
+import EventDescription from './pages/User/EventDescription/EventDescription'
+import VenueDescription from './pages/User/VenueDescription/VenueDescription'
+import Favorites from './pages/User/Favorites/Favorites'
+import PastPurchase from './pages/User/PastPurchase/PastPurchase'
+import FAQ from './pages/User/FAQ/FAQ'
+import BookTicket from './pages/User/BookTicket/BookTicket'
+import TicketStatus from './pages/User/TicketStatus/TicketStatus'
+import VerifyUserAccount from './pages/User/VerifyUserAccount/VerifyUserAccount'
+import VendorLogin from './pages/User/Login/VendorLogin'
+import VendorSignup from './pages/User/Signup/VendorSignup'
+import VendorNotification from './pages/Vendor/VendorNotification/VendorNotification'
+import VendorActivation from './pages/Vendor/VendorActivation/VendorActivation'
+import VendorHostedEvents from './pages/Vendor/VendorHostedEvents/VendorHostedEvents'
+import VendorHome from './pages/Vendor/VendorHome/VendorHome';
+import VendorEventDescripton from './pages/Vendor/VendorEventDescription/VendorEventDescripton';
+import VendorBookedTickets from './pages/Vendor/VendorBookedTickets/VendorBookedTickets';
+import VendorProfile from './pages/User/Profile/VendorProfile'
 import AdminHome from './pages/AdminDashboard/AdminHome';
-import EventsPWA from './pages/PWA-Events/EventsPWA';
+import EventsPWA from './pages/User/PWA-Events/EventsPWA';
 import AdminCategory from './pages/AdminDashboard/AdminCategory'
 import AdminUsers from './pages/AdminDashboard/AdminUsers';
 import AdminVendors from './pages/AdminDashboard/AdminVendors';
@@ -38,13 +38,23 @@ import AdminEvents from './pages/AdminDashboard/AdminEvents';
 import AdminOffers from './pages/AdminDashboard/AdminOffers';
 import AdminEventDescription from './pages/AdminDashboard/AdminEventDescription';
 import AdminBookedTickets from './pages/AdminDashboard/AdminBookedTickets';
-import SearchPWA from './pages/SearchPWA/SearchPWA';
+import SearchPWA from './pages/User/SearchPWA/SearchPWA';
 import AdminCheckProfile from './pages/AdminDashboard/AdminCheckProfile';
-import UserNotification from './pages/UserNotification/UserNotification'
-import VerifyVendorAccount from './pages/VerifyUserAccount/VerifyVendorAccount'
+import UserNotification from './pages/User/UserNotification/UserNotification'
+import VerifyVendorAccount from './pages/User/VerifyUserAccount/VerifyVendorAccount'
 import Notifications from './pages/AdminDashboard/Notifications'
 import NotFound from './pages/NotFound'
 import SupportChat from './pages/AdminDashboard/SupportChat';
+import InputEmail from './pages/User/ForgotPassword/InputEmail';
+import ResetPassword from './pages/User/ForgotPassword/ResetPassword';
+import AdminVenue from './pages/AdminDashboard/AdminVenue';
+import Cookies from './pages/User/LegalCorner/Cookies';
+import PrivacyPolicy from './pages/User/LegalCorner/PrivacyPolicy';
+import TermsAndCondition from './pages/User/LegalCorner/TermsAndCondition';
+import InputEmailVendor from './pages/Vendor/ForgotPasswordVendor/InputEmailVendor';
+import ResetPasswordVendor from './pages/Vendor/ForgotPasswordVendor/ResetPasswordVendor';
+import UserHelpCenter from './pages/SuportEngine/UserHelpCenter';
+import VendorHelpCenter from './pages/SuportEngine/VendorHelpCenter';
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -52,18 +62,6 @@ import GuestRoute from './utils/GuestRoute'
 import Protected from './utils/Protected';
 import SemiProtected from './utils/SemiProtected'
 import ScrollToTop from './utils/ScrollToTop';
-import InputEmail from './pages/ForgotPassword/InputEmail';
-import ResetPassword from './pages/ForgotPassword/ResetPassword';
-import AdminVenue from './pages/AdminDashboard/AdminVenue';
-import Cookies from './pages/LegalCorner/Cookies';
-import PrivacyPolicy from './pages/LegalCorner/PrivacyPolicy';
-import TermsAndCondition from './pages/LegalCorner/TermsAndCondition';
-import InputEmailVendor from './pages/ForgotPasswordVendor/InputEmailVendor';
-import ResetPasswordVendor from './pages/ForgotPasswordVendor/ResetPasswordVendor';
-import UserHelpCenter from './pages/SuportEngine/UserHelpCenter';
-import VendorHelpCenter from './pages/SuportEngine/VendorHelpCenter';
-
-
 
 
 function App() {

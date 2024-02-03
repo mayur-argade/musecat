@@ -1,8 +1,6 @@
-import React from 'react'
-import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
 import './navbar.css'
-import { useParams } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { clientLogout, vendorLogout, GetNotificationCount } from '../../../http';
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../../store/authSlice'
@@ -12,55 +10,37 @@ import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [isAccOpen, setIsAccOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [sidebar, setSidebar] = useState(false);
+    const [unread, setUnread] = useState(false)
 
-    const openDropdown = () => {
-        setDropdownOpen(true);
-    };
-
-    const closeDropdown = () => {
-        setDropdownOpen(false);
-    };
-
-    let { category, eventid } = useParams();
     const navigate = useNavigate();
-    const handleBack = () => {
-        navigate(-1); // This function will take you back to the previous page
-    };
+    const dropdownRef = useRef(null);
+    const dispatch = useDispatch();
+    const { isAuth, user } = useSelector((state) => state.auth)
+    let { category, eventid } = useParams();
 
-    const handleSearchInput = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
+    // Event handlers
+    const openDropdown = () => setDropdownOpen(true);
+    const closeDropdown = () => setDropdownOpen(false);
+    const handleBack = () => navigate(-1);
+    const handleSearchInput = (e) => setSearchQuery(e.target.value);
+    const toggleDropdown = () => setIsOpen(!isOpen);
     const handleOnclick = () => {
         userLogout()
         showSidebar()
     }
-    const [isAccOpen, setIsAccOpen] = useState(false)
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
-    const dispatch = useDispatch();
-    const { isAuth, user } = useSelector((state) => state.auth)
-
-
-
-
-    const onClick = () => {
-        setIsAccOpen(!isAccOpen)
-    }
+    const showSidebar = () => setSidebar(!sidebar);
+    const onClick = () => setIsAccOpen(!isAccOpen)
 
     const userLogout = async () => {
         try {
             const { data } = await clientLogout()
             dispatch(setAuth(data));
             toast.success("logged out")
-            navigate("/");
         } catch (error) {
-            window.alert(error)
-            console.log(error)
+            toast.error("Error while logging out the user")
         }
     }
 
@@ -71,17 +51,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             toast.success("logged out")
             navigate("/vendor/login");
         } catch (error) {
-            window.alert(error)
-            console.log(error)
+            toast.error("Error while logging out the user")
         }
     }
 
-
-
-
-    const [sidebar, setSidebar] = useState(false);
-
-    const showSidebar = () => setSidebar(!sidebar);
     let categoryName = category
 
     if (category === 'event') {
@@ -139,8 +112,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         categoryName = "Event Description"
     }
 
-    const [unread, setUnread] = useState(false)
-
     useEffect(() => {
         const getNotificationCountFunction = async () => {
             try {
@@ -154,15 +125,20 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             }
         }
 
-        getNotificationCountFunction()
+        if (isAuth == true && user.type == 'user') {
+            getNotificationCountFunction()
+        }
+
     }, [categoryName])
 
     return (
         <>
-            <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40  w-full bg-white'>
-                <div class="bg-white border-gray-200 dark:bg-[#2c2c2c] md:mr-2 md:ml-2 lg:mr-48 lg:ml-48">
+
+        
+            <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40 bg-white flex justify-center items-center align-middle'>
+                <div class="bg-white border-gray-200 dark:bg-[#2c2c2c] w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12">
                     <Toaster />
-                    <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 py-4 md:pt-2 md:pb-1 shadow-md md:shadow-none">
+                    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 py-4 md:pt-2 md:pb-1 shadow-md md:shadow-none">
 
                         {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
                             <div className='flex align-middle'>
@@ -174,8 +150,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     {categoryName}
                                 </span>
                                 <Link to="/" class="hidden flex md:flex items-center">
-                                    <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
-                                    <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main.webp" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo.webp" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main.webp" className="dark:flex hidden h-10 md:mr-3" alt="MWT Logo" />
                                     <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                                 </Link>
                             </div>
@@ -187,13 +164,15 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 </button>
 
                                 <Link to="/" class="hidden flex md:flex items-center">
-                                    <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
-                                    <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main.webp" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo.webp" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main.webp" className="dark:flex hidden h-10 md:mr-3" alt="MWT Logo" />
                                     <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                                 </Link>
 
                             </div>
                         )}
+
                         {
                             category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/events") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid'
                                 ?
@@ -283,10 +262,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                             <DarkModeToggle />
                                         </div>
                                         <Link to="/login">
-                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0" >Sign in</button>
+                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-0 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0" >Sign in</button>
                                         </Link>
                                         <Link to="/signup">
-                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0">Sign up</button>
+                                            <button type="button" class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-0 focus:outline-none focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0">Sign up</button>
                                         </Link>
                                     </div>
                             }
@@ -355,16 +334,16 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
                                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-[#2c2c2c] md:dark:bg-[#2c2c2c] dark:border-gray-700">
                                         <li>
-                                            <Link to='/' className={`${window.location.pathname == '/' ? 'font-bold' : ''}`}>
+                                            <Link to='/' className={`${window.location.pathname == '/' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
                                                 <a href="#" className={`block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Home</a>
                                             </Link>
 
                                         </li>
                                         <li>
-                                            <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold' : ''}`}>
+                                            <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
                                                 <div className="dropdown-container reltive">
                                                     <span
-                                                        className="hover-trigger"
+                                                        className="hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
                                                         onMouseEnter={() => openDropdown()}
                                                         onMouseLeave={() => closeDropdown()}
                                                     >
@@ -412,12 +391,12 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold' : ''}`}>
+                                            <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
                                                 <a href="#" className="block text-sm py-2 pl-3 pr-4 rounded hover:bg-gray-100 hover:font-bold md:hover:bg-transparent md:p-0 md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'font-bold' : ''}`}>
+                                            <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
                                                 <a href="#" className="block text-sm py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:font-bold md:p-0 md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
                                             </Link>
                                         </li>

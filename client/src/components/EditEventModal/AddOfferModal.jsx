@@ -8,6 +8,8 @@ import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import Tooltip from '../shared/Tooltip/Tooltip'
 import moment from 'moment'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 const AddOfferModal = ({ onClose }) => {
 
@@ -377,13 +379,15 @@ const AddOfferModal = ({ onClose }) => {
             eventdate.recurring.endDate = endDate
         }
 
+        // console.log(categories)
         for (const category of categories) {
             if (category.seats != null) {
                 if (category.seats !== '' && category.seats < 1) {
                     return toast.error("Enter a valid seat count")
                 }
             }
-            if (category.price != null && category.className == null) {
+            if (category.price != null  && category.className == null) {
+                console.log(category.price)
                 return toast.error("Classname is required if you are entering price")
             }
             if (category.className != null && category.className.trim() == "") {
@@ -433,9 +437,9 @@ const AddOfferModal = ({ onClose }) => {
             facebook: fb,
             instagram: insta,
             email: mail,
-            whatsapp: wpNumber,
+            whatsapp: wpNumber.split("+")[1],
             website: website,
-            phone: number,
+            phone: number.split("+")[1],
             showEndDate: showEndDate,
             discountOnApp: discountOnApp
         }
@@ -802,24 +806,18 @@ const AddOfferModal = ({ onClose }) => {
                                     <div className="w-full flex justify-between">
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Phone No.  with Country code <span className='ml-0 text-lg font-bold'> * </span> </label>
-                                            <input
+                                            <PhoneInput
+                                                placeholder="Enter phone number"
                                                 value={number}
-                                                type='tel'
-                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Phone number'
-                                                onChange={((e) => setNumber(e.target.value))}
-                                            />
+                                                onChange={setNumber} />
                                         </div>
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code <span className='ml-0 text-lg font-bold'> * </span></label>
-                                            <input
+                                            <PhoneInput
+                                                placeholder="Enter Whatsapp number"
                                                 value={wpNumber}
-                                                type="tel"
-                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Whatsapp number'
-                                                onChange={((e) => setWpNumber(e.target.value))}
-                                            />
+                                                onChange={setWpNumber} />
                                         </div>
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
