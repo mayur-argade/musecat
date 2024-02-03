@@ -24,6 +24,25 @@ const WhereToMap = () => {
 
     const [loading, setLoading] = useState(false)
     const [response, setResponse] = useState({})
+    const [mapAddress, setMapAddress] = useState({
+        lat: null,
+        lng: null
+    })
+    const handleLocationSelect = (location) => {
+        setMapAddress({
+            lat: location.lat,
+            lng: location.lng
+        })
+    }
+    const handleMarkerClick = (markerPosition) => {
+        // Handle the marker click, e.g., log the position
+        console.log("Marker Clicked:", markerPosition);
+        setMapAddress({
+            lat: markerPosition.lat,
+            lng: markerPosition.lng
+        })
+    };
+
     let coordinates = [];
     const location = useLocation();
     const queryParams = queryString.parse(location.search);
@@ -36,7 +55,7 @@ const WhereToMap = () => {
             }
             try {
                 const { data } = await getCategoryEvents(categorydata, `?search=${queryParams.search}`)
-                // console.log(data.data)
+                console.log(data.data)
                 setResponse(data)
 
                 setLoading(false)
@@ -57,16 +76,8 @@ const WhereToMap = () => {
         })
     }
 
-    if (response.data == null) {
-        return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
-                </div>
-            </div>
-        )
-    }
+    console.log(mapAddress)
+
     return (
         <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
@@ -78,18 +89,37 @@ const WhereToMap = () => {
                     </button>
                     <span className='text-2xl font-bold'> Where To Map</span>
                 </div>
-                <div className="flex justify-around items-center align-middle md:flex-row flex-col ml-5 mr-5 ">
+                <div className="flex justify-around align-top ">
                     <div className="md:drop-shadow-2xl map w-full md:w-9/12 h-auto ">
-                        <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"500px"} zoom={10} />
+                        <MapComponent onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"500px"} zoom={10} />
                     </div>
 
-                    <div className="mt-0 md:mt-0 flex flex-col justify-center items-center align-middle ml-10 items-center h-128 md:h-128 snap-start overflow-y-auto events ml-2 mr-2 pl-2 pr-2">
+                    <div className="flex flex-col h-[32rem] overflow-y-auto">
                         {
-                            response.data.map((event) => (
-                                <button onClick={() => setSelectedLocation(event.location.coordinates)}>
-                                    <SubEventCard data={event} />
-                                </button>
-                            ))
+                            response.data != null && (
+                                <>
+                                    {
+                                        response.data
+                                            .filter((event) => {
+                                                // Check if mapAddress is present
+                                                if (mapAddress.lat != null && mapAddress.lng != null) {
+                                                    // Assuming event.location.coordinates is also an object with lat and lng properties
+                                                    return (
+                                                        event.location.coordinates.lat === mapAddress.lat &&
+                                                        event.location.coordinates.lng === mapAddress.lng
+                                                    );
+                                                }
+                                                // If mapAddress is not present, include all events
+                                                return true;
+                                            })
+                                            .map((event) => (
+                                                <button key={event.id} onClick={() => setSelectedLocation(event.location.coordinates)}>
+                                                    <SubEventCard data={event} />
+                                                </button>
+                                            ))
+                                    }
+                                </>
+                            )
                         }
                     </div>
                 </div>

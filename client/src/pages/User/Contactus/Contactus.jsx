@@ -10,7 +10,7 @@ const Contactus = () => {
     document.title = 'Contact Us'
 
     const navigate = useNavigate();
-    
+
     const [loading, setLoading] = useState(false)
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -36,6 +36,10 @@ const Contactus = () => {
                 const res = await ClientContactUs(contactdata)
                 setLoading(false)
                 toast.success("Message sent")
+                setFirstname('');
+                setLastname('');
+                setEmail('');
+                setMessage('');
             } catch (error) {
                 setLoading(false)
                 // console.log(error.response.data.data)
@@ -77,6 +81,7 @@ const Contactus = () => {
                                             <label className='text-xs mt-1' htmlFor="first name">First name</label>
                                             <input
                                                 type="text"
+                                                value={firstname}
                                                 className='ring-0 dark:border-0 dark:text-white border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setFirstname(e.target.value)}
                                                 required
@@ -88,6 +93,7 @@ const Contactus = () => {
                                             <label className='text-xs mt-1' htmlFor="first name">last name</label>
                                             <input
                                                 type="text"
+                                                value={lastname}
                                                 className='ring-0 dark:border-0 dark:text-white border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                                 onChange={(e) => setLastname(e.target.value)}
                                                 required
@@ -101,6 +107,7 @@ const Contactus = () => {
                                         <label className='text-xs mt-1' htmlFor="first name">email</label>
                                         <input
                                             type="email"
+                                            value={email}
                                             className='ring-0 dark:border-0 dark:text-white border bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
@@ -113,6 +120,7 @@ const Contactus = () => {
                                         <label className='text-xs mt-1' htmlFor="first name">message</label>
                                         <textarea
                                             type="text"
+                                            value={message}
                                             className='ring-0 dark:border-0 dark:text-white border h-24 bg-transparent border-white focus:border-white focus:ring-white  outline-0 text-sm font-medium text-black'
                                             onChange={(e) => setMessage(e.target.value)}
                                             required

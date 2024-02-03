@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClick, mapSize, zoom }) => {
+const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
 
 
@@ -16,10 +16,10 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClic
     }, []);
 
     const handleMapClick = (event) => {
-        if (enableClick) {
+        if (enableClick && typeof onMarkerClick === 'function') {
             const lat = event.latLng.lat();
             const lng = event.latLng.lng();
-            setMapAddress({ lat, lng });
+            onMarkerClick({ lat, lng });
         }
     };
 
@@ -50,38 +50,38 @@ const MapComponent = ({ coordinates, selectedLocation, setMapAddress, enableClic
         <div style={{ marginTop: "px" }}>
             <GoogleMap
                 mapContainerStyle={{
-                    height: `${mapSize}` ,
+                    height: `${mapSize}`,
                 }}
                 center={mapCenter}
                 zoom={zoom}
                 onLoad={onMapLoad}
                 onClick={handleMapClick}
             >
-                {
-                    coordinates
-                        ? (
-                            coordinates.map((coordinate, index) => (
-                                <MarkerF
-                                    position={coordinate}
-                                    icon={{
-                                        url: "/images/icons/marker.png",
-                                        scaledSize: new window.google.maps.Size(35, 42)
-                                    }}
-                                />
-                            ))
-                        )
-                        :
-                        (
+                {coordinates
+                    ? (
+                        coordinates.map((coordinate, index) => (
                             <MarkerF
-                                position={selectedLocation}
+                                key={index}
+                                position={coordinate}
                                 icon={{
                                     url: "/images/icons/marker.png",
                                     scaledSize: new window.google.maps.Size(35, 42)
                                 }}
+                                onClick={() => onMarkerClick({ lat: coordinate.lat, lng: coordinate.lng })}
                             />
-                        )
+                        ))
+                    )
+                    : (
+                        <MarkerF
+                            position={selectedLocation}
+                            icon={{
+                                url: "/images/icons/marker.png",
+                                scaledSize: new window.google.maps.Size(35, 42)
+                            }}
+                            onClick={() => onMarkerClick({ lat: selectedLocation.lat, lng: selectedLocation.lng })}
+                        />
+                    )
                 }
-
             </GoogleMap>
         </div>
     );

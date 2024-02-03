@@ -233,6 +233,7 @@ exports.updateEvent = async (req, res) => {
             });
 
 
+            event = await eventService.updateEvent(data)
 
             if (!categoryData) {
                 // If not found in main categories, search in subcategories of all categories
@@ -247,13 +248,11 @@ exports.updateEvent = async (req, res) => {
                 }
             }
 
-            categoryData.events.push(event._id)
+            if (!categoryData.events.includes(event._id)) {
+                categoryData.events.push(event._id)
+            }
             categoryData.save()
         }
-
-
-        event = await eventService.updateEvent(data)
-
 
         res.status(statusCode.SUCCESS.code).json({
             success: true,

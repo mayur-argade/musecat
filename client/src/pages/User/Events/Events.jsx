@@ -63,7 +63,7 @@ const Events = () => {
     const [trending, setTrending] = useState({})
     const [checkCategory, setCheckCategory] = useState(false)
     const [filterDate, setFilterDate] = useState(null)
-    // console.log("selected distance", selectedDistance)
+    console.log("selectedCategories", selectedCategories)
 
     const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
         <button
@@ -261,313 +261,329 @@ const Events = () => {
     };
 
 
-    // console.log("trending events", trending)
-    if (response.data == null || trending.data == null) {
-        return (
-            <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
+    return (
+        <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
+            <div className='z-20 '>
                 <Navbar />
                 <div className="hidden md:block">
                     <Tabbar />
                 </div>
+            </div>
 
-                <section className='dark:bg-[#2c2c2c] dark:text-white '>
-                    <section className="screenWrapper flex justify-center items-center align-middle mt-5">
-                        <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-9/12  xl:w-9/12 2xl:w-8/12'>
-                            <div className="hidden md:flex justify-center mt-3  ">
-                                <span className='capitalize text-2xl font-bold'>
-                                    {
-                                        categoryName
-                                    }
+            <section className='dark:bg-[#2c2c2c] dark:text-white '>
+                <section className="screenWrapper flex justify-center items-center align-middle mt-5">
+                    <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                        {response.data == null && (
+                            <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm'>
+                                <div class="h-screen w-screen relative flex justify-center items-center">
+                                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                                    <img src="/images/logo/logo-main.png" class="h-16" />
+                                </div>
+                            </div>
+                        )}
+                        <div className="hidden md:flex justify-center mt-3  ">
+                            <span className='capitalize text-2xl font-bold'>
+                                {
+                                    categoryName
+                                }
+                            </span>
+                        </div>
+
+                        <div className='mb-2 md:mb-0 md:py-2 w-full flex justify-center lg:justify-end align-middle items-center'>
+                            <div className="search">
+                                <div class="px-4">
+                                    <div class="relative mt-1">
+                                        <div class="absolute inset-y-0 right-4 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <input
+                                            ref={searchInputRef}
+                                            type="text"
+                                            id="table-search"
+                                            className={`dark:bg-[#454545] dark:placeholder-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
+                                            onChange={(e) => setSearch(e.target.value)}
+                                            placeholder="Search "
+                                            onFocus={toggleSearch}
+                                            onBlur={MakeNormal}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={`filterbyfeature ${hideFilter ? 'hidden md:block' : ''}`}>
+                                <div className="relative inline-block text-left">
+                                    <button
+                                        onClick={toggleDropdown}
+                                        className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 dark:bg-[#454545] dark:text-white text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                    >
+                                        <span className='hidden md:block text-gray-500'>Filter by Features</span>
+                                        <span className='hidden block text-gray-500'>Filter</span>
+
+                                        <img src="/images/icons/filter.svg" alt="" />
+                                    </button>
+                                    {isOpen && (
+                                        <div
+                                            className="dark:bg-[#454545] dark:text-white origin-top-right absolute left-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                            ref={dropdownRef}
+                                        >
+                                            <div className="p-5">
+                                                {
+                                                    category == 'events' && (
+                                                        <div className="popular">
+                                                            <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
+                                                            {
+                                                                categories.data.map((e) => (
+                                                                    <div class="flex items-center mb-1 mt-2">
+                                                                        <input id={e.categoryURL} type="checkbox"
+                                                                            onChange={() => handleCategoryChange(e)}
+                                                                            checked={selectedCategories.includes(e)}
+                                                                            value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                        <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+
+                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
+                                                <div className="popular">
+                                                    <span className='ml-0 font-semibold text-sm'>Features</span>
+                                                    {
+                                                        Features.list.map((e) => (
+                                                            <div class="flex items-center mb-1 mt-2">
+                                                                <input id={e} type="checkbox"
+                                                                    onChange={() => handleFeaturesChange(e)}
+                                                                    checked={selectedFeatures.includes(e)}
+                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+
+                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+
+                                                <div className="distance">
+                                                    <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
+                                                    <div class="flex items-center mb-1 mt-2">
+                                                        <input onChange={() => handleDistanceChange(4)}
+                                                            checked={selectedDistance.includes(4)} id="4km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
+                                                    </div>
+
+                                                    <div class="flex items-center mb-1">
+                                                        <input onChange={() => handleDistanceChange(10)}
+                                                            checked={selectedDistance.includes(10)} id="10km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
+                                                    </div>
+
+                                                    <div class="flex items-center mb-1">
+                                                        <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <span className="datepicker-toggle ">
+                                    <DatePicker
+                                        className='z-50'
+                                        selected={filterDate}
+                                        onChange={(date) => ChangeFilterDate(date)}
+                                        customInput={<ExampleCustomInput />}
+                                        popperModifiers={{
+                                            preventOverflow: {
+                                                enabled: true,
+                                            },
+                                        }}
+                                    />
                                 </span>
                             </div>
 
-                            <div className='mb-2 md:mb-0 md:py-2 w-full flex justify-center lg:justify-end align-middle items-center'>
-                                <div className="search">
-                                    <div class="px-4">
-                                        <div class="relative mt-1">
-                                            <div class="absolute inset-y-0 right-4 flex items-center pl-3 pointer-events-none">
-                                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                            <input
-                                                ref={searchInputRef}
-                                                type="text"
-                                                id="table-search"
-                                                className={`dark:bg-[#454545] dark:placeholder-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
-                                                onChange={(e) => setSearch(e.target.value)}
-                                                placeholder="Search "
-                                                onFocus={toggleSearch}
-                                                onBlur={MakeNormal}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
 
-                                <div className={`filterbyfeature ${hideFilter ? 'hidden md:block' : ''}`}>
-                                    <div className="relative inline-block text-left">
-                                        <button
-                                            onClick={toggleDropdown}
-                                            className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 dark:bg-[#454545] dark:text-white text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
-                                        >
-                                            <span className='hidden md:block text-gray-500'>Filter by Features</span>
-                                            <span className='hidden block text-gray-500'>Filter</span>
-
-                                            <img src="/images/icons/filter.svg" alt="" />
-                                        </button>
-                                        {isOpen && (
-                                            <div
-                                                className="dark:bg-[#454545] dark:text-white origin-top-right absolute left-0 mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                                                ref={dropdownRef}
-                                            >
-                                                <div className="p-5">
+                        <div className='min-h-screen  mainContainer grid grid-cols-1 lg:grid-cols-3'>
+                            <div className="1 col-span-2">
+                                <div className="left w-full flex justify-center">
+                                    <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                        {
+                                            response.data != null && (
+                                                <>
                                                     {
-                                                        category == 'events' && (
-                                                            <div className="popular">
-                                                                <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                                {
-                                                                    categories.data.map((e) => (
-                                                                        <div class="flex items-center mb-1 mt-2">
-                                                                            <input id={e.categoryURL} type="checkbox"
-                                                                                onChange={() => handleCategoryChange(e)}
-                                                                                checked={selectedCategories.includes(e)}
-                                                                                value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                            <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
-                                                                        </div>
-                                                                    ))
-                                                                }
-                                                            </div>
-                                                        )
-                                                    }
-
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                                    <div className="popular">
-                                                        <span className='ml-0 font-semibold text-sm'>Features</span>
-                                                        {
-                                                            Features.list.map((e) => (
-                                                                <div class="flex items-center mb-1 mt-2">
-                                                                    <input id={e} type="checkbox"
-                                                                        onChange={() => handleFeaturesChange(e)}
-                                                                        checked={selectedFeatures.includes(e)}
-                                                                        value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
+                                                        loading
+                                                            ?
+                                                            <>
+                                                                <SkeletonCard />
+                                                                <SkeletonCard />
+                                                                <SkeletonCard />
+                                                            </>
+                                                            :
+                                                            response.data.length == 0
+                                                                ?
+                                                                <div className='col-span-3'>
+                                                                    <div className='h-80 flex flex-col justify-center items-center'>
+                                                                        <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                                        <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
+                                                                    </div>
                                                                 </div>
-                                                            ))
-                                                        }
-                                                    </div>
+                                                                :
+                                                                response.data
+                                                                    .filter((item) => {
+                                                                        const searchResults = search.toLocaleLowerCase() === '' ? true : item.title.toLowerCase().includes(search);
 
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
+                                                                        const categoryMatch =
+                                                                            selectedCategories.length === 0 ||
+                                                                            selectedCategories.some((selectedCategory) => {
+                                                                                return item.eventCategory.some((itemSubcategory) =>
+                                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                                );
+                                                                            }) ||
+                                                                            selectedCategories.some((selectedCategory) => {
+                                                                                if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                                                    console.log("good");
+                                                                                    return (
+                                                                                        selectedCategory.subCategories &&
+                                                                                        selectedCategory.subCategories.some((subCategory) =>
+                                                                                            item.eventCategory &&
+                                                                                            item.eventCategory.some((itemSubcategory) => (
+                                                                                                itemSubcategory.categoryURL === subCategory.categoryURL
+                                                                                            ))
+                                                                                        )
+                                                                                    );
+                                                                                } else {
+                                                                                    console.log("good"); // This will be executed regardless of subCategories
+                                                                                    return item.eventCategory.some((itemSubcategory) =>
+                                                                                        itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                                    );
+                                                                                }
+                                                                            });
 
-                                                    <div className="distance">
-                                                        <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                                        <div class="flex items-center mb-1 mt-2">
-                                                            <input onChange={() => handleDistanceChange(4)}
-                                                                checked={selectedDistance.includes(4)} id="4km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
-                                                        </div>
-
-                                                        <div class="flex items-center mb-1">
-                                                            <input onChange={() => handleDistanceChange(10)}
-                                                                checked={selectedDistance.includes(10)} id="10km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
-                                                        </div>
-
-                                                        <div class="flex items-center mb-1">
-                                                            <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                            <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                                        </div>
-
-
-                                                    </div>
-
-                                                    <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center space-x-2">
-                                    <span className="datepicker-toggle ">
-                                        <DatePicker
-                                            className='z-50'
-                                            selected={filterDate}
-                                            onChange={(date) => ChangeFilterDate(date)}
-                                            customInput={<ExampleCustomInput />}
-                                            popperModifiers={{
-                                                preventOverflow: {
-                                                    enabled: true,
-                                                },
-                                            }}
-                                        />
-                                    </span>
-                                </div>
-
-                            </div>
-
-                            <div className='min-h-screen  mainContainer grid grid-cols-1 lg:grid-cols-3'>
-                                <div className="1 col-span-2">
-                                    <div className="left w-full flex justify-center">
-                                        <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
-                                            {loading
-                                                ?
-                                                <>
-                                                    <SkeletonCard />
-                                                    <SkeletonCard />
-                                                    <SkeletonCard />
-                                                </>
-                                                :
-                                                response.data.length == 0
-                                                    ?
-                                                    <div className='col-span-3'>
-                                                        <div className='h-80 flex flex-col justify-center items-center'>
-                                                            <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
-                                                            <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
-                                                        </div>
-                                                    </div>
-                                                    :
-                                                    response.data
-                                                        .filter((item) => {
-                                                            const searchResults = search.toLocaleLowerCase() === '' ? true : item.title.toLowerCase().includes(search);
-
-                                                            const categoryMatch =
-                                                                selectedCategories.length === 0 ||
-                                                                selectedCategories.some((selectedCategory) => {
-                                                                    if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
-                                                                        console.log("good")
-                                                                        return (
-                                                                            selectedCategory.subCategories &&
-                                                                            selectedCategory.subCategories.some((subCategory) =>
-                                                                                item.eventCategory &&
-                                                                                item.eventCategory.some((itemSubcategory) => (
-                                                                                    itemSubcategory.categoryURL === subCategory.categoryURL)
-                                                                                )
-                                                                            )
-                                                                        );
-                                                                    }
-                                                                    else {
-                                                                        return (
-                                                                            item.eventCategory.some((itemSubcategory) =>
-                                                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
-                                                                            )
-                                                                        );
-                                                                    }
-                                                                });
+                                                                        const featureMatch =
+                                                                            selectedFeatures.length == 0 ||
+                                                                            item.features.some(feature => selectedFeatures.includes(feature));
 
 
-                                                            const featureMatch =
-                                                                selectedFeatures.length == 0 ||
-                                                                item.features.some(feature => selectedFeatures.includes(feature));
+                                                                        if (selectedDistance.length > 0) {
+                                                                            if (userCord != null) {
+                                                                                const eventDistance = calculateDistance(
+                                                                                    userCord.latitude,
+                                                                                    userCord.longitude,
+                                                                                    item.location.coordinates.lat,
+                                                                                    item.location.coordinates.lng
+                                                                                );
 
+                                                                                const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
 
-                                                            if (selectedDistance.length > 0) {
-                                                                if (userCord != null) {
-                                                                    const eventDistance = calculateDistance(
-                                                                        userCord.latitude,
-                                                                        userCord.longitude,
-                                                                        item.location.coordinates.lat,
-                                                                        item.location.coordinates.lng
-                                                                    );
-
-                                                                    const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
-
-                                                                    return distanceFilterMatch && searchResults && featureMatch && categoryMatch;
-                                                                }
-                                                            } else {
-                                                                // No distance filter applied
-                                                                return searchResults && featureMatch && categoryMatch;
-                                                            }
-                                                        }).map((event) => (
-                                                            <EventCard key={event._id} data={event} />
-                                                        ))
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="hidden 2 md:flex md:justify-center lg:justify-end ">
-                                    <div className="relative mx-auto md:mx-0">
-                                        <div>
-                                            <div className='w-72 h-9/12 rounded-md'>
-                                                <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
-                                            </div>
-                                        </div>
-
-                                        <div className="md:flex flex-col ">
-                                            {trending.data.length != 0
-                                                ?
-                                                <>
-                                                    <div className="mt-3">
-                                                        <p className="text-xl font-bold mt-3">
-                                                            Trending In Muscat
-                                                        </p>
-                                                    </div>
-                                                    <div className=''>
-                                                        {
-                                                            trending.data.map((event) => (
-                                                                <>
-                                                                    {
-                                                                        event != null && (
-                                                                            <TrendingCard data={event} />
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            ))
-                                                        }
-
-                                                    </div>
-                                                </>
-                                                :
-                                                <></>
-                                            }
-
-                                            <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                                <div className='flex justify-center mb-2'>
-                                                    {
-                                                        visible && (
-                                                            <button onClick={() => window.scrollTo({
-                                                                top: 0,
-                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                            </button>
-                                                        )
+                                                                                return distanceFilterMatch && searchResults && featureMatch && categoryMatch;
+                                                                            }
+                                                                        } else {
+                                                                            // No distance filter applied
+                                                                            return searchResults && featureMatch && categoryMatch;
+                                                                        }
+                                                                    }).map((event) => (
+                                                                        <EventCard key={event._id} data={event} />
+                                                                    ))
                                                     }
+                                                </>
+                                            )
 
-                                                    <button>
-                                                    </button>
-                                                </div>
-                                                <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                                            </div>
-                                        </div>
-
+                                        }
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                    </section>
 
+                            <div className="hidden 2 md:flex md:justify-center lg:justify-end mt-2">
+                                <div className="relative mx-auto md:mx-0">
+                                    <div>
+                                        <div className='w-72 h-9/12 rounded-md'>
+                                            <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
+                                        </div>
+                                    </div>
+
+                                    <div className="md:flex flex-col ">
+                                        {
+                                            trending.data != null && (
+                                                <>
+                                                    {
+                                                        trending.data.length != 0
+                                                            ?
+                                                            <>
+                                                                <div className="mt-3">
+                                                                    <p className="text-xl font-bold mt-3">
+                                                                        Trending In Muscat
+                                                                    </p>
+                                                                </div>
+                                                                <div className=''>
+                                                                    {
+                                                                        trending.data.map((event) => (
+                                                                            <>
+                                                                                {
+                                                                                    event != null && (
+                                                                                        <TrendingCard data={event} />
+                                                                                    )
+                                                                                }
+                                                                            </>
+                                                                        ))
+                                                                    }
+
+                                                                </div>
+                                                            </>
+                                                            :
+                                                            <></>
+                                                    }
+                                                </>
+                                            )
+
+                                        }
+
+                                        <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
+                                            <div className='flex justify-center mb-2'>
+                                                {
+                                                    visible && (
+                                                        <button onClick={() => window.scrollTo({
+                                                            top: 0,
+                                                            behavior: 'smooth', // You can use 'auto' for instant scrolling
+                                                        })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
+                                                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
+                                                        </button>
+                                                    )
+                                                }
+
+                                                <button>
+                                                </button>
+                                            </div>
+                                            <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </section>
 
-                <div className='dark:bg-[#2c2c2c] dark:text-white'>
-                    < Footer />
-                </div>
+            </section>
+
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
+                < Footer />
             </div>
-        )
-    }
+        </div >
+    )
 
 }
 

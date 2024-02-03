@@ -43,41 +43,64 @@ const Home = () => {
             }
         };
 
-        const handleCalenderClickOutside = (e) => {
-            if (calendarRef.current && !calendarRef.current.contains(e.target)) {
-                setShowCalender(false);
-            }
-        };
-
         window.addEventListener('scroll', handleScroll);
-        document.addEventListener('mousedown', handleCalenderClickOutside);
-
-        // Trigger the animation after a delay or based on your specific logic
-        const timeoutId = setTimeout(() => {
-            setIsVisible(true);
-        }, 1000);
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('mousedown', handleCalenderClickOutside);
-            clearTimeout(timeoutId); // Clear the timeout when the component unmounts
         };
     }, []);
 
+    const scrollLeft = () => {
+        document.getElementById("content").scrollLeft -= 400;
+    }
+    const scrollRight = () => {
+        document.getElementById("content").scrollLeft += 400;
+    }
 
-    const scrollLeft = () => document.getElementById("content").scrollLeft -= 400;
-    const scrollRight = () => document.getElementById("content").scrollLeft += 400;
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    // Define a callback function to receive the selected date
+    const handleDateSelection = (date) => {
+        setSelectedDate(date);
+        // You can perform any actions with the selected date here
+    };
 
     const calendarRef = useRef(null);
 
-    // Close the calendar when clicking outside
     const handleCalenderClickOutside = (e) => {
         if (calendarRef.current && !calendarRef.current.contains(e.target)) {
             setShowCalender(false);
         }
     };
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleCalenderClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleCalenderClickOutside);
+        };
+    }, []);
+
     const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        // Trigger the animation after a delay or based on your specific logic
+        setTimeout(() => {
+            setIsVisible(true);
+        }, 1000); // Adjust the delay as needed
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleCalenderClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleCalenderClickOutside);
+        };
+    }, []);
+
+    // const [date, setDate] = useState(new Date()); // Initialize date with today's date
+
+    // console.log(date)
 
 
     const handleDateChange = (newDate) => {
@@ -86,8 +109,11 @@ const Home = () => {
         // You can do further processing with the selected date, such as sending it to the server or updating your state.
     };
 
+
     const next7Days = [];
     const currentDate = moment();
+
+
 
     for (let i = 0; i < 7; i++) {
         const formattedDate = currentDate.format('D MMM'); // Format date as "9 Sep"
@@ -99,6 +125,9 @@ const Home = () => {
 
     // Get the current date
     const nowdate = moment();
+
+    // Calculate the start of the current week (Sunday)
+    const startOfWeek = nowdate.clone().startOf('week');
 
     // Initialize an array to store the dates
     const daysAndDates = [];
@@ -203,31 +232,40 @@ const Home = () => {
     // console.log("highlightesd date", highlightedDates)
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchdata = async () => {
             try {
-                setOffersLoading(true);
-                const offersData = await ClientGetOffers();
-                setOffers(offersData.data);
-                setOffersLoading(false);
+                setOffersLoading(true)
+                const { data } = await ClientGetOffers()
+                setOffers(data)
+                setOffersLoading(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchdata()
+    }, []);
 
-                setEditorpickLoading(true);
-                const categoryData = {
+    useEffect(() => {
+        const fetchdata = async () => {
+            setEditorpickLoading(true)
+            try {
+                const categorydata = {
                     category: "editorspick",
                     query: `?search=${null}`,
                     filterdate: null
-                };
+                }
 
-                const editorpickData = await getCategoryEvents(categoryData, `?search=${null}`);
-                setEditorpick(editorpickData.data);
-                setEditorpickLoading(false);
+                const { data } = await getCategoryEvents(categorydata, `?search=${null}`)
+                // console.log(data.data)
+                setEditorpick(data)
+                setEditorpickLoading(false)
             } catch (error) {
-                console.error(error);
-                setOffersLoading(false);
-                setEditorpickLoading(false);
+                console.log(error)
+                setEditorpickLoading(false)
             }
-        };
+        }
 
-        fetchData();
+        fetchdata()
     }, []);
 
 
@@ -556,28 +594,30 @@ const Home = () => {
                                 {
                                     showCalender && (
                                         <div>
-                                            <div ref={calendarRef}>
+                                            <div>
                                                 <div className='calendar-overlay'>
                                                     <div className='relative text-black'>
-                                                        <div className='absolute top-0 left-0'>
+                                                        <div className='absolute top-0'>
                                                             <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
                                                         </div>
-                                                        <Calendar
-                                                            className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
-                                                            value={date}
-                                                            onChange={handleDateChange}
-                                                            tileContent={({ date, view }) =>
-                                                                view === 'month' && highlightedDates.some((highlightedDate) =>
-                                                                    highlightedDate.getDate() === date.getDate() &&
-                                                                    highlightedDate.getMonth() === date.getMonth() &&
-                                                                    highlightedDate.getFullYear() === date.getFullYear()
-                                                                ) ? (
-                                                                    <div className="highlighted-date">
-                                                                        <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
-                                                                    </div>
-                                                                ) : null
-                                                            }
-                                                        />
+                                                        <div ref={calendarRef}>
+                                                            <Calendar
+                                                                className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
+                                                                value={date}
+                                                                onChange={handleDateChange}
+                                                                tileContent={({ date, view }) =>
+                                                                    view === 'month' && highlightedDates.some((highlightedDate) =>
+                                                                        highlightedDate.getDate() === date.getDate() &&
+                                                                        highlightedDate.getMonth() === date.getMonth() &&
+                                                                        highlightedDate.getFullYear() === date.getFullYear()
+                                                                    ) ? (
+                                                                        <div className="highlighted-date">
+                                                                            <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
+                                                                        </div>
+                                                                    ) : null
+                                                                }
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -622,7 +662,7 @@ const Home = () => {
                         </div>
 
                         <div>
-                            <div className='md:flex md:justify-start carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide mt-5 space-x-3 md:space-x-6'>
+                            <div className='md:flex md:justify-start carousel flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-6'>
                                 {
                                     upcomingEvents.data == null || upcomingEvents.data == undefined
                                         ?

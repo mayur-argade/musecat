@@ -47,8 +47,8 @@ class PaymentService {
                 save_card_on_success: true,
                 mode: 'payment',
                 products: [{ name: paymentdata.name, quantity: paymentdata.quantity, unit_amount: paymentdata.unitAmout * 1000 }],
-                success_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
-                cancel_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
+                success_url: `https://omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
+                cancel_url: `https://omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
                 // cancel_url: 'https://www.omanwhereto.com/',
                 // success_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
 
@@ -77,7 +77,7 @@ class PaymentService {
                 payment_method_id: paymentdata.cardid,
                 amount: paymentdata.amount * 1000,
                 client_reference_id: paymentdata.email,
-                return_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
+                return_url: `https://omanwhereto.com/ticketstatus/${paymentdata.ticketid}`,
                 // return_url: `http://localhost:3000/ticketstatus/${paymentdata.ticketid}`,
                 metadata: { customer: 'thawani developers' }
             }

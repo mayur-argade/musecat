@@ -11,7 +11,8 @@ const moment = require('moment');
 const venueService = require('../services/venue-service');
 const paymentService = require('../services/payment-service')
 const notificationService = require('../services/notification-service')
-
+const { transporter } = require('../services/mail-service')
+const { contactUsEmail } = require('../data/emailTemplates');
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -198,8 +199,26 @@ exports.writeContactMessage = async (req, res) => {
             message: message
         }
 
-        const contactMessage = await ContactUsModel.create(data)
+        const mailOptions = {
+            from: 'argademayur2002@gmail.com',
+            to: 'argademayur2002@gmail.com',
+            subject: `${firstname} ${lastname} has sent a message`,
+            html: contactUsEmail(firstname, lastname, email, message),
+        };
 
+        const sendemail = await transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+                return res
+                    .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                        success: false,
+                        data: "failed to send a email, Please check your input email"
+                    });
+            }
+        });
+
+
+        const contactMessage = await ContactUsModel.create(data)
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: contactMessage

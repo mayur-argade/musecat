@@ -333,7 +333,9 @@ exports.getCategoryAllEvents = async (req, res) => {
                 const day = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
                 query = {
                     // type: 'event',
+                    archived: false,
                     verified: true,
+                    type: 'event',
                     $or: [
                         {
                             'date.dateRange.endDate': { $gte: todayDate }
@@ -403,6 +405,7 @@ exports.getCategoryAllEvents = async (req, res) => {
 
             }
 
+            console.log(categoryDisplayName)
             let categoriesWithEvents = await CategoryModel.find({ categoryURL: categoryDisplayName }).populate({
                 path: 'events',
                 populate: {
@@ -410,6 +413,8 @@ exports.getCategoryAllEvents = async (req, res) => {
                 },
                 match: query,
             })
+
+            console.log("all event catgories", categoriesWithEvents)
 
             events = categoriesWithEvents.reduce((acc, category) => {
                 acc.push(...category.events);
@@ -468,8 +473,10 @@ exports.getCategoryAllEvents = async (req, res) => {
                 // Add search conditions for category name, description, and title
                 query.$and.push({
                     $or: [
-                        { 'description': regex },
-                        { 'title': regex }
+                        { 'description': { $regex: regex } }, // Use the regex variable here
+                        { 'title': { $regex: regex } },
+                        { 'eventCategory': { $in: [regex] } }, // Use an array with $in for an exact match
+                        { 'features': { $in: [regex] } }
                     ]
                 });
             }

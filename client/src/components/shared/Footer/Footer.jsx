@@ -19,7 +19,7 @@ const Footer = () => {
 
                     </div>
                     :
-                    <div className='mt-10 NoFooter'>
+                    <div className='NoFooter'>
                         <Toaster />
                         <div className='standalone:hidden bg-[#F3F3F3] dark:bg-[#2c2c2c] dark:border-r-0 dark:border-l-0 dark:border-b-0 border border-2 border-t-indigo-500'>
                             <footer class="md:pr-44 md:pl-44 pt-5 pl-6 pr-6">
@@ -52,25 +52,29 @@ const Footer = () => {
                                     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                                         <div className='flex flex-col items-center md:items-start mt-5'>
                                             <p className='text-3xl font-bold'>Muscat</p>
-                                            <p class="max-w-xs mt-2 text-sm text-gray-600">
+                                            <p class="max-w-xs mt-2 text-sm text-gray-600 dark:text-gray-400">
                                                 Follow us on social media
                                             </p>
                                             <div href="https://wa.me/+96891738405" class="flex mt-3 space-x-3 text-gray-600">
                                                 <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> whatsapp </span>
-                                                    <img className='h-8' src="/images/icons/whatsapp.svg" alt="" />
+                                                    <img className='h-8 dark:hidden' src="/images/icons/whatsapp.svg" alt="" />
+                                                    <img className='h-8 hidden dark:flex' src="/images/icons/whatsapp-light.svg" alt="" />
                                                 </a>
                                                 <a class="hover:opacity-75 cursor-pointer" target="_blank" href="https://www.facebook.com/muscatwhereto" rel="noreferrer">
                                                     <span class="sr-only"> facebook </span>
-                                                    <img className='h-8' src="/images/icons/facebook.svg" alt="" />
+                                                    <img className='h-8 dark:hidden' src="/images/icons/facebook.svg" alt="" />
+                                                    <img className='h-8 hidden dark:flex' src="/images/icons/facebook-light.svg" alt="" />
                                                 </a>
                                                 <a class="hover:opacity-75 cursor-pointer" href="https://www.instagram.com/muscat_whereto/" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> Instagram </span>
-                                                    <img className='h-8' src="/images/icons/instagram.svg" alt="" />
+                                                    <img className='h-8 dark:hidden' src="/images/icons/instagram.svg" alt="" />
+                                                    <img className='h-8 hidden dark:flex' src="/images/icons/instagram-light.svg" alt="" />
                                                 </a>
                                                 <a class="hover:opacity-75 cursor-pointer" href="mailto:info@muscatwhereto.com" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> Email </span>
-                                                    <img className='h-8' src="/images/icons/email.svg" alt="" />
+                                                    <img className='h-8 flex dark:hidden' src="/images/icons/email.svg" alt="" />
+                                                    <img className='h-8 hidden dark:flex' src="/images/icons/mail-light.svg" alt="" />
                                                 </a>
                                             </div>
                                         </div>
