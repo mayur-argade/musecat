@@ -94,6 +94,7 @@ export const AdminEditOffer = (data) => api.patch("/admin/edit-offer", data)
 export const AdminStats = (data) => api.get('/admin/stats', data)
 export const AdminDeleteVenue = (data) => api.delete("venue/admin/delete-venue", { data: data })
 export const AdminEditCategory = (data) => api.put('category/update-category', data)
+export const AdminSendNotification = (data) => api.post('/notification/send-notification', data)
 
 export const AdminVerifyVendor = (data) => api.patch(`/admin/verify-vendor`, data)
 export const AdminGetAllVendors = (data) => api.get("/admin/getUnverifiedVendors", data)

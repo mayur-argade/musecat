@@ -1,3 +1,5 @@
+const UserModel = require('../models/UserModel');
+const VendorModel = require('../models/VendorModel');
 const notificationService = require('../services/notification-service')
 
 exports.getVendorNotification = async (req, res) => {
@@ -109,4 +111,68 @@ exports.countunreadNotifications = async (req, res) => {
             data: "Internal server error"
         })
     }
+}
+
+exports.sendNotificationToUsers = async (req, res) => {
+    try {
+
+
+        const { msg, user, vendor } = req.body
+
+        if (user) {
+            // Fetch all user IDs from the database
+            const allUserIds = await UserModel.find({}, '_id');
+
+            // Create notifications for each user
+            const notificationPromises = allUserIds.map(async (userId) => {
+                const userNotification = {
+                    senderid: req.user._id,
+                    receiverid: userId,
+                    msg: msg
+                };
+
+                return await notificationService.createNotification(userNotification);
+            });
+
+            // Wait for all notifications to be created
+            const notifications = await Promise.all(notificationPromises);
+        }
+
+        if (vendor) {
+            // Fetch all user IDs from the database
+            const allUserIds = await VendorModel.find({ isVerified: true, role: 'vendor' }, '_id');
+
+            const stringIds = allUserIds.map(vendor => vendor._id.toString());
+            // console.log(stringIds);
+
+            // Create notifications for each user
+            const notificationPromises = stringIds.map(async (userId) => {
+                const userNotification = {
+                    senderid: req.user._id,
+                    receiverid: userId,
+                    msg: msg
+                };
+
+                return await notificationService.createNotification(userNotification);
+            });
+
+            // Wait for all notifications to be created
+            const notifications = await Promise.all(notificationPromises);
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Notification sent"
+        })
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        })
+
+    }
+
 }

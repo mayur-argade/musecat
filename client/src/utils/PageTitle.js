@@ -1,5 +1,5 @@
 const PageTitle = {
-    home: "Muscat Home",
+    home: "Muscat Where To",
 
   };
   
