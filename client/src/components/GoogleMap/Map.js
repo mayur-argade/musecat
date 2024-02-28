@@ -16,12 +16,20 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
     }, []);
 
     const handleMapClick = (event) => {
-        if (enableClick && typeof onMarkerClick === 'function') {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
-            onMarkerClick({ lat, lng });
+        if (enableClick == true) {
+            if (enableClick && typeof onMarkerClick === 'function') {
+                const lat = event.latLng.lat();
+                const lng = event.latLng.lng();
+                onMarkerClick({ lat, lng });
+            }
         }
     };
+
+    const onMarkerClickAction = (coordinate) => {
+        if(enableClick == true){
+            onMarkerClick({ lat: coordinate.lat, lng: coordinate.lng })
+        }
+    }
 
     const handlePlaceSelect = (place) => {
         const lat = place.geometry.location.lat();
@@ -67,7 +75,7 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
                                     url: "/images/icons/marker.png",
                                     scaledSize: new window.google.maps.Size(35, 42)
                                 }}
-                                onClick={() => onMarkerClick({ lat: coordinate.lat, lng: coordinate.lng })}
+                                onClick={() => onMarkerClickAction(coordinates)}
                             />
                         ))
                     )

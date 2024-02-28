@@ -939,7 +939,7 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <div className='w-full mt-5'>
-                                            <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                            <MapComponent enableClick={false} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                     )
                                 }

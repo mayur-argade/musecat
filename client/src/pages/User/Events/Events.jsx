@@ -517,7 +517,7 @@ const Events = () => {
                                 <div className="relative mx-auto md:mx-0">
                                     <div>
                                         <div className='w-72 h-9/12 rounded-md'>
-                                            <MapComponent coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
+                                            <MapComponent enableClick={false} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
                                         </div>
                                     </div>
 
