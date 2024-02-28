@@ -108,7 +108,7 @@ const AddCategoryModel = ({ onClose }) => {
                                             </div>
 
                                             <div>
-                                                <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >createCategory</button>
+                                                <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Create Category</button>
                                             </div>
 
                                         </div>
@@ -122,8 +122,12 @@ const AddCategoryModel = ({ onClose }) => {
                                     <img src="/images/icons/done.png" alt="" />
                                 </div>
                                 :
-                                <div className="h-screen w-full flex justify-center align-middle items-center">
-                                    <img src="/images/icons/loading.svg" alt="" />
+                                <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
+                                    <div class="relative flex justify-center items-center">
+                                        <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                                        <img className="dark:hidden flex" src="/images/logo/logo-main.png" class="h-16" />
+                                        <img className="hidden dark:flex" src="/images/logo/logo-main-light.png" class="h-16" />
+                                    </div>
                                 </div>
 
                     }

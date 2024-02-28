@@ -939,13 +939,6 @@ Venue
 6. Venue Location  
 
 
-
-customer id --> list payment method -->
-customerid 
-card id
-
-next time -->card id --> 
-
 100 baisa --> 0.100 OMR
 
 
@@ -953,26 +946,6 @@ next time -->card id -->
 0.1 riyal == 100 baisa
 5 riyal --> 5000 
 
-
-terminate
---> C4DEE2C0757/terminate
---> terminate
---> terminate/<any_device_id>
-
-senosor_data
---> C4DEE2C0757/sensor_data
---> sensor_data
---> sensor_data/<any_device_id>
-
-device status
---> C4DEE2C0757/device_status
---> device_status
---> device_status/<any_device_id>
-
-Check response
---> C4DEE2C0757/check_response
---> check_response
---> check_response/<any_device_id>
 
 
 when customer going to click on the book now 

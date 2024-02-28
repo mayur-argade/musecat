@@ -106,7 +106,6 @@ const Events = () => {
         }
     };
 
-
     const handleDistanceChange = (distance) => {
         getUserLocation()
         if (selectedDistance.includes(distance)) {
@@ -154,7 +153,9 @@ const Events = () => {
 
     const location = useLocation();
     const queryParams = queryString.parse(location.search);
-    // console.log(queryParams.search)
+    const subcategory = queryString.parse(location.subcategory)
+    const offerDay = queryString.parse(location.day)
+
 
     const [query, setQuery] = useState('')
 
@@ -186,11 +187,13 @@ const Events = () => {
             setLoading(true)
             const categorydata = {
                 category: category,
-                query: `?search=${queryParams.value}`,
-                filterdate: filterDate
+                query: queryParams.search,
+                filterdate: filterDate,
+                subCategory: queryParams.subcategory,
+                offerDay: queryParams.day
             }
             try {
-                const { data } = await getCategoryEvents(categorydata, `?search=${queryParams.search}`)
+                const { data } = await getCategoryEvents(categorydata)
                 // console.log(data.data)
                 setResponse(data)
 
@@ -202,10 +205,8 @@ const Events = () => {
                 setLoading(false)
             }
         }
-
         fetchdata()
-
-    }, [category, filterDate]);
+    }, [category, filterDate, queryParams.subcategory, queryParams.day]);
 
     if (response.data != null) {
         response.data.map((event, index) => {
@@ -284,7 +285,11 @@ const Events = () => {
                         <div className="hidden md:flex justify-center mt-3  ">
                             <span className='capitalize text-2xl font-bold'>
                                 {
-                                    categoryName
+                                    queryParams.subcategory ?
+                                        <>{queryParams.subcategory}</>
+                                        :
+                                        categoryName
+
                                 }
                             </span>
                         </div>
@@ -437,7 +442,8 @@ const Events = () => {
                                                                 ?
                                                                 <div className='col-span-3'>
                                                                     <div className='h-80 flex flex-col justify-center items-center'>
-                                                                        <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                                        <img className='flex dark:hidden h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                                        <img className='hidden dark:flex h-40 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
                                                                         <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
                                                                     </div>
                                                                 </div>

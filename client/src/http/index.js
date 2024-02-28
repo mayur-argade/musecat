@@ -61,7 +61,7 @@ export const VendorUnverifiedEvents = (data) => api.get("/vendor/listing/unverif
 export const ClientEventDetailsApi = (data) => api.get(`user/eventDetails/${data}`, data)
 export const ClientFavEventApi = (data) => api.get("user/favorites", data)
 export const ClientPastPurchaseApi = (data) => api.get("/user/pastpurchased", data)
-export const getCategoryEvents = (data, query) => api.get(`category/${data.category}${query}`, { params: data })
+export const getCategoryEvents = (data) => api.post(`category/${data.category}`, data)
 export const ClientBookTicket = (data) => api.post("ticket/bookticket", data)
 export const ClientTicketStatusApi = (data) => api.get(`ticket/${data}`, data)
 export const addToFavorites = (data) => api.put(`event/like`, data)

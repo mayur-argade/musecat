@@ -9,7 +9,7 @@ router.route('/create-category').post(createCategory)
 router.route('/update-category').put(updateCategory)
 router.route('/delete-category').delete(deleteCategory)
 router.route('/eventcounts').get(getCategoriesWithEvents)
-router.route('/:categoryname').get(getCategoryAllEvents)
+router.route('/:categoryname').post(getCategoryAllEvents)
 
 
 

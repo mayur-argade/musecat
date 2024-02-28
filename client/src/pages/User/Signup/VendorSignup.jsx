@@ -57,10 +57,10 @@ const VendorSignup = () => {
 
     async function submit() {
 
-        if (!Crfile || Crfile == null) {
-            return toast.error("CR Pdf is missing")
-        }
-        else if (!firstname) {
+        // if (!Crfile || Crfile == null) {
+        //     return toast.error("CR Pdf is missing")
+        // }
+        if (!firstname) {
             return toast.error("Firstname is missing")
         }
         else if (!lastname) {
@@ -87,9 +87,9 @@ const VendorSignup = () => {
         else if (!companyDisplayName) {
             return toast.error("Please provide Company display name")
         }
-        else if (!crNo) {
-            return toast.error("Provide CR no.")
-        }
+        // else if (!crNo) {
+        //     return toast.error("Provide CR no.")
+        // }
         else if (!logo) {
             return toast.error("Please provide company logo")
         }

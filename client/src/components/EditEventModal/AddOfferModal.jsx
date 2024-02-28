@@ -386,7 +386,7 @@ const AddOfferModal = ({ onClose }) => {
                     return toast.error("Enter a valid seat count")
                 }
             }
-            if (category.price != null  && category.className == null) {
+            if (category.price != null && category.className == null) {
                 console.log(category.price)
                 return toast.error("Classname is required if you are entering price")
             }
@@ -984,7 +984,7 @@ const AddOfferModal = ({ onClose }) => {
                                     multiple id="photo" type="file" />
 
 
-                                <div className="flex w-full items-center align-middle">
+                                {/* <div className="flex w-full items-center align-middle">
                                     <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
                                         Seating Map
                                     </span>
@@ -994,7 +994,7 @@ const AddOfferModal = ({ onClose }) => {
 
                                     onChange={captureSeatingMap}
                                     accept="image/*"
-                                    id="photo" type="file" />
+                                    id="photo" type="file" /> */}
 
                                 <div className="flex w-full items-center align-middle">
                                     <span className='ml-2 h-auto text-xs font-medium  dark:text-white ml-0'>

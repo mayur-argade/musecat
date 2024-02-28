@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@capacitor/cli": "^5.7.0",
+    "@capacitor/core": "^5.7.0",
     "@cometchat-pro/chat": "^3.0.13",
     "@cometchat/chat-sdk-javascript": "^4.0.3",
     "@cometchat/chat-uikit-react": "^4.1.1",

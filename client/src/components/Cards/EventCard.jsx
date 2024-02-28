@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 const EventCard = ({ data, width }) => {
 
-    // console.log(data)
+    console.log(data)
 
     const [isLiked, setIsLiked] = useState(false)
 
@@ -72,7 +72,9 @@ const EventCard = ({ data, width }) => {
                         {data.title},
                     </p>
                     <p className='text-xss m:text-xs m:mt-2 font-medium truncate'>{data.location?.name.length > 25 ? data.location?.name.substring(0, 25) : data.location.name}</p>
-                    <p className="text-xss mt-1 m:mt-2 mb-1 m:text-xs font-light truncate">{data.type}</p>
+                    <p className="text-xss mt-1 m:mt-2 mb-1 m:text-xs font-light truncate">{
+                        data.eventCategory.map(obj => obj.name).join(', ')
+                    }</p>
                 </div>
             </div>
         </>
