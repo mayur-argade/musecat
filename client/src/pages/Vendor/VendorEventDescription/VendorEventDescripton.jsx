@@ -350,7 +350,8 @@ const VendorEventDescripton = () => {
                                     <div className='h-96 w-full flex justify-center align-middle'>
                                         <div class="relative flex justify-center items-center">
                                             <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                                            <img src="/images/logo/logo-main.png" class="h-16 aspect-square" />
+                                            <img src="/images/logo/logo-main.png" className="dark:hidden flex h-16 aspect-square" />
+                                            <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-16 aspect-square" />
                                         </div>
                                     </div>
                                     :

@@ -59,7 +59,7 @@ const UpcomingEventsCard = ({ event }) => {
                         <div className='flex flex-col p-2'>
                             <p className='text-sm mt-2 font-medium'>{event.title},</p>
                             <p className='text-sm mt-2 font-medium'>{event.location?.name || "\u00A0"}</p>
-                            <p className="mt-1 mb-1 text-xs font-light">Events</p>
+                            <p className="mt-1 mb-1 text-xs font-light">{event.eventCategory.map(obj => obj.name).join(', ')}</p>
                             <div className='flex items-center justify-between space-x-2'>
                                 <Link className='button w-full' to={`/events/${event._id}`}>
                                     <button type="button" className="text-white hover:bg-[#A48533]

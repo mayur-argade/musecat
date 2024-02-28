@@ -133,10 +133,11 @@ const VendorBookedTickets = () => {
 
     if (response.data == null || event.data == null) {
         return (
-            <div className='h-screen w-full flex justify-center align-middle items-center'>
+            <div className='dark:bg-[#2c2c2c] h-screen w-full flex justify-center align-middle items-center'>
                 <div class="relative flex justify-center items-center">
                     <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-                    <img src="/images/logo/logo-main.png" class="h-16" />
+                    <img src="/images/logo/logo-main.png" className="dark:hidden flex h-16 aspect-square" />
+                    <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-16 aspect-square" />
                 </div>
             </div>
         )
@@ -269,6 +270,7 @@ const VendorBookedTickets = () => {
                                         </th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     {response.data.filter((ticket) => {
 
@@ -345,6 +347,17 @@ const VendorBookedTickets = () => {
                         </div>
                     </div>
 
+                    {
+                        response.data.length == 0 && (
+                            <div className='w-full flex justify-center align-middle items-center'>
+                                <div className='h-80 flex flex-col justify-center items-center'>
+                                    <img src="/images/logo/logo-main.png" className="dark:hidden flex h-40 aspect-square" />
+                                    <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-40 aspect-square" />
+                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>No tickets have been booked for this event yet.</span>
+                                </div>
+                            </div>
+                        )
+                    }
                     {response.data.seatsBooked != 0 ?
                         <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
                             <div className='flex justify-center mb-2'>

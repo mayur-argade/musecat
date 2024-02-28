@@ -171,7 +171,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <Link to="/" class="hidden flex md:flex items-center">
                                     <img src="/images/logo/logo-main.webp" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
                                     <img src="/images/logo/logo.webp" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
-                                    <img src="/images/logo/logo-main.webp" className="dark:flex hidden h-10 md:mr-3" alt="MWT Logo" />
+                                    <img src="/images/logo/logo-main-light.png" className="dark:flex hidden h-10 md:mr-3" alt="MWT Logo" />
                                     <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
                                 </Link>
                             </div>

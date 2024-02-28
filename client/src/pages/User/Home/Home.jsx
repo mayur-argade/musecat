@@ -25,6 +25,7 @@ import Vouchers from './Components/Vouchers'
 import EditorsPick from './Components/EditorsPick'
 import UpcomingEvents from './Components/UpcomingEvents'
 import PopularCategories from './Components/PopularCategories'
+import PopupBox from '../../../components/PopupBox/PopupBox'
 
 const Home = () => {
 
@@ -48,10 +49,6 @@ const Home = () => {
         setSelectedDate(date);
         // You can perform any actions with the selected date here
     };
-
-
-
-
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -144,6 +141,40 @@ const Home = () => {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
 
 
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        const popupTimer = setTimeout(() => {
+            setIsOpen(true);
+        }, 5000); // Change the delay time (in milliseconds) as per your requirement
+
+        return () => clearTimeout(popupTimer);
+    }, []);
+
+    // useEffect(() => {
+    //     const hasPopupBeenShown = localStorage.getItem('hasPopupBeenShown');
+    //     const lastVisitTimestamp = localStorage.getItem('lastVisitTimestamp');
+    //     const currentTime = new Date().getTime();
+    //     const twoHoursInMillis = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+
+    //     if (!hasPopupBeenShown || !lastVisitTimestamp) {
+    //         // If the popup has not been shown before, or last visit timestamp is not available
+    //         localStorage.setItem('hasPopupBeenShown', true);
+    //         localStorage.setItem('lastVisitTimestamp', currentTime);
+    //         setIsOpen(true);
+    //     } else {
+    //         const timeSinceLastVisit = currentTime - parseInt(lastVisitTimestamp, 10);
+    //         if (timeSinceLastVisit >= twoHoursInMillis) {
+    //             // If it has been more than 2 hours since last visit, show the popup again
+    //             setIsOpen(true);
+    //             localStorage.setItem('lastVisitTimestamp', currentTime);
+    //         }
+    //     }
+    // }, []);
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
 
     return (
         <>
@@ -319,10 +350,21 @@ const Home = () => {
                                     </div>
                                 </div>
                             </header>
+
+
                         </div>
                 }
 
-
+                {isOpen && (
+                    <div className='fixed z-50 inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 p-3 '>
+                        <div className='flex flex-col'>
+                            <div className='flex justify-end'>
+                                <span className='justify-end' onClick={handleClose}><img className='bg-white rounded-full h-7 cursor-pointer' src="/images/icons/cancel-icon-new.png" alt="" /></span>
+                            </div>
+                            <PopupBox />
+                        </div>
+                    </div>
+                )}
                 <div className='flex justify-center items-center align-middle mt-5'>
                     <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         <div className='flex justify-between align-middle '>

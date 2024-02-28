@@ -76,8 +76,11 @@ const VendorNotification = () => {
                                 {
                                     response.data.length == 0
                                         ?
-                                        <div className='flex justify-center align-middle items-center'>
-                                            <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                        <div className='grid grid-flow-row grid-cols-1 '>
+                                            <div className='h-80 flex flex-col justify-center items-center'>
+                                                <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Not a peep! Your notifications are enjoying some quiet time.</span>
+                                            </div>
                                         </div>
                                         :
                                         <>
