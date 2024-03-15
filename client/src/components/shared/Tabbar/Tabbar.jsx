@@ -91,7 +91,7 @@ const CategoryLink = ({ category }) => {
                                                 setShowDays(true)
                                             }}
                                             className="border border-1 z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
-                                            style={{ top: '0', left: '100%' }}>
+                                            style={{ top: '40%', left: '100%' }}>
                                             {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day, index) => (
                                                 <li
                                                     onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}&day=${day}`)}

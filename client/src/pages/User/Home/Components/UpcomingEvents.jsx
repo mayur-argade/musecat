@@ -99,7 +99,7 @@ const UpcomingEvents = () => {
         <section className='flex justify-center items-center align-middle mt-5'>
             <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                 <div className='flex justify-between items-center '>
-                    <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Upcoming Events</span></div>
+                    <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>What’s On</span></div>
                     <div className="flex items-center align-middle ">
                         <div onClick={(() => setShowCalender(true))} className="calender date-picker ">
                             <img className="calender h-8 mr-2 flex dark:hidden" src="/images/assets/calender-icon.png" alt="" />
