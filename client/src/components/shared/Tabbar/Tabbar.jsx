@@ -46,7 +46,7 @@ const CategoryLink = ({ category }) => {
     const navigate = useNavigate()
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDays, setShowDays] = useState(false);
-
+    const [showWeekDays, setShowWeekDays] = useState(false)
     const openDropdown = () => setShowDropdown(true)
     const closeDropdown = () => setShowDropdown(false)
 
@@ -96,7 +96,7 @@ const CategoryLink = ({ category }) => {
                                                 <li
                                                     onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}&day=${day}`)}
                                                     key={index}>
-                                                    <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">{day}</a>
+                                                    <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">{day} Dinner</a>
                                                 </li>
                                             ))}
                                         </ul>

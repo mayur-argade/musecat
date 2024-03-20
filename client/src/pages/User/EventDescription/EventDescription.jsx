@@ -27,6 +27,9 @@ const EventDescription = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
 
+    const onMarkerClick = () => {
+        console.log("ok")
+    }
     const [isStandalone, setIsStandalone] = useState(false);
 
     useEffect(() => {
@@ -571,7 +574,14 @@ const EventDescription = () => {
 
                                                             {/* Like Count */}
                                                             <div className="flex items-center">
-                                                                <img className='h-4' src="/images/icons/like.svg" alt="" /> <span className='ml-1'>{response.data.eventDetails.likes.length} People liked this event</span>
+                                                                <img className='h-4' src="/images/icons/like.svg" alt="" />
+                                                                <span className='ml-1'>
+                                                                    {response.data.eventDetails.likes.length === 0
+                                                                        ? "be the first one to like this"
+                                                                        : response.data.eventDetails.likes.length < 10
+                                                                            ? "Several people liked this"
+                                                                            : `${response.data.eventDetails.likes.length} People liked this `}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -771,7 +781,7 @@ const EventDescription = () => {
                                                                                     response.data.eventDetails.type == 'event'
                                                                                         ?
                                                                                         <div className='space-x-3'>
-                                                                                            Buy Ticket test
+                                                                                            Buy Ticket
                                                                                             <img src="/images/icons/external-link.svg" alt="" />
                                                                                         </div>
                                                                                         :
@@ -812,24 +822,54 @@ const EventDescription = () => {
                                                                 {
                                                                     showBooking && (
                                                                         <div className="booknow">
-                                                                            <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                            <>
+                                                                                <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                                    {
+                                                                                        response.data.eventDetails.type == 'event'
+                                                                                            ?
+                                                                                            <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                                {
+                                                                                                    isExternalLink ?
+                                                                                                        <>
+                                                                                                            <>Get Ticket test</>
+                                                                                                            <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                                        </>
+                                                                                                        :
+                                                                                                        <>Get Tickets </>
+                                                                                                }
+                                                                                            </div>
+                                                                                            :
+                                                                                            <>
+                                                                                                Buy Voucher
+                                                                                            </>
+                                                                                    }
+                                                                                </button>
                                                                                 {
-                                                                                    response.data.eventDetails.type == 'event'
-                                                                                        ?
-                                                                                        <div className='flex justify-center align-middle items-center space-x-5'>
-                                                                                            Buy Ticket
+                                                                                    response.data.eventDetails.website != "" && (
+                                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="mt-3 w-full text-[#A48533] border border-[#A48533] bg-white hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                                             {
-                                                                                                isExternalLink && (
-                                                                                                    <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
-                                                                                                )
+                                                                                                response.data.eventDetails.type == 'event'
+                                                                                                    ?
+                                                                                                    <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                                        {
+                                                                                                            isExternalLink ?
+                                                                                                                <>
+                                                                                                                    <>More Info</>
+                                                                                                                    <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                                                </>
+                                                                                                                :
+                                                                                                                <>More Info</>
+                                                                                                        }
+                                                                                                    </div>
+                                                                                                    :
+                                                                                                    <>
+                                                                                                        Buy Voucher
+                                                                                                    </>
                                                                                             }
-                                                                                        </div>
-                                                                                        :
-                                                                                        <>
-                                                                                            Buy Voucher
-                                                                                        </>
+                                                                                        </button>
+                                                                                    )
                                                                                 }
-                                                                            </button>
+                                                                            </>
                                                                         </div>
                                                                     )
                                                                 }
@@ -940,7 +980,7 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <div className='w-full mt-5'>
-                                            <MapComponent enableClick={false} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                            <MapComponent onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                     )
                                 }

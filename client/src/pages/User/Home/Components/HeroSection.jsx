@@ -76,10 +76,10 @@ const HeroSection = () => {
                                         }`}
                                 >
                                     <div className='flex justify-center md: pt-0 md:p-10'>
-                                        <p className='pb-5 leading-loose text-4xl md:text-4xl text-center text-white font-bold'>
-                                            <span className='dark:text-black'>Muscat Where To</span>
+                                        <p className='pb-5 leading-loose text-4xl md:text-5xl text-center text-white font-bold'>
+                                            <span className='ml-0 dark:text-black'>Muscat Where To</span>
 
-                                            <p className='text-xl md:text-4xl mb-2 md:dark:text-black'>
+                                            <p className='text-center text-xl md:text-2xl mb-2 md:dark:text-black'>
                                                 <span className='ml-0'>
                                                     Latest Offers and Events in Muscat
                                                 </span>
@@ -96,7 +96,7 @@ const HeroSection = () => {
                                                             <div class="z-10 relative ">
                                                                 <input
                                                                     onChange={((e) => setQuery(e.target.value))}
-                                                                    type="search" id="location-search" class="bg-[#E7E7E7] block p-2.5 w-72 z-20 text-xs text-gray-500 font-normal rounded-r-lg rounded-l-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-[#C0A04C] focus:border-[#C0A04C] dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-[#C0A04C]" placeholder="Search Where To..." required />
+                                                                    type="search" id="location-search" class="bg-[#E7E7E7] block p-2.5 w-72 z-20 text-xs text-gray-500 font-normal rounded-r-lg rounded-l-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-[#C0A04C] focus:border-[#C0A04C] dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-[#C0A04C]" placeholder="Search on Muscat Where To..." required />
 
                                                                 <button
                                                                     onClick={() => {
@@ -160,7 +160,7 @@ const HeroSection = () => {
                                             </div>
                                             <div className='flex w-full justify-center'>
                                                 <div className='w-full flex grow '>
-                                                    <input onChange={((e) => setQuery(e.target.value))} type="text" id="default-input" placeholder='Search Where To...' class="bg-[#E7E7E7] border border-gray-300 focus:ring-[#C0A04C] focus:border-[#C0A04C] text-gray-900 text-xs rounded-lg block md:w-full p-3 mx-3 dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]" />
+                                                    <input onChange={((e) => setQuery(e.target.value))} type="text" id="default-input" placeholder='Search on Muscat Where To...' class="bg-[#E7E7E7] border border-gray-300 focus:ring-[#C0A04C] focus:border-[#C0A04C] text-gray-900 text-xs rounded-lg block md:w-full p-3 mx-3 dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]" />
                                                 </div>
 
                                                 <div className='flex mx-auto justify-center'>
@@ -183,12 +183,13 @@ const HeroSection = () => {
                                                     <p className='hidden font-bold text-md md:block text-left align-middle mb-1'>
                                                         Popular Searches
                                                     </p>
-                                                    <div className='hidden md:flex flex-wrap justify-between space-y-2 md:space-x-52'>
-                                                        <div className='flex flex-wrap justify-center md:space-x-2  '>
-                                                            {categories.data && categories.data.slice(0, 7).map((category, index) => (
-                                                                <Link className='my-1' to='/category/staycation'>
-                                                                    <button className='rounded-full border border-black dark:border-white pr-4 pl-4 h-6 text-xs hover:bg-black hover:text-white'>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</button>
-                                                                </Link>))}
+                                                    <div className='hidden md:flex justify-between space-y-2 md:space-x-52 overflow-x'>
+                                                        <div className='flex flex-wrap justify-center md:space-x-2  ' style={{ overflowX: 'auto' }}>
+                                                            {categories.data && categories.data.slice(0, 6).map((category, index) => (
+                                                                <Link className='my-1' to='/category/staycation' key={index}>
+                                                                    <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</button>
+                                                                </Link>
+                                                            ))}
                                                         </div>
                                                     </div>
                                                 </div>

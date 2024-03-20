@@ -150,6 +150,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     }, [categoryName])
 
+    
     return (
         <>
 
@@ -367,7 +368,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         </li>
                                         <li>
                                             <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
-                                                <div className="dropdown-container reltive">
+                                                <div className="dropdown-container relative">
                                                     <span
                                                         className="hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
                                                         onMouseEnter={() => openDropdown()}
@@ -377,20 +378,34 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                     </span>
                                                     {isDropdownOpen && (
                                                         <div
-                                                            className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
+                                                            className="z-50 dropdown absolute -left-32 w-96 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
                                                             onMouseEnter={() => openDropdown()}
                                                             onMouseLeave={() => closeDropdown()}
                                                         >
-                                                            {
-                                                                categories.data && categories.data.length > 0 && (
-
+                                                            <div className="grid grid-cols-2">
+                                                                {categories.data && categories.data.length > 0 && (
                                                                     categories.data.map((cat, index) => (
-                                                                        <Link to={`/category/${cat.categoryURL}`}>
-                                                                            <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">{cat.name}</a>
-                                                                        </Link>
+                                                                        <div key={index}>
+                                                                            <Link to={`/category/${cat.categoryURL}`} className="block text-sm py-2 hover:font-bold md:dark:font-bold" aria-current="page">
+                                                                                {cat.name}
+                                                                            </Link>
+                                                                            {cat.subCategories.length > 0 && (
+                                                                                <ul className="ml-4">
+                                                                                {cat.subCategories.map(subcat => (
+                                                                                    <li key={subcat.id}>
+                                                                                        <Link to={`/category/${subcat.categoryURL}`}>
+                                                                                            <span className='font-normal text-sm'>
+                                                                                                {subcat.name}
+                                                                                            </span>
+                                                                                        </Link>
+                                                                                    </li>
+                                                                                ))}
+                                                                            </ul>
+                                                                            )}
+                                                                        </div>
                                                                     ))
-                                                                )
-                                                            }
+                                                                )}
+                                                            </div>
                                                         </div>
                                                     )}
                                                 </div>
