@@ -5,7 +5,7 @@ import SubEventCard from '../../../components/Cards/SubEventCard'
 import { useNavigate } from 'react-router-dom'
 import Tabbar from '../../../components/shared/Tabbar/Tabbar'
 import { useEffect } from 'react'
-import { getCategoryEvents, GetAllCategory, GetTrendingEvents } from '../../../http/index'
+import { getCategoryEvents, GetAllCategory, WhereToEvents } from '../../../http/index'
 import queryString from 'query-string';
 import { useParams, useLocation } from 'react-router-dom';
 import MapComponent from '../../../components/GoogleMap/Map';
@@ -49,12 +49,9 @@ const WhereToMap = () => {
     useEffect(() => {
         const fetchdata = async () => {
             setLoading(true)
-            const categorydata = {
-                category: 'events',
-                query: `?search=${queryParams.value}`
-            }
+            
             try {
-                const { data } = await getCategoryEvents(categorydata, `?search=${queryParams.search}`)
+                const { data } = await WhereToEvents()
                 console.log(data.data)
                 setResponse(data)
 

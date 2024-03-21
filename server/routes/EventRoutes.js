@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { createEvent, getEventById, getVendorAllEventsNOffers, getVendorAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent, VendorUnverifiedListings } = require('../controllers/EventController')
+const { createEvent, getEventById, getVendorAllEventsNOffers, getVendorAllEvents, getAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent, VendorUnverifiedListings } = require('../controllers/EventController')
 
 router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
@@ -33,6 +33,7 @@ router.route('/events/upcoming-events').get(getUpcomingEvents)
 router.route('/event/:eventid/customq').get(customQue)
 router.route('/offers/').get(getAllOffers)
 router.route('/trending-events').get(getTrendingEvents)
+router.route('/whereto/allevents').get(getAllEvents)
 
 router.route('/admin/create-event').post(createEvent);
 router.route('/admin/create-offer').post(createOffer)

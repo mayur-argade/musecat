@@ -179,7 +179,7 @@ const HeroSection = () => {
 
 
                                             <div className='flex flex-wrap align-middle items-center justify-between mt-5 w-full'>
-                                                <div>
+                                                <div className='pl-4'>
                                                     <p className='hidden font-bold text-md md:block text-left align-middle mb-1'>
                                                         Popular Searches
                                                     </p>

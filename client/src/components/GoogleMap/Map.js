@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, MarkerF, Marker, InfoWindow } from "@react-google-maps/api";
 import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom }) => {
+const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom, title, image }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
-
+    const [selectedMarker, setSelectedMarker] = useState(null)
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY',
@@ -26,9 +26,13 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
     };
 
     const onMarkerClickAction = (coordinate) => {
-        if(enableClick == true){
+        if (enableClick == true) {
             onMarkerClick({ lat: coordinate.lat, lng: coordinate.lng })
         }
+    }
+
+    const handleMarkerClose = () => {
+
     }
 
     const handlePlaceSelect = (place) => {
@@ -51,7 +55,10 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
             mapCenter = bounds.getCenter();
         }
     }
-
+    const handleMarkerClickNew = (lat, lon) => {
+        onMarkerClick({ lat: selectedLocation.lat, lng: selectedLocation.lng })
+        setSelectedMarker({ lat, lon });
+    }
     // console.log("sekected location", selectedLocation)
     // console.log("address", address)
     return (
@@ -75,7 +82,7 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
                                     url: "/images/icons/marker.png",
                                     scaledSize: new window.google.maps.Size(35, 42)
                                 }}
-                                onClick={() => onMarkerClickAction(coordinates)}
+                                onClick={() => onMarkerClickAction(coordinate)}
                             />
                         ))
                     )
@@ -86,10 +93,26 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
                                 url: "/images/icons/marker.png",
                                 scaledSize: new window.google.maps.Size(35, 42)
                             }}
-                            onClick={() => onMarkerClick({ lat: selectedLocation.lat, lng: selectedLocation.lng })}
-                        />
+                            onClick={() => handleMarkerClickNew(selectedLocation.lat, selectedLocation.lng)}
+                        >
+                            <Marker>
+                                {
+                                    <InfoWindow
+                                        position={selectedLocation}
+                                        onCloseClick={handleMarkerClose}
+                                    >
+                                        <div className="flex justify-center align-middle items-center space-x-3">
+                                            {/* Replace with your card component */}
+                                            <img src={image} className="h-5 w-5" alt="Marker" style={{ width: '30px', height: 'auto' }} />
+                                            <h3>{title}</h3>
+                                        </div>
+                                    </InfoWindow>
+                                }
+                            </Marker>
+                        </MarkerF>
                     )
                 }
+
             </GoogleMap>
         </div>
     );

@@ -5,6 +5,7 @@ const offerService = require('../services/offer-service')
 const userService = require('../services/user-service')
 const tokenService = require('../services/token-service')
 const categoryService = require('../services/category-service')
+const CategoryModel = require('../models/CategoryModel')
 const moment = require('moment-timezone')
 
 
@@ -428,6 +429,67 @@ exports.getEventById = async (req, res) => {
         })
     }
 
+
+}
+
+exports.getAllEvents = async (req, res) => {
+    try {
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+        const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+        query = {
+            archived: false,
+            verified: true,
+            type: 'event',
+            $or: [
+                {
+                    'date.dateRange.endDate': { $gte: todayDate }
+                },
+                {
+                    'date.dateRange.endDate': null
+                }
+                ,
+                {
+                    $and: [
+                        {
+                            $or: [
+                                {
+                                    'date.recurring.endDate': { $gte: todayDate },
+                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
+
+                                },
+                                {
+                                    'date.recurring.endDate': { $gte: null },
+                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                                }
+                            ]
+                        },
+                    ]
+                },
+            ],
+        }
+
+        let categoriesWithEvents = await CategoryModel.find().populate({
+            path: 'events',
+            populate: {
+                path: 'location',
+            },
+            match: query,
+        })
+
+        const events = categoriesWithEvents.reduce((acc, category) => {
+            acc.push(...category.events);
+            return acc;
+        }, [])
+
+        return res.status(200).json({
+            success: true,
+            data: events
+        })
+    } catch (error) {
+        console.log(error)
+    }
 
 }
 

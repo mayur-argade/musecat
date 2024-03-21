@@ -10,6 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 const UpcomingEvents = () => {
 
     const [showCalender, setShowCalender] = useState(false)
+    const [overflowing, isOverflowing] = useState(false)
     const [date, setDate] = useState('')
     const [upcomingEvents, setUpcomingEvents] = useState('')
     const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false)
@@ -94,6 +95,12 @@ const UpcomingEvents = () => {
         };
     }, []);
 
+    const scrollLeft = () => {
+        document.getElementById("content").scrollLeft -= 400;
+    }
+    const scrollRight = () => {
+        document.getElementById("content").scrollLeft += 400;
+    }
 
     return (
         <section className='flex justify-center items-center align-middle mt-5'>
@@ -176,7 +183,7 @@ const UpcomingEvents = () => {
                 </div>
 
                 <div>
-                    <div className='md:flex md:justify-start carousel flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide space-x-3 md:space-x-6'>
+                    <div id="content" className='flex w-full justify-between overflow-x-auto'>
                         {
                             upcomingEvents.data == null || upcomingEvents.data == undefined
                                 ?
@@ -202,7 +209,18 @@ const UpcomingEvents = () => {
                                         ))
                         }
                     </div>
-
+                    {/* <div className=" hidden md:flex  justify-center items-center space-x-4">
+                        {isOverflowing && (
+                            <>
+                                <button onClick={scrollLeft}>
+                                    <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
+                                </button>
+                                <button onClick={scrollRight}>
+                                    <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
+                                </button>
+                            </>
+                        )}
+                    </div> */}
                 </div>
 
                 <div className='flex justify-end space-x-2 '>

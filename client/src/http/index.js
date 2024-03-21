@@ -72,7 +72,7 @@ export const GetAllCategory = (data) => api.get("category/all", data)
 export const ClientUpcomingEvents = (data) => api.get(`events/upcoming-events${data}`, data)
 export const ClientGetOffers = (data) => api.get("/offers/", data)
 export const CategoryCount = (data) => api.get(`category/eventcounts${data}`, data)
-
+export const WhereToEvents = (data) => api.get('/whereto/allevents', data)
 
 export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`, data)
 export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)

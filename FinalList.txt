@@ -1,0 +1,6 @@
+1. Add scroll buttons to left and right 
+2. On hover map functions
+3. Highlight map events on the event page
+4. Extend where to categories 
+5. Change Mail credentials
+6. 

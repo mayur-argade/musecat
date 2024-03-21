@@ -17,7 +17,7 @@ const EventDescription = () => {
     document.title = 'Event Info'
 
     let { eventid } = useParams();
-
+    const [overflowing, isOverflowing] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [images, setImages] = useState([]);
     const handleShowNextImage = () => {
@@ -87,7 +87,12 @@ const EventDescription = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
+    const scrollLeft = () => {
+        document.getElementById("content").scrollLeft -= 400;
+    }
+    const scrollRight = () => {
+        document.getElementById("content").scrollLeft += 400;
+    }
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Set an initial value based on the screen width
 
@@ -980,7 +985,7 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <div className='w-full mt-5'>
-                                            <MapComponent onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                            <MapComponent title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                     )
                                 }
@@ -993,7 +998,7 @@ const EventDescription = () => {
                                 </span>
                             </div>
                             <div className='ml-2 mr-2 mt-5'>
-                                <div className="flex w-full justify-between overflow-x-auto">
+                                <div id='content' className="flex w-full justify-between overflow-x-auto">
                                     {response.data != null && (
                                         <>
                                             {
@@ -1006,6 +1011,18 @@ const EventDescription = () => {
                                         </>
                                     )
                                     }
+                                </div>
+                                <div className=" hidden md:flex  justify-center items-center space-x-4">
+                                    {isOverflowing && (
+                                        <>
+                                            <button onClick={scrollLeft}>
+                                                <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
+                                            </button>
+                                            <button onClick={scrollRight}>
+                                                <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
