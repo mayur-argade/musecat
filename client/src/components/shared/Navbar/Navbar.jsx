@@ -150,7 +150,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     }, [categoryName])
 
-    
     return (
         <>
 
@@ -367,8 +366,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                                         </li>
                                         <li>
-                                            <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
-                                                <div className="dropdown-container relative">
+                                            {/* <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}> */}
+                                                <div className="dropdown-container reltive">
                                                     <span
                                                         className="hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
                                                         onMouseEnter={() => openDropdown()}
@@ -378,38 +377,16 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                     </span>
                                                     {isDropdownOpen && (
                                                         <div
-                                                            className="z-50 dropdown absolute -left-32 w-96 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
                                                             onMouseEnter={() => openDropdown()}
                                                             onMouseLeave={() => closeDropdown()}
-                                                        >
-                                                            <div className="grid grid-cols-2">
-                                                                {categories.data && categories.data.length > 0 && (
-                                                                    categories.data.map((cat, index) => (
-                                                                        <div key={index}>
-                                                                            <Link to={`/category/${cat.categoryURL}`} className="block text-sm py-2 hover:font-bold md:dark:font-bold" aria-current="page">
-                                                                                {cat.name}
-                                                                            </Link>
-                                                                            {cat.subCategories.length > 0 && (
-                                                                                <ul className="ml-4">
-                                                                                {cat.subCategories.map(subcat => (
-                                                                                    <li key={subcat.id}>
-                                                                                        <Link to={`/category/${subcat.categoryURL}`}>
-                                                                                            <span className='font-normal text-sm'>
-                                                                                                {subcat.name}
-                                                                                            </span>
-                                                                                        </Link>
-                                                                                    </li>
-                                                                                ))}
-                                                                            </ul>
-                                                                            )}
-                                                                        </div>
-                                                                    ))
-                                                                )}
-                                                            </div>
+                                                            className="z-50 dropdown absolute w-48 h-80 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
+                                                            {categories.data && categories.data.map((category, index) => (
+                                                                <CategoryLink key={index} category={category} />
+                                                            ))}
                                                         </div>
                                                     )}
                                                 </div>
-                                            </Link>
+                                            {/* </Link> */}
                                         </li>
                                         <li>
                                             <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
@@ -583,5 +560,84 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         </>
     );
 }
+
+
+const CategoryLink = ({ category }) => {
+    const navigate = useNavigate()
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [showDays, setShowDays] = useState(false);
+    const [showWeekDays, setShowWeekDays] = useState(false)
+    const openDropdown = () => setShowDropdown(true)
+    const closeDropdown = () => setShowDropdown(false)
+
+    return (
+        <div className="" key={category.id}>
+
+            {category.subCategories && category.subCategories.length > 0 ? (
+                <>
+                    <div
+                        onClick={() => navigate(`/category/${category.categoryURL}`)}
+                        onMouseEnter={() => openDropdown()}
+                        onMouseLeave={() => closeDropdown()}
+                        className={`overflow-y-auto p-3 relative m-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
+
+                    >
+                        <div className=''
+                        >
+                            {category.name} >
+                        </div>
+                    </div>
+
+                    {showDropdown && (
+                        <ul
+                            onMouseEnter={() => openDropdown()}
+                            onMouseLeave={() => closeDropdown()}
+                            className="top-0 left-48 border border-1 z-50 dropdown absolute w-48  bg-white rounded-md  dark:bg-[#454545] dark:text-white">
+                            {category.subCategories.map((subcategory, index) => (
+                                <li key={index}>
+
+                                    <span
+                                        onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}`)}
+                                        onMouseEnter={() => {
+                                            if (subcategory.name == 'Dinner') {
+                                                setShowDays(true)
+                                            }
+                                        }}
+                                        onMouseLeave={() => setShowDays(false)}
+                                        className={`ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-sm`} aria-current="page">
+                                        {subcategory.name}
+                                    </span>
+
+                                    {subcategory.name === "Dinner" && showDays && (
+                                        <ul
+
+                                            onMouseEnter={() => {
+                                                setShowDays(true)
+                                            }}
+                                            className="border border-1 z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
+                                            style={{ top: '40%', left: '100%' }}>
+                                            {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day, index) => (
+                                                <li
+                                                    onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}&day=${day}`)}
+                                                    key={index}>
+                                                    <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">{day} Dinner</a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </>
+            ) : (
+                <Link to={`/category/${category.categoryURL}`}>
+                    <div className={`p-3 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</div>
+                </Link>
+            )
+            }
+        </div >
+    );
+};
 
 export default Navbar
