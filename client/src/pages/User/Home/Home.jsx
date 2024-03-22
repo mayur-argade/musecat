@@ -12,6 +12,7 @@ import UpcomingEvents from './Components/UpcomingEvents'
 import PopupBox from '../../../components/PopupBox/PopupBox'
 import HeroSection from './Components/HeroSection'
 import PopularCategory from './Components/PopularCategory'
+import Tabbar from '../../../components/shared/Tabbar/Tabbar'
 
 const Home = () => {
 
@@ -60,6 +61,7 @@ const Home = () => {
         <>
             <div className='dark:bg-[#2c2c2c] dark:text-white appmargine '>
                 <Navbar />
+                <Tabbar />
 
                 <div>
                     <HeroSection />

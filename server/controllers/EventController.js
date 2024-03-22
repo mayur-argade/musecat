@@ -1039,7 +1039,7 @@ exports.getTrendingEvents = async (req, res) => {
 exports.getDateWiseEvents = async (req, res) => {
     try {
 
-        const events = await EventModel.find().sort({ 'date.dateRange.startDate': 1 });
+        const events = await EventModel.find().sort({ 'date.dateRange.startDate': 1 }).populate('location');
         
         // Organize events into groups based on date
         const groupedEvents = events.reduce((acc, event) => {

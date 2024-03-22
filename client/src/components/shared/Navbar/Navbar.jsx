@@ -196,7 +196,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/category") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid'
                                 ?
                                 <div className='flex md:hidden'>
-                                    <Link to="/" class=" flex md:flex items-center">
+                                    <Link to="/" class=" hidden md:flex items-center">
                                         <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
                                         <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-10 md:mr-3" alt="MWT Logo" />
                                         <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />

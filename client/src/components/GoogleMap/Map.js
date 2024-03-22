@@ -6,6 +6,7 @@ import { useEffect } from "react";
 const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom, title, image }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
     const [selectedMarker, setSelectedMarker] = useState(null)
+    const [showInfo, setShowInfo] = useState(true)
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDAm-Tbvhll6eYrRrthm42too-VSL4CVcY',
@@ -55,8 +56,12 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
             mapCenter = bounds.getCenter();
         }
     }
+
+
+
     const handleMarkerClickNew = (lat, lon) => {
         onMarkerClick({ lat: selectedLocation.lat, lng: selectedLocation.lng })
+        setShowInfo(!showInfo)
         setSelectedMarker({ lat, lon });
     }
     // console.log("sekected location", selectedLocation)
@@ -97,16 +102,19 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
                         >
                             <Marker>
                                 {
-                                    <InfoWindow
-                                        position={selectedLocation}
-                                        onCloseClick={handleMarkerClose}
-                                    >
-                                        <div className="flex justify-center align-middle items-center space-x-3">
-                                            {/* Replace with your card component */}
-                                            <img src={image} className="h-5 w-5" alt="Marker" style={{ width: '30px', height: 'auto' }} />
-                                            <h3>{title}</h3>
-                                        </div>
-                                    </InfoWindow>
+                                    showInfo && (
+
+                                        <InfoWindow
+                                            position={selectedLocation}
+                                            onCloseClick={handleMarkerClose}
+                                        >
+                                            <div className="flex justify-center align-middle items-center space-x-3">
+                                                {/* Replace with your card component */}
+                                                <img src={image} className="h-5 w-5" alt="Marker" style={{ width: '30px', height: 'auto' }} />
+                                                <h3 className="dark:text-black">{title}</h3>
+                                            </div>
+                                        </InfoWindow>
+                                    )
                                 }
                             </Marker>
                         </MarkerF>
