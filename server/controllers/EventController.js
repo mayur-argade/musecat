@@ -7,6 +7,7 @@ const tokenService = require('../services/token-service')
 const categoryService = require('../services/category-service')
 const CategoryModel = require('../models/CategoryModel')
 const moment = require('moment-timezone')
+const EventModel = require('../models/EventModel')
 
 
 // vendor side
@@ -1034,6 +1035,34 @@ exports.getTrendingEvents = async (req, res) => {
     })
 }
 
+
+exports.getDateWiseEvents = async (req, res) => {
+    try {
+
+        const events = await EventModel.find().sort({ 'date.dateRange.startDate': 1 });
+        
+        // Organize events into groups based on date
+        const groupedEvents = events.reduce((acc, event) => {
+            let date;
+            if (event.date.type === 'dateRange') {
+                date = moment(event.date.dateRange.startDate).startOf('day').format('YYYY-MM-DD');
+            } else if (event.date.type === 'recurring') {
+                // For recurring events, use start date
+                date = moment(event.date.recurring.startDate).startOf('day').format('YYYY-MM-DD');
+            }
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            acc[date].push(event);
+            return acc;
+        }, {});
+
+        return res.status(200).json(groupedEvents);
+
+    } catch (error) {
+        console.log(error)
+    }
+}
 // --------------------offers -------------------
 
 
