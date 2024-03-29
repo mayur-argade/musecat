@@ -148,7 +148,7 @@ const EventsPWA = () => {
         <>
             <div className='h-screen dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
-                <div className='mt-3 md:mb-0 md:py-2 w-full flex justify-center lg:justify-end align-middle items-center'>
+                <div className='mt-3 md:mb-0 w-full flex justify-center lg:justify-end align-middle items-center'>
                     <div className="search">
                         <div class="px-4">
                             <div class="relative mt-1">
@@ -278,10 +278,10 @@ const EventsPWA = () => {
                 <section className='flex justify-center items-center align-middle mt-5'>
 
 
-                    <section className='pb-14 w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                    <section className='pb-14 w-full'>
                         {Object.entries(groupedEvents).map(([date, events]) => (
                             <div className='' key={date}>
-                                <h2 className='ml-14'>{date != 'undefined' ? require('moment')(date).format('dddd, MMMM Do YYYY') : ""}</h2>
+                                <h2 className='ml-12'>{date != 'undefined' ? require('moment')(date).format('dddd, MMMM Do YYYY') : ""}</h2>
                                 <ul className=''>
                                     {/* Render events for this date */}
                                     {events.map(event => (
