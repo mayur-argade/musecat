@@ -11,11 +11,12 @@ const PwaCards = ({ data }) => {
                 <div className="image">
                     <img className='ml-0  p-1.5 h-28 w-28 rounded-xl' src={`${data.displayPhoto}`} alt="" />
                 </div>
-                <div className="text-left mt-3">
-                    <div className="text-xs font-medium">{data.title}</div>
-                    <p className='text-xs font-medium'>{data.location?.name || ""}</p>
-                    <div className="text-xss font-light">{data.shortDescription.length > 30 ? data.shortDescription.substring(0, 30) + '...' : data.shortDescription} </div>
-                    <div className="text-xss font-light" dangerouslySetInnerHTML={{ __html: data.description.length > 30 ? data.description.substring(0, 30) + '...' : data.description }}></div>
+                <div className="flex-col justify-between text-left mt-3">
+                    <div>
+                        <div className="text-xs font-medium">{data.title}</div>
+                        <p className='text-xs font-medium'>{data.location?.name || ""}</p>
+                    </div>
+                <div className='py-3'></div>
                     <div>
                         <button className='border text-xs py-1 px-1 mt-1'> Book Tickets </button>
                     </div>

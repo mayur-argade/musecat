@@ -7,7 +7,7 @@ class CategoryService {
     }
 
     async findAllCategory(filter, limit) {
-        const categories = CategoryModel.find(filter).limit(limit).sort({ createdAt: -1 }).lean()
+        const categories = CategoryModel.find(filter).limit(limit).sort({ index: 1 }).lean()
         return categories
     }
 

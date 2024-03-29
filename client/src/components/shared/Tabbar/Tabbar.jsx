@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GetAllCategory } from '../../../http/index';
 
 const Tabbar = () => {
+
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [showMoreCategories, setShowMoreCategories] = useState(false)
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -31,12 +33,28 @@ const Tabbar = () => {
                     </div>
                 ) : (
                     <>
-                        {categories.data && categories.data.map((category, index) => (
+                        {categories.data && categories.data.slice(0, 7).map((category, index) => (
                             <CategoryLink key={index} category={category} />
                         ))}
                     </>
                 )}
+                {
+                    categories.data && categories.data.length > 7 && (
+                        <div className='relative'>
+                            <span onClick={() => setShowMoreCategories(!showMoreCategories)} className={`p-[2px]  ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
+                        </div>
+                    )
+                }
             </nav>
+            {
+                categories.data && categories.data.length > 7 && showMoreCategories && (
+                    <div className='p-3 z-50 absolute right-64 bg-white drop-shadow-md'>
+                        {categories.data.slice(7).map((category, index) => (
+                            <CategoryLink key={index} category={category} />
+                        ))}
+                    </div>
+                )
+            }
         </section>
     );
 };

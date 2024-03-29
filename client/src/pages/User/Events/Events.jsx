@@ -65,6 +65,20 @@ const Events = () => {
     const [filterDate, setFilterDate] = useState(null)
     console.log("selectedCategories", selectedCategories)
 
+    const [mapAddress, setMapAddress] = useState({
+        lat: null,
+        lng: null
+    })
+
+    const handleMarkerClick = (markerPosition) => {
+        // Handle the marker click, e.g., log the position
+        console.log("Marker Clicked:", markerPosition);
+        setMapAddress({
+            lat: markerPosition.lat,
+            lng: markerPosition.lng
+        })
+    };
+
     const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
         <button
             onClick={onClick} ref={ref}
@@ -93,7 +107,7 @@ const Events = () => {
         }
     }
 
-    console.log(selectedFeatures)
+    // console.log(selectedFeatures)
     const handleCategoryChange = (categoryURL) => {
         // console.log(categoryURL)
         // Check if the categoryURL is already in selectedCategories
@@ -483,6 +497,11 @@ const Events = () => {
                                                                             selectedFeatures.length == 0 ||
                                                                             item.features.some(feature => selectedFeatures.includes(feature));
 
+                                                                        const locationMatch =
+                                                                            mapAddress.lat != null && mapAddress.lng != null ?
+                                                                                item.location.coordinates.lat == mapAddress.lat &&
+                                                                                item.location.coordinates.lng == mapAddress.lng :
+                                                                                true;
 
                                                                         if (selectedDistance.length > 0) {
                                                                             if (userCord != null) {
@@ -495,11 +514,11 @@ const Events = () => {
 
                                                                                 const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
 
-                                                                                return distanceFilterMatch && searchResults && featureMatch && categoryMatch;
+                                                                                return distanceFilterMatch && searchResults && featureMatch && categoryMatch && locationMatch;
                                                                             }
                                                                         } else {
                                                                             // No distance filter applied
-                                                                            return searchResults && featureMatch && categoryMatch;
+                                                                            return searchResults && featureMatch && categoryMatch && locationMatch;
                                                                         }
                                                                     }).map((event) => (
                                                                         <EventCard key={event._id} data={event} />
@@ -517,7 +536,7 @@ const Events = () => {
                                 <div className="relative mx-auto md:mx-0">
                                     <div>
                                         <div className='w-72 h-9/12 rounded-md'>
-                                            <MapComponent enableClick={false} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
+                                            <MapComponent onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
                                         </div>
                                     </div>
 
