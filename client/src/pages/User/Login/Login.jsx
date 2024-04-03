@@ -113,7 +113,7 @@ const Login = () => {
     return (
         <section class="dark:bg-[#2c2c2c] dark:text-white relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button className='absolute top-10 left-10'>
-                <img onClick={() => HandleBackClick()} src="/images/icons/login-back.svg" alt="" />
+                <img onClick={() => navigate(-1)} src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
             <section class="flex flex-col space-y-2 justify-center items-center h-screen md:mt-0 mt-0 m-10">

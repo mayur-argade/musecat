@@ -6,6 +6,7 @@ const Tabbar = () => {
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
+    
     const [showMoreCategories, setShowMoreCategories] = useState(false)
 
     useEffect(() => {
@@ -48,7 +49,7 @@ const Tabbar = () => {
             </nav>
             {
                 categories.data && categories.data.length > 7 && showMoreCategories && (
-                    <div className='p-3 z-50 absolute right-64 bg-white drop-shadow-md'>
+                    <div className='p-3 z-50 absolute right-64 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
                         {categories.data.slice(7).map((category, index) => (
                             <CategoryLink key={index} category={category} />
                         ))}
@@ -69,7 +70,7 @@ const CategoryLink = ({ category }) => {
     const closeDropdown = () => setShowDropdown(false)
 
     return (
-        <div className="" key={category.id}>
+        <div className="dark:bg-[#2c2c2c]" key={category.id}>
 
             {category.subCategories && category.subCategories.length > 0 ? (
                 <>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Login from '../pages/User/Login/Login'
 import { useEffect } from "react";
 import { useSelector } from 'react-redux'
 
@@ -13,18 +14,24 @@ const SemiProtected = (props) => {
 
     const { user, isAuth } = useSelector((state) => state.auth);
 
-    useEffect(() => {
-        function checkLogin() {
-            if (isAuth == false || user == null || user.type != 'user') {
-                navigate('/login')
-            }
-        }
-        checkLogin();
-    }, [navigate]);
+    // useEffect(() => {
+    //     function checkLogin() {
+    //         if (isAuth == false || user == null || user.type != 'user') {
+    //             navigate('/login')
+    //         }
+    //     }
+    //     checkLogin();
+    // }, [navigate]);
 
     return (
         <div>
-            <Component />
+            {
+                isAuth == false || user == null || user.type != 'user'
+                    ?
+                    <Login />
+                    :
+                    <Component />
+            }
         </div>
     );
 };

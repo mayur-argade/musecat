@@ -12,7 +12,9 @@ import moment from 'moment'
 import toast, { Toaster } from 'react-hot-toast';
 import MapComponent from '../../../components/GoogleMap/Map'
 import { useSelector } from 'react-redux'
-
+import BottomNav from '../../../components/shared/BottomNav/BottomNav'
+import { createEvent } from "ics";
+import { saveAs } from "file-saver";
 const EventDescription = () => {
     document.title = 'Event Info'
 
@@ -290,9 +292,6 @@ const EventDescription = () => {
     const isImage = (url) => /\.(jpeg|jpg|gif|png)$/.test(url);
     const isVideo = (url) => /\.(mp4|webm|ogg)$/.test(url);
 
-
-
-
     let totalSeats = 0;
     let startPrice = 1000000000;
     let availableSeats = 0;
@@ -365,6 +364,7 @@ const EventDescription = () => {
 
     const addToGoogleCalender = async (vendorid) => {
         setLoading(true);
+        handleSave()
 
         try {
             let startTime = response.data.eventDetails.date.type == 'dateRange' ? response.data.eventDetails.date.dateRange.startDate : response.data.eventDetails.date.recurring.startDate
@@ -442,6 +442,38 @@ const EventDescription = () => {
             }
         }
     }
+
+    const startDateString = response.data.eventDetails.date.dateRange.startDate; // Example start date string
+    const startDateMoment = moment(startDateString);
+
+    const startDateArray = [
+        startDateMoment.year(),
+        startDateMoment.month() + 1, // Month starts from 0, so we add 1
+        startDateMoment.date(),
+        startDateMoment.hour(),
+        startDateMoment.minute()
+    ];
+
+    const event = {
+        start: startDateArray,
+        // duration: { hours: 6, minutes: 30 },
+        title: response.data.eventDetails.title,
+        description: response.data.eventDetails.shortDescription,
+        location: response.data.eventDetails.location.name,
+        url: response.data.eventDetails.website,
+        geo: { lat: response.data.eventDetails.location.coordinates.lat, lon: response.data.eventDetails.location.coordinates.lng },
+        categories: response.data.eventDetails.location.eventCategories,
+        status: "CONFIRMED",
+        busyStatus: "BUSY",
+        organizer: { name: "Muscat", email: "muscat@gmail.com" },
+    };
+
+    const handleSave = () => {
+        createEvent(event, (error, value) => {
+            const blob = new Blob([value], { type: "text/plain;charset=utf-8" });
+            saveAs(blob, "event-schedule.ics");
+        });
+    };
 
 
     return (
@@ -1096,6 +1128,10 @@ const EventDescription = () => {
 
             <div className=''>
                 < Footer />
+            </div>
+
+            <div>
+                <BottomNav />
             </div>
         </div >
     )

@@ -9,6 +9,7 @@ import Footer from '../../../components/shared/Footer/Footer'
 import PastPurchaseCard from '../../../components/Cards/PastPurchaseCard'
 import Features from '../../../utils/Data'
 import SkeletonCard from '../../../components/shared/skeletons/SkeletonCard'
+import BottomNav from '../../../components/shared/BottomNav/BottomNav'
 
 const PastPurchase = () => {
 
@@ -120,17 +121,7 @@ const PastPurchase = () => {
         setIsOpen(!isOpen);
     };
 
-    // if (response.data == null || categories.data == null) {
-    //     return (
-    //         <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
-    //             <div class="relative flex justify-center items-center">
-    //                 <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
-    //                 <img src="/images/logo/logo-main.png" class="h-16" />
-    //             </div>
-    //         </div>
-    //     )
 
-    // } else {
     return (
         <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <div className='z-20'>
@@ -305,6 +296,10 @@ const PastPurchase = () => {
             </section>
             <div className=''>
                 < Footer />
+            </div>
+
+            <div>
+                <BottomNav />
             </div>
         </div>
     )

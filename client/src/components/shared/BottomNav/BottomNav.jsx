@@ -98,9 +98,9 @@ const BottomNav = () => {
                                 <p class="text-sm text-gray-500 dark:text-gray-400 group-hover:font-bold dark:group-hover:text-blue-500">Favorites</p>
                             </button>
 
-                            <button onClick={() => navigate('/profile')} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                            <button onClick={() => navigate('/user/profile')} type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                                 {
-                                    window.location.pathname == "/profile" ?
+                                    window.location.pathname == "/user/profile" ?
                                         <>
                                             <img className='flex dark:hidden' src="/images/icons/pwa-profile-active.svg" alt="" />
                                             <img className='dark:flex hidden' src="/images/icons/profile-light.svg" alt="" />

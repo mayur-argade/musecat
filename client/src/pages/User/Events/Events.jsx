@@ -16,6 +16,8 @@ import './events.css'
 import DatePicker from "react-datepicker";
 import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
+import BottomNav from '../../../components/shared/BottomNav/BottomNav'
+
 
 const Events = () => {
 
@@ -275,6 +277,7 @@ const Events = () => {
         setShowDatePicker(true);
     };
 
+    
 
     return (
         <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
@@ -607,6 +610,11 @@ const Events = () => {
             <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 < Footer />
             </div>
+
+            <div>
+                <BottomNav />
+            </div>
+
         </div >
     )
 

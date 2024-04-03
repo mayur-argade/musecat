@@ -55,6 +55,7 @@ import InputEmailVendor from './pages/Vendor/ForgotPasswordVendor/InputEmailVend
 import ResetPasswordVendor from './pages/Vendor/ForgotPasswordVendor/ResetPasswordVendor';
 import UserHelpCenter from './pages/SuportEngine/UserHelpCenter';
 import VendorHelpCenter from './pages/SuportEngine/VendorHelpCenter';
+import PwaProile from './pages/User/Profile/PwaProfile'
 
 // utils
 import AdminRoute from './utils/AdminRoute'
@@ -65,12 +66,14 @@ import ScrollToTop from './utils/ScrollToTop';
 
 
 function App() {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     return (
         <div className="App">
             <Router>
                 <ScrollToTop />
                 <Routes>
                     <Route path="/" exact element={<Home />} />
+                    <Route path="/user/profile" exact element={<SemiProtected Component={PwaProile} />} />
                     <Route path="/profile" exact element={<SemiProtected Component={Profile} />} />
                     <Route path="/favorites" exact element={<SemiProtected Component={Favorites} />} />
                     <Route path="/category/:category" exact element={<Events />} />

@@ -20,13 +20,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
     const dispatch = useDispatch();
+
     const { isAuth, user } = useSelector((state) => state.auth)
     let { category, eventid } = useParams();
 
     // Event handlers
     const openDropdown = () => setDropdownOpen(true);
     const closeDropdown = () => setDropdownOpen(false);
-    const handleBack = () => navigate(-1);
     const handleSearchInput = (e) => setSearchQuery(e.target.value);
     const toggleDropdown = () => setIsOpen(!isOpen);
     const handleOnclick = () => {
@@ -57,62 +57,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         }
     }
 
-    let categoryName = category
-
-    if (category === 'event') {
-        categoryName = 'Events'
-    }
-    else if (category === 'eat') {
-        categoryName = 'Eat'
-    }
-    else if (category === 'ladiesnight') {
-        categoryName = 'Ladies Night'
-    }
-    else if (category === 'weeklyoffers') {
-        categoryName = 'Weekly Offers'
-    }
-    else if (category === 'thingstodo') {
-        categoryName = 'Things To Do'
-    }
-    else if (category === 'staycation') {
-        categoryName = 'Staycation'
-    }
-    else if (category === 'poolnbeach') {
-        categoryName = 'Pool & Beach'
-    }
-    else if (category === 'spaoffers') {
-        categoryName = 'Spa Offers'
-    }
-    else if (category === 'kidscorner') {
-        categoryName = 'Kids Corner'
-    }
-    else if (window.location.pathname == '/events/eventid') {
-        categoryName = "Event Description"
-    }
-    else if (window.location.pathname == '/venue/venueid') {
-        categoryName = "Venue Description"
-    }
-    else if (window.location.pathname == '/favorites') {
-        categoryName = "Favorites"
-    }
-    else if (window.location.pathname == '/pastpurchase') {
-        categoryName = "Past Purchases"
-    }
-    else if (window.location.pathname == '/faq') {
-        categoryName = "FAQs"
-    }
-    else if (window.location.pathname == '/bookticket') {
-        categoryName = "Book Your Seat"
-    }
-    else if (window.location.pathname == '/ticketstatus/ticketid') {
-        categoryName = "Ticket Status"
-    }
-    else if (window.location.pathname.includes("/venue")) {
-        categoryName = "Venue Description"
-    }
-    else if (window.location.pathname.includes("/events/")) {
-        categoryName = "Event Description"
-    }
+    const [categoryName, setCategoryName] = useState(category)
+    const [showCustomCategory, setShowCustomCategory] = useState(false)
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -120,7 +66,46 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             try {
                 const res = await GetAllCategory()
                 setCategories(res.data)
+                console.log("this is res", res.data.data)
+
                 setLoading(false)
+                if (window.location.pathname.includes("/favorites")) {
+                    setShowCustomCategory(true)
+                    setCategoryName("Favorites")
+                }
+                else if (window.location.pathname.includes("/category/")) {
+                    setShowCustomCategory(true)
+                    const categoryURL = window.location.pathname.split("/").pop();
+                    console.log(categoryURL)
+                    const assignedCategory = res.data.data.find(category => category.categoryURL === categoryURL);
+                    console.log("Assigned Category", assignedCategory)
+                    if (assignedCategory) {
+                        setCategoryName(assignedCategory.name)
+                    }
+                    else {
+                        setCategoryName(categoryURL)
+                    }
+                }
+                else if (window.location.pathname.includes("/events/")) {
+                    setShowCustomCategory(true)
+                    setCategoryName("Event Description")
+                }
+                else if (window.location.pathname.includes("/bookticket/")) {
+                    setShowCustomCategory(true)
+                    setCategoryName("Book Your Seat")
+                }
+                else if (window.location.pathname.includes("/venue/")) {
+                    setShowCustomCategory(true)
+                    setCategoryName("Venue Description")
+                }
+                else if (window.location.pathname.includes("/pastpurchase")) {
+                    setShowCustomCategory(true)
+                    setCategoryName("Past Purchased")
+                }
+                else if (window.location.pathname.includes("/ticketstatus/")) {
+                    setShowCustomCategory(true)
+                    setCategoryName("Ticket Status")
+                }
             } catch (error) {
                 setLoading(false)
             }
@@ -131,6 +116,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     }, []);
 
 
+
+
     useEffect(() => {
         const getNotificationCountFunction = async () => {
             try {
@@ -139,6 +126,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 if (notificationCount.data.data > 0) {
                     setUnread(true)
                 }
+
             } catch (error) {
 
             }
@@ -152,16 +140,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     return (
         <>
-
-
             <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40 bg-white flex justify-center items-center align-middle'>
                 <div class="bg-white border-gray-200 dark:bg-[#2c2c2c] w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12">
                     <Toaster />
                     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-4 pr-4 py-4 md:pt-2 md:pb-1 shadow-md md:shadow-none">
 
-                        {category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/category") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid' ? (
+                        {showCustomCategory ? (
                             <div className='flex align-middle'>
-                                <button className="menu-bars md:hidden " onClick={handleBack} >
+                                <button className="menu-bars md:hidden " onClick={() => navigate(-1)} >
                                     <img className='flex dark:hidden' src="/images/icons/back-arrow.svg" alt="" />
                                     <img className='dark:flex hidden' src="/images/icons/back-arrow-light.svg" alt="" />
                                 </button>
@@ -193,10 +179,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                         )}
 
                         {
-                            category === 'events' || category === 'eat' || category === 'ladiesnight' || category === 'weeklyoffers' || category === 'thingstodo' || category === 'staycation' || category === 'poolnbeach' || category === 'spaoffers' || category === 'kidscorner' || window.location.pathname.includes("/category") || window.location.pathname.includes("/venue") || window.location.pathname == '/favorites' || window.location.pathname == '/pastpurchase' || window.location.pathname == '/faq' || window.location.pathname == '/bookticket' || window.location.pathname == '/ticketstatus/ticketid'
+                            !showCustomCategory
                                 ?
                                 <div className='flex md:hidden'>
-                                    <Link to="/" class=" hidden md:flex items-center">
+                                    <Link to="/" class="flex items-center">
                                         <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
                                         <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-10 md:mr-3" alt="MWT Logo" />
                                         <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
@@ -204,16 +190,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     </Link>
                                 </div>
                                 :
-                                <div className='flex md:hidden'>
-                                    <Link to="/" class=" flex md:flex items-center">
-                                        <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
-                                        <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-10 md:mr-3" alt="MWT Logo" />
-                                        <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
-                                        <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
-                                    </Link>
-                                </div>
+                                <></>
 
                         }
+
                         <div class="hidden md:flex md:order-2 space-x-2">
                             {
                                 isAuth
@@ -367,25 +347,26 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         </li>
                                         <li>
                                             {/* <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}> */}
-                                                <div className="dropdown-container reltive">
-                                                    <span
-                                                        className="hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
+                                            <div className="dropdown-container reltive">
+                                                <a
+                                                    href='#'
+                                                    className="pointer-cursor hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
+                                                    onMouseEnter={() => openDropdown()}
+                                                    onMouseLeave={() => closeDropdown()}
+                                                >
+                                                    Where to ?
+                                                </a>
+                                                {isDropdownOpen && (
+                                                    <div
                                                         onMouseEnter={() => openDropdown()}
                                                         onMouseLeave={() => closeDropdown()}
-                                                    >
-                                                        Where to ?
-                                                    </span>
-                                                    {isDropdownOpen && (
-                                                        <div
-                                                            onMouseEnter={() => openDropdown()}
-                                                            onMouseLeave={() => closeDropdown()}
-                                                            className="z-50 dropdown absolute w-48 h-80 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
-                                                            {categories.data && categories.data.map((category, index) => (
-                                                                <CategoryLink key={index} category={category} />
-                                                            ))}
-                                                        </div>
-                                                    )}
-                                                </div>
+                                                        className="z-50 dropdown absolute w-48 h-80 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
+                                                        {categories.data && categories.data.map((category, index) => (
+                                                            <CategoryLink key={index} category={category} />
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
                                             {/* </Link> */}
                                         </li>
                                         <li>
@@ -431,13 +412,15 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
 
             {/* sidebar for mobile view */}
-            < nav className={sidebar ? "nav-menu active dark:bg-[#2c2c2c]" : "nav-menu dark:bg-[#2c2c2c]"} >
+            <nav className={sidebar ? "nav-menu active dark:bg-[#2c2c2c]" : "nav-menu dark:bg-[#2c2c2c]"} >
                 <ul className="relative nav-menu-items dark:text-white" >
                     <li className="dark:bg-[#2c2c2c] navbar-toggle flex justify-between justify-items-end">
-                        <div className="">
-                            <img src="/images/logo/logo.png" className=" ml-4 dark:hidden flex h-6 mr-3" alt="MWT Logo" />
-                            <img src="/images/icons/logo-light.svg" className=" ml-4 dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
-                        </div>
+                        <Link to="/" class="ml-2 flex md:flex items-center">
+                            <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
+                            <img src="/images/logo/logo-main-light.png" className="hidden dark:flex h-10 md:mr-3" alt="MWT Logo" />
+                            <img src="/images/logo/logo.png" className="dark:hidden flex h-6 mr-3" alt="MWT Logo" />
+                            <img src="/images/icons/logo-light.svg" className="dark:flex hidden flex h-6 mr-3" alt="MWT Logo" />
+                        </Link>
 
                         <div className="flex  justify-end align-middle items-center">
                             <div className="flex flex-col mr-5">
@@ -545,7 +528,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                             <Link to="/signup">
                                                 <button type="button" class="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 ">Sign up</button>
                                             </Link>
-
                                         </div>
                                     </>
                             }
@@ -584,7 +566,7 @@ const CategoryLink = ({ category }) => {
                     >
                         <div className=''
                         >
-                            {category.name} >
+                            {category.name}
                         </div>
                     </div>
 
