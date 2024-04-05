@@ -69,7 +69,7 @@ const FAQ = () => {
             <Tabbar />
             <section className='relative md:mr-52 md:ml-52 mt-5 ml-6 mr-6'>
                 <div className="hidden md:flex align-middle items-center">
-                    <button className=' mt-1'>
+                    <button onClick={() => navigate(-1)} className=' mt-1'>
                         <img className='h-14 w-14' src="/images/icons/back-button.png" alt="" />
                     </button>
                     <p className='text-2xl font-bold'>FAQs</p>

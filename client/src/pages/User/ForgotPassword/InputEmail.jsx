@@ -23,31 +23,16 @@ const InputEmail = () => {
             setLoading(false)
             console.log(data)
         } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function HandleBackClick() {
-        console.log("button clicked")
-        if (sessionStorage.getItem('prevLocation')) {
-            const prevLocation = sessionStorage.getItem('prevLocation');
-            // Check if the URL of prevLocation starts with "/bookticket"
-            if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/profile')) {
-                // Go back two pages (navigate -2)
-                navigate(-3);
-            } else {
-                // Go back one page (navigate -1)
-                navigate(-1);
-            }
-        } else {
-            navigate('/')
+            setLoading(false)
+            toast.error(error.response.data.data)
+            // console.log(error)
         }
     }
 
     return (
         <body class="dark:bg-[#2c2c2c] dark:text-white relative h-screen flex justify-center align-middle items-center bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button className='absolute top-10 left-10'>
-                <img onClick={(() => HandleBackClick())} src="/images/icons/login-back.svg" alt="" />
+                <img onClick={(() => navigate(-1))} src="/images/icons/login-back.svg" alt="" />
             </button>
             <Toaster />
             <div className='flex-row items-center align-middle '>
@@ -59,7 +44,7 @@ const InputEmail = () => {
                         <div class="flex flex-col space-y-5">
                             <label for="email">
                                 <p class="font-medium text-slate-700 dark:text-slate-300 pb-2">Email address</p>
-                                <input id="email" name="email" type="email" class="dark:bg-[#454545] dark:border-0 dark:outilne-0 w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow " placeholder="Enter email address"
+                                <input id="email" name="email" type="email" class="w-full rounded-md border-slate-500 focus:outline-0 focus:ring-[#454545]" placeholder="Enter email address"
                                     onChange={((e) => setEmail(e.target.value))} />
                             </label>
 

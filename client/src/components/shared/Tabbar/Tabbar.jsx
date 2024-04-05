@@ -6,7 +6,7 @@ const Tabbar = () => {
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
-    
+
     const [showMoreCategories, setShowMoreCategories] = useState(false)
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const Tabbar = () => {
             <nav className='shadow-lg hidden md:flex flex-wrap justify-center py-3 space-x-6 overflow-auto'>
                 {loading ? (
                     <div className="animate-pulse flex justify-center items-center w-full">
-                        {/* Placeholder for loading animation */}
+                        
                     </div>
                 ) : (
                     <>

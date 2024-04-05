@@ -108,7 +108,7 @@ const UpcomingEvents = () => {
                 <div className='flex justify-between items-center '>
                     <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>What’s On</span></div>
                     <div className="flex items-center align-middle ">
-                        <div onClick={(() => setShowCalender(true))} className="calender date-picker ">
+                        <div onClick={(() => setShowCalender(true))} className="calender date-picker cursor-pointer ">
                             <img className="calender h-8 mr-2 flex dark:hidden" src="/images/assets/calender-icon.png" alt="" />
                             <img className="calender h-8 mr-2 hidden dark:flex" src="/images/icons/eventcal-light.svg" alt="" />
                         </div>
@@ -223,9 +223,9 @@ const UpcomingEvents = () => {
                     </div> */}
                 </div>
 
-                <div className='flex justify-end space-x-2 '>
-                    <Link to="/category/staycation">
-                        <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
+                <div className='flex justify-end w-30 mt-1'>
+                    <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                        <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
                     </Link>
                 </div>
             </section>

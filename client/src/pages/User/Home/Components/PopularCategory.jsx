@@ -33,9 +33,18 @@ const PopularCategory = () => {
         });
     }
 
+    const [refresh, setRefresh] = useState(true)
+
     function setDayforCategory(passedDate) {
         setSelectedDay(passedDate)
-        SetDay(`?date=${passedDate}`)
+        if (selectedDay == passedDate) {
+            setSelectedDay('')
+            SetDay('')
+            setRefresh(!refresh)
+        } else {
+            SetDay(`?date=${passedDate}`)
+            setRefresh(!refresh)
+        }
 
     }
 
@@ -62,7 +71,7 @@ const PopularCategory = () => {
         }
 
         fetchdata()
-    }, [day]);
+    }, [day, refresh]);
 
     return (
         <div className='flex justify-center items-center align-middle mt-5'>
@@ -77,9 +86,9 @@ const PopularCategory = () => {
                             daysAndDates.map((e) => (
                                 <button
                                     onClick={() => setDayforCategory(e.date)}
-                                    className={`md:block hover:bg-black hover:text-white rounded-full border-black dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
-                                        ? 'bg-black text-white'
-                                        : ''
+                                    className={`md:block hover:bg-[#A48533] hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
+                                        ? 'bg-[#C0A04C] border-[#A48533] text-white'
+                                        : 'border-black'
                                         }`}
                                 >
                                     {e.day}
@@ -97,7 +106,7 @@ const PopularCategory = () => {
                                         key={e.date} // Make sure to add a unique key prop when mapping in React
                                         value={e.date}
                                         onClick={() => setDayforCategory(e.date)}
-                                        className={`hover:bg-black hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date ? 'bg-black text-white' : '' // Apply different styling for the selected option
+                                        className={`hover:bg-[#C0A04C] hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date ? 'bg-[#C0A04C] text-white' : '' // Apply different styling for the selected option
                                             }`}
                                     >
                                         {e.day}
@@ -115,13 +124,18 @@ const PopularCategory = () => {
                                 <>
                                     <div className='md:h-72 flex space-x-3'>
                                         <CategorySkeleton />
-                                        <CategorySkeleton />                                            </div>
+                                        <CategorySkeleton />
+                                        <CategorySkeleton />
+                                        <CategorySkeleton />
+                                    </div>
                                 </>
                                 :
                                 categoryLoading
                                     ?
                                     <>
                                         <div className='md:h-72 flex space-x-3'>
+                                            <CategorySkeleton />
+                                            <CategorySkeleton />
                                             <CategorySkeleton />
                                             <CategorySkeleton />
                                         </div>
@@ -167,19 +181,18 @@ const PopularCategory = () => {
                         )}
                     </div>
 
-                    <div className=' flex justify-end space-x-3 '>
+                    <div className=' flex justify-end space-x-1 align-middle items-center'>
                         <div className='flex justify-end align-middle items-center'>
-                            <Link to='/whereto' className='flex justify-end align-middle items-center'>
+                            <Link to='/whereto' className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-4 flex justify-center align-middle items-center'>
                                 <img className='h-6 mr-1' src="/images/icons/map.svg" alt="" />
-                                <p className='text-sm font-medium underline'>View map</p>
+                                <p className='text-sm font-medium '>View map</p>
                             </Link>
                         </div>
-                        <div className='flex justify-end align-middle items-center'>
-                            <Link to="/category/staycation">
-                                <p className='text-gray-400 font-medium underline underline-offset-1 text-sm pr-2 '>view all</p>
+                        <div className=''>
+                            <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                                <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
                             </Link>
                         </div>
-
                     </div>
 
                 </div>

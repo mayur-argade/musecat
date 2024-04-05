@@ -66,7 +66,20 @@ const WhereTo = () => {
 
 
                 <div className='flex justify-end space-x-2 '>
-                    <p className='cursor-pointer underline underline-offset-1 text-sm pr-2 ' onClick={() => setShowAll(true)} >view all</p>
+                    {
+                        showAll ?
+                            <div className=''>
+                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' onClick={() => setShowAll(false)}>
+                                    <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>View less</p>
+                                </Link>
+                            </div>
+                            :
+                            <div className=''>
+                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' onClick={() => setShowAll(true)}>
+                                    <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>View more</p>
+                                </Link>
+                            </div>
+                    }
                 </div>
             </section>
         </section>

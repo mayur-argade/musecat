@@ -33,6 +33,11 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         userLogout()
         showSidebar()
     }
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
     const showSidebar = () => setSidebar(!sidebar);
     const onClick = () => setIsAccOpen(!isAccOpen)
 
@@ -137,7 +142,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         }
 
     }, [categoryName])
-
+    
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+    
     return (
         <>
             <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40 bg-white flex justify-center items-center align-middle'>
@@ -202,11 +214,11 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         <div className='flex justify-center'>
                                             <DarkModeToggle />
                                         </div>
-                                        <button onClick={toggleDropdown}>
-                                            <img className='m-1 h-10' src="/images/icons/navprofile.png" alt="" />
+                                        <button className='relative' onClick={toggleDropdown}>
+                                            <img className=' m-1 h-10' src="/images/icons/navprofile.png" alt="" />
                                             {isOpen && (
                                                 <div
-                                                    className="origin-top-right absolute right-60 mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50 dark:bg-[#2c2c2c] "
+                                                    className="origin-top-left right-0 absolute mt-0 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-52 z-50 dark:bg-[#2c2c2c] "
                                                     ref={dropdownRef}
                                                 >
                                                     <div className="px-3 flex flex-col">
@@ -360,7 +372,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                     <div
                                                         onMouseEnter={() => openDropdown()}
                                                         onMouseLeave={() => closeDropdown()}
-                                                        className="z-50 dropdown absolute w-48 h-80 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
+                                                        className="z-50 dropdown absolute w-48 h-auto bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
                                                         {categories.data && categories.data.map((category, index) => (
                                                             <CategoryLink key={index} category={category} />
                                                         ))}

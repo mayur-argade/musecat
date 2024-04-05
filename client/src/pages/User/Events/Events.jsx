@@ -86,9 +86,10 @@ const Events = () => {
             onClick={onClick} ref={ref}
             className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-[#454545] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
         >
-            <span className="hidden md:block text-gray-500">Calendar</span>
-            <span className="block md:hidden text-gray-500">Calendar</span>
-            <img className="ml-2 w-4 h-4" src="/images/icons/calendar.png" alt="" />
+            <span className="hidden md:block text-white">Calendar</span>
+            <span className="block md:hidden text-white">Calendar</span>
+            <img className="ml-2 w-4 h-4 flex dark:hidden" src="/images/icons/calendar.png" alt="" />
+            <img className="ml-2 w-4 h-4 hidden dark:flex" src="/images/icons/calendar-light.png" alt="" />
         </button>
 
     ));
@@ -277,7 +278,7 @@ const Events = () => {
         setShowDatePicker(true);
     };
 
-    
+
 
     return (
         <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
@@ -343,10 +344,11 @@ const Events = () => {
                                         onClick={toggleDropdown}
                                         className="flex align-middle space-x-3 bg-gray-50 border border-gray-300 dark:bg-[#454545] dark:text-white text-gray-900 md:text-sm text-md rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-14 md:w-52 p-1.5 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
                                     >
-                                        <span className='hidden md:block text-gray-500'>Filter by Features</span>
-                                        <span className='hidden block text-gray-500'>Filter</span>
+                                        <span className='hidden md:block text-gray-500 dark:text-white'>Filter by Features</span>
+                                        <span className='hidden block text-gray-500 dark:text-white'>Filter</span>
 
-                                        <img src="/images/icons/filter.svg" alt="" />
+                                        <img className='dark:hidden flex' src="/images/icons/filter.svg" alt="" />
+                                        <img className="hidden dark:flex" src='/images/icons/filter-light.svg' alt="" />
                                     </button>
                                     {isOpen && (
                                         <div

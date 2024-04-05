@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
@@ -6,11 +6,12 @@ import { setAuth } from "../../../store/authSlice";
 import { ClientLogin, ClientGoogleLogin, googleLogin, facebookLogin } from "../../../http/index"
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-
+import ResendDialogueBox from '../../../components/ResendDialogueBox/ResendDialogueBox';
 
 const Login = () => {
 
     document.title = 'Login'
+    const emailInputRef = useRef(null);
 
     const responseFacebook = async (response) => {
         try {
@@ -34,6 +35,7 @@ const Login = () => {
             toast.error('Login failed. Please try again.');
         }
     };
+
     const googleLogin = async (codeResponse) => {
         console.log(codeResponse)
         try {
@@ -57,6 +59,7 @@ const Login = () => {
             toast.error('Login failed. Please try again.');
         }
     }
+
     const scopes = ['profile', 'email', 'calender'];
     const login = useGoogleLogin({
         onSuccess: (tokenResponse) => { googleLogin(tokenResponse) },
@@ -70,6 +73,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [user, setUser] = useState([]);
     const [profile, setProfile] = useState([]);
+    const [showVerificationPopup, setShowVerificationPopup] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -89,26 +93,18 @@ const Login = () => {
             navigate(prevLocation);
         } catch (error) {
             setLoading(false)
+            console.log(error)
+            if (error.response.status == 400 && error.response.data.data == "Kindly verify your account for signing in") {
+                setShowVerificationPopup(true)
+            }
             toast.error(error.response.data.data)
         }
     }
 
-    async function HandleBackClick() {
-        console.log("button clicked")
-        if (sessionStorage.getItem('prevLocation')) {
-            const prevLocation = sessionStorage.getItem('prevLocation');
-            // Check if the URL of prevLocation starts with "/bookticket"
-            if (prevLocation.startsWith('/bookticket') || prevLocation.startsWith('/favorites') || prevLocation.startsWith('/pastpurchased') || prevLocation.startsWith('/profile')) {
-                // Go back two pages (navigate -2)
-                navigate(-2);
-            } else {
-                // Go back one page (navigate -1)
-                navigate(-1);
-            }
-        } else {
-            navigate('/')
-        }
-    }
+    useEffect(() => {
+        // Focus on the email input field when the component mounts
+        emailInputRef.current.focus();
+    }, []);
 
     return (
         <section class="dark:bg-[#2c2c2c] dark:text-white relative h-screen bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
@@ -127,7 +123,7 @@ const Login = () => {
                     </div>
                     <div>
                         <input class="w-full p-2 text-sm bg-white md:bg-gray-100 focus:outline-none dark:text-white dark:bg-[#454545] dark:placeholder:text-white dark:border-0 ring-0 dark:focus:outline-0 focus:outline-none border border-gray-200 rounded-md text-gray-600"
-                            value={email} onChange={(e) => setEmail(e.target.value)}
+                            value={email} ref={emailInputRef} onChange={(e) => setEmail(e.target.value)}
                             type="text" placeholder="Email" />
                     </div>
                     <div>
@@ -194,6 +190,22 @@ const Login = () => {
                     </button>
                 </div>
             </section>
+            {
+                showVerificationPopup && (
+                    <div>
+                        <div>
+                            <div className='calendar-overlay'>
+                                <div className='relative text-black'>
+                                    <div className='absolute top-0 right-0'>
+                                        <button onClick={() => setShowVerificationPopup(false)} className='text-white hover:underline'><img className=' bg-white rounded-full h-7 cursor-pointer' src="/images/icons/cancel-icon-new.png" alt="" /></button>
+                                    </div>
+                                    <ResendDialogueBox onClose={() => setShowVerificationPopup(false)} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </section>
 
     )
