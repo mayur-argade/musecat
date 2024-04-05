@@ -17,14 +17,22 @@ Verification page
 
 Home
 - make Search bar working
-- can unselect day of the popular category
 - scroll buttons to the upcoming events
 - Editors pick (don't show random events)
-- Change view maps logo for dark image 
 - for upcoming pages book now button should redirect to the book tickets page if there   are tickets to purchase else redirect to the event descripition
 
 Events
 - Search, filters, calender mobile view modifications
-- 
+- when you are selecting anything from the list or tabbar or changing anything reset all the filters
 
 
+Google maps redirect (done)
+calender events
+notification (done)
+profile page session expire
+expiry of token handling
+
+
+
+1-2-2024
+startdate < 1-2-2024T00:00:00 and enddate >=1-2-2024T23:59:00

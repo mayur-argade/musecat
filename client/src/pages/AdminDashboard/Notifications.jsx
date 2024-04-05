@@ -62,15 +62,11 @@ const Notifications = () => {
             // Use toast.promise to display a promise-based toast
             const promise = AdminSendNotification(notificationdata);
             const res = await toast.promise(promise, {
-                loading: 'Deleting notifications...',
+                loading: 'Sending Notifications....',
                 success: (response) => response.data.data,
                 error: (error) => `Error: ${error.response.data.data}`,
             });
-
-            // Refresh or update the UI as needed after successful deletion
-            if (res.data.success === true) {
-                setRefresh(!refresh);
-            }
+            setDisplayModal(false)
         } catch (error) {
             // toast.error(error.response.data.data);
             console.error(error);
@@ -80,7 +76,7 @@ const Notifications = () => {
     return (
         <div>
             <div className='flex '>
-
+                <Toaster />
                 <div>
                     <Sidebar />
                 </div>
@@ -151,8 +147,8 @@ const Notifications = () => {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className='flex flex-col bg-[#D0D0D0] dark:bg-[#2c2c2c] pl-2 pr-2 rounded-md'>
-                                                                    <label className='text-xs mt-1' htmlFor="first name">message</label>
+                                                                <div className='flex flex-col border border-black border-1 dark:bg-[#2c2c2c] pl-2 pr-2 rounded-md'>
+                                                                    <label className='text-xs mt-1' htmlFor="first name">Message</label>
                                                                     <textarea
                                                                         type="text"
                                                                         // value={message}

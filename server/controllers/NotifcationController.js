@@ -121,16 +121,16 @@ exports.sendNotificationToUsers = async (req, res) => {
 
         if (user) {
             // Fetch all user IDs from the database
-            const allUserIds = await UserModel.find({}, '_id');
+            const allUserIds = await UserModel.find({ isVerified: true }, '_id');
 
             // Create notifications for each user
             const notificationPromises = allUserIds.map(async (userId) => {
                 const userNotification = {
                     senderid: req.user._id,
-                    receiverid: userId,
+                    receiverid: userId._id.toString(),
                     msg: msg
                 };
-
+                console.log(userId)
                 return await notificationService.createNotification(userNotification);
             });
 
@@ -149,7 +149,7 @@ exports.sendNotificationToUsers = async (req, res) => {
             const notificationPromises = stringIds.map(async (userId) => {
                 const userNotification = {
                     senderid: req.user._id,
-                    receiverid: userId,
+                    receiverid: userId._id.toString(),
                     msg: msg
                 };
 

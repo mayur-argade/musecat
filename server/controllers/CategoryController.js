@@ -317,28 +317,31 @@ exports.getCategoriesWithEvents = async (req, res) => {
 exports.getCategoryAllEvents = async (req, res) => {
     // taking parameters like categoryname, searchquery, date
     const { category, filterdate, subCategory, offerDay } = req.body
-
+    console.log(req.body)
 
     let events;
     let query;
     try {
 
         if (filterdate != null || filterdate != undefined) {
-            const timestampFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
-            const filterDate = new Date(`${filterdate}T23:00:00.000Z`)
-            const filterDate2 = new Date(`${filterdate}T00:00:00.000Z`)
-            const currentDay = moment(filterDate).format('dddd').toLowerCase()
+            const onlyDate = moment(filterdate).format("YYYY-MM-DD")
+            const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
+            const endDate = new Date(`${onlyDate}T23:00:00.000Z`)
+            const currentDay = moment(startDate).format('dddd').toLowerCase()
 
+            console.log(startDate)
+            console.log(endDate)
             query = {
                 archived: false,
                 verified: true,
+                type: 'event',
                 $or: [
                     {
-                        'date.dateRange.startDate': { $lte: filterDate2 },
-                        'date.dateRange.endDate': { $gte: filterDate }
+                        'date.dateRange.startDate': { $lte: startDate },
+                        'date.dateRange.endDate': { $gte: endDate }
                     },
                     {
-                        'date.dateRange.startDate': { $lte: filterDate },
+                        'date.dateRange.startDate': { $lte: startDate },
                         'date.dateRange.endDate': null
                     }
                     ,
@@ -347,12 +350,12 @@ exports.getCategoryAllEvents = async (req, res) => {
                             {
                                 $or: [
                                     {
-                                        'date.recurring.startDate': { $lte: filterDate2 },
-                                        'date.recurring.endDate': { $gte: filterDate },
+                                        'date.recurring.startDate': { $lte: startDate },
+                                        'date.recurring.endDate': { $gte: endDate },
                                         'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
                                     },
                                     {
-                                        'date.recurring.startDate': { $lte: filterDate2 },
+                                        'date.recurring.startDate': { $lte: startDate },
                                         'date.recurring.endDate': { $gte: null },
                                         'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
                                     }
@@ -366,6 +369,7 @@ exports.getCategoryAllEvents = async (req, res) => {
         else {
             const filterDate = moment().format("YYYY-MM-DD")
             const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+            console.log(todayDate)
             const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
             query = {
@@ -428,47 +432,47 @@ exports.getCategoryAllEvents = async (req, res) => {
         }
 
 
-        if (events.length <= 0) {
-            const filterDate = moment().format("YYYY-MM-DD")
-            const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-            const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        // if (events.length <= 0) {
+        //     const filterDate = moment().format("YYYY-MM-DD")
+        //     const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+        //     const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-            
-            query = {
-                archived: false,
-                verified: true,
-                type: 'event',
-                $or: [
-                    {
-                        'date.dateRange.endDate': { $gte: todayDate }
-                    },
-                    {
-                        'date.dateRange.endDate': null
-                    }
-                    ,
-                    {
-                        $and: [
-                            {
-                                $or: [
-                                    {
-                                        'date.recurring.endDate': { $gte: todayDate },
-                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
 
-                                    },
-                                    {
-                                        'date.recurring.endDate': { $gte: null },
-                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
-                                    }
-                                ]
-                            },
-                        ]
-                    },
-                ],
-            }
+        //     query = {
+        //         archived: false,
+        //         verified: true,
+        //         type: 'event',
+        //         $or: [
+        //             {
+        //                 'date.dateRange.endDate': { $gte: todayDate }
+        //             },
+        //             {
+        //                 'date.dateRange.endDate': null
+        //             }
+        //             ,
+        //             {
+        //                 $and: [
+        //                     {
+        //                         $or: [
+        //                             {
+        //                                 'date.recurring.endDate': { $gte: todayDate },
+        //                                 'date.recurring.days': { $in: day } // Replace with a function to get today's day
 
-            events = await eventService.findAllEvents(query)
+        //                             },
+        //                             {
+        //                                 'date.recurring.endDate': { $gte: null },
+        //                                 'date.recurring.days': { $in: day } // Replace with a function to get today's day
+        //                             }
+        //                         ]
+        //                     },
+        //                 ]
+        //             },
+        //         ],
+        //     }
 
-        }
+        //     events = await eventService.findAllEvents(query)
+
+        // }
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: events

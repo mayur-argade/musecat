@@ -13,7 +13,7 @@ const EditorsPick = () => {
             setEditorpickLoading(true)
             try {
                 const categorydata = {
-                    category: "editorspick",
+                    category: "mwt'sfavorites",
                     query: `?search=${null}`,
                     filterdate: null
                 }
@@ -44,7 +44,7 @@ const EditorsPick = () => {
                         <section className='flex justify-center items-center align-middle mt-5'>
                             <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                                 <div className='flex justify-between'>
-                                    <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Editors Pick</span></div>
+                                    <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>MWT's Favorites</span></div>
                                     <div className="right">
                                         <div className='flex justify-end w-30'>
                                             <Link className='w-30 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
@@ -65,7 +65,7 @@ const EditorsPick = () => {
 
                                 </div>
                                 <div className='flex justify-end space-x-2 '>
-                                    <Link to="/category/editorspick">
+                                    <Link to="/category/mwt'sfavorites">
                                         <p className='underline underline-offset-1 text-sm pr-2 '>view all</p>
                                     </Link>
                                 </div>
@@ -80,10 +80,10 @@ const EditorsPick = () => {
                             <section className='flex justify-center items-center align-middle mt-5'>
                                 <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                                     <div className='flex justify-between align-middle items-center'>
-                                        <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>Editors Pick</span></div>
+                                        <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>MWT's Favorites</span></div>
                                         <div className="right">
-                                            <div className='flex justify-end w-30 mt-1'>
-                                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                                            <div className='flex justify-end w-30'>
+                                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/mwt'sfavorites">
                                                     <p className='font-medium   pr-2 text-sm font-medium '>view all</p>
                                                 </Link>
                                             </div>

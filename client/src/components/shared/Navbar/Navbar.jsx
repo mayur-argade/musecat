@@ -142,14 +142,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         }
 
     }, [categoryName])
-    
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-    
+
     return (
         <>
             <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40 bg-white flex justify-center items-center align-middle'>
@@ -457,9 +457,16 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <div className="flex justify-start space-x-2 align-middle">
                                     <p className="font-medium">Where to</p>
                                     {isAccOpen ? (
-                                        <img className="h-5 mt-0.5" src="/images/icons/minus.svg" alt="Minus Icon" />
+                                        <>
+                                            <img className="dark:hidden flex h-5 mt-0.5" src="/images/icons/minus-light.svg" alt="Minus Icon" />
+                                            <img className="dark:flex hidden h-2 mt-2" src="/images/icons/add-light.svg" alt="Minus Icon" />
+                                        </>
                                     ) : (
-                                        <img className="h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
+                                        <>
+                                            <img className="dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
+                                            <img className="dark:flex hidden h-2 mt-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
+
+                                        </>
                                     )}
                                 </div>
                             </div>

@@ -997,7 +997,7 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <div className='w-full mt-5'>
-                                            <MapComponent title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                            <MapComponent redirectToGoogleMap={true} title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                     )
                                 }

@@ -100,6 +100,8 @@ exports.createEvent = async (req, res) => {
             discountOnApp: discountOnApp
         }
 
+        console.log(date)
+
         event = await eventService.createEvent(data)
 
         let categoryData;
@@ -1040,7 +1042,7 @@ exports.getDateWiseEvents = async (req, res) => {
     try {
 
         const events = await EventModel.find().sort({ 'date.dateRange.startDate': 1 }).populate('location');
-        
+
         // Organize events into groups based on date
         const groupedEvents = events.reduce((acc, event) => {
             let date;

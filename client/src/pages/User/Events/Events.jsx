@@ -86,8 +86,8 @@ const Events = () => {
             onClick={onClick} ref={ref}
             className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-[#454545] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
         >
-            <span className="hidden md:block text-white">Calendar</span>
-            <span className="block md:hidden text-white">Calendar</span>
+            <span className="hidden md:block text-gray-500 dark:text-white">Calendar</span>
+            <span className="block md:hidden text-gray-500 dark:text-white">Calendar</span>
             <img className="ml-2 w-4 h-4 flex dark:hidden" src="/images/icons/calendar.png" alt="" />
             <img className="ml-2 w-4 h-4 hidden dark:flex" src="/images/icons/calendar-light.png" alt="" />
         </button>
@@ -367,15 +367,13 @@ const Events = () => {
                                                                             onChange={() => handleCategoryChange(e)}
                                                                             checked={selectedCategories.includes(e)}
                                                                             value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                        <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                        <label for={e.name} class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
                                                                     </div>
                                                                 ))
                                                             }
                                                         </div>
                                                     )
                                                 }
-
-                                                <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
 
                                                 <div className="popular">
                                                     <span className='ml-0 font-semibold text-sm'>Features</span>

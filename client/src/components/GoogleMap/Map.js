@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF, Marker, InfoWindow } from "@react-go
 import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom, title, image }) => {
+const MapComponent = ({ redirectToGoogleMap, coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom, title, image }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
     const [selectedMarker, setSelectedMarker] = useState(null)
     const [showInfo, setShowInfo] = useState(true)
@@ -64,6 +64,16 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
         setShowInfo(!showInfo)
         setSelectedMarker({ lat, lon });
     }
+
+    const redirectToGoogleMaps = (lat, lon) => {
+        if (redirectToGoogleMap) {
+            // Construct Google Maps URL with the latitude and longitude
+            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+
+            // Open Google Maps URL in a new window
+            window.open(googleMapsUrl, "_blank");
+        }
+    }
     // console.log("sekected location", selectedLocation)
     // console.log("address", address)
     return (
@@ -93,6 +103,8 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
                     )
                     : (
                         <MarkerF
+                            onMouseOver={() => setShowInfo(true)}
+                            // onMouseOut={() => setShowInfo(false)}
                             position={selectedLocation}
                             icon={{
                                 url: "/images/icons/marker.png",
@@ -101,21 +113,19 @@ const MapComponent = ({ coordinates, onMarkerClick, selectedLocation, setMapAddr
                             onClick={() => handleMarkerClickNew(selectedLocation.lat, selectedLocation.lng)}
                         >
                             <Marker>
-                                {
-                                    showInfo && (
+                                {showInfo && (
+                                    <InfoWindow
+                                        position={selectedLocation}
+                                        onCloseClick={handleMarkerClose}
 
-                                        <InfoWindow
-                                            position={selectedLocation}
-                                            onCloseClick={handleMarkerClose}
-                                        >
-                                            <div className="flex justify-center align-middle items-center space-x-3">
-                                                {/* Replace with your card component */}
-                                                <img src={image} className="h-5 w-5" alt="Marker" style={{ width: '30px', height: 'auto' }} />
-                                                <h3 className="dark:text-black">{title}</h3>
-                                            </div>
-                                        </InfoWindow>
-                                    )
-                                }
+                                    >
+                                        <div onClick={() => redirectToGoogleMaps(selectedLocation.lat, selectedLocation.lng)} className="cursor-pointer flex justify-center align-middle items-center space-x-3">
+                                            {/* Replace with your card component */}
+                                            <img src={image} className="h-5 w-5" alt="Marker" style={{ width: '30px', height: 'auto' }} />
+                                            <h3 className="dark:text-black">{title}</h3>
+                                        </div>
+                                    </InfoWindow>
+                                )}
                             </Marker>
                         </MarkerF>
                     )
