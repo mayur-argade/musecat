@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF, Marker, InfoWindow } from "@react-go
 import { useEffect } from "react";
 // import { REACT_APP_GOOGLE_MAPS_KEY } from "../constants/constants";
 
-const MapComponent = ({ redirectToGoogleMap, coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom, title, image }) => {
+const MapComponent = ({ showInfoWindow, redirectToGoogleMap, coordinates, onMarkerClick, selectedLocation, setMapAddress, enableClick, mapSize, zoom, title, image }) => {
     // const [address, setAddress] = useState({ lat: selectedLocation.lat, lon: selectedLocation.lng })
     const [selectedMarker, setSelectedMarker] = useState(null)
     const [showInfo, setShowInfo] = useState(true)
@@ -113,7 +113,7 @@ const MapComponent = ({ redirectToGoogleMap, coordinates, onMarkerClick, selecte
                             onClick={() => handleMarkerClickNew(selectedLocation.lat, selectedLocation.lng)}
                         >
                             <Marker>
-                                {showInfo && (
+                                {showInfoWindow && showInfo && (
                                     <InfoWindow
                                         position={selectedLocation}
                                         onCloseClick={handleMarkerClose}

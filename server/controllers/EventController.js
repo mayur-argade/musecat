@@ -8,7 +8,9 @@ const categoryService = require('../services/category-service')
 const CategoryModel = require('../models/CategoryModel')
 const moment = require('moment-timezone')
 const EventModel = require('../models/EventModel')
-
+const ics = require('ics')
+const { writeFileSync } = require('fs');
+const { transporter } = require('../services/mail-service')
 
 // vendor side
 exports.createEvent = async (req, res) => {
@@ -1040,26 +1042,115 @@ exports.getTrendingEvents = async (req, res) => {
 
 exports.getDateWiseEvents = async (req, res) => {
     try {
+        const { date } = req.body
+        let query;
+        if (!date) {
+            const filterDate = moment().format("YYYY-MM-DD")
+            const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+            console.log(todayDate)
+            const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-        const events = await EventModel.find().sort({ 'date.dateRange.startDate': 1 }).populate('location');
+            query = {
+                archived: false,
+                verified: true,
+                type: 'event',
+                $or: [
+                    {
+                        'date.dateRange.endDate': { $gte: todayDate }
+                    },
+                    {
+                        'date.dateRange.endDate': null
+                    }
+                    ,
+                    {
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.endDate': { $gte: todayDate },
+                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
 
-        // Organize events into groups based on date
+                                    },
+                                    {
+                                        'date.recurring.endDate': { $gte: null },
+                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                                    }
+                                ]
+                            },
+                        ]
+                    },
+                ],
+            }
+        } else {
+            const onlyDate = moment(date).format("YYYY-MM-DD")
+            const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
+            const endDate = new Date(`${onlyDate}T23:00:00.000Z`)
+            const currentDay = moment(startDate).format('dddd').toLowerCase()
+
+            query = {
+                archived: false,
+                verified: true,
+                type: 'event',
+                $or: [
+                    {
+                        'date.dateRange.startDate': { $lte: startDate },
+                        'date.dateRange.endDate': { $gte: endDate }
+                    },
+                    {
+                        'date.dateRange.startDate': { $lte: startDate },
+                        'date.dateRange.endDate': null
+                    }
+                    ,
+                    {
+                        $and: [
+                            {
+                                $or: [
+                                    {
+                                        'date.recurring.startDate': { $lte: startDate },
+                                        'date.recurring.endDate': { $gte: endDate },
+                                        'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
+                                    },
+                                    {
+                                        'date.recurring.startDate': { $lte: startDate },
+                                        'date.recurring.endDate': { $gte: null },
+                                        'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
+                                    }
+                                ]
+                            },
+                        ]
+                    },
+                ],
+            }
+        }
+        const events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
+
+        if (date) {
+            const groupedEvents = events.reduce((acc, event) => {
+                const eventDate = moment(date).startOf('day').format('YYYY-MM-DD');
+                if (!acc[eventDate]) {
+                    acc[eventDate] = [];
+                }
+                acc[eventDate].push(event);
+                return acc;
+            }, {});
+            return res.status(200).json(groupedEvents);
+        }
+
+        // If date is not provided, return events grouped for today's date or before
         const groupedEvents = events.reduce((acc, event) => {
-            let date;
-            if (event.date.type === 'dateRange') {
-                date = moment(event.date.dateRange.startDate).startOf('day').format('YYYY-MM-DD');
-            } else if (event.date.type === 'recurring') {
-                // For recurring events, use start date
-                date = moment(event.date.recurring.startDate).startOf('day').format('YYYY-MM-DD');
+            let eventDate = moment(event.date.dateRange.startDate).startOf('day').format('YYYY-MM-DD');
+            if (eventDate < moment().startOf('day').format('YYYY-MM-DD')) {
+                eventDate = moment().startOf('day').format('YYYY-MM-DD');
             }
-            if (!acc[date]) {
-                acc[date] = [];
+            if (!acc[eventDate]) {
+                acc[eventDate] = [];
             }
-            acc[date].push(event);
+            acc[eventDate].push(event);
             return acc;
         }, {});
 
         return res.status(200).json(groupedEvents);
+
 
     } catch (error) {
         console.log(error)
@@ -1341,5 +1432,96 @@ exports.adminVerifyEvent = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+    }
+}
+
+exports.createIcsFileAndSend = async (req, res) => {
+    try {
+        const { eventId } = req.body
+
+        const event = await eventService.findEvent({ _id: eventId })
+
+        let startDate;
+        let endDate;
+        const today = moment().startOf('day'); // Get today's date, without time
+
+        if (event.date.type === 'dateRange') {
+            startDate = moment(event.date.dateRange.startDate);
+            if (startDate.isBefore(today)) {
+                startDate = today; // If startDate is before today, set it to today
+            }
+            endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate) : startDate.clone().endOf('day');
+        } else if (event.date.type === 'recurring') {
+            startDate = moment(event.date.recurring.startDate);
+            if (startDate.isBefore(today)) {
+                startDate = today; // If startDate is before today, set it to today
+            }
+            endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate) : startDate.clone().endOf('day');
+        }
+
+        const date = new Date(startDate)
+
+
+        ics.createEvent({
+            title: event.title,
+            description: event.shortDescription,
+            busyStatus: 'FREE',
+            start: [
+                date.getFullYear(),
+                date.getMonth() + 1,
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes()
+            ],
+            location: event.location.name,
+            organizer: {
+                name: event.vendorid.name,
+                email: event.vendorid.email
+            }
+        }, (error, value) => {
+            if (error) {
+                console.log(error);
+                return;
+            }
+
+            // Write the .ics file
+            const icsFilePath = `${__dirname}/event.ics`;
+            writeFileSync(icsFilePath, value);
+
+            // Define email content
+            const mailOptions = {
+                from: 'argademayur2002@gmail.com',
+                to: req.user.email,
+                subject: 'Meeting Invitation: ' + event.title,
+                text: 'This is a meeting invitation. Please see the attached ICS file for details.',
+                attachments: [
+                    {
+                        filename: 'event.ics',
+                        path: icsFilePath
+                    }
+                ]
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    res.status(500).json({
+                        success: false,
+                        data: "Failed to send a mail"
+                    })
+                    console.error(error);
+                } else {
+                    res.status(200).json({
+                        success: true,
+                        data: "Invitation sent succesfully"
+                    })
+                }
+            });
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            data: "Internal Server Error"
+        })
     }
 }

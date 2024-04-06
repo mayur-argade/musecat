@@ -428,6 +428,7 @@ const Events = () => {
                                         selected={filterDate}
                                         onChange={(date) => ChangeFilterDate(date)}
                                         customInput={<ExampleCustomInput />}
+                                        minDate={moment().toDate()}
                                         popperModifiers={{
                                             preventOverflow: {
                                                 enabled: true,

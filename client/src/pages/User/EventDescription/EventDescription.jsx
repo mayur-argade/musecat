@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../../components/shared/Navbar/Navbar'
 import Tabbar from '../../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../../components/Accordian/Accordian'
-import { ClientEventDetailsApi, addToFavorites, addToCalender } from '../../../http/index'
+import { ClientEventDetailsApi, addToFavorites, addToCalender, sendIcsFile } from '../../../http/index'
 import EventCard from '../../../components/Cards/EventCard'
 import Footer from '../../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
@@ -362,9 +362,22 @@ const EventDescription = () => {
 
     }
 
+    const sendIcsFileOnMail = async () => {
+        try {
+
+            await toast.promise(sendIcsFile({ eventId: eventid }), {
+                loading: 'Sending Invitation Mail',
+                success: 'Invitation mail sent',
+                error: (error) => `${error.response.data.data || "something went wrong"}`,
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const addToGoogleCalender = async (vendorid) => {
         setLoading(true);
-        // handleSave()
+        sendIcsFileOnMail()
 
         try {
             let startTime = response.data.eventDetails.date.type == 'dateRange' ? response.data.eventDetails.date.dateRange.startDate : response.data.eventDetails.date.recurring.startDate
@@ -997,7 +1010,7 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <div className='w-full mt-5'>
-                                            <MapComponent redirectToGoogleMap={true} title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                            <MapComponent showInfoWindow={true} redirectToGoogleMap={true} title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                         </div>
                                     )
                                 }

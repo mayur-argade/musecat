@@ -5,11 +5,12 @@ import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, g
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
 
-const EventCard = ({ data, width }) => {
+const EventCard = ({ data, width, showNumberBox }) => {
 
     // console.log(data)
 
     const [isLiked, setIsLiked] = useState(false)
+    const [startDate, setStartDate] = useState(data.date.dateRange.startDate)
 
     const { user, isAuth } = useSelector((state) => state.auth);
 
@@ -20,6 +21,29 @@ const EventCard = ({ data, width }) => {
         setIsLiked(isAuth && data.likes.includes(user._id));
     }, [data.likes, user, isAuth]);
 
+    useEffect(() => {
+        if (data.date.type == 'dateRange') {
+            const eventStartDate = moment(data.date.dateRange.startDate)
+            const today = moment()
+            if (data.date.dateRange.startDate) {
+                if (eventStartDate.isBefore(today)) {
+                    setStartDate(today)
+                } else {
+                    setStartDate(data.date.dateRange.startDate)
+                }
+            }
+        } else {
+            const eventStartDate = moment(data.date.recurring.startDate)
+            const today = moment()
+            if (data.date.recurring.startDate) {
+                if (eventStartDate.isBefore(today)) {
+                    setStartDate(today)
+                } else {
+                    setStartDate(data.date.dateRange.startDate)
+                }
+            }
+        }
+    }, [])
 
     const favoriteFeature = async (eventid) => {
         // console.log(eventid)
@@ -62,7 +86,7 @@ const EventCard = ({ data, width }) => {
                     {
                         data.date.type == 'dateRange'
                             ?
-                            <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd,DD MMMM YYYY")}</p>
+                            <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium'>{moment(startDate ?? "").format("ddd,DD MMMM YYYY")}</p>
                             :
                             <p className='text-xss m:text-xs mt-1 m:mt-2 font-medium'>
                                 {data.date.recurring.days.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}

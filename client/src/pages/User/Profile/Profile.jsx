@@ -195,8 +195,8 @@ const Profile = () => {
                                     </div>
                                 </div>
 
-                                <div className="w-full left  space-y-5">
-                                    <div className='flex flex-col bg-neutral-200 dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
+                                <div className="w-full left  space-y-3">
+                                    <div className='flex flex-col bg-neutral-200 dark:bg-[#454545] md:mt-0 mt-3 pl-2 pr-2 rounded-lg'>
                                         <label className='text-xs mt-1' htmlFor="first name">first name</label>
                                         <div className="relative flex align-middle">
                                             <input
@@ -279,45 +279,46 @@ const Profile = () => {
                         </section>
                     </section>
                     {
-                        displayModal
-                            ?
-                            <div className="fixed inset-5 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                                <div className="relative rounded-lg ">
-                                    <section className='md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
-                                        <div className='w-96 md:w-[35rem]'>
-                                            <div className="modal bg-white px-5 py-5">
-                                                <div className='space-y-4 max-h-auto  overflow-y-auto'>
+                        displayModal ? (
+                            <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
+                                <div className="relative rounded-lg">
+                                    <section className="md:mt-12 flex bg-white drop-shadow-2xl rounded-lg">
+                                        <div className="w-96 md:w-[35rem]">
+                                            <div className="modal bg-white dark:bg-[#2c2c2c] px-5 py-5">
+                                                <div className="space-y-4 max-h-auto overflow-y-auto">
                                                     <div className="flex items-center justify-center w-full">
-                                                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                                            <div className="flex flex-col items-center justify-center ">
+                                                        <label
+                                                            htmlFor="dropzone-file"
+                                                            className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                                        >
+                                                            <div className="flex flex-col items-center justify-center">
                                                                 <img src="/images/icons/upload-image.svg" alt="" />
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">{selectedPhoto ? `Selected File: ${selectedPhoto.name}` : 'Upload Profile Photo'}</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                                    {selectedPhoto ? `Selected File: ${selectedPhoto.name}` : 'Upload Profile Photo'}
+                                                                </p>
                                                             </div>
-                                                            <input onChange={capturePhoto}
-                                                                id="dropzone-file" type="file" className="hidden" />
+                                                            <input onChange={capturePhoto} id="dropzone-file" type="file" className="hidden" />
                                                         </label>
                                                     </div>
-
                                                     <div>
-                                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate} >Upload</button>
+                                                        <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={handleUpdate}>
+                                                            Upload
+                                                        </button>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </section>
-                                    <button
-                                        onClick={ImageModal}
-                                        className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                                    >
+                                    <button onClick={ImageModal} className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none">
                                         <img src="/images/icons/cancel-icon.png" alt="" />
                                     </button>
                                 </div>
                             </div>
-
-                            :
+                        ) : (
                             <></>
+                        )
                     }
+
                 </div>
 
                 <div className="">
@@ -333,55 +334,3 @@ const Profile = () => {
 }
 
 export default Profile
-
-
-{/* <div className="mb-4 mt-5">
-                    <span className='font-bold text-2xl md:ml-44 '> Profile </span>
-                </div>
-
-                <div className="flex flex-col md:flex-row w-screen space-x-16 justify-center ">
-
-                    <div className="ml-7 mb-5 mr-7 bg-neutral-200 flex-col md:flex-row flex space-x-5 items-center p-3 rounded-lg">
-                        <div className="profile">
-                            <img className='h-20' src="/images/assets/profile.png" alt="" />
-                        </div>
-
-                        <div className="info">
-                            <div className="flex-col md:flex-row flex md:space-x-2 justify-start items-start">
-                                <div>
-                                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
-                                    <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-72 md:w-48 p-2.5 " placeholder="John" disabled />
-                                </div>
-                                <div>
-                                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
-                                    <input type="text" id="last_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-72 md:w-48 p-2.5 " placeholder="Doe" disabled />
-                                </div>
-                            </div>
-                            <div className="email">
-                                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="John" disabled />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="righ flex flex-col space-y-3">
-                        <div>
-                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
-                            <input type="text" id="first_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-72 md:w-96 p-2.5 " placeholder="John" required />
-                        </div>
-                        <div>
-                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
-                            <input type="text" id="last_name" class="bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block  w-72 md:w-96 p-2.5 " placeholder="Doe" required />
-                        </div>
-                    </div>
-
-                </div>
-
-                <div className="mr-60 md:ml-60 flex flex-col justify-center items-center">
-
-                    <div className='ml-4 w-screen mt-3 md:mt-5 '>
-                        <label for="first_name" class="ml-44 md:ml-44 mr-30  block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="text" id="first_name" class="ml-44 md:ml-44 mr-30  bg-neutral-200 border-none text-gray-900 text-sm rounded-lg block w-72 md:w-9/12 p-2.5 " placeholder="John" />
-                    </div>
-
-                </div> */}

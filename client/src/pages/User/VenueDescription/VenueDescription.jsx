@@ -22,6 +22,7 @@ const VenueDescription = () => {
         lat: null,
         lng: null
     })
+    let coordinates = [];
     const [visible, setVisible] = useState(false)
 
     useEffect(() => {
@@ -58,6 +59,8 @@ const VenueDescription = () => {
                     lat: data.data.venue.coordinates.lat,
                     lng: data.data.venue.coordinates.lng
                 })
+                coordinates.push(selectedLocation)
+                console.log(coordinates)
             } catch (error) {
                 console.log(error)
             }
@@ -89,6 +92,11 @@ const VenueDescription = () => {
         getGeolocation();
 
     }, [venueid]);
+
+
+    const logLatLon = () => {
+        console.log("nothing")
+    }
 
     return (
         <div className='dark:bg-[#2c2c2c] dark:text-white'>
@@ -182,7 +190,7 @@ const VenueDescription = () => {
                                 </div>
                                 <div>
                                     <div className='w-72 h-9/12 rounded-md'>
-                                        <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                        <MapComponent enableClick={false} showInfoWindow={false} onMarkerClick={logLatLon} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
                                     </div>
                                     <p>
                                         {address}

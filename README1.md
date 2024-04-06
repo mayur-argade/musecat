@@ -27,12 +27,13 @@ Events
 
 
 Google maps redirect (done)
-calender events
+calender events 
+ics file (done)
 notification (done)
 profile page session expire
 expiry of token handling
-
-
+remove im vendo in mobile upr option from the pwa or app or small screens
+changecoming event card and desktop event card
 
 1-2-2024
 startdate < 1-2-2024T00:00:00 and enddate >=1-2-2024T23:59:00

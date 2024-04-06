@@ -61,7 +61,7 @@ const WebProfile = () => {
             {
                 isStandalone && (
                     <>
-                        <section className='dark:bg-[#2c2c2c]'>
+                        <section className='h-screen dark:bg-[#2c2c2c] dark:text-white'>
                             <div className="header flex justify-between items-center align-middle">
                                 <div onClick={() => navigate('/profile')} className='mt-3 ml-5 mr-5 flex align-middle items-center'>
                                     <div className="m-3 profile h-auto rounded-full">

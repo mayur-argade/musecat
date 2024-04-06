@@ -729,7 +729,7 @@ exports.addToCalender = async (req, res) => {
     if (!req.user.google_refresh) {
         return res.status(404).json({
             success: false,
-            data: "login using google to avail this feature"
+            data: "Login with Google to directly save events to google calender"
         })
     }
 

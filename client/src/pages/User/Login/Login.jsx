@@ -13,6 +13,8 @@ const Login = () => {
     document.title = 'Login'
     const emailInputRef = useRef(null);
 
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
     const responseFacebook = async (response) => {
         try {
             setLoading(true);
@@ -147,9 +149,13 @@ const Login = () => {
 
                         }
                     </div>
-                    <div onClick={() => navigate('/vendor/login')} class="cursor-pointer w-full text-center text-sm font-semibold ">
-                        <span className='underline underline-offset-1 text-center'>I'm a vendor</span>
-                    </div>
+                    {
+                        !isStandalone && (
+                            <div onClick={() => navigate('/vendor/login')} class="cursor-pointer w-full text-center text-sm font-semibold ">
+                                <span className='underline underline-offset-1 text-center'>I'm a vendor</span>
+                            </div>
+                        )
+                    }
                 </div>
 
                 <div className="max-w-sm w-full rounded-lg p-4 space-y-4 flex flex-col justify-center methods">
