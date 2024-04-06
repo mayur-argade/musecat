@@ -662,9 +662,9 @@ const EventDescription = () => {
                                                     <div className="dropdown-container relative">
                                                         <button
                                                             onClick={toggleDropdown}
-                                                            className='relative flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
+                                                            className='ring-0 border-0 relative flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                             <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
-                                                            Share
+                                                           <span className='ml-0 px-2 py-1 text-white'>Share</span>
                                                         </button>
                                                         {isDropdownOpen && (
                                                             <div
@@ -726,7 +726,10 @@ const EventDescription = () => {
                                                                 isLiked ?
                                                                     <img className='h-4' src="/images/icons/heart-fav.svg" alt="" />
                                                                     :
-                                                                    <img className='h-4' src="/images/icons/heart.svg" alt="" />
+                                                                    <>
+                                                                    <img className='dark:hidden flex h-4' src="/images/icons/heart.svg" alt="" />
+                                                                    <img className="hidden dark:flex h-4" src="/images/icons/heart-light.svg" alt="" />
+                                                                    </>
                                                             }
                                                             <span className='dark:text-white'>Add to Favorite</span>
                                                         </button>

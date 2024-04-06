@@ -31,6 +31,16 @@ const UpcomingEvents = () => {
         // You can do further processing with the selected date, such as sending it to the server or updating your state.
     };
 
+    const [showNumberBox, setShowNumberBox] = useState(false)
+    const [numberInput, setNumberInput] = useState('')
+
+    const handleNumberValue = (value) => {
+        setNumberInput(value)
+    }
+    const handleShowNumberValue = (value) => {
+        setShowNumberBox(value);
+    }
+
     useEffect(() => {
         const fetchdata = async () => {
             setUpcomingEventsLoading(true)
@@ -205,7 +215,7 @@ const UpcomingEvents = () => {
                                         </div>
                                         :
                                         upcomingEvents.data.map((event) => (
-                                            <UpcomingEventsCard event={event} />
+                                            <UpcomingEventsCard event={event} showNumberBox={handleShowNumberValue} setNumber={handleNumberValue} />
                                         ))
                         }
                     </div>
@@ -229,7 +239,41 @@ const UpcomingEvents = () => {
                     </Link>
                 </div>
             </section>
-        </section>
+            {
+                showNumberBox && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                        <div className="bg-white dark:bg-[#454545] dark:text-white p-4 rounded-lg relative  ml-3 mr-3">
+
+                            <button
+                                onClick={() => setShowNumberBox(false)}
+                                className="absolute top-2 right-2 text-black hover:text-gray-800"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+
+                            <div className='p-4 flex space-x-3 align-middle justify-center items-center'>
+                                <img className='h-6 mr-2' src="/images/icons/phone.png" alt="" />
+                                <span>+{numberInput}</span>
+                            </div>
+                            {/* <img className='pt-4' src={response.data.eventDetails.seatingMap} alt="Theater" /> */}
+                        </div>
+                    </div>
+                )
+            }
+        </section >
     )
 }
 
