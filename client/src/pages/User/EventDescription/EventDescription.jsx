@@ -456,18 +456,6 @@ const EventDescription = () => {
         }
     }
 
-    const event = {
-        title: "My Title",
-        description: "My Description",
-        startTime: "2018-10-07T10:30:00+10:00",
-        endTime: "2018-10-07T12:00:00+10:00",
-        location: "10 Carlotta St, Artarmon NSW 2064, Australia",
-        attendees: [
-            "Hello World <hello@world.com>",
-            "Hey <hey@test.com>",
-        ]
-    }
-
 
     return (
         <div className='h-full dark:bg-[#2c2c2c] dark:text-white'>
@@ -664,7 +652,7 @@ const EventDescription = () => {
                                                             onClick={toggleDropdown}
                                                             className='ring-0 border-0 relative flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                             <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
-                                                           <span className='ml-0 px-2 py-1 text-white'>Share</span>
+                                                            <span className='ml-0 px-2 py-1 text-white'>Share</span>
                                                         </button>
                                                         {isDropdownOpen && (
                                                             <div
@@ -727,8 +715,8 @@ const EventDescription = () => {
                                                                     <img className='h-4' src="/images/icons/heart-fav.svg" alt="" />
                                                                     :
                                                                     <>
-                                                                    <img className='dark:hidden flex h-4' src="/images/icons/heart.svg" alt="" />
-                                                                    <img className="hidden dark:flex h-4" src="/images/icons/heart-light.svg" alt="" />
+                                                                        <img className='dark:hidden flex h-4' src="/images/icons/heart.svg" alt="" />
+                                                                        <img className="hidden dark:flex h-4" src="/images/icons/heart-light.svg" alt="" />
                                                                     </>
                                                             }
                                                             <span className='dark:text-white'>Add to Favorite</span>
@@ -809,13 +797,12 @@ const EventDescription = () => {
                                                                 {
                                                                     showBooking && (
                                                                         <div className="booknow">
-                                                                            <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                            <button onClick={(() => toast("Booking time is over"))} type="button" class="cursor-not-allowed w-full text-white bg-[#C0A04C] hover:text-white font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                                 {
                                                                                     response.data.eventDetails.type == 'event'
                                                                                         ?
-                                                                                        <div className='space-x-3'>
+                                                                                        <div className='flex justify-center align-middle items-center space-x-3'>
                                                                                             Buy Ticket
-                                                                                            <img src="/images/icons/external-link.svg" alt="" />
                                                                                         </div>
                                                                                         :
                                                                                         <>
@@ -834,52 +821,27 @@ const EventDescription = () => {
                                                                     {
                                                                         response.data.eventDetails.whatsapp && (
                                                                             <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
-                                                                                {/* <button type="button" class=""> */}
                                                                                 <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
                                                                                 Book via Whatsapp
-                                                                                {/* </button> */}
                                                                             </a>
                                                                         )
                                                                     }
                                                                     {
                                                                         response.data.eventDetails.phoneNo && (
                                                                             <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
-                                                                                {/* <button type="button" class=""> */}
                                                                                 <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
                                                                                 Call Now
-                                                                                {/* </button> */}
                                                                             </a>
                                                                         )
                                                                     }
                                                                 </div>
                                                                 {
-                                                                    showBooking && (
-                                                                        <div className="booknow">
-                                                                            <>
-                                                                                <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
-                                                                                    {
-                                                                                        response.data.eventDetails.type == 'event'
-                                                                                            ?
-                                                                                            <div className='flex justify-center align-middle items-center space-x-5'>
-                                                                                                {
-                                                                                                    isExternalLink ?
-                                                                                                        <>
-                                                                                                            <>Get Ticket test</>
-                                                                                                            <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
-                                                                                                        </>
-                                                                                                        :
-                                                                                                        <>Get Tickets </>
-                                                                                                }
-                                                                                            </div>
-                                                                                            :
-                                                                                            <>
-                                                                                                Buy Voucher
-                                                                                            </>
-                                                                                    }
-                                                                                </button>
-                                                                                {
-                                                                                    response.data.eventDetails.website != "" && (
-                                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="mt-3 w-full text-[#A48533] border border-[#A48533] bg-white hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                    <>
+                                                                        {
+                                                                            showBooking && (
+                                                                                <div className="booknow">
+                                                                                    <>
+                                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                                             {
                                                                                                 response.data.eventDetails.type == 'event'
                                                                                                     ?
@@ -887,11 +849,11 @@ const EventDescription = () => {
                                                                                                         {
                                                                                                             isExternalLink ?
                                                                                                                 <>
-                                                                                                                    <>More Info</>
-                                                                                                                    <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                                                    <>Get Tickets</>
+                                                                                                                    <img className='h-4 pl-2' src="/images/icons/external-link.svg" alt="" />
                                                                                                                 </>
                                                                                                                 :
-                                                                                                                <>More Info</>
+                                                                                                                <>Get Tickets</>
                                                                                                         }
                                                                                                     </div>
                                                                                                     :
@@ -900,11 +862,37 @@ const EventDescription = () => {
                                                                                                     </>
                                                                                             }
                                                                                         </button>
-                                                                                    )
-                                                                                }
-                                                                            </>
-                                                                        </div>
-                                                                    )
+
+                                                                                    </>
+                                                                                </div>
+                                                                            )
+                                                                        }
+                                                                        {
+                                                                            response.data.eventDetails.website != "" && (
+                                                                                <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="mt-3 w-full text-[#A48533] border border-[#A48533] bg-white hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                                    {
+                                                                                        response.data.eventDetails.type == 'event'
+                                                                                            ?
+                                                                                            <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                                {
+                                                                                                    isExternalLink ?
+                                                                                                        <>
+                                                                                                            <>More Info</>
+                                                                                                            <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                                        </>
+                                                                                                        :
+                                                                                                        <>More Info</>
+                                                                                                }
+                                                                                            </div>
+                                                                                            :
+                                                                                            <>
+                                                                                                Buy Voucher
+                                                                                            </>
+                                                                                    }
+                                                                                </button>
+                                                                            )
+                                                                        }
+                                                                    </>
                                                                 }
 
 
@@ -939,7 +927,7 @@ const EventDescription = () => {
                                                             {
                                                                 showBooking && (
                                                                     <div className="booknow">
-                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                             {
                                                                                 response.data.eventDetails.type == 'event'
                                                                                     ?
@@ -957,7 +945,31 @@ const EventDescription = () => {
                                                                 )
                                                             }
 
-
+                                                            {
+                                                                response.data.eventDetails.website != "" && (
+                                                                    <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="mt-3 w-full text-[#A48533] border border-[#A48533] bg-white hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                        {
+                                                                            response.data.eventDetails.type == 'event'
+                                                                                ?
+                                                                                <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                    {
+                                                                                        isExternalLink ?
+                                                                                            <>
+                                                                                                <>More Info</>
+                                                                                                <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                            </>
+                                                                                            :
+                                                                                            <>More Info</>
+                                                                                    }
+                                                                                </div>
+                                                                                :
+                                                                                <>
+                                                                                    Buy Voucher
+                                                                                </>
+                                                                        }
+                                                                    </button>
+                                                                )
+                                                            }
                                                         </>
 
                                                 }

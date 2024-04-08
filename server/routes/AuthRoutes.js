@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { isLoggedin, isUserLoggedin, requiredRole } = require("../middleware/authMiddleware")
 
-const { vendorFacebookLogin, vendorGoogleLogin, addToCalender, vendorRegister, vendorLogin, register, clientLogin, refresh, logout, verify, clientGoogleLogin, sendMailForgotPassword, resetpassword, vendorEmailVerify, sendForgetMailToVendor, resetVendorPassword, facebookLogin, GetStreamUserToken, GetStreamVendorToken } = require('../controllers/AuthController')
+const { vendorFacebookLogin, vendorGoogleLogin, addToCalender, vendorRegister, resendVerificationMail, vendorLogin, register, clientLogin, refresh, logout, verify, clientGoogleLogin, sendMailForgotPassword, resetpassword, vendorEmailVerify, sendForgetMailToVendor, resetVendorPassword, facebookLogin, GetStreamUserToken, GetStreamVendorToken } = require('../controllers/AuthController')
 
 router.route('/user/stream-token').patch(isUserLoggedin, GetStreamUserToken)
 router.route('/vendor/stream-token').patch(isLoggedin, GetStreamVendorToken)
@@ -16,6 +16,7 @@ router.route('/user/verify/:token').patch(verify)
 router.route('/user/forget-password/send-mail').patch(sendMailForgotPassword)
 router.route('/user/reset-password/:token').patch(resetpassword)
 router.route('/google/addToCalender').post(isUserLoggedin, addToCalender)
+router.route('/user/resend-verification-link').post(resendVerificationMail)
 
 router.route('/refresh').post(refresh)
 

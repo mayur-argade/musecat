@@ -22,6 +22,8 @@ export const vendorLogout = (data) => api.post("auth/vendor/logout", data)
 export const VedorDetails = (data) => api.get(`vendor/details/${data}`, data)
 export const ClientRegister = (data) => api.post("auth/user/register", data)
 export const ClientLogin = (data) => api.post("auth/user/login", data)
+export const resendVerificationLink = (data) => api.post("auth//user/resend-verification-link", data)
+
 export const ClientGoogleLogin = (data) => api.post("auth/user/googlelogin", data)
 export const vendorGoogleLogin = (data) => api.post("auth/vendor/googlelogin", data)
 export const ClienVerify = (data) => api.patch(`auth/user/verify/${data}`, data)

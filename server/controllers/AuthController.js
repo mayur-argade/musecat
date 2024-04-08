@@ -10,7 +10,7 @@ const { transporter } = require('../services/mail-service')
 const { OAuth2Client } = require('google-auth-library');
 const { google } = require('googleapis')
 const moment = require('moment');
-const { userSignupEmail, vendorSignupEmail } = require('../data/emailTemplates');
+const { userSignupEmail, vendorSignupEmail, resetPasswordLink } = require('../data/emailTemplates');
 const StreamChat = require('stream-chat').StreamChat;
 
 const serverClient = StreamChat.getInstance(process.env.STREAM_API_KEY, process.env.STREAM_API_SECRET);
@@ -107,9 +107,11 @@ exports.GetStreamVendorToken = async (req, res) => {
 
 // client APIS
 exports.clientLogin = async (req, res) => {
+
     // get email and password from the user
     const { email, password } = req.body;
 
+    // Mandatory Fields
     if (!email || !password) {
         return res.status(400).json({
             success: false,
@@ -119,6 +121,7 @@ exports.clientLogin = async (req, res) => {
 
 
     let updatedUser;
+
     try {
         let user = await userService.findUser({ email: email.toLowerCase() })
 
@@ -127,54 +130,95 @@ exports.clientLogin = async (req, res) => {
                 success: false,
                 data: "User not found. Please register to continue."
             })
-        } else {
-            const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-            if (!isPasswordMatch) {
-                return res.status(401).json({
-                    success: false,
-                    data: "Incorrect password"
-                });
-            }
-
+        }
+        else {
             if (user.isVerified == false) {
+                // // generate a new token 
+                // const randomToken = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+
+                // // Calculate expiry time in milliseconds
+                // const expiryTime = Date.now() + (10 * 60 * 1000);
+
+                // // Encode expiry time in the token
+                // const tokenWithExpiry = `${randomToken}.${expiryTime}`;
+
+                // const updateToken = await userService.updateUser(
+                //     {
+                //         _id: user._id,
+                //         verificationToken: tokenWithExpiry
+                //     }
+                // )
+
+                // const mailOptions = {
+                //     from: 'argademayur2002@gmail.com',
+                //     to: email,
+                //     subject: 'Account Verification for Muscat',
+                //     html: userSignupEmail(user.username, tokenWithExpiry),
+                // };
+
+                // transporter.sendMail(mailOptions, (error, info) => {
+                //     if (error) {
+                //         console.log(error)
+                //         return res
+                //             .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                //                 success: false,
+                //                 data: "failed to send a email, Please check your input email"
+                //             });
+                //     } else {
+                //         return res.status(statusCode.BAD_REQUEST.code).json({
+                //             success: false,
+                //             data: "Kindly verify your account for signing in"
+                //         }
+                //         )
+                //     }
+                // });
+
                 return res.status(statusCode.BAD_REQUEST.code).json({
                     success: false,
                     data: "Kindly verify your account for signing in"
                 }
                 )
+            } else {
+                const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+                if (!isPasswordMatch) {
+                    return res.status(401).json({
+                        success: false,
+                        data: "Incorrect password"
+                    });
+                }
+
+                const { accessToken, refreshToken } = tokenService.generateTokens({
+                    _id: user._id,
+                    activated: false,
+                });
+
+                await tokenService.storeRefreshToken(refreshToken, user._id);
+
+                const UserDto = {
+                    _id: user._id,
+                    email: user.email.toLowerCase(),
+                    username: user.username,
+                    isVerified: user.isVerified,
+                    mobilenumber: user.mobilenumber,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    photo: user.photo,
+                    type: user.type
+                }
+
+                res
+                    .status(200)
+                    .cookie("refreshtoken", refreshToken, {
+                        maxAge: 1000 * 60 * 60 * 24 * 365,
+                        httpOnly: true,
+                    })
+                    .cookie("accessToken", accessToken, {
+                        maxAge: 1000 * 60 * 60 * 24 * 30,
+                        httpOnly: true,
+                    })
+                    .json({ user: UserDto });
             }
-
-            const { accessToken, refreshToken } = tokenService.generateTokens({
-                _id: user._id,
-                activated: false,
-            });
-
-            await tokenService.storeRefreshToken(refreshToken, user._id);
-
-            const UserDto = {
-                _id: user._id,
-                email: user.email.toLowerCase(),
-                username: user.username,
-                isVerified: user.isVerified,
-                mobilenumber: user.mobilenumber,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                photo: user.photo,
-                type: user.type
-            }
-
-            res
-                .status(200)
-                .cookie("refreshtoken", refreshToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 365,
-                    httpOnly: true,
-                })
-                .cookie("accessToken", accessToken, {
-                    maxAge: 1000 * 60 * 60 * 24 * 30,
-                    httpOnly: true,
-                })
-                .json({ user: UserDto });
         }
     } catch (error) {
         console.log(error)
@@ -183,6 +227,76 @@ exports.clientLogin = async (req, res) => {
             data: "Internal server error. Please try again later."
         });
     }
+}
+
+exports.resendVerificationMail = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                data: "Bad Request"
+            })
+        }
+        const user = await userService.findUser({ email: email })
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                data: "User Not found"
+            })
+        }
+
+        if (user.isVerified == false) {
+            const randomToken = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+
+            // Calculate expiry time in milliseconds
+            const expiryTime = Date.now() + (10 * 60 * 1000);
+
+            // Encode expiry time in the token
+            const tokenWithExpiry = `${randomToken}.${expiryTime}`;
+
+            const updateToken = await userService.updateUser(
+                {
+                    _id: user._id,
+                    verificationToken: tokenWithExpiry
+                }
+            )
+
+            const mailOptions = {
+                from: 'argademayur2002@gmail.com',
+                to: email,
+                subject: 'Account Verification for Muscat',
+                html: userSignupEmail(user.username, tokenWithExpiry),
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res
+                        .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                            success: false,
+                            data: "failed to send a email, Please check your input email"
+                        });
+                } else {
+                    return res.status(statusCode.BAD_REQUEST.code).json({
+                        success: false,
+                        data: "Verfication link has been sent to your email Address"
+                    }
+                    )
+                }
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Account is Already verified"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
 }
 
 exports.register = async (req, res) => {
@@ -622,17 +736,7 @@ exports.sendMailForgotPassword = async (req, res) => {
                 from: 'argademayur2002@gmail.com',
                 to: email,
                 subject: 'Reset Password for Muscat',
-                html: `
-                  <html>
-                  <body>
-                    <p>Dear ${user.username},</p>
-                    <p><a href="https://www.omanwhereto.com/user/reset-password/${token}" target="_blank">Reset Your Password</a></p>
-                    <p>This link will expire in 10 minutes, so please verify your account as soon as possible.</p>
-                    <p>Thank you for choosing omanwhereto.com.</p>
-                    <p>Best regards,<br>The omanwhereto Team</p>
-                  </body>
-                  </html>
-                `,
+                html: resetPasswordLink(user.username, token),
             };
 
             transporter.sendMail(mailOptions, (error, info) => {
@@ -647,7 +751,7 @@ exports.sendMailForgotPassword = async (req, res) => {
                     return res
                         .status(statusCode.SUCCESS.code).json({
                             success: true,
-                            data: `Email sent successFully Kindly check your email`
+                            data: `Steps to reset password has been sent to your email`
                         });
                 }
             });

@@ -205,7 +205,7 @@ const Login = () => {
                                     <div className='absolute top-0 right-0'>
                                         <button onClick={() => setShowVerificationPopup(false)} className='text-white hover:underline'><img className=' bg-white rounded-full h-7 cursor-pointer' src="/images/icons/cancel-icon-new.png" alt="" /></button>
                                     </div>
-                                    <ResendDialogueBox onClose={() => setShowVerificationPopup(false)} />
+                                    <ResendDialogueBox onClose={() => setShowVerificationPopup(false)} email={email} />
                                 </div>
                             </div>
                         </div>

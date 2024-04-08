@@ -26,7 +26,14 @@ const ResetPassword = () => {
             setLoading(false)
             if (data.success == true) {
                 await toast.success("Password has been updated you can login using new password")
-                navigate('/login')
+                setTimeout(() => {
+                    if (window.location.href.includes('/vendor/')) {
+                        navigate(`/vendor/login`)
+                    } else {
+                        navigate(`/login`)
+                    }
+                }, 2000);
+                
             }
         } catch (error) {
             console.log(error)
@@ -51,7 +58,7 @@ const ResetPassword = () => {
     }
 
     return (
-        <body class="dark:bg-[#2c2c2c] dark:text-white relative h-screen flex justify-center align-middle items-center bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
+        <div class="dark:bg-[#2c2c2c] dark:text-white relative h-screen flex justify-center align-middle items-center bg-no-repeat bg-center md:bg-object-scale-down bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1693753508/mobile-login_kmuqyo.jpg')] md:bg-gray-400 md:bg-blend-multiply ">
             <button className='absolute top-10 left-10'>
                 <img onClick={(() => HandleBackClick())} src="/images/icons/login-back.svg" alt="" />
             </button>
@@ -61,16 +68,16 @@ const ResetPassword = () => {
                     <h1 class="text-4xl font-medium">Reset password</h1>
                     <p class="text-slate-500">Fill up the form to reset the password</p>
 
-                    <div action="" class="my-10">
+                    <div action="" class="mt-10">
                         <div class="flex flex-col space-y-5">
                             <label for="Password">
                                 <p class="font-medium text-slate-700 pb-2">Password</p>
-                                <input id="password" name="password" type="password" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                <input id="password" name="password" type="password" class="w-full  border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     onChange={((e) => setPassword(e.target.value))} />
                             </label>
                             <label for="Confirm Password">
                                 <p class="font-medium text-slate-700 pb-2">Confirm Password</p>
-                                <input id="password" name="password" type="password" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                <input id="password" name="password" type="password" class="w-full  border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     onChange={((e) => setCpassword(e.target.value))} />
                             </label>
                             <button
@@ -86,7 +93,7 @@ const ResetPassword = () => {
                     </div>
                 </div>
             </div>
-        </body>
+        </div>
     )
 }
 

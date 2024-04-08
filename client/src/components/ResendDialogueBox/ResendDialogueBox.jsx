@@ -1,12 +1,19 @@
 import React from 'react'
+import { resendVerificationLink } from '../../http'
+import toast, { Toaster } from 'react-hot-toast'
 
-const ResendDialogueBox = ({ onClose }) => {
+const ResendDialogueBox = ({ onClose, email }) => {
 
-    const onResend = () => {
+    const onResend = async (email) => {
         // while login if he is not verified then send a verification link to him again if the verification link is expired
         // if not expired then do not send a new verification link
         // for all this do check records of verification link expiry and all
         // create a request which will send a verification link again and also check for that all security mesaures
+        await toast.promise(resendVerificationLink({ email: email }), {
+            loading: 'Sending Verification Mail',
+            success: 'Verification link has been sent to your email',
+            error: (error) => `${error.response.data.data || "something went wrong"}`,
+        });
         onClose()
     }
 
@@ -20,7 +27,7 @@ const ResendDialogueBox = ({ onClose }) => {
                     </h5>
                     <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
                         <span className='font-semibold'>
-                            We have sent a verification link
+                            Check your Mail box for verification link
                         </span>
                         <br /> Click on the Button to complete the verification process, You might need to check the spam folder
                     </p>
@@ -31,7 +38,7 @@ const ResendDialogueBox = ({ onClose }) => {
                         href="#"
                     >
                         <button
-                            onClick={onResend}
+                            onClick={() => onResend(email)}
                             class="flex select-none items-center gap-2 rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-[#A48533] hover:text-[#C0A04C] transition-all hover:bg-slate-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             type="button"
                             data-ripple-dark="true"

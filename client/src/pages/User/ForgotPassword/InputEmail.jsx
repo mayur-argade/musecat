@@ -19,7 +19,14 @@ const InputEmail = () => {
                 email: email
             }
             const { data } = await SendVerificationLink(submitdata)
-            toast.success(data.data)
+            await toast.success(data.data)
+            setTimeout(() => {
+                if (window.location.href.includes('/vendor/')) {
+                    navigate(`/vendor/login`)
+                } else {
+                    navigate(`/login`)
+                }
+            }, 3000);
             setLoading(false)
             console.log(data)
         } catch (error) {

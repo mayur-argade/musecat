@@ -1,15 +1,27 @@
 Todo
+login (done)
+signup (done)
+forget password 
+account verification 
+vendor signup
+vendor login
+vendor forget password
+vendor account verification
+
+cookies management
+
+whole signup flow check 1
 
 Login Page
-- Google Login
 - Facebook Login
-- resend verification link
+- Add rate limiting to the sending verification link
+- password should be strong
 
 Signup Page
-- Country code input
+- Country code input (can't do)
 
 Forgot password - Email Input
-- 
+- noting
 
 Verification page 
 - successfull verification 
@@ -26,14 +38,4 @@ Events
 - when you are selecting anything from the list or tabbar or changing anything reset all the filters
 
 
-Google maps redirect (done)
-calender events 
-ics file (done)
-notification (done)
-profile page session expire
-expiry of token handling
-remove im vendo in mobile upr option from the pwa or app or small screens
-changecoming event card and desktop event card
 
-1-2-2024
-startdate < 1-2-2024T00:00:00 and enddate >=1-2-2024T23:59:00

@@ -169,16 +169,14 @@ const PopularCategory = () => {
                     <div className=""></div>
 
                     <div className=" hidden md:flex  justify-center items-center space-x-4">
-                        {isOverflowing && (
-                            <>
-                                <button onClick={scrollLeft}>
-                                    <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
-                                </button>
-                                <button onClick={scrollRight}>
-                                    <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
-                                </button>
-                            </>
-                        )}
+                        <>
+                            <button onClick={scrollLeft}>
+                                <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
+                            </button>
+                            <button onClick={scrollRight}>
+                                <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
+                            </button>
+                        </>
                     </div>
 
                     <div className=' flex justify-end space-x-1 align-middle items-center'>
