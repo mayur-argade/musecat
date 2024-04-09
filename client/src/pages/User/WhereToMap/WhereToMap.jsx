@@ -9,6 +9,7 @@ import { getCategoryEvents, GetAllCategory, WhereToEvents } from '../../../http/
 import queryString from 'query-string';
 import { useParams, useLocation } from 'react-router-dom';
 import MapComponent from '../../../components/GoogleMap/Map';
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const WhereToMap = () => {
     let [selectedLocation, setSelectedLocation] = useState({
@@ -49,7 +50,7 @@ const WhereToMap = () => {
     useEffect(() => {
         const fetchdata = async () => {
             setLoading(true)
-            
+
             try {
                 const { data } = await WhereToEvents()
                 console.log(data.data)
@@ -120,13 +121,7 @@ const WhereToMap = () => {
                         }
                     </div>
                 </div>
-                <div className='fixed hidden lg:flex justify-center flex-col right-5 bottom-10'>
-                    <div className='flex justify-center mb-2'>
-                        <button>
-                        </button>
-                    </div>
-                    <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                </div>
+                <ScrollToTop />
             </section>
 
             <div className="">

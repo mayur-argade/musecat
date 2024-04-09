@@ -1,6 +1,240 @@
-1. Add scroll buttons to left and right 
-2. On hover map functions
-3. Highlight map events on the event page
-4. Extend where to categories 
-5. Change Mail credentials
-6. 
+1. Add option to edit the pop up in admin (not done)
+2. Events page & Where to Map page pointer restricted (done)
+3. Facebook login make it work (not done)
+4. Change helpcenter to tawk.io (done)
+5. Error Page when server is offline or any runtime error happens (not done)
+6. Booking page footer line (done)
+7. Select date in book seats page (partially done)
+8. Open new window for social media & Add all social media links at one place and give option to admin to edit those (paritally done)
+9. Change popular searches on the card (done)
+10. Additional images is not working (not done)
+11. create two categories pool and beach and ladies night
+
+dateRange.endDate
+recurring.endDate
+
+if(response.data.eventDetails.date.dateRange.startDate is before todays date || response.data.eventDetails.date.recurring.endDate is before todays date)
+{
+show only calling options irrespective of date 
+do not show book tickets option 
+show more info if there is website    
+}
+
+
+{
+                                        response.data != null && (
+                                            <div className="">
+                                                {
+                                                    response.data.eventDetails.date.type == 'dateRange'
+                                                        ?
+                                                        moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
+                                                            ?
+                                                            <>
+                                                                {
+                                                                    response.data.eventDetails.whatsapp && (
+                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                            {/* <button type="button" class=""> */}
+                                                                            <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                            Book via WhatsApp
+                                                                            {/* </button> */}
+                                                                        </a>
+                                                                    )
+                                                                }
+                                                                {
+                                                                    response.data.eventDetails.phoneNo && (
+                                                                        <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                            {/* <button type="button" class=""> */}
+                                                                            <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                            Call Now
+                                                                            {/* </button> */}
+                                                                        </a>
+                                                                    )
+                                                                }
+                                                                {
+                                                                    showBooking && (
+                                                                        <div className="booknow">
+                                                                            <button onClick={(() => toast("Booking time is over"))} type="button" class="cursor-not-allowed w-full text-white bg-[#C0A04C] hover:text-white font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                                {
+                                                                                    response.data.eventDetails.type == 'event'
+                                                                                        ?
+                                                                                        <div className='flex justify-center align-middle items-center space-x-3'>
+                                                                                            Buy Ticket
+                                                                                        </div>
+                                                                                        :
+                                                                                        <>
+                                                                                            Buy Voucher
+                                                                                        </>
+                                                                                }
+                                                                            </button>
+                                                                        </div>
+                                                                    )
+                                                                }
+
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <div className="flex">
+                                                                    {
+                                                                        response.data.eventDetails.whatsapp && (
+                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                                <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                                Book via Whatsapp
+                                                                            </a>
+                                                                        )
+                                                                    }
+                                                                    {
+                                                                        response.data.eventDetails.phoneNo && (
+                                                                            <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                                <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                                Call Now
+                                                                            </a>
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                                {
+                                                                    <>
+                                                                        {
+                                                                            showBooking && (
+                                                                                <div className="booknow">
+                                                                                    <>
+                                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                                            {
+                                                                                                response.data.eventDetails.type == 'event'
+                                                                                                    ?
+                                                                                                    <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                                        {
+                                                                                                            isExternalLink ?
+                                                                                                                <>
+                                                                                                                    <>Get Tickets</>
+                                                                                                                    <img className='h-4 pl-2' src="/images/icons/external-link.svg" alt="" />
+                                                                                                                </>
+                                                                                                                :
+                                                                                                                <>Get Tickets</>
+                                                                                                        }
+                                                                                                    </div>
+                                                                                                    :
+                                                                                                    <>
+                                                                                                        Buy Voucher
+                                                                                                    </>
+                                                                                            }
+                                                                                        </button>
+
+                                                                                    </>
+                                                                                </div>
+                                                                            )
+                                                                        }
+                                                                        {
+                                                                            response.data.eventDetails.website != "" && (
+                                                                                <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="mt-3 w-full text-[#A48533] border border-[#A48533] bg-white hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                                    {
+                                                                                        response.data.eventDetails.type == 'event'
+                                                                                            ?
+                                                                                            <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                                {
+                                                                                                    isExternalLink ?
+                                                                                                        <>
+                                                                                                            <>More Info</>
+                                                                                                            <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                                        </>
+                                                                                                        :
+                                                                                                        <>More Info</>
+                                                                                                }
+                                                                                            </div>
+                                                                                            :
+                                                                                            <>
+                                                                                                Buy Voucher
+                                                                                            </>
+                                                                                    }
+                                                                                </button>
+                                                                            )
+                                                                        }
+                                                                    </>
+                                                                }
+
+
+                                                            </>
+                                                        :
+                                                        <>
+                                                            {
+                                                                response.data.eventDetails.whatsapp
+                                                                    ?
+
+                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                        {/* <button type="button" class=""> */}
+                                                                        <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                        Book via WhatsApp
+                                                                        {/* </button> */}
+                                                                    </a>
+
+                                                                    :
+                                                                    <></>
+                                                            }
+                                                            {
+                                                                response.data.eventDetails.phoneNo && (
+                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-0 dark:bg-[#454545] dark:border-0 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                        {/* <button type="button" class=""> */}
+                                                                        <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                        Call Now
+                                                                        {/* </button> */}
+                                                                    </a>
+                                                                )
+                                                            }
+
+                                                            {
+                                                                showBooking && (
+                                                                    <div className="booknow">
+                                                                        <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                            {
+                                                                                response.data.eventDetails.type == 'event'
+                                                                                    ?
+                                                                                    <>
+                                                                                        Buy Ticket
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        Buy Voucher
+                                                                                    </>
+                                                                            }
+                                                                        </button>
+                                                                    </div>
+
+                                                                )
+                                                            }
+
+                                                            {
+                                                                response.data.eventDetails.website != "" && (
+                                                                    <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="mt-3 w-full text-[#A48533] border border-[#A48533] bg-white hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
+                                                                        {
+                                                                            response.data.eventDetails.type == 'event'
+                                                                                ?
+                                                                                <div className='flex justify-center align-middle items-center space-x-5'>
+                                                                                    {
+                                                                                        isExternalLink ?
+                                                                                            <>
+                                                                                                <>More Info</>
+                                                                                                <img className='ml-3 h-4' src="/images/icons/external-link.svg" alt="" />
+                                                                                            </>
+                                                                                            :
+                                                                                            <>More Info</>
+                                                                                    }
+                                                                                </div>
+                                                                                :
+                                                                                <>
+                                                                                    Buy Voucher
+                                                                                </>
+                                                                        }
+                                                                    </button>
+                                                                )
+                                                            }
+                                                        </>
+
+                                                }
+                                            </div>
+                                        )
+                                    }
+
+Check if tickets are there or not
+if tickets => Buy Tickets
+if Voucher => Buy Voucher
+if No tickets then do not show the tickets 
+show the more info 

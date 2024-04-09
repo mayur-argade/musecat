@@ -11,6 +11,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import MapComponent from '../../../components/GoogleMap/Map'
 import { useSelector } from 'react-redux'
 import EditEventModal from '../../../components/EditEventModal/EditEventModal'
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const VendorEventDescripton = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -648,24 +649,7 @@ const VendorEventDescripton = () => {
                                         <div className="standalone:hidden relative mt-8 ml-6 mr-6">
                                             {/* <img className='h-16 md:h-auto' src="/images/assets/download.png" alt="" /> */}
 
-                                            <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                                <div className='flex justify-center mb-2'>
-                                                    {
-                                                        visible && (
-                                                            <button onClick={() => window.scrollTo({
-                                                                top: 0,
-                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                            </button>
-                                                        )
-                                                    }
-
-                                                    <button>
-                                                    </button>
-                                                </div>
-                                                {/* <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button> */}
-                                            </div>
+                                            <ScrollToTop />
                                         </div>
 
                                     </>

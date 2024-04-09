@@ -106,10 +106,10 @@ const UpcomingEvents = () => {
     }, []);
 
     const scrollLeft = () => {
-        document.getElementById("content").scrollLeft -= 400;
+        document.getElementById("upcomingContent").scrollLeft -= 400;
     }
     const scrollRight = () => {
-        document.getElementById("content").scrollLeft += 400;
+        document.getElementById("upcomingContent").scrollLeft += 400;
     }
 
     return (
@@ -193,7 +193,7 @@ const UpcomingEvents = () => {
                 </div>
 
                 <div>
-                    <div id="content" className='flex w-full justify-between overflow-x-auto'>
+                    <div id="upcomingContent" className='flex w-full justify-between overflow-x-auto'>
                         {
                             upcomingEvents.data == null || upcomingEvents.data == undefined
                                 ?
@@ -215,28 +215,34 @@ const UpcomingEvents = () => {
                                         </div>
                                         :
                                         upcomingEvents.data.map((event) => (
-                                            <UpcomingEventsCard event={event} showNumberBox={handleShowNumberValue} setNumber={handleNumberValue} />
+                                            <div>
+                                                <UpcomingEventsCard event={event} showNumberBox={handleShowNumberValue} setNumber={handleNumberValue} />
+                                            </div>
                                         ))
                         }
                     </div>
-                    {/* <div className=" hidden md:flex  justify-center items-center space-x-4">
+                </div>
+
+                <div className='grid grid-cols-3 align-middle items-center'>
+                    <div className='w-30'>
+                    </div>
+                    <div className="mt-2 place-items-center  hidden md:flex  justify-center items-center space-x-4">
                         {isOverflowing && (
                             <>
                                 <button onClick={scrollLeft}>
-                                    <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
+                                    <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
                                 </button>
                                 <button onClick={scrollRight}>
-                                    <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
+                                    <img className='h-10 bg-white rounded-full' src="/images/icons/homefrontarrow.svg" alt="" />
                                 </button>
                             </>
                         )}
-                    </div> */}
-                </div>
-
-                <div className='flex justify-end w-30 mt-1'>
-                    <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                    </div>
+                    <div className='flex justify-end'>
+                    <Link className='dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
                         <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
                     </Link>
+                    </div>
                 </div>
             </section>
             {

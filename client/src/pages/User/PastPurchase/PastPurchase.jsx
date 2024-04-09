@@ -10,6 +10,7 @@ import PastPurchaseCard from '../../../components/Cards/PastPurchaseCard'
 import Features from '../../../utils/Data'
 import SkeletonCard from '../../../components/shared/skeletons/SkeletonCard'
 import BottomNav from '../../../components/shared/BottomNav/BottomNav'
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const PastPurchase = () => {
 
@@ -282,17 +283,7 @@ const PastPurchase = () => {
                     }
                 </div>
 
-                <div className='hidden md:flex justify-end flex-col absolute -right-44 bottom-5'>
-                    <div className='flex justify-between mb-2'>
-                        {/* <button className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button> */}
-                        {/* <img className='h-10 ml-24' src="/images/icons/whatsapp-color.svg" alt="" /> */}
-                        <button>
-                        </button>
-                    </div>
-                    <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                </div>
+                <ScrollToTop />
             </section>
             <div className=''>
                 < Footer />

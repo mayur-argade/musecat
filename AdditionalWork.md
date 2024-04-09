@@ -28,3 +28,12 @@ Where To?
 -
 
 
+Events page
+    Filters
+        1. Search Query
+        2. Features & Distance & Categories
+        3. Date
+        4. Map
+
+Main filtering based on category
+Date and search query

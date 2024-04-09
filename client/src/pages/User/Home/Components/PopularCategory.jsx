@@ -12,13 +12,53 @@ const PopularCategory = () => {
     const [categoryLoading, setCategoryLoading] = useState(false)
     const containerRef = useRef(null);
     const [isOverflowing, setIsOverflowing] = useState(false);
-
+    const [refresh, setRefresh] = useState(true)
+    const [showLeftButton, setShowLeftButton] = useState(false);
+    const [showRightButton, setShowRightButton] = useState(false);
+    const [scrollRefresh, setScrollRefresh] = useState(false)
     useEffect(() => {
         const container = containerRef.current;
+        setScrollRefresh(!scrollRefresh)
         if (container) {
             setIsOverflowing(container.scrollWidth > container.clientWidth);
         }
     }, []);
+
+
+    useEffect(() => {
+        // Function to check if there is overflow on the left
+        const checkOverflowLeft = () => {
+            const container = containerRef.current;
+            if (container.scrollLeft > 0) {
+                setShowLeftButton(true);
+            } else {
+                setShowLeftButton(false);
+            }
+        };
+
+        // Function to check if there is overflow on the right
+        const checkOverflowRight = () => {
+            const container = containerRef.current;
+            if (container.scrollWidth > container.clientWidth + container.scrollLeft) {
+                setShowRightButton(true);
+            } else {
+                setShowRightButton(false);
+            }
+        };
+
+        // Check overflow initially and on resize
+        const handleResize = () => {
+            checkOverflowLeft();
+            checkOverflowRight();
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // Clean up event listener
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [scrollRefresh]);
 
 
     // Initialize an array to store the dates
@@ -33,7 +73,6 @@ const PopularCategory = () => {
         });
     }
 
-    const [refresh, setRefresh] = useState(true)
 
     function setDayforCategory(passedDate) {
         setSelectedDay(passedDate)
@@ -50,9 +89,11 @@ const PopularCategory = () => {
 
     const scrollLeft = () => {
         document.getElementById("content").scrollLeft -= 400;
+        setScrollRefresh(!scrollRefresh)
     }
     const scrollRight = () => {
         document.getElementById("content").scrollLeft += 400;
+        setScrollRefresh(!scrollRefresh)
     }
 
     useEffect(() => {
@@ -75,19 +116,19 @@ const PopularCategory = () => {
 
     return (
         <div className='flex justify-center items-center align-middle mt-5'>
-            <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
-                <div className='flex justify-between align-middle '>
+            <section className='w-full md:w-full sm:mx-5 md:mx-10 md:w-9/12 xl:w-9/12 2xl:w-7/12'>
+                <div className='flex justify-between align-middle items-center'>
 
                     <div className="left flex items-center align-middle ">
                         <span className='text-xl font-bold md:text-2xl md:font-[700]'>Popular Categories</span></div>
 
-                    <div className="hidden right md:flex flex-wrap space-x-2">
+                    <div className="hidden right md:flex space-x-2">
                         {
                             daysAndDates.map((e) => (
                                 <button
                                     onClick={() => setDayforCategory(e.date)}
-                                    className={`md:block hover:bg-[#A48533] hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
-                                        ? 'bg-[#C0A04C] border-[#A48533] text-white'
+                                    className={`h-7 md:block hover:bg-gray-500 dark:hover:bg-white dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
+                                        ? 'hover:bg-inherit bg-black border-black text-white'
                                         : 'border-black'
                                         }`}
                                 >
@@ -116,7 +157,12 @@ const PopularCategory = () => {
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className='relative flex align-middle items-center'>
+                    {showLeftButton && (
+                        <button className="absolute left-0 md:-left-2 top-0 bottom-0 z-10" onClick={scrollLeft}>
+                            <img className='rounded-full  bg-white  h-10' src="/images/icons/homebackarrow.svg" alt="" />
+                        </button>
+                    )}
                     <div id="content" ref={containerRef} className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide space-x-5'>
                         {
                             category.data == null || category.data == undefined
@@ -164,18 +210,20 @@ const PopularCategory = () => {
                                         })
                         }
                     </div>
+                    {showRightButton && (
+                        <button className="absolute -right-2 top-0 bottom-0 z-10" onClick={scrollRight}>
+                            <img className='rounded-full bg-white h-10' src="/images/icons/homefrontarrow.svg" alt="" />
+                        </button>
+                    )}
                 </div>
+
                 <div className='grid md:grid-cols-3 flex align-middle'>
                     <div className=""></div>
 
                     <div className=" hidden md:flex  justify-center items-center space-x-4">
                         <>
-                            <button onClick={scrollLeft}>
-                                <img className='h-10' src="/images/icons/homebackarrow.svg" alt="" />
-                            </button>
-                            <button onClick={scrollRight}>
-                                <img className='h-10' src="/images/icons/homefrontarrow.svg" alt="" />
-                            </button>
+
+
                         </>
                     </div>
 

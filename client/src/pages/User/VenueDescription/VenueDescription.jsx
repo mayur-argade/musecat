@@ -8,6 +8,7 @@ import Tabbar from '../../../components/shared/Tabbar/Tabbar'
 import { ClientVenueDetails, GetTrendingEvents } from '../../../http/index'
 import SkeletonCard from '../../../components/shared/skeletons/SkeletonCard'
 import MapComponent from '../../../components/GoogleMap/Map'
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const VenueDescription = () => {
     document.title = 'Venue Description'
@@ -230,27 +231,7 @@ const VenueDescription = () => {
                                 }
 
 
-                                <div className="standalone:hidden relative mt-8 ml-6 mr-6">
-
-                                    <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                        <div className='flex justify-center mb-2'>
-                                            {
-                                                visible && (
-                                                    <button onClick={() => window.scrollTo({
-                                                        top: 0,
-                                                        behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                    })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                        <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                    </button>
-                                                )
-                                            }
-
-                                            <button>
-                                            </button>
-                                        </div>
-                                        <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                                    </div>
-                                </div>
+                                <ScrollToTop />
                             </div>
                         </div>
                     </div>

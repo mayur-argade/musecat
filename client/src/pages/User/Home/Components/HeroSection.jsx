@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { GetAllCategory } from '../../../../http';
-
+import SocialMediaLink from '../../../../utils/SocialMediaLinks';
 const HeroSection = () => {
 
     const navigate = useNavigate()
@@ -102,7 +102,7 @@ const HeroSection = () => {
                                                                     onClick={() => {
                                                                         // Check if the query is not empty before navigating
                                                                         if (query.trim() !== '') {
-                                                                            navigate(`/Category/listings?search=${query}`);
+                                                                            navigate(`/Category/events?search=${query}`);
                                                                         }
                                                                     }}
                                                                     type="button" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-[#C0A04C] rounded-r-lg border border-[#C0A04C] hover:bg-[#C0A04C]  focus:[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#C0A04C] dark:focus:ring-[#C0A04C]">
@@ -131,17 +131,17 @@ const HeroSection = () => {
                                             ?
                                             <div
                                                 className='-right-10 absolute  px-3 bg-white rounded-l-full flex space-x-2 py-2'>
-                                                <a blank href="https://wa.me/+96891738405">
+                                                <a target="_blank" rel="noopener noreferrer" href={`https://wa.me/${SocialMediaLink.whatsapp}`}>
                                                     <img className='h-7' src="/images/icons/wp-a.svg" alt="" />
                                                 </a>
-                                                <a href="https://www.facebook.com/muscatwhereto">
+                                                <a target="_blank" rel="noopener noreferrer" href={SocialMediaLink.facebook}>
                                                     <img className='h-7' src="/images/icons/fb-a.svg" alt="" />
                                                 </a>
 
-                                                <a href="https://www.instagram.com/muscat_whereto/">
+                                                <a target="_blank" rel="noopener noreferrer" href={SocialMediaLink.instagram}>
                                                     <img className='h-7' src="/images/icons/ig-a.svg" alt="" />
                                                 </a>
-                                                <a href="mailto:info@muscatwhereto.com">
+                                                <a target="_blank" rel="noopener noreferrer" href={`mailto:${SocialMediaLink.email}`}>
                                                     <img className='h-7' src="/images/icons/emal-a.svg" alt="" />
                                                 </a>
                                             </div>
@@ -167,10 +167,10 @@ const HeroSection = () => {
                                                     <button onClick={() => {
                                                         // Check if the query is not empty before navigating
                                                         if (query.trim() !== '') {
-                                                            navigate(`/Category/Events & Offers?search=${query}`);
+                                                            navigate(`/Category/events?search=${query}`);
                                                         }
                                                     }}
-                                                        type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:[#A48533] font-medium rounded-lg text-sm px-8 py-2 text-center mr-3 md:mr-0 dark:bg-[#454545] dark:hover:bg-gray-500 dark:focus:ring-[#C0A04C] flex align-middle justify-center items-center">
+                                                        type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:[#A48533] font-medium rounded-lg text-sm px-8 py-2 text-center mr-3 md:mr-0  flex align-middle justify-center items-center">
                                                         <img src="/images/icons/search1.svg" className="h-4 w-4" alt="" srcset="" />
                                                         <span>Search</span>
                                                     </button>
@@ -185,11 +185,24 @@ const HeroSection = () => {
                                                     </p>
                                                     <div className='hidden md:flex justify-between space-y-2 md:space-x-52 overflow-x'>
                                                         <div className='flex flex-wrap justify-center md:space-x-2  ' style={{ overflowX: 'auto' }}>
-                                                            {categories.data && categories.data.slice(0, 6).map((category, index) => (
-                                                                <Link className='my-1' to='/category/staycation' key={index}>
-                                                                    <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</button>
-                                                                </Link>
-                                                            ))}
+                                                            <Link className='my-1' to='/category/fridaybrunch'>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Friday Brunch</button>
+                                                            </Link>
+                                                            <Link className='my-1' to='/category/ladiesnight'>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Ladies Night</button>
+                                                            </Link>
+                                                            <Link className='my-1' to='/category/eat&drink?subcategory=Afternoon%20Tea'>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Afternoon Tea</button>
+                                                            </Link>
+                                                            <Link className='my-1' to='/category/eat&drink?subcategory=Dinner&day=Thursday'>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Thursday Dinner</button>
+                                                            </Link>
+                                                            <Link className='my-1' to='/category/eat&drink?subcategory=Happy%20Hour'>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Happy Hour</button>
+                                                            </Link>
+                                                            <Link className='my-1' to='/category/poolandbeach'>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Pool And Beach</button>
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -19,7 +19,7 @@ const Footer = () => {
 
                     </div>
                     :
-                    <div className='NoFooter'>
+                    <div className='NoFooter pt-5'>
                         <Toaster />
                         <div className='standalone:hidden bg-[#F3F3F3] dark:bg-[#2c2c2c] dark:border-r-0 dark:border-l-0 dark:border-b-0 border border-2 border-t-indigo-500 dark:border-t-white border-b-0'>
                             <footer class="md:pr-44 md:pl-44 pt-5 pl-6 pr-6">
@@ -73,8 +73,11 @@ const Footer = () => {
                                                 </a>
                                                 <a class="hover:opacity-75 cursor-pointer" href="mailto:info@muscatwhereto.com" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> Email </span>
-                                                    <img className='h-8 flex dark:hidden' src="/images/icons/email.svg" alt="" />
-                                                    <img className='h-8 hidden dark:flex' src="/images/icons/mail-light.svg" alt="" />
+                                                    <div className='flex justify-center align-middle items-center h-8 w-8 rounded-full border border-2 dark:border-white border-black'>
+                                                    <img className='h-4 hidden dark:flex' src="/images/icons/threads-icon-light.svg" alt="" />
+                                                    <img className='h-4 flex dark:hidden ' src="/images/icons/threads-icon.svg" alt="" />
+                                                    </div>
+
                                                 </a>
                                             </div>
                                         </div>

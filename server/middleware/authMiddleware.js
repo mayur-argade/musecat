@@ -8,7 +8,10 @@ exports.isLoggedin = async (req, res, next) => {
         const accessToken = req.cookies.accessToken;
         // console.log("this is logged in", req.cookies)
         if (!accessToken) {
-            throw new Error();
+            return res.status(statusCode.NOT_FOUND.code).json({
+                success: false,
+                data: "Login to proceed further"
+            });
         }
 
         const userid = await tokenService.verifyAccessToken(accessToken);
@@ -38,7 +41,10 @@ exports.isUserLoggedin = async (req, res, next) => {
         // console.log(accessToken)
         // console.log("this is logged in", req.cookies)
         if (!accessToken) {
-            throw new Error();
+            return res.status(statusCode.NOT_FOUND.code).json({
+                success: false,
+                data: "Login to proceed further"
+            });
         }
 
         const userid = await tokenService.verifyAccessToken(accessToken);

@@ -592,7 +592,9 @@ exports.adminStats = async (req, res) => {
             // verified: true
             type: 'offer'
         };
-        const todayDate = new Date();
+
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
         const day = moment(todayDate).format('dddd').toLowerCase()
         const days = ['sunday', 'monday', 'tuesday', 'thursday', 'friday', 'saturday']
         query['$or'] = [
@@ -605,15 +607,29 @@ exports.adminStats = async (req, res) => {
                         'date.dateRange.endDate': null
                     }
                 ]
-
             }
             ,
             {
-                'date.recurring.days': { $in: days } // Replace with a function to get today's day
+                $and: [
+                    {
+                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
+                    },
+                    {
+                        $or: [
+                            {
+                                'date.recurring.endDate': { $gte: todayDate }
+                            },
+                            {
+                                'date.recurring.endDate': null
+                            }
+                        ]
+                    }
+                ]
             }
         ];
 
         let eventQuery = {
+            // archived: false,
             type: 'event'
         }
         eventQuery['$or'] = [
@@ -629,9 +645,23 @@ exports.adminStats = async (req, res) => {
             }
             ,
             {
-                'date.recurring.days': { $in: [day] } // Replace with a function to get today's day
+                $and: [
+                    {
+                        'date.recurring.days': { $in: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] }
+                    },
+                    {
+                        $or: [
+                            {
+                                'date.recurring.endDate': { $gte: todayDate }
+                            },
+                            {
+                                'date.recurring.endDate': null
+                            }
+                        ]
+                    }
+                ]
             }
-        ]
+        ];
         const users = await userService.countUsers({ isVerified: true })
         const vendors = await vendorService.countVendors({ role: 'vendor', emailVerified: true })
         const offers = await eventService.countEvents(query)

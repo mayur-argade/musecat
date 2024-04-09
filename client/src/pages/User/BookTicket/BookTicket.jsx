@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { ClientEventDetailsApi, ClientBookTicket, getCustomersSavedCards } from '../../../http/index'
 import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment'
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const BookTicket = () => {
     document.title = 'Book Ticket'
@@ -480,8 +481,8 @@ const BookTicket = () => {
                             </button>
                         </div>
 
-                        <div className="grid justify-items-center gap-4 grid-cols-1 md:grid-cols-2">
-                            <div className="hidden  md:flex flex-col justify-center">
+                        <div className="grid justify-items-center  flex  gap-4 grid-cols-1 md:grid-cols-2">
+                            <div className="hidden place-self-start  md:flex flex-col justify-center">
                                 <p className='text-xl text-center font-medium'>{response.data.eventDetails.title}</p>
                                 <img className='w-96 h-auto' src={response.data.eventDetails.seatingMap} alt="" />
                             </div>
@@ -656,7 +657,9 @@ const BookTicket = () => {
 
                                                 <label
                                                     for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                    <span className='ml-0'>Accept</span>
                                                     <a
+                                                        className='ml-2 text-[#A48533]'
                                                         href={response.data.eventDetails.termsAndConditions}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
@@ -736,54 +739,33 @@ const BookTicket = () => {
                                         )}
 
                                         <div onClick={handleBookNowClick} className="flex justify-center w-full mt-3">
-                                            <button type="button" class="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:ring-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] ">
-                                                {
-                                                    submissionLoading
-                                                        ?
-                                                        <button class="flex justify-center items-center w-full bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">
-                                                            <img className='h-5' src="/images/icons/button-loading.svg" alt="" />
-                                                        </button>
-                                                        :
-                                                        <p>
-                                                            {
-                                                                response.data.eventDetails.type == 'event'
-                                                                    ?
-                                                                    <>
-                                                                        Book Seat
-                                                                    </>
-                                                                    :
-                                                                    <>
-                                                                        Buy Voucher
-                                                                    </>
-                                                            }
-                                                        </p>
-                                                }
-
+                                            <button
+                                                type="button"
+                                                className="w-full md:w-full text-white bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-bg-[#A48533] font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:ring-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533]"
+                                                disabled={submissionLoading} // Disable the button when submissionLoading is true
+                                            >
+                                                {submissionLoading ? ( // If submissionLoading is true, render the loading button
+                                                    <div className="flex justify-center items-center w-full bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200">
+                                                        <img className="h-5" src="/images/icons/button-loading.svg" alt="" />
+                                                    </div>
+                                                ) : ( // If submissionLoading is false, render the normal button text
+                                                    <p>
+                                                        {response.data.eventDetails.type === "event" ? ( // Render different text based on event type
+                                                            <>Book Seat</>
+                                                        ) : (
+                                                            <>Buy Voucher</>
+                                                        )}
+                                                    </p>
+                                                )}
                                             </button>
+
                                         </div>
                                     </form >
                                 </div>
                             </div>
                         </div >
 
-                        <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                            <div className='flex justify-center mb-2'>
-                                {
-                                    visible && (
-                                        <button onClick={() => window.scrollTo({
-                                            top: 0,
-                                            behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                        })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                        </button>
-                                    )
-                                }
-
-                                <button>
-                                </button>
-                            </div>
-                            <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                        </div>
+                        <ScrollToTop />
                     </section >
 
                     <div className=''>

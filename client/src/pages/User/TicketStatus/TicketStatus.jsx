@@ -9,6 +9,7 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { ClientTicketStatusApi, UpdateTicketStatusPayment } from '../../../http/index'
 import queryString from 'query-string';
 import toast, { Toaster } from 'react-hot-toast';
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const TicketStatus = () => {
 
@@ -311,24 +312,7 @@ const TicketStatus = () => {
                     </div>
                 </div>
             )}
-            <div className='fixed hidden lg:flex justify-center flex-col right-5 bottom-10'>
-                <div className='flex justify-center mb-2'>
-                    {
-                        visible && (
-                            <button onClick={() => window.scrollTo({
-                                top: 0,
-                                behavior: 'smooth', // You can use 'auto' for instant scrolling
-                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                            </button>
-                        )
-                    }
-
-                    <button>
-                    </button>
-                </div>
-                <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-            </div>
+            <ScrollToTop />
             <div className=''>
                 < Footer />
             </div>

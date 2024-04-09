@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
 import toast, { Toaster } from 'react-hot-toast';
+import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 
 const AdminBookedTickets = () => {
 
@@ -366,24 +367,7 @@ const AdminBookedTickets = () => {
                                         </div>
 
                                         {response.data.seatsBooked != 0 ?
-                                            <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                                <div className='flex justify-center mb-2'>
-                                                    {
-                                                        visible && (
-                                                            <button onClick={() => window.scrollTo({
-                                                                top: 0,
-                                                                behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                            })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                                <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                            </button>
-                                                        )
-                                                    }
-
-                                                    <button>
-                                                    </button>
-                                                </div>
-                                                <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                                            </div>
+                                            <ScrollToTop />
                                             :
                                             <></>
                                         }

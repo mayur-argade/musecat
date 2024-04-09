@@ -17,6 +17,7 @@ import DatePicker from "react-datepicker";
 import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 import BottomNav from '../../../components/shared/BottomNav/BottomNav'
+import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 
 const Events = () => {
@@ -27,7 +28,7 @@ const Events = () => {
         lat: 23.58371305879854,
         lng: 58.37132692337036,
     });
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/datepicker.min.js"></script>
+
     let coordinates = [];
     let { category } = useParams();
     const categorydisplayname = category
@@ -86,10 +87,26 @@ const Events = () => {
             onClick={onClick} ref={ref}
             className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-[#454545] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
         >
-            <span className="hidden md:block text-gray-500 dark:text-white">Calendar</span>
-            <span className="block md:hidden text-gray-500 dark:text-white">Calendar</span>
-            <img className="ml-2 w-4 h-4 flex dark:hidden" src="/images/icons/calendar.png" alt="" />
-            <img className="ml-2 w-4 h-4 hidden dark:flex" src="/images/icons/calendar-light.png" alt="" />
+            {
+                filterDate
+                    ?
+                    <div className='flex align-middle items-center'>
+                        <span className='text-[#A48533] font-semibold'>
+                            {moment(filterDate).format('DD-MM-YYYY')}
+                        </span>
+                        <div onClick={() => setFilterDate(null)}>
+                            <img className='h-4 ml-2 flex dark:hidden' src="/images/icons/cancel-icon.png" alt="" />
+                            <img className='h-4 ml-2 dark:flex hidden' src="/images/icons/cancel-icon-light.png" alt="" />
+                        </div>
+                    </div>
+                    :
+                    <>
+                        <span className="hidden md:block text-gray-500 dark:text-white">Calendar</span>
+                        <img className="ml-2 w-4 h-4 flex dark:hidden" src="/images/icons/calendar.png" alt="" />
+                        <img className="ml-2 w-4 h-4 hidden dark:flex" src="/images/icons/calendar-light.png" alt="" />
+                    </>
+
+            }
         </button>
 
     ));
@@ -363,11 +380,20 @@ const Events = () => {
                                                             {
                                                                 categories.data.map((e) => (
                                                                     <div class="flex items-center mb-1 mt-2">
-                                                                        <input id={e.categoryURL} type="checkbox"
+                                                                        <input
+                                                                            id={e.categoryURL}
+                                                                            type="checkbox"
                                                                             onChange={() => handleCategoryChange(e)}
                                                                             checked={selectedCategories.includes(e)}
-                                                                            value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                        <label for={e.name} class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
+                                                                            value={e}
+                                                                            className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                                        />
+                                                                        <label
+                                                                            htmlFor={e.categoryURL} // Use htmlFor to associate label with checkbox
+                                                                            className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300 cursor-pointer" // Add cursor-pointer to make label clickable
+                                                                        >
+                                                                            {e.name}
+                                                                        </label>
                                                                     </div>
                                                                 ))
                                                             }
@@ -441,9 +467,9 @@ const Events = () => {
                         </div>
 
                         <div className='min-h-screen  mainContainer grid grid-cols-1 lg:grid-cols-3'>
-                            <div className="1 col-span-2">
+                            <div className="1 h-11/12 col-span-2 overflow-x-auto">
                                 <div className="left w-full flex justify-center">
-                                    <div className="mx-2 grid grid-flow-row gap:6 md:gap-8 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                    <div className="mx-2 grid grid-flow-row gap:6 md:gap-4 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                                         {
                                             response.data != null && (
                                                 <>
@@ -540,7 +566,16 @@ const Events = () => {
                                 <div className="relative mx-auto md:mx-0">
                                     <div>
                                         <div className='w-72 h-9/12 rounded-md'>
-                                            <MapComponent onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
+                                            <MapComponent onlyMarkerClick={true} onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"300px"} zoom={8} />
+                                            {
+                                                mapAddress.lat != null || mapAddress.lng != null
+                                                    ?
+                                                    <div className='w-full flex justify-end align-middle items-center'>
+                                                        <button onClick={() => setMapAddress({ lat: null, lng: null })} type="button" class="mt-1 text-white bg-[#C0A04C] hover:bg-[#A48533] dark:hover:bg-[#A48533] hover:text-white rounded text-xs py-1 px-2 text-center dark:bg-[#C0A04C] " >Reset Map</button>
+                                                    </div>
+                                                    :
+                                                    <></>
+                                            }
                                         </div>
                                     </div>
 
@@ -580,24 +615,7 @@ const Events = () => {
 
                                         }
 
-                                        <div className='fixed hidden lg:flex justify-end flex-col right-5 bottom-10'>
-                                            <div className='flex justify-center mb-2'>
-                                                {
-                                                    visible && (
-                                                        <button onClick={() => window.scrollTo({
-                                                            top: 0,
-                                                            behavior: 'smooth', // You can use 'auto' for instant scrolling
-                                                        })} className='rounded-full p-2 hover:bg-[#A48533] bg-[#C0A04C]'>
-                                                            <img className='h-6 ' src="/images/icons/uparrow.svg" alt="" />
-                                                        </button>
-                                                    )
-                                                }
-
-                                                <button>
-                                                </button>
-                                            </div>
-                                            <button onClick={() => navigate('/user/helpcenter')} className='rounded-full hover:bg-[#A48533] bg-[#C0A04C] py-3 pr-6 pl-6 text-white font-semibold'>Need Help?</button>
-                                        </div>
+                                        <ScrollToTop />
                                     </div>
 
                                 </div>
