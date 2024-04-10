@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GetAllCategory } from '../../../http/index';
+import SubTabbar from './SubTabbar';
 
 const Tabbar = () => {
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [subTabbarCategory, setSubTabbarCategory] = useState(null)
     const [showMoreCategories, setShowMoreCategories] = useState(false)
 
+    const handleCategoryChange = (category) => {
+        console.log(category)
+        setSubTabbarCategory(category ? category : null)
+    }
     useEffect(() => {
         const fetchCategories = async () => {
             setLoading(true);
@@ -27,7 +32,7 @@ const Tabbar = () => {
 
     return (
         <section className=''>
-            <nav className='shadow-lg hidden md:flex flex-wrap justify-center py-3 space-x-6 overflow-auto'>
+            <nav className={`${subTabbarCategory && subTabbarCategory.subCategories.length != 0 ? "" : 'shadow-lg'} hidden md:flex flex-wrap justify-center py-3 space-x-6 overflow-auto`}>
                 {loading ? (
                     <div className="animate-pulse flex justify-center items-center w-full">
 
@@ -35,7 +40,9 @@ const Tabbar = () => {
                 ) : (
                     <>
                         {categories.data && categories.data.slice(0, 7).map((category, index) => (
-                            <CategoryLink key={index} category={category} />
+                            <>
+                                <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
+                            </>
                         ))}
                     </>
                 )}
@@ -49,12 +56,20 @@ const Tabbar = () => {
                     )
                 }
             </nav>
+            <nav className=''>
+                {subTabbarCategory && (
+                    <>
+                        <SubTabbar category={subTabbarCategory} />
+                    </>
+                )}
+
+            </nav>
             {
                 categories.data && categories.data.length > 7 && showMoreCategories && (
                     <div className='p-3 z-50 absolute right-64 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
                         {categories.data.slice(7).map((category, index) => (
-                            <div className='px-2 py-1'>
-                            <CategoryLink key={index} category={category} />
+                            <div className='flex flex-col px-2 py-1'>
+                                <CategoryLink key={index} category={category} />
                             </div>
 
                         ))}
@@ -66,7 +81,7 @@ const Tabbar = () => {
 };
 
 // Component for rendering category link or dropdown
-const CategoryLink = ({ category }) => {
+const CategoryLink = ({ category, handleCategoryChange }) => {
     const navigate = useNavigate()
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDays, setShowDays] = useState(false);
@@ -80,7 +95,10 @@ const CategoryLink = ({ category }) => {
             {category.subCategories && category.subCategories.length > 0 ? (
                 <>
                     <span
-                        onClick={() => navigate(`/category/${category.categoryURL}`)}
+                        onClick={() => {
+                            navigate(`/category/${category.categoryURL}`);
+                            handleCategoryChange(category); // Call setCategory with the current category
+                        }}
                         onMouseEnter={() => openDropdown()}
                         onMouseLeave={() => closeDropdown()}
                         className={`relative p-2 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
@@ -133,7 +151,7 @@ const CategoryLink = ({ category }) => {
                     )}
                 </>
             ) : (
-                <Link to={`/category/${category.categoryURL}`}>
+                <Link onClick={() => handleCategoryChange(category)} to={`/category/${category.categoryURL}`}>
                     <span className={`ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</span>
                 </Link>
             )

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Navbar from '../../components/shared/Navbar/Navbar'
-import Tabbar from '../../components/shared/Tabbar/Tabbar'
 import Accordian from '../../components/Accordian/Accordian'
 import { ClientEventDetailsApi, addToFavorites, VedorDetails } from '../../http'
-import EventCard from '../../components/Cards/EventCard'
-import Footer from '../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { setEvent } from '../../store/eventSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,9 +10,11 @@ import MapComponent from '../../components/GoogleMap/Map'
 import Sidebar from '../../components/shared/Sidebar/Sidebar'
 import EditEventModal from '../../components/EditEventModal/EditEventModal'
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop'
+import AdminNavbar from '../../components/shared/Navbar/AdminNavbar'
 
 const AdminEventDescription = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
     const [images, setImages] = useState([]);
     const handleShowNextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -25,6 +23,10 @@ const AdminEventDescription = () => {
     const handleShowPrevImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
+
+    const onMarkerClick = () => {
+        console.log("ok")
+    }
 
     const openModal = () => {
         setShowModal(true);
@@ -110,7 +112,21 @@ const AdminEventDescription = () => {
     const dispatch = useDispatch();
 
     // console.log("isMobile", isMobile)
+    const [showNumber, setShowNumber] = useState(false)
+    const handleCalling = (phone) => {
+        if (isMobile) {
+            const tempLink = document.createElement('a');
+            tempLink.href = `tel:+${phone}`; // Replace with your actual phone number
+            tempLink.click();
+            // window.open = (`tel:+${phone}`, '_self')
+        } else {
+            setShowNumber(true)
+        }
+    }
 
+    const [trendingEvent, setTrendingEvent] = useState(false);
+    const [verified, setVerified] = useState(false)
+    const [archived, setArchived] = useState(false)
 
     useEffect(() => {
 
@@ -161,6 +177,12 @@ const AdminEventDescription = () => {
                     });
                 }
 
+                if (data.data.eventDetails) {
+                    setVerified(data.data.eventDetails.verified)
+                    setTrendingEvent(data.data.eventDetails.trending)
+                    setArchived(data.data.eventDetails.archived)
+                }
+
                 // Venue Details
                 if (data.data.eventDetails.venueInfo) {
                     newAccordions.push({
@@ -196,7 +218,7 @@ const AdminEventDescription = () => {
                     data.data.eventDetails.website
                 ) {
                     newAccordions.push({
-                        title: 'Social Media Handles',
+                        title: 'Contact Details',
                         content: (
                             <>
                                 <div className='flex space-x-3 mt-2 mb-2'>
@@ -329,6 +351,16 @@ const AdminEventDescription = () => {
         window.open(shareonwhatsapp, '_blank');
     }
 
+    const handleVerifyChange = async (event) => {
+        const newValue = event.target.checked;
+    }
+
+    const handleTrendingChange = async () => {
+    }
+
+    const handleArchivedChange = async () => {
+    }
+
     return (
         <div>
             <div className='flex '>
@@ -338,16 +370,14 @@ const AdminEventDescription = () => {
                 </div>
 
                 <div className='pl-20 flex flex-col w-full'>
-                    <div className="mt-7"></div>
+                    <div className='mx-4'>
+                        <AdminNavbar />
+                        <hr className='mb-3' />
+                    </div>
                     <div className="headline ">
                         <div className="heading">
-                            <div className="flex justify-between">
-                                <span className="text-2xl font-semibold">Event Description</span>
-                                {/* <button onClick={handleClick} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Event</button> */}
-                            </div>
-                            <hr className='mt-3 mb-3' />
 
-                            <div className="maincontent flex flex-col">
+                            <div className="maincontent flex flex-col pb-20">
                                 <div className='appmargine'>
                                     <Toaster />
                                     <div className='w-full flex justify-center'>
@@ -369,7 +399,7 @@ const AdminEventDescription = () => {
                                                                 <div className='text-center'>
                                                                     <p className='text-xl md:text-3xl font-bold'>{response.data.eventDetails.title}</p>
                                                                     <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
-                                                                        <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
+                                                                        <Link className='text-[#C0A04C]'>
                                                                             <span className='ml-1 font-medium'>
                                                                                 {response.data.eventDetails.location?.name || ""}
                                                                             </span>
@@ -446,28 +476,21 @@ const AdminEventDescription = () => {
                                                                             <div>
                                                                                 <p className='font-light text-wrap text-xs'></p>
                                                                             </div>
-
-                                                                            <div className="dropdown-container reltive">
+                                                                            <div className="dropdown-container relative">
                                                                                 <button
                                                                                     onClick={toggleDropdown}
-                                                                                    className='hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-[#C0A04C]'>
+                                                                                    className='ring-0 border-0 relative flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                                                     <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
-                                                                                    Share
+                                                                                    <span className='ml-0 px-2 py-1 text-white'>Share</span>
                                                                                 </button>
                                                                                 {isDropdownOpen && (
                                                                                     <div
-                                                                                        className="z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md"
+                                                                                        className="z-50 dropdown absolute right-0 top-full mt-2 w-32 p-3 bg-white rounded-md drop-shadow-md"
                                                                                         ref={dropdownRef}
                                                                                     >
                                                                                         <div className="flex space-x-3 socialmedia">
-
                                                                                             <img onClick={shareonWhatsapp} className='cursor-pointer h-7' src="/images/icons/wp-a.svg" alt="" />
-
                                                                                             <img onClick={shareonFacebook} className='cursor-pointer h-7' src="/images/icons/fb-a.svg" alt="" />
-
-
-                                                                                            <img onClick={shareonInstagram} className='cursor-pointer h-7' src="/images/icons/ig-a.svg" alt="" />
-
                                                                                             <img onClick={shareonMail} className='cursor-pointer h-7' src="/images/icons/emal-a.svg" alt="" />
                                                                                         </div>
                                                                                     </div>
@@ -509,15 +532,6 @@ const AdminEventDescription = () => {
 
                                                                             </div>
 
-                                                                            <div className="mt-3 space-x-5 justify-center flex align-middle items-center">
-                                                                                {/* <Link to='/favorites' className='w-full'> */}
-
-                                                                                {/* </Link> */}
-                                                                                <button className='flex justify-center align-middle items-center w-auto md:w-full drop-shadow-2xl shadow-[#F3F3F3] rounded-lg bg-white p-2'>
-                                                                                    <img className='h-4' src="/images/icons/eventcal.svg" alt="" />
-                                                                                    <span >Add to Calendar</span>
-                                                                                </button>
-                                                                            </div>
                                                                         </div>
                                                                     </div>
 
@@ -537,111 +551,98 @@ const AdminEventDescription = () => {
                                                                             ))}
                                                                         </div>
 
-                                                                        <div className="">
-                                                                            {
-                                                                                response.data.eventDetails.date.type == 'dateRange'
-                                                                                    ?
-                                                                                    moment(response.data.eventDetails.date.dateRange.endDate).isBefore(moment(), 'day')
-                                                                                        ?
-                                                                                        <>
-                                                                                            {
-                                                                                                response.data.eventDetails.whatsapp
-                                                                                                    ?
-                                                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
-                                                                                                        {/* <button type="button" class=""> */}
-                                                                                                        <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                                                        Call On Whatsapp
-                                                                                                        {/* </button> */}
-                                                                                                    </a>
-                                                                                                    :
-                                                                                                    <></>
-                                                                                            }
-                                                                                            {
-                                                                                                response.data.eventDetails.phoneNo
-                                                                                                    ?
-                                                                                                    <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
-                                                                                                        {/* <button type="button" class=""> */}
-                                                                                                        <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                                                        Call On Number
-                                                                                                        {/* </button> */}
-                                                                                                    </a>
-                                                                                                    :
-                                                                                                    <></>
-                                                                                            }
-                                                                                            <div className="booknow">
-                                                                                                <button onClick={(() => toast("Booking time is over"))} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                                                            </div>
-                                                                                        </>
-                                                                                        :
-                                                                                        <>
-                                                                                            <div className="flex w-full">
-                                                                                                {
-                                                                                                    response.data.eventDetails.whatsapp
-                                                                                                        ?
-
-                                                                                                        <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
-                                                                                                            {/* <button type="button" class=""> */}
-                                                                                                            <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                                                            Call On Whatsapp
-                                                                                                            {/* </button> */}
-                                                                                                        </a>
-
-                                                                                                        :
-                                                                                                        <></>
-                                                                                                }
-                                                                                                {
-                                                                                                    response.data.eventDetails.phoneNo
-                                                                                                        ?
-                                                                                                        <a className="w-1/2 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")}>
-                                                                                                            {/* <button type="button" class=""> */}
-                                                                                                            <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
-                                                                                                            Contact On Number
-                                                                                                            {/* </button> */}
-                                                                                                        </a>
-                                                                                                        :
-                                                                                                        <></>
-                                                                                                }
-                                                                                            </div>
-                                                                                            <div className="booknow">
-                                                                                                <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                                                            </div>
-                                                                                        </>
-                                                                                    :
-                                                                                    <>
-                                                                                        {
-                                                                                            response.data.eventDetails.whatsapp
-                                                                                                ?
-
-                                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2" onClick={() => toast("Vendor cannot book ticket")} >
-                                                                                                    {/* <button type="button" class=""> */}
-                                                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
-                                                                                                    Call On Whatsapp
-                                                                                                    {/* </button> */}
-                                                                                                </a>
-
-                                                                                                :
-                                                                                                <></>
-                                                                                        }
-
-                                                                                        <div className="booknow">
-                                                                                            <button onClick={() => toast("Vendor cannot book ticket")} type="button" class="w-full text-white bg-[#C0A04C] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-blue-800 hover:bg-[#A48533]">Book Now</button>
-                                                                                        </div>
-                                                                                    </>
-
-                                                                            }
+                                                                        {
+                                                                            response.data != null && response.data.eventDetails.whatsapp && (
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  mr-2 mb-2" href={`https://wa.me/${response.data.eventDetails.whatsapp}?text=I'm interested in the event ${response.data.eventDetails.title} and would like more information`} target="_blank" rel="noopener noreferrer">
+                                                                                    {/* <button type="button" class=""> */}
+                                                                                    <img className='h-5 mr-2' src="/images/icons/whatsapp.png" alt="" />
+                                                                                    Book via WhatsApp
+                                                                                    {/* </button> */}
+                                                                                </a>
+                                                                            )
+                                                                        }
+                                                                        {
+                                                                            response.data != null && response.data.eventDetails.phoneNo && (
+                                                                                <a className="text-gray-900 bg-white hover:bg-gray-100 border border-0 focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  mr-2 mb-2" onClick={() => handleCalling(response.data.eventDetails.phoneNo)}>
+                                                                                    {/* <button type="button" class=""> */}
+                                                                                    <img className='h-5 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                                    Call Now
+                                                                                    {/* </button> */}
+                                                                                </a>
+                                                                            )
+                                                                        }
+                                                                        <div className='shadow-lg w-full p-3 rounded-md space-y-3'>
+                                                                            <div class="flex items-center ps-4 border border-gray-200 rounded ">
+                                                                                <input id="trendingEvent"
+                                                                                    checked={trendingEvent}
+                                                                                    type="checkbox"
+                                                                                    value=""
+                                                                                    onChange={handleTrendingChange}
+                                                                                    name="bordered-checkbox"
+                                                                                    className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] focus:ring-2" />
+                                                                                <label for="trendingEvent" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Add to Trending Events</label>
+                                                                            </div>
+                                                                            <div class="flex items-center ps-4 border border-gray-200 rounded ">
+                                                                                <input id="verifyEvent"
+                                                                                    checked={verified}
+                                                                                    onChange={handleVerifyChange}
+                                                                                    type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] focus:ring-2 " />
+                                                                                <label for="verifyEvent" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Verify Event</label>
+                                                                            </div>
+                                                                            <div class="flex items-center ps-4 border border-gray-200 rounded ">
+                                                                                <input id="archiveEvent"
+                                                                                    checked={archived}
+                                                                                    onChange={handleArchivedChange}
+                                                                                    type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] focus:ring-2 " />
+                                                                                <label for="archiveEvent" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Archive Event</label>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 
+
                                                                 </div>
 
+                                                                {
+                                                                    showNumber && (
+                                                                        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                                                                            <div className="bg-white dark:bg-[#454545] dark:text-white p-4 rounded-lg relative  ml-3 mr-3">
 
+                                                                                <button
+                                                                                    onClick={() => setShowNumber(false)}
+                                                                                    className="absolute top-2 right-2 text-black hover:text-gray-800"
+                                                                                >
+                                                                                    <svg
+                                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                                        className="h-6 w-6"
+                                                                                        fill="none"
+                                                                                        viewBox="0 0 24 24"
+                                                                                        stroke="currentColor"
+                                                                                    >
+                                                                                        <path
+                                                                                            strokeLinecap="round"
+                                                                                            strokeLinejoin="round"
+                                                                                            strokeWidth="2"
+                                                                                            d="M6 18L18 6M6 6l12 12"
+                                                                                        />
+                                                                                    </svg>
+                                                                                </button>
+
+                                                                                <div className='p-4 flex space-x-3 align-middle justify-center items-center'>
+                                                                                    <img className='h-6 mr-2' src="/images/icons/phone.png" alt="" />
+                                                                                    <span>+{response.data.eventDetails.phoneNo}</span>
+                                                                                </div>
+                                                                                {/* <img className='pt-4' src={response.data.eventDetails.seatingMap} alt="Theater" /> */}
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                }
 
                                                                 <div className='flex flex-col justify-center items-center mt-5'>
                                                                     <span className='text-xl font-bold'>
                                                                         Location
                                                                     </span>
                                                                     <div className='w-full md:w-11/12'>
-                                                                        <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                                                        <MapComponent showInfoWindow={true} redirectToGoogleMap={true} title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                                                     </div>
 
                                                                 </div>

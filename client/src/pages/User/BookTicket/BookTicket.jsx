@@ -623,7 +623,7 @@ const BookTicket = () => {
                                                 placeholder='5'
                                             />
                                         </div>
-                                        <div className='flex flex-col justify-between mt-3 dark:bg-[#454545]'>
+                                        <div className='flex flex-col justify-between mt-3 '>
                                             {
                                                 response.data.eventDetails.custom &&
                                                 response.data.eventDetails.custom.map((custom, index) => (

@@ -67,7 +67,7 @@ const Home = () => {
                     <HeroSection />
                 </div>
 
-                {isOpen && (
+                {/* {isOpen && (
                     <div className='fixed z-50 inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 p-3 '>
                         <div className='flex flex-col'>
                             <div className='flex justify-end'>
@@ -76,7 +76,7 @@ const Home = () => {
                             <PopupBox />
                         </div>
                     </div>
-                )}
+                )} */}
 
                 <div className="content">
                     <PopularCategory />

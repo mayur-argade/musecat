@@ -6,11 +6,11 @@ const Sidebar = () => {
         <div class="flex bg-gray-100 text-gray-900 fixed">
             <aside class="flex h-screen w-20 flex-col items-center border-r border-gray-200 bg-white">
                 <Link to='/admin/home'>
-                    <div class="flex h-[4.5rem] w-full items-center justify-center border-b border-gray-200 p-2">
-                        <img src="/images/logo/logo.png" />
+                    <div class="flex h-[5rem] w-full items-center justify-center border-b border-gray-200 p-2">
+                        <img src="/images/logo/logo-main.png" className=" flex h-10 md:mr-3" alt="MWT Logo" />
                     </div>
                 </Link>
-                <nav class="flex flex-1 flex-col gap-y-4 pt-10">
+                <nav class="flex flex-1 flex-col gap-y-4 pt-3">
                     <Link to='/admin/home' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
                         <img src="/images/icons/pwa-home.svg" alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">

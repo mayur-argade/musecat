@@ -5,7 +5,7 @@ import { AdminDeleteEvent, getEventsForAdmin, AdminVerifyEvent } from '../../htt
 import moment from 'moment'
 import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
-
+import AdminNavbar from '../../components/shared/Navbar/AdminNavbar'
 
 const AdminEvents = () => {
 
@@ -41,38 +41,45 @@ const AdminEvents = () => {
 
 
     const deleteEvent = async (eventid) => {
-        setLoading(true);
-        try {
-            const promise = AdminDeleteEvent({ eventid });
-            await toast.promise(promise, {
-                loading: 'Deleting Event...', // Optional loading message
-                success: 'Event Deleted Successfully', // Optional success message
-                error: 'Error deleting event:', // Optional error message prefix
-            });
+        const confirm = window.confirm("Are you sure want to delete this event ?")
 
-            setRefresh(!refresh)
-        } catch (error) {
-            // Handle errors if needed
-        } finally {
-            setLoading(false);
+        if (confirm) {
+            setLoading(true);
+            try {
+                const promise = AdminDeleteEvent({ eventid });
+                await toast.promise(promise, {
+                    loading: 'Deleting Event...', // Optional loading message
+                    success: 'Event Deleted Successfully', // Optional success message
+                    error: 'Error deleting event:', // Optional error message prefix
+                });
+
+                setRefresh(!refresh)
+            } catch (error) {
+                // Handle errors if needed
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
     const verifyEvent = async (eventid) => {
-        setLoading(true);
-        try {
-            const promise = AdminVerifyEvent({ eventid });
-            await toast.promise(promise, {
-                loading: 'Verifying Event...', // Optional loading message
-                success: 'Event Verified Successfully', // Optional success message
-                error: (error) => `Error: ${error.response.data.data}`,
-            });
+        const confirm = window.confirm("Verify Event ?")
 
-            setRefresh(!refresh)
-        } catch (error) {
-            // toast.error(error.response.data.data);
-        } finally {
-            setLoading(false);
+        if (confirm) {
+            try {
+                const promise = AdminVerifyEvent({ eventid });
+                await toast.promise(promise, {
+                    loading: 'Verifying Event...', // Optional loading message
+                    success: 'Event Verified Successfully', // Optional success message
+                    error: (error) => `Error: ${error.response.data.data}`,
+                });
+
+                setRefresh(!refresh)
+            } catch (error) {
+                // toast.error(error.response.data.data);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -81,12 +88,15 @@ const AdminEvents = () => {
         <div>
             <div className='flex '>
 
-                <div>
+                <div className='z-20'>
                     <Sidebar />
                 </div>
                 <Toaster />
                 <div className='pl-20 flex flex-col w-full'>
-                    <div className="mt-7"></div>
+                    <div className='mx-4'>
+                        <AdminNavbar />
+                        <hr className='mb-3' />
+                    </div>
                     <div className="headline ">
                         <div className="heading">
                             <div className="flex justify-between">
@@ -95,7 +105,7 @@ const AdminEvents = () => {
                             </div>
                             <hr className='mt-3 mb-3' />
 
-                            <div className="maincontent flex flex-col">
+                            <div className="z-10 mx-4 maincontent flex flex-col pb-20">
                                 <div className="overflow-x-auto">
 
                                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -312,18 +322,21 @@ const AdminEvents = () => {
             </div>
 
             {showAddEvent && (
-                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                    <div className="relative rounded-lg ">
-                        <AddEventModal
-                            isOpen={showAddEvent}
-                            onClose={closeModal} />
-                        {/* Close button */}
-                        <button
-                            onClick={closeModal}
-                            className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                        >
-                            <img src="/images/icons/cancel-icon.png" alt="" />
-                        </button>
+                <div className='calendar-overlay'>
+                    <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-opacity-20 backdrop-blur-sm">
+                        <div className="relative rounded-lg ">
+                            <AddEventModal
+                                isOpen={showAddEvent}
+                                onClose={closeModal}
+                                verified={true} />
+                            {/* Close button */}
+                            <button
+                                onClick={closeModal}
+                                className="absolute top-12 right-0 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            >
+                                <img src="/images/icons/cancel-icon.png" alt="" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

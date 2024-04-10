@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 import toast, { Toaster } from 'react-hot-toast';
 import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop';
+import moment from 'moment';
 
 const VendorBookedTickets = () => {
     document.title = 'Vendor ~ Booked Tickets'
@@ -46,7 +47,7 @@ const VendorBookedTickets = () => {
                 const { data } = await VendorBookedTicketApi(eventid)
                 console.log(data.data)
                 setReponse(data)
-                const filteredData = data.data.filter(item => item.status !== 'canceled' && item.status !== 'refunded');
+                const filteredData = data.data.filter(item => item.status !== 'canceled' && item.status !== 'refunded' && item.status !== 'processing');
                 const totalSeats = filteredData.reduce((total, item) => total + item.allotedSeats.length, 0);
                 setBookedSeatsLength(totalSeats)
                 // Generate serial numbers based on the length of the data
@@ -241,6 +242,11 @@ const VendorBookedTickets = () => {
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             <p className='text-xss'>
+                                                Event Date
+                                            </p>
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            <p className='text-xss'>
                                                 Class
                                             </p>
                                         </th>
@@ -299,6 +305,11 @@ const VendorBookedTickets = () => {
                                                 <td class="px-6 py-4">
                                                     <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
                                                         {ticket.email}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <p className='text-xs text-black dark:text-white dark:font-normal font-medium'>
+                                                        {moment(ticket.date).format('DD-MM-YYYY')}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4">

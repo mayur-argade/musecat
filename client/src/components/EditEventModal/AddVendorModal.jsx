@@ -9,7 +9,6 @@ import toast, { Toaster } from 'react-hot-toast';
 const AddVendorModal = ({ onClose }) => {
     const navigate = useNavigate();
 
-
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
@@ -146,8 +145,8 @@ const AddVendorModal = ({ onClose }) => {
                         ?
                         <div >
                             <section className="dispatch">
-                                <div className='w-96 md:w-[1000px]'>
-                                    <div className="modal bg-white px-3 py-4">
+                                <div className='w-96 md:w-[800px]'>
+                                    <div className="rounded-md modal bg-white px-3 py-4">
 
                                         <div className="w-full h-auto bg:white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-lg p-4 space-y-4 border border-white">
                                             <div className="mb-4">

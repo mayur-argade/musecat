@@ -97,7 +97,7 @@ const AddCategoryModel = ({ onClose }) => {
 
 
                                             <div className="flex items-center justify-center w-full">
-                                                <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100 ">
                                                     <div className="flex flex-col items-center justify-center ">
                                                         <img src="/images/icons/upload-image.svg" alt="" />
                                                         <p className="text-xs">{selectedFile ? `Selected File: ${selectedFile.name}` : 'Upload Category Banner'}</p>

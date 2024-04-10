@@ -29,7 +29,10 @@ const AdminUsers = () => {
 
 
     const deleteUser = async (userid) => {
-        setLoading(true);
+        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+
+        if(confirmDelete){
+            setLoading(true);
 
         const data = {
             userid: userid
@@ -50,7 +53,7 @@ const AdminUsers = () => {
             }
         } catch (error) {
             toast.error(error.response.data.data);
-            // Handle errors here
+        }
         }
     };
 

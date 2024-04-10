@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import AddCategoryModel from '../../components/EditEventModal/AddCategoryModel'
 import EditCategoryModel from '../../components/EditEventModal/EditCategoryModel'
 import toast, { Toaster } from 'react-hot-toast';
+import AdminNavbar from '../../components/shared/Navbar/AdminNavbar'
 
 const AdminCategory = () => {
 
@@ -88,12 +89,15 @@ const AdminCategory = () => {
         <div>
             <div className='flex '>
 
-                <div>
+                <div className='z-10'>
                     <Sidebar />
                 </div>
                 <Toaster />
                 <div className='pl-20 flex flex-col w-full'>
-                    <div className="mt-7"></div>
+                    <div className='mx-4'>
+                        <AdminNavbar />
+                        <hr className='mb-3' />
+                    </div>
                     <div className="headline ">
                         <div className="heading">
                             <div className="flex justify-between">
@@ -103,7 +107,7 @@ const AdminCategory = () => {
 
                             <hr className='mt-3 mb-3' />
 
-                            <div className="maincontent flex flex-col">
+                            <div className="z-10 mx-4 maincontent flex flex-col pb-20">
                                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

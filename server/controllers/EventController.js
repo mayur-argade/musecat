@@ -14,7 +14,7 @@ const { transporter } = require('../services/mail-service')
 
 // vendor side
 exports.createEvent = async (req, res) => {
-    let { title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp
+    let { title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
     } = req.body
 
 
@@ -92,6 +92,7 @@ exports.createEvent = async (req, res) => {
 
             vendorid: req.user._id,
 
+            verified: verified,
             displayPhoto: uploadedEventPhoto.secure_url,
             banner: uploadedBanner.secure_url,
             video: video,

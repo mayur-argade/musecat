@@ -5,6 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../store/authSlice'
+import AdminNavbar from '../../components/shared/Navbar/AdminNavbar';
 
 const AdminHome = () => {
     document.title = "Admin Dashboard"
@@ -17,7 +18,7 @@ const AdminHome = () => {
     const [loading, setLoading] = useState(false)
     const [offers, setOffers] = useState([])
     const [refresh, setRefresh] = useState(false)
-    const [unread, setUnread] = useState(false)
+
 
     useEffect(() => {
         let tokenExpiredHandled = false; // Flag to track whether session expired error has been handled
@@ -25,10 +26,10 @@ const AdminHome = () => {
         const handleError = (error) => {
             setLoading(false);
             if (error.response && error.response.status === 401) {
-                // session expired error
                 if (!tokenExpiredHandled) {
                     tokenExpiredHandled = true; // Set the flag to true to indicate the error has been handled
                     toast.error("session expired. Please log in again.");
+                    navigate('/vendor/login')
                 }
             } else {
                 toast.error(error.response?.data?.data || "An error occurred.");
@@ -113,65 +114,31 @@ const AdminHome = () => {
             toast.error(error.response.data.data);
         }
     };
-    const dispatch = useDispatch();
-    const { isAuth, user } = useSelector((state) => state.auth)
-    const funVendorLogout = async () => {
-        try {
-            const { data } = await vendorLogout()
-            dispatch(setAuth(data));
-            toast.success("logged out")
-            navigate("/vendor/login");
-        } catch (error) {
-            window.alert(error)
-            console.log(error)
-        }
-    }
+    
+    
 
     return (
         <>
-            <div className='dark:bg-white dark:text-black'>
+            <div className='mx-10 dark:bg-white dark:text-black'>
                 <Toaster />
                 <div className='flex flex-col w-full'>
-                    <div className="navbar flex justify-between ml-10 mr-10 space-x-8">
-                        <div className="left">
-                            <img src="/images/logo/logo.png" alt="" />
-                        </div>
-                        <div className='space-x-8'>
-                            {
-                                unread
-                                    ?
-                                    <button>
-                                        <img onClick={(() => navigate('/admin/notifications'))} className='h-5 w-5' src="/images/icons/notification.svg" alt="" />
-                                    </button>
-                                    :
-                                    <button>
-                                        <img onClick={(() => navigate('/admin/notifications'))} className='h-5 w-5' src="/images/icons/notification-1.svg" alt="" />
-                                    </button>
-                            }
-                            <button>
-                                <img onClick={() => navigate('/admin/helpcenter')} className='h-5 w-5' src="/images/icons/chat.png" alt="" />
-                            </button>
-                            <button>
-                                <img onClick={() => funVendorLogout()} className='h-5 w-5' src="/images/icons/logout.png" alt="" />
-                            </button>
-                        </div>
-                    </div>
+
+                    <AdminNavbar />
 
                     <div className="headline ">
                         <div className="heading">
                             <span className="text-2xl font-semibold text-lg">Dashboard</span>
                             <hr className='mt-3 mb-3' />
                             <div className='flex justify-between '>
-
                                 <Link to='/admin/users'>
                                     <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                        <div class="p-4 hover:bg-slate-50 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex flex-col space-y-2">
                                                     <span class="text-gray-400">Total Users</span>
                                                     {
                                                         stats.data != null && (
-                                                            <span class="text-lg font-semibold text-lg">
+                                                            <span class="text-lg font-semibold text-xl">
                                                                 {stats.data.users}
                                                             </span>
                                                         )
@@ -188,13 +155,13 @@ const AdminHome = () => {
 
                                 <Link to='/admin/vendors'>
                                     <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                        <div class="p-4 hover:bg-slate-50 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex flex-col space-y-2">
                                                     <span class="text-gray-400">Total Vendors</span>
                                                     {
                                                         stats.data != null && (
-                                                            <span class="text-lg font-semibold text-lg">{stats.data.vendors}</span>
+                                                            <span class="text-xl font-semibold text-xl">{stats.data.vendors}</span>
                                                         )
                                                     }
                                                 </div>
@@ -208,13 +175,13 @@ const AdminHome = () => {
 
                                 <Link to='/admin/events'>
                                     <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                        <div class="p-4 hover:bg-slate-50 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex flex-col space-y-2">
                                                     <span class="text-gray-400">Total Events</span>
                                                     {
                                                         stats.data != null && (
-                                                            <span class="text-lg font-semibold text-lg">{stats.data.events}</span>
+                                                            <span class="text-xl font-semibold text-xl">{stats.data.events}</span>
                                                         )
                                                     }
 
@@ -229,13 +196,13 @@ const AdminHome = () => {
 
                                 <Link to='/admin/offers'>
                                     <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                        <div class="p-4 hover:bg-slate-50 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex flex-col space-y-2">
                                                     <span class="text-gray-400">Total Offers</span>
                                                     {
                                                         stats.data != null && (
-                                                            <span class="text-lg font-semibold text-lg">{stats.data.offers}</span>
+                                                            <span class="text-xl font-semibold text-xl">{stats.data.offers}</span>
                                                         )
                                                     }
                                                 </div>
@@ -250,13 +217,13 @@ const AdminHome = () => {
 
                                 <Link to='/admin/Categories'>
                                     <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                        <div class="p-4 hover:bg-slate-50 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex flex-col space-y-2">
                                                     <span class="text-gray-400">Total Categories</span>
                                                     {
                                                         stats.data != null && (
-                                                            <span class="text-lg font-semibold text-lg">{stats.data.category}</span>
+                                                            <span class="text-xl font-semibold text-xl">{stats.data.category}</span>
                                                         )
                                                     }
                                                 </div>
@@ -271,13 +238,13 @@ const AdminHome = () => {
 
                                 <Link to='/admin/venue'>
                                     <div className="m-3 cards flex justify-between md:flex-row flex-col">
-                                        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+                                        <div class="p-4 hover:bg-slate-50 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
                                             <div class="flex items-start justify-between">
                                                 <div class="flex flex-col space-y-2">
                                                     <span class="text-gray-400">Total Venues</span>
                                                     {
                                                         stats.data != null && (
-                                                            <span class="text-lg font-semibold text-lg">{stats.data.venues}</span>
+                                                            <span class="text-xl font-semibold text-xl">{stats.data.venues}</span>
                                                         )
                                                     }
                                                 </div>

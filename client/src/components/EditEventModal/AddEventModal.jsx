@@ -12,12 +12,11 @@ import moment from 'moment'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 
-const AddEventModal = ({ onClose }) => {
+const AddEventModal = ({ onClose, verified }) => {
     const editor = useRef(null);
     const navigate = useNavigate()
+    const [verifiedValue, setVerifiedValue] = useState(verified)
     const [isDarkMode, setIsDarkMode] = useState(false);
-    // `value` will be the parsed phone number in E.164 format.
-    // Example: "+12133734253".
     const [value, setValue] = useState()
     useEffect(() => {
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -78,9 +77,6 @@ const AddEventModal = ({ onClose }) => {
             'print',
         ],
     }
-
-
-    // console.log("this is url path from event modal",window.location.href)
 
     const [minDateTime, setMinDateTime] = useState('');
     const [listCategory, setListCategory] = useState([])
@@ -296,7 +292,7 @@ const AddEventModal = ({ onClose }) => {
         setCategories(updatedCategories);
     };
 
-    const handleSave = async () => {
+    const handleSave = async (verified) => {
         let momentstart = moment(startDate);
         let momentend = moment(endDate);
         if (!title) {
@@ -416,6 +412,7 @@ const AddEventModal = ({ onClose }) => {
             facebook: fb,
             instagram: insta,
             email: mail,
+            verified: verifiedValue,
             whatsapp: wpNumber.split("+")[1],
             website: website,
             phone: number.split("+")[1],
@@ -454,7 +451,7 @@ const AddEventModal = ({ onClose }) => {
                 !subLoading
                     ?
                     <section className=' md:mt-12 flex bg-white drop-shadow-2xl rounded-lg'>
-                        <div className='w-96 md:w-[1000px]'>
+                        <div className='w-96 md:w-[1000px] rounded-md '>
                             <div className="dark:bg-[#2c2c2c] dark:text-white modal bg-white px-10 py-5">
                                 <div className='text-left flex justify-start items-start align-middle'>
                                     <p className='text-xl font-bold'>Event/Offer Details</p>
