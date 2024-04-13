@@ -3,7 +3,7 @@ import Sidebar from '../../components/shared/Sidebar/Sidebar'
 import { AdminListUsers, AdminDeleteUser } from '../../http/index'
 import { Link } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
-
+import AdminNavbar from '../../components/shared/Navbar/AdminNavbar';
 const AdminUsers = () => {
 
     const [loading, setLoading] = useState(false)
@@ -62,14 +62,17 @@ const AdminUsers = () => {
         <div>
             <div className='flex'>
 
-                <div>
+                <div className='z-20'>
                     <Sidebar />
                 </div>
                 <Toaster />
                 <div className='pl-20 flex flex-col w-full'>
-                    <div className="mt-7"></div>
+                <div className='mx-4'>
+                        <AdminNavbar />
+                        <hr className='mb-3' />
+                    </div>
                     <div className="headline ">
-                        <div className="heading">
+                        <div className="heading mx-4 pb-20 z-10">
                             <div className="head">
                                 <span className="text-2xl font-semibold">Users</span>
                             </div>

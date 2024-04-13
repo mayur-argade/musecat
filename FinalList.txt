@@ -12,13 +12,14 @@
 12. create backend apis to change the trending archived and verified status
 
 
-1. Add option to edit the modal pop up
-2. Change categories and venue page design
-3. Add venue should be directly gets verified if it is from the vendor
-4. Add venue should show a different success message
-5. analytics page redirection 
-6. categories serial ordering
+1. Add option to edit the modal pop up 
+2. Change categories and venue page design  (done)
+3. Add venue should be directly gets verified if it is from the vendor (done)
+4. Add venue should show a different success message (done)
+5. analytics page redirection (done)
+6. categories serial ordering (not now)
 7. Events verify, archive, trending apis and frontend integration 
 8. latest one -> On the homepage there should only 5 events and 5 offers and 5 vendors 5 users
-9. Admin Event Description changes
+9. Admin Event Description changes 
 10 Admin Booked seats changes 
+11. Remove mobile widget from the app

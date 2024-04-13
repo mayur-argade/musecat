@@ -665,7 +665,10 @@ const AddEventModal = ({ onClose, verified }) => {
                                 {
                                     showVenuecreate
                                         ?
-                                        <AddVenueModal onClose={() => setShowVenuecreate(false)} />
+                                        <AddVenueModal
+                                            onClose={() => setShowVenuecreate(false)}
+                                            message={"Venue added! you can choose venue from Dropdown"}
+                                        />
                                         :
                                         <></>
                                 }

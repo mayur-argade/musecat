@@ -80,6 +80,7 @@ export const sendIcsFile = (data) => api.post('/user/addtocalender', data)
 
 export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`, data)
 export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)
+export const EditPopupModal = (data) => api.post('/admin/edit-popup-message', data)
 export const getOffersForAdmin = (data) => api.get('admin/getAllOffers', data)
 export const getAllVenuesAdmin = (data) => api.get('venue/admin/getAllVenues', data)
 export const AdminCreateEvent = (data) => api.post("/admin/create-event", data)
@@ -111,6 +112,10 @@ export const AdminDeleteUser = (data) => api.delete('/admin/delete-user', { data
 export const AdminListVendors = (data) => api.get('/admin/list-all-vendors', data)
 export const AdminDeleteVendor = (data) => api.delete(`/admin/delete-vendor`, { data: data })
 export const AdminEditVenue = (data) => api.patch('venue/admin/edit-venue', data)
+export const AdminEditModal = (data) => api.put('/admin/popup/edit-popup', data)
+export const AdminSetVisibilityOfModal = (data) => api.put('/admin/popup/edit-view-popup', data)
+export const getPopupModal = (data) => api.get(`/admin/popup/get-popup/${data}`, data)
+
 
 export const handleUpload = (formData) => {
     return axios.post('https://omanwhereto.com/api/v1/upload', formData)

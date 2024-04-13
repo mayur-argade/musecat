@@ -54,34 +54,38 @@ const AdminCategory = () => {
     }, [refresh]);
 
     const DeleteCategory = async (categoryId) => {
-        try {
-            // Display a confirmation dialog
-            const userConfirmed = window.confirm('Are you sure you want to delete this category?');
+        const confirm = window.confirm("Are you sure you want to delete this category ?")
 
-            if (!userConfirmed) {
-                // User canceled the deletion
-                return;
+        if (confirm) {
+            try {
+                // Display a confirmation dialog
+                const userConfirmed = window.confirm('Are you sure you want to delete this category?');
+
+                if (!userConfirmed) {
+                    // User canceled the deletion
+                    return;
+                }
+
+                const body = {
+                    categoryId: categoryId
+                };
+
+                // Use toast.promise to display a promise-based toast
+                const promise = AdminDeleteCategory(body);
+                const { data } = await toast.promise(promise, {
+                    loading: 'Deleting Category...',
+                    success: 'Category Deleted Successfully',
+                    error: (error) => `Error: ${error.response.data.data}`,
+                });
+
+                // Refresh or update the UI as needed after successful deletion
+                if (data.success === true) {
+                    setRefresh(!refresh);
+                }
+            } catch (error) {
+                console.error(error);
+                // No need for a separate toast.error here; it's handled in the promise configuration
             }
-
-            const body = {
-                categoryId: categoryId
-            };
-
-            // Use toast.promise to display a promise-based toast
-            const promise = AdminDeleteCategory(body);
-            const { data } = await toast.promise(promise, {
-                loading: 'Deleting Category...',
-                success: 'Category Deleted Successfully',
-                error: (error) => `Error: ${error.response.data.data}`,
-            });
-
-            // Refresh or update the UI as needed after successful deletion
-            if (data.success === true) {
-                setRefresh(!refresh);
-            }
-        } catch (error) {
-            console.error(error);
-            // No need for a separate toast.error here; it's handled in the promise configuration
         }
     };
 

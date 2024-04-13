@@ -566,7 +566,9 @@ const EditEventModal = ({ onClose, data }) => {
                                 {
                                     showVenuecreate
                                         ?
-                                        <AddVenueModal />
+                                        <AddVenueModal 
+                                        
+                                        />
                                         :
                                         <></>
                                 }

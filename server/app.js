@@ -51,6 +51,7 @@ const categories = require('./routes/CategoryRoute')
 const venue = require('./routes/VenueRoute')
 const ticket = require('./routes/TicketRoute')
 const notification = require('./routes/NotificationRoutes')
+const popup = require('./routes/PopupRoutes')
 
 // Router middleware
 app.use('/api/v1/auth', auth);
@@ -60,6 +61,7 @@ app.use('/api/v1/category', categories)
 app.use('/api/v1/venue', venue)
 app.use('/api/v1/', ticket)
 app.use('/api/v1/', notification)
+app.use('/api/v1/', popup)
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

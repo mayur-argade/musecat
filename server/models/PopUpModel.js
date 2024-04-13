@@ -4,7 +4,7 @@ var Schema = mongoose.Schema
 
 const popupModel = new mongoose.Schema(
     {
-        img: {
+        photo: {
             type: String,
             required: true,
         },
@@ -16,6 +16,10 @@ const popupModel = new mongoose.Schema(
             type: String,
             required: true,
         },
+        visible: {
+            type: Boolean,
+            required: true,
+        }
     },
     {
         timestamps: true,

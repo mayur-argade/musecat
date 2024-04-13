@@ -5,7 +5,7 @@ const cloudinary = require('cloudinary')
 const moment = require('moment')
 
 exports.createVenue = async (req, res) => {
-    const { name, photo, address, mapAddress } = req.body
+    const { name, photo, address, mapAddress, verified } = req.body
 
     if (!name || !photo || !address || !mapAddress) {
         return res.status(400).json({
@@ -32,7 +32,8 @@ exports.createVenue = async (req, res) => {
                 lat: mapAddress.lat,
                 lng: mapAddress.lng
             },
-            requester: req.user._id
+            requester: req.user._id,
+            verified: verified ? verified : false,
         }
 
         const venue = await venueService.createVenue(data)

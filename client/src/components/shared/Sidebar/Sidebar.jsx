@@ -12,7 +12,7 @@ const Sidebar = () => {
                 </Link>
                 <nav class="flex flex-1 flex-col gap-y-4 pt-3">
                     <Link to='/admin/home' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/pwa-home.svg" alt="" />
+                        <img src="/images/icons/pwa-home.svg" className={`${window.location.pathname.includes('home') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
@@ -23,7 +23,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link to='/admin/users' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/users.png" className='h-6 w-6' alt="" />
+                        <img src="/images/icons/users.png" className={`h-10 w-10 ${window.location.pathname.includes('users') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
@@ -34,7 +34,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link to='/admin/vendors' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/vendor.png" className='h-6 w-6' alt="" />
+                        <img src="/images/icons/vendor.png" className={`h-10 w-10 ${window.location.pathname.includes('vendors') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
@@ -45,7 +45,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link to='/admin/events' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/events.png" className='h-6 w-6' alt="" />
+                        <img src="/images/icons/events.png" className={`h-10 w-10 ${window.location.pathname.includes('events') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
@@ -56,7 +56,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link to='/admin/offers' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/offers.png" className='h-6 w-6' alt="" />
+                        <img src="/images/icons/offers.png" className={`h-10 w-10 ${window.location.pathname.includes('offers') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
@@ -67,7 +67,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link to='/admin/categories' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/categories.png" className='h-6 w-6' alt="" />
+                        <img src="/images/icons/categories.png" className={`h-10 w-10 ${window.location.pathname.includes('categories') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
@@ -78,7 +78,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link to='/admin/venue' className='text-gary-400 group relative rounded-xl p-2 hover:bg-gray-50'>
-                        <img src="/images/icons/location.png" className='h-6 w-6' alt="" />
+                        <img src="/images/icons/location.png" className={`h-10 w-10 ${window.location.pathname.includes('venue') ? 'bg-gray-100 p-2 rounded-md' : 'p-2'}`} alt="" />
                         <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                             <div class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">

@@ -13,12 +13,14 @@ import PopupBox from '../../../components/PopupBox/PopupBox'
 import HeroSection from './Components/HeroSection'
 import PopularCategory from './Components/PopularCategory'
 import Tabbar from '../../../components/shared/Tabbar/Tabbar'
+import { getPopupModal } from '../../../http'
 
 const Home = () => {
 
     document.title = PageTitle.home
 
     const [selectedDate, setSelectedDate] = useState(null);
+    const [popupData, setPopupData] = useState(null)
 
     // Define a callback function to receive the selected date
     const handleDateSelection = (date) => {
@@ -33,6 +35,18 @@ const Home = () => {
 
 
     useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const { data } = await getPopupModal('66197c40f100f8c507519012')
+                setPopupData(data.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchData()
+
         const hasPopupBeenShown = localStorage.getItem('hasPopupBeenShown');
         const lastVisitTimestamp = localStorage.getItem('lastVisitTimestamp');
         const currentTime = new Date().getTime();
@@ -67,16 +81,16 @@ const Home = () => {
                     <HeroSection />
                 </div>
 
-                {/* {isOpen && (
+                {popupData != null && popupData.visible == true && isOpen && (
                     <div className='fixed z-50 inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 p-3 '>
                         <div className='flex flex-col'>
                             <div className='flex justify-end'>
                                 <span className='justify-end' onClick={handleClose}><img className='bg-white rounded-full h-7 cursor-pointer' src="/images/icons/cancel-icon-new.png" alt="" /></span>
                             </div>
-                            <PopupBox />
+                            <PopupBox data={popupData} />
                         </div>
                     </div>
-                )} */}
+                )}
 
                 <div className="content">
                     <PopularCategory />

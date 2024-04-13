@@ -6,6 +6,7 @@ import moment from 'moment'
 import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import EditVenueModel from '../../components/EditEventModal/EditVenueModel'
+import AdminNavbar from '../../components/shared/Navbar/AdminNavbar'
 
 const AdminVenue = () => {
     const [venues, setVenues] = useState([])
@@ -80,27 +81,31 @@ const AdminVenue = () => {
     };
 
     const deleteVenue = async (venueId) => {
-        try {
-            const body = {
-                venueId: venueId
-            };
+        const confirm = window.confirm("Are you sure you want to delete this Venue ?")
 
-            // Use toast.promise to display a promise-based toast
-            const promise = AdminDeleteVenue(body);
-            const { data } = await toast.promise(promise, {
-                loading: 'Deleting...',
-                success: 'Venue Deleted Successfully',
-                error: (error) => `Error: ${error.response.data.data}`,
-            });
+        if (confirm) {
+            try {
+                const body = {
+                    venueId: venueId
+                };
 
-            // Refresh or update the UI as needed after successful deletion
-            if (data.success === true) {
-                setRefresh(!refresh);
+                // Use toast.promise to display a promise-based toast
+                const promise = AdminDeleteVenue(body);
+                const { data } = await toast.promise(promise, {
+                    loading: 'Deleting...',
+                    success: 'Venue Deleted Successfully',
+                    error: (error) => `Error: ${error.response.data.data}`,
+                });
+
+                // Refresh or update the UI as needed after successful deletion
+                if (data.success === true) {
+                    setRefresh(!refresh);
+                }
+
+            } catch (error) {
+                console.error(error);
+                // No need for a separate toast.error here; it's handled in the promise configuration
             }
-
-        } catch (error) {
-            console.error(error);
-            // No need for a separate toast.error here; it's handled in the promise configuration
         }
     };
 
@@ -108,16 +113,19 @@ const AdminVenue = () => {
         <div>
             <div className='flex '>
 
-                <div>
+                <div className='z-20'>
                     <Sidebar />
                 </div>
 
                 <Toaster />
 
                 <div className='pl-20 flex flex-col w-full'>
-                    <div className="mt-7"></div>
+                    <div className='mx-4'>
+                        <AdminNavbar />
+                        <hr className='mb-3' />
+                    </div>
                     <div className="headline ">
-                        <div className="heading">
+                        <div className="z-10 heading mx-4 pb-20">
                             <div className="flex justify-between">
                                 <span className="text-2xl font-semibold">Venues</span>
                                 <button onClick={() => handleCategoryClick()} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Venue</button>
@@ -243,15 +251,18 @@ const AdminVenue = () => {
                 </div>
             </div>
             {showAddVenue && (
-                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                    <div className="relative rounded-lg ">
+                <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-black bg-opacity-20 backdrop-blur-sm">
+                    <div className="relative top-4 rounded-lg ">
                         <AddVenueModal
                             isOpen={showAddVenue}
-                            onClose={closeCategoryModel} />
+                            onClose={closeCategoryModel}
+                            verified={true}
+                            message={"Venue has been added successfully"}
+                        />
                         {/* Close button */}
                         <button
                             onClick={closeCategoryModel}
-                            className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            className="absolute top-3 right-0 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
                         >
                             <img src="/images/icons/cancel-icon.png" alt="" />
                         </button>

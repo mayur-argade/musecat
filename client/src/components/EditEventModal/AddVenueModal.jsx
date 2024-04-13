@@ -5,19 +5,20 @@ import MapComponent from '../GoogleMap/Map';
 import { VendorCreateVenue } from '../../http/index'
 import Tooltip from '../shared/Tooltip/Tooltip'
 
-const AddVenueModal = ({ onClose }) => {
+const AddVenueModal = ({ onClose, verified, message }) => {
     const [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
         lng: 58.37132692337036,
     });
 
+    const [verifiedValue, setVerfiedValue] = useState(verified)
     const [selectedFile, setSelectedFile] = useState(null)
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
     const [mapAddress, setMapAddress] = useState({
         lat: null,
-        lon: null
+        lng: null
     })
     const [banner, setBanner] = useState('')
 
@@ -33,39 +34,46 @@ const AddVenueModal = ({ onClose }) => {
     }
 
     const handleLocationSelect = (location) => {
+        console.log("Setting up location", location)
+        setSelectedLocation({
+            lat: location.lat,
+            lng: location.lng
+        })
         setMapAddress({
             lat: location.lat,
             lng: location.lng
         })
     }
+
     async function submit() {
         if (!name) {
-            toast.error("name field is mandatory")
+            return toast.error("name field is mandatory")
         } else if (!address) {
-            toast.error("Address Field is mandatory")
+            return toast.error("Address Field is mandatory")
         } else if (!banner) {
-            toast.error("Banner image is mandatory")
-        } else if (!mapAddress) {
-            toast.error("Map coordinates are mandatory")
+            return toast.error("Banner image is mandatory")
+        } else if (mapAddress.lat == null || mapAddress.lng == null) {
+            return toast.error("Map coordinates are mandatory, Click on location to select address")
         } else {
             try {
                 const venuedata = {
                     name: name,
                     photo: banner,
                     address: address,
-                    mapAddress: mapAddress
+                    mapAddress: mapAddress,
+                    verified: verifiedValue ? verifiedValue : false
                 }
                 setLoading(true)
                 console.log(venuedata)
                 const { data } = await VendorCreateVenue(venuedata)
                 setLoading(false)
                 console.log(data)
-                toast.success("Your new Venue has been added to the list you can select your venue from the locations")
+                toast.success(message)
                 onClose(); //
             } catch (error) {
                 setLoading(false)
                 console.log(error)
-                toast.error(error.response.data.data)
+                // toast.error(error.response.data.data)
                 onClose(); //
             }
 
@@ -75,7 +83,7 @@ const AddVenueModal = ({ onClose }) => {
 
     return (
         <div>
-            <Toaster />
+ 
             <div>
                 <div>
                     {
