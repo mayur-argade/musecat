@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import TawkMessengerReact from '@tawk.to/tawk-messenger-react';
 
 const ScrollToTop = () => {
-
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     const navigate = useNavigate()
     const [visible, setVisible] = useState(false)
     const tawkMessengerRef = useRef();
@@ -54,12 +54,17 @@ const ScrollToTop = () => {
                 <button>
                 </button>
             </div>
-            <div className="App">
-                <TawkMessengerReact
-                    propertyId="6615b2a71ec1082f04e09988"
-                    widgetId="1hr2c3o9e"
-                    ref={tawkMessengerRef} />
-            </div>
+            {
+                !isStandalone && (
+                    <div className="App">
+                        <TawkMessengerReact
+                            propertyId="6615b2a71ec1082f04e09988"
+                            widgetId="1hr2c3o9e"
+                            ref={tawkMessengerRef} />
+                    </div>
+                )
+            }
+
         </div>
     )
 }

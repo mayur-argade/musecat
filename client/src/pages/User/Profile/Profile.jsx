@@ -47,6 +47,9 @@ const Profile = () => {
             } catch (error) {
                 console.log(error)
                 toast.error(error.response.data.data)
+                if (error.response.request.status == 401) {
+                    navigate('/login')
+                }
             }
         }
 

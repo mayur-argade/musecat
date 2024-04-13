@@ -110,9 +110,26 @@ const EventsPWA = () => {
             onClick={onClick} ref={ref}
             className="flex items-center cursor-pointer bg-gray-50 border border-gray-300 text-black placeholder-gray-500 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] p-2 dark:bg-[#454545] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-40"
         >
-            <span className="hidden md:block text-gray-500">Calendar</span>
-            <span className="block md:hidden text-gray-500">Calendar</span>
-            <img className="ml-2 w-4 h-4" src="/images/icons/calendar.png" alt="" />
+            {
+                filterDate
+                    ?
+                    <div className='flex align-middle items-center'>
+                        <span className='text-[#A48533] font-semibold'>
+                            {moment(filterDate).format('DD-MM-YYYY')}
+                        </span>
+                        <div onClick={() => setFilterDate(null)}>
+                            <img className='h-4 ml-2 flex dark:hidden' src="/images/icons/cancel-icon.png" alt="" />
+                            <img className='h-4 ml-2 dark:flex hidden' src="/images/icons/cancel-icon-light.png" alt="" />
+                        </div>
+                    </div>
+                    :
+                    <>
+                        <span className="text-gray-500 dark:text-white">Calendar</span>
+                        <img className="ml-2 w-4 h-4 flex dark:hidden" src="/images/icons/calendar.png" alt="" />
+                        <img className="ml-2 w-4 h-4 hidden dark:flex" src="/images/icons/calendar-light.png" alt="" />
+                    </>
+
+            }
         </button>
 
     ));

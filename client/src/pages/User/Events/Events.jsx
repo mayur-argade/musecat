@@ -101,7 +101,7 @@ const Events = () => {
                     </div>
                     :
                     <>
-                        <span className="hidden md:block text-gray-500 dark:text-white">Calendar</span>
+                        <span className="text-gray-500 dark:text-white">Calendar</span>
                         <img className="ml-2 w-4 h-4 flex dark:hidden" src="/images/icons/calendar.png" alt="" />
                         <img className="ml-2 w-4 h-4 hidden dark:flex" src="/images/icons/calendar-light.png" alt="" />
                     </>
@@ -298,7 +298,7 @@ const Events = () => {
 
 
     return (
-        <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
+        <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine '>
             <div className='z-20 '>
                 <Navbar />
                 <div className="hidden md:block">
@@ -306,7 +306,7 @@ const Events = () => {
                 </div>
             </div>
 
-            <section className='dark:bg-[#2c2c2c] dark:text-white '>
+            <section className='dark:bg-[#2c2c2c] dark:text-white pb-20'>
                 <section className="screenWrapper flex justify-center items-center align-middle mt-5">
                     <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                         {response.data == null && (

@@ -18,8 +18,8 @@ const SearchPWA = () => {
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input onChange={((e) => setQuery(e.target.value))} type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search around muscat" required />
-                    <button onClick={(() => navigate(`/Category/events?search=${query}`))} type="button" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-[#C0A04C] rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-[#C0A04C] dark:hover:bg-[#C0A04C]">
+                    <input onChange={((e) => setQuery(e.target.value))} type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search around muscat" required />
+                    <button onClick={(() => navigate(`/Category/events?search=${query}`))} type="button" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-[#C0A04C] rounded-r-lg  focus:ring-4 focus:outline-none  dark:bg-[#C0A04C] dark:hover:bg-[#C0A04C]">
                         <img className='' src="/images/icons/home-search.svg" alt="" />
                         <span class="sr-only">Search</span>
                     </button>

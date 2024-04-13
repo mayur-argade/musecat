@@ -962,7 +962,7 @@ const EventDescription = () => {
                             <div className="relative mt-8 ml-6 mr-6 ">
                                 {
                                     !isStandalone && (
-                                        <img className='pb-5 h-16 md:h-auto' src="/images/assets/download.png" alt="" />
+                                        <img className='pb-5 h-16 w-full md:h-auto' src="/images/assets/download.png" alt="" />
                                     )
                                 }
 

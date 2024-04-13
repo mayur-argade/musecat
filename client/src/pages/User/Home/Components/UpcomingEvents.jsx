@@ -226,22 +226,24 @@ const UpcomingEvents = () => {
                 <div className='grid grid-cols-3 align-middle items-center'>
                     <div className='w-30'>
                     </div>
-                    <div className="mt-2 place-items-center  hidden md:flex  justify-center items-center space-x-4">
-                        {isOverflowing && (
-                            <>
-                                <button onClick={scrollLeft}>
-                                    <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
-                                </button>
-                                <button onClick={scrollRight}>
-                                    <img className='h-10 bg-white rounded-full' src="/images/icons/homefrontarrow.svg" alt="" />
-                                </button>
-                            </>
-                        )}
+                    <div>
+                        <div className="mt-2 place-items-center  hidden md:flex  justify-center items-center space-x-4">
+                            {isOverflowing && (
+                                <>
+                                    <button onClick={scrollLeft}>
+                                        <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
+                                    </button>
+                                    <button onClick={scrollRight}>
+                                        <img className='h-10 bg-white rounded-full' src="/images/icons/homefrontarrow.svg" alt="" />
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                     <div className='flex justify-end'>
-                    <Link className='dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
-                        <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
-                    </Link>
+                        <Link className='dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                            <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
+                        </Link>
                     </div>
                 </div>
             </section>

@@ -89,7 +89,16 @@ const WhereToMap = () => {
                 </div>
                 <div className="flex justify-around align-top ">
                     <div className="md:drop-shadow-2xl map w-full md:w-9/12 h-auto ">
-                        <MapComponent onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"500px"} zoom={10} />
+                        <MapComponent onlyMarkerClick={true} onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"500px"} zoom={10} />
+                        {
+                            mapAddress.lat != null || mapAddress.lng != null
+                                ?
+                                <div className='w-full flex justify-end align-middle items-center'>
+                                    <button onClick={() => setMapAddress({ lat: null, lng: null })} type="button" class="mt-1 text-white bg-[#C0A04C] hover:bg-[#A48533] dark:hover:bg-[#A48533] hover:text-white rounded text-xs py-1 px-2 text-center dark:bg-[#C0A04C] " >Reset Map</button>
+                                </div>
+                                :
+                                <></>
+                        }
                     </div>
 
                     <div className="flex flex-col h-[32rem] overflow-y-auto">

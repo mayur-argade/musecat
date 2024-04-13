@@ -31,8 +31,8 @@ const Tabbar = () => {
     }, []);
 
     return (
-        <section className=''>
-            <nav className={`${subTabbarCategory && subTabbarCategory.subCategories.length != 0 ? "" : 'shadow-lg'} hidden md:flex flex-wrap justify-center py-3 space-x-6 overflow-auto`}>
+        <section className='shadow-lg '>
+            <nav className={`hidden md:flex flex-wrap justify-center py-3 space-x-6 overflow-auto`}>
                 {loading ? (
                     <div className="animate-pulse flex justify-center items-center w-full">
 
@@ -57,11 +57,9 @@ const Tabbar = () => {
                 }
             </nav>
             <nav className=''>
-                {subTabbarCategory && (
-                    <>
-                        <SubTabbar category={subTabbarCategory} />
-                    </>
-                )}
+
+                <SubTabbar />
+
 
             </nav>
             {
@@ -69,7 +67,7 @@ const Tabbar = () => {
                     <div className='p-3 z-50 absolute right-64 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
                         {categories.data.slice(7).map((category, index) => (
                             <div className='flex flex-col px-2 py-1'>
-                                <CategoryLink key={index} category={category} />
+                                <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
                             </div>
 
                         ))}

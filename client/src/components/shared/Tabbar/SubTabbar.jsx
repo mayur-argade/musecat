@@ -1,7 +1,29 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
-const SubTabbar = ({ category }) => {
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
+import { GetAllCategory } from '../../../http';
+const SubTabbar = () => {
     const [showDropdown, setShowDropdown] = useState(false);
+    const [categories, setCategories] = useState([])
+    const [categoryData, setCategoryData] = useState(null)
+    let { category: categoryname } = useParams()
+
+    useEffect(() => {
+
+        const fetchCategory = async () => {
+            const res = await GetAllCategory()
+            setCategories(res.data.data)
+            const assignedCategory = res.data.data.find(category => category.categoryURL === categoryname);
+            setCategoryData(assignedCategory)
+        }
+
+        fetchCategory()
+
+    }, [categoryname])
+
+
+
+    console.log("category", categoryData)
     const navigate = useNavigate()
     const handleShowDropdown = () => {
         setShowDropdown(true);
@@ -13,7 +35,7 @@ const SubTabbar = ({ category }) => {
 
     return (
         <nav className='shadow-lg flex justify-center align-middle items-center pb-2'>
-            {category.subCategories && category.subCategories.map((subcategory, index) => (
+            {categoryData && categoryData.subCategories && categoryData.subCategories.map((subcategory, index) => (
                 <span className='m-0 cursor-pointer px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-400 ml-0 text-sm relative' key={index}
                     onMouseEnter={() => {
                         if (subcategory.name == 'Dinner') {
@@ -21,7 +43,7 @@ const SubTabbar = ({ category }) => {
                         }
                     }}
                     onMouseLeave={handleCloseDropdown}>
-                    <span onClick={() => navigate(`?subcategory=${subcategory.name}`)}>
+                    <span className='ml-0' onClick={() => navigate(`?subcategory=${subcategory.name}`)}>
                         {subcategory.name}
                     </span>
                     {showDropdown && subcategory.name == 'Dinner' && (
