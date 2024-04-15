@@ -31,8 +31,8 @@ const Tabbar = () => {
     }, []);
 
     return (
-        <section className='shadow-lg '>
-            <nav className={`hidden md:flex flex-wrap justify-center py-3 space-x-6 overflow-auto`}>
+        <section className='shadow-lg'>
+            <nav className={`hidden md:flex flex-wrap justify-center py-3 space-x-6`}>
                 {loading ? (
                     <div className="animate-pulse flex justify-center items-center w-full">
 
@@ -46,15 +46,29 @@ const Tabbar = () => {
                         ))}
                     </>
                 )}
-                {
-                    categories.data && categories.data.length > 7 && (
-                        <div onClick={() => setShowMoreCategories(!showMoreCategories)} className='relative flex align-middle items-center'>
-                            <span className={`p-[2px]  ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
-                            <img className="pointer-cursor dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
-                            <img className="pointer-cursor dark:flex hidden h-2 ml-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
-                        </div>
-                    )
-                }
+                <div className='relative'>
+                    {
+                        categories.data && categories.data.length > 7 && (
+                            <div onClick={() => setShowMoreCategories(!showMoreCategories)} className='relative flex align-middle items-center'>
+                                <span className={`p-[2px]  ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
+                                <img className="pointer-cursor dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
+                                <img className="pointer-cursor dark:flex hidden h-2 ml-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
+                            </div>
+                        )
+                    }
+                    {
+                        categories.data && categories.data.length > 7 && showMoreCategories && (
+                            <div className='w-40 p-3  absolute right-0 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
+                                {categories.data.slice(7).map((category, index) => (
+                                    <div className='flex flex-col px-2 py-1'>
+                                        <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
+                                    </div>
+
+                                ))}
+                            </div>
+                        )
+                    }
+                </div>
             </nav>
             <nav className=''>
 
@@ -62,18 +76,7 @@ const Tabbar = () => {
 
 
             </nav>
-            {
-                categories.data && categories.data.length > 7 && showMoreCategories && (
-                    <div className='p-3 z-50 absolute right-64 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
-                        {categories.data.slice(7).map((category, index) => (
-                            <div className='flex flex-col px-2 py-1'>
-                                <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
-                            </div>
 
-                        ))}
-                    </div>
-                )
-            }
         </section>
     );
 };

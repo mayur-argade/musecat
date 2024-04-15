@@ -45,11 +45,18 @@ exports.createCategory = async (req, res) => {
             })
         }
 
+        const categoryCount = await categoryService.countCategory()
+        const indexNumber = categoryCount + 1;
+
+        console.log("categoryCount", categoryCount)
+        console.log("indexNumber", indexNumber)
+
         let categoryData = {
             name: name,
             photo: uploadedCategoryPhoto.secure_url,
             categoryURL: url,
-            subCategories: subCategoriesArray
+            subCategories: subCategoriesArray,
+            index: indexNumber
         }
 
         const category = await categoryService.createCategories(categoryData)
@@ -68,7 +75,7 @@ exports.createCategory = async (req, res) => {
 
 // Update Category
 exports.updateCategory = async (req, res) => {
-    const { categoryId, name, subCategories } = req.body
+    const { categoryId, name, subCategories, photo } = req.body
     try {
         const category = await categoryService.findCategory({ _id: categoryId })
 
@@ -94,10 +101,18 @@ exports.updateCategory = async (req, res) => {
                 subCategoriesArray.push(data)
             }
         }
-        const categoryData = {
+        let categoryData = {
             _id: category._id,
             name: name,
             subCategories: subCategoriesArray
+        }
+
+        let uploadedCategoryPhoto = ''
+        if (photo) {
+            uploadedCategoryPhoto = await cloudinary.v2.uploader.upload(photo, {
+                folder: "muscat/category",
+            })
+            categoryData.photo = uploadedCategoryPhoto.secure_url
         }
 
         await categoryService.updateCategory(categoryData)

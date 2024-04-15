@@ -126,7 +126,7 @@ const AddCategoryModel = ({ onClose }) => {
                                     <div class="relative flex justify-center items-center">
                                         <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
                                         <img className="dark:hidden flex" src="/images/logo/logo-main.png" class="h-16" />
-                                        <img className="hidden dark:flex" src="/images/logo/logo-main-light.png" class="h-16" />
+                                        {/* <img className="hidden dark:flex" src="/images/logo/logo-main-light.png" class="h-16" /> */}
                                     </div>
                                 </div>
 

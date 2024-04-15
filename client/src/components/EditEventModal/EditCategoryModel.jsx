@@ -3,7 +3,7 @@ import { AdminEditCategory } from '../../http/index'
 import toast, { Toaster } from 'react-hot-toast';
 
 
-const EditCategoryModel = ({ onClose, data }) => {
+const EditCategoryModel = ({ apiRefreshstate, onClose, data }) => {
 
     console.log(data)
     const subcategoryNames = data.subCategories.map(subcategory => subcategory.name);
@@ -54,14 +54,15 @@ const EditCategoryModel = ({ onClose, data }) => {
             setLoading(false)
             if (data.success == true) {
                 setDone(true)
-                toast.success("Category Added")
+                toast.success("Category Changes Saved")
+                apiRefreshstate()
                 onClose(); //
             }
-            window.location.reload()
         } catch (error) {
             setLoading(false)
             console.log(error)
             toast.error(error.response.data.data)
+            apiRefreshstate()
         }
     }
 
@@ -78,7 +79,7 @@ const EditCategoryModel = ({ onClose, data }) => {
                                     <div className="modal bg-white px-3 py-4">
                                         <div className='space-y-4 max-h-auto  overflow-y-auto'>
                                             <div className='text-left flex justify-start items-start align-middle'>
-                                                <p className='text-md font-bold'>Add Category </p>
+                                                <p className='text-md font-bold'>Edit Category </p>
                                             </div>
 
 
@@ -107,7 +108,7 @@ const EditCategoryModel = ({ onClose, data }) => {
                                             </div>
 
                                             <div>
-                                                <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >createCategory</button>
+                                                <button className="w-full py-2 bg-[#C0A04C] hover:bg-[#A48533] rounded-md text-sm font-bold text-gray-50 transition duration-200" onClick={submit} >Save Category</button>
                                             </div>
 
                                         </div>
@@ -115,15 +116,12 @@ const EditCategoryModel = ({ onClose, data }) => {
                                 </div>
                             </section>
                             :
-                            done
-                                ?
-                                <div className="h-screen w-full flex justify-center align-middle items-center">
-                                    <img src="/images/icons/done.png" alt="" />
+                            <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
+                                <div class="relative flex justify-center items-center">
+                                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                                    <img src="/images/logo/logo-main.png" class="h-16" />
                                 </div>
-                                :
-                                <div className="h-screen w-full flex justify-center align-middle items-center">
-                                    <img src="/images/icons/loading.svg" alt="" />
-                                </div>
+                            </div>
 
                     }
                 </div>

@@ -460,8 +460,12 @@ const EventDescription = () => {
         <div className='h-full dark:bg-[#2c2c2c] dark:text-white'>
             <div className='z-20 '>
                 <Toaster />
-                <Navbar />
-                <Tabbar />
+                <div className='z-40'>
+                    <Navbar />
+                </div>
+                <div className='z-30'>
+                    <Tabbar />
+                </div>
             </div>
             <div className='px-5 w-full flex justify-center'>
                 <section className='w-full md:w-11/12 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>

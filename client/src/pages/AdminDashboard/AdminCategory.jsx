@@ -26,6 +26,7 @@ const AdminCategory = () => {
     }
     const closeEditCategoryModel = () => {
         setShowEditCategory(false)
+        setRefresh(!refresh)
     }
 
     const handleCategoryClick = () => {
@@ -242,7 +243,7 @@ const AdminCategory = () => {
                     <div className="relative my-auto w-11/12 xl:w-1/2">
                         <EditCategoryModel
                             isOpen={showEditCategory}
-                            onClose={closeEditCategoryModel}
+                            onClose={() => setRefresh(!refresh)}
                             data={selectedCategory}
                             apiRefreshstate={apiRefreshstate}
                         />

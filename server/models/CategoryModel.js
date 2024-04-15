@@ -23,6 +23,10 @@ const categoryModel = new mongoose.Schema({
     events: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
         default: []
+    },
+    index: {
+        type: Number,
+        required: true
     }
 },
     {
