@@ -1105,9 +1105,9 @@ exports.getDateWiseEvents = async (req, res) => {
                         'date.dateRange.endDate': null
                     }
                     ,
-                    {
-                        'date.dateRange.startDate': { $lte: startDate },
-                    }
+                    // {
+                    //     'date.dateRange.startDate': { $lte: startDate },
+                    // }
                     ,
                     {
                         $and: [

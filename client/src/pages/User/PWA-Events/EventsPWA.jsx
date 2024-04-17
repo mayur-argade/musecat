@@ -177,8 +177,8 @@ const EventsPWA = () => {
 
 
     return (
-        <>
-            <div className='!h-screen dark:bg-[#2c2c2c] dark:text-white'>
+        <div className='min-h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
+            <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <div className=' mt-3 md:mb-0 w-full flex justify-center lg:justify-end align-middle items-center space-x-5'>
 
@@ -262,7 +262,7 @@ const EventsPWA = () => {
             <div>
                 <BottomNav />
             </div>
-        </>
+        </div>
     )
 }
 
