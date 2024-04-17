@@ -151,7 +151,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     }, []);
 
     return (
-        <>
+        <div className="z-50">
             <div className='dark:bg-[#2c2c2c] dark:text-white sticky top-0 z-40 bg-white flex justify-center items-center align-middle'>
                 <div class="bg-white border-gray-200 dark:bg-[#2c2c2c] w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12">
                     <Toaster />
@@ -562,7 +562,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 </ul>
 
             </ nav >
-        </>
+        </div>
     );
 }
 

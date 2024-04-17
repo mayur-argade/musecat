@@ -46,7 +46,7 @@ const Tabbar = () => {
                         ))}
                     </>
                 )}
-                <div className='relative z-50'>
+                <div className='relative z-30'>
                     {
                         categories.data && categories.data.length > 7 && (
                             <div onClick={() => setShowMoreCategories(!showMoreCategories)} className='relative flex align-middle items-center'>

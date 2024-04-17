@@ -111,7 +111,9 @@ const VendorEventDescripton = () => {
     const dispatch = useDispatch();
 
     // console.log("isMobile", isMobile)
-
+    const onMarkerClick = () => {
+        console.log("ok")
+    }
 
     useEffect(() => {
 
@@ -640,7 +642,7 @@ const VendorEventDescripton = () => {
                                                 Location
                                             </span>
                                             <div className='w-full md:w-11/12'>
-                                                <MapComponent selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
+                                                <MapComponent showInfoWindow={true} redirectToGoogleMap={true} title={response.data.eventDetails.title} image={response.data.eventDetails.displayPhoto} onMarkerClick={onMarkerClick} selectedLocation={selectedLocation} mapSize={"300px"} zoom={13} />
                                             </div>
 
                                         </div>
