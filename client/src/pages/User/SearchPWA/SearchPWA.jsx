@@ -9,7 +9,7 @@ const SearchPWA = () => {
     const [query, setQuery] = useState('')
 
     return (
-        <div className='dark:bg-[#2c2c2c] dark:text-white pb-40'>
+        <div className='!h-screen  dark:bg-[#2c2c2c] dark:text-white pb-40'>
             <Navbar />
             <section >
                 <div className='searchbar mt-5 relative ml-9 mr-9 shadow-xl rounded-xl'>

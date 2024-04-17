@@ -68,7 +68,7 @@ import ScrollToTop from './utils/ScrollToTop';
 function App() {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     return (
-        <div className="App">
+        <div className="App !dark:bg-[#2c2c2c] dark:text-white">
             <Router>
                 <ScrollToTop />
                 <Routes>

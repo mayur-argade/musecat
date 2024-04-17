@@ -1088,6 +1088,9 @@ exports.getDateWiseEvents = async (req, res) => {
             const endDate = new Date(`${onlyDate}T23:00:00.000Z`)
             const currentDay = moment(startDate).format('dddd').toLowerCase()
 
+            console.log(startDate)
+            console.log(endDate)
+
             query = {
                 archived: false,
                 verified: true,
@@ -1100,6 +1103,10 @@ exports.getDateWiseEvents = async (req, res) => {
                     {
                         'date.dateRange.startDate': { $lte: startDate },
                         'date.dateRange.endDate': null
+                    }
+                    ,
+                    {
+                        'date.dateRange.startDate': { $lte: startDate },
                     }
                     ,
                     {

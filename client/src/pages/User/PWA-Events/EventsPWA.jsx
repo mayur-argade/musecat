@@ -138,8 +138,8 @@ const EventsPWA = () => {
     const ChangeFilterDate = (date) => {
         const format = new Date(date)
         const datemoment = moment(format).format("YYYY-MM-DD")
-        // console.log(datemoment)
-        setFilterDate(format)
+        console.log(datemoment)
+        setFilterDate(new Date(`${datemoment}T00:00:00z`))
     }
 
     const handleCategoryChange = (categoryURL) => {
@@ -178,7 +178,7 @@ const EventsPWA = () => {
 
     return (
         <>
-            <div className='h-full dark:bg-[#2c2c2c] dark:text-white'>
+            <div className='!h-screen dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <div className=' mt-3 md:mb-0 w-full flex justify-center lg:justify-end align-middle items-center space-x-5'>
 
@@ -210,76 +210,6 @@ const EventsPWA = () => {
 
                                 <img className='h-5' src="/images/icons/star.svg" alt="" />
                             </button>
-                            {/* {isOpen && (
-                                <div
-                                    className="dark:bg-[#454545] dark:text-white origin-top-right right-0 absolute  mt-2 h-80 overflow-y-auto w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
-                                    ref={dropdownRef}
-                                >
-                                    <div className="p-5">
-                                        {
-                                            category == 'events' && (
-                                                <div className="popular">
-                                                    <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                    {
-                                                        categories.data.map((e) => (
-                                                            <div class="flex items-center mb-1 mt-2">
-                                                                <input id={e.categoryURL} type="checkbox"
-                                                                    onChange={() => handleCategoryChange(e)}
-                                                                    checked={selectedCategories.includes(e)}
-                                                                    value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e.name}</label>
-                                                            </div>
-                                                        ))
-                                                    }
-                                                </div>
-                                            )
-                                        }
-
-                                        <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                        <div className="popular">
-                                            <span className='ml-0 font-semibold text-sm'>Features</span>
-                                            {
-                                                Features.list.map((e) => (
-                                                    <div class="flex items-center mb-1 mt-2">
-                                                        <input id={e} type="checkbox"
-                                                            onChange={() => handleFeaturesChange(e)}
-                                                            checked={selectedFeatures.includes(e)}
-                                                            value={e} class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label for="staycation" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">{e}</label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-
-                                        <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-
-                                        <div className="distance">
-                                            <span className='ml-0 font-semibold text-sm'>Distance From Muscat</span>
-                                            <div class="flex items-center mb-1 mt-2">
-                                                <input onChange={() => handleDistanceChange(4)}
-                                                    checked={selectedDistance.includes(4)} id="4km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label for="4km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 4 km</label>
-                                            </div>
-
-                                            <div class="flex items-center mb-1">
-                                                <input onChange={() => handleDistanceChange(10)}
-                                                    checked={selectedDistance.includes(10)} id="10km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label for="10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">Less than 10 km</label>
-                                            </div>
-
-                                            <div class="flex items-center mb-1">
-                                                <input id="more10km" type="checkbox" value="" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label for="more10km" class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300">More than 10 km</label>
-                                            </div>
-
-
-                                        </div>
-
-                                        <hr className='h-px my-3 bg-gray-500 border-0 dark:bg-gray-700' />
-                                    </div>
-                                </div>
-                            )} */}
                         </div>
                     </div>
 
