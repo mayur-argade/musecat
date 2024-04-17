@@ -177,7 +177,7 @@ const EventsPWA = () => {
 
 
     return (
-        <div className='min-h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine'>
+        <div className='dark:bg-[#2c2c2c] dark:text-white contactmargine'>
             <div className='dark:bg-[#2c2c2c] dark:text-white'>
                 <Navbar />
                 <div className=' mt-3 md:mb-0 w-full flex justify-center lg:justify-end align-middle items-center space-x-5'>
@@ -239,25 +239,37 @@ const EventsPWA = () => {
                     </div>
 
                 </div>
-                <section className='flex justify-center items-center align-middle mt-5'>
-                    <section className='pb-14 w-full'>
-                        {Object.entries(groupedEvents).map(([date, events]) => (
-                            <div className='' key={date}>
-                                <h2 className='ml-12'>{date != 'undefined' ? require('moment')(date).format('dddd, MMMM Do YYYY') : ""}</h2>
-                                <ul className=''>
-                                    {/* Render events for this date */}
-                                    {events.filter((item) => search.toLocaleLowerCase() === '' ? true : item.title.toLowerCase().includes(search)
-                                    ).map(event => (
-                                        <li className='w-full flex justify-center items-center' key={event._id}>
-                                            <PwaCards data={event} />
-                                        </li>
-                                    ))}
-                                </ul>
+                <section className='pb-24 flex justify-center items-center align-middle mt-5'>
+                    {
+                        loading
+                            ?
+                            <div className='dark:bg-[#2c2c2c] dark:text-white h-screen w-full flex justify-center align-middle items-center'>
+                                <div class="relative flex justify-center items-center">
+                                    <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                                    <img className='flex dark:hidden h-16 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                    <img className='hidden dark:flex h-16 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
+                                </div>
                             </div>
-                        ))}
-                    </section>
+                            :
+                            <section className='pb-14 w-full'>
+                                {Object.entries(groupedEvents).map(([date, events]) => (
+                                    <div className='' key={date}>
+                                        <h2 className='ml-12'>{date != 'undefined' ? require('moment')(date).format('dddd, MMMM Do YYYY') : ""}</h2>
+                                        <ul className=''>
+                                            {/* Render events for this date */}
+                                            {events.filter((item) => search.toLocaleLowerCase() === '' ? true : item.title.toLowerCase().includes(search)
+                                            ).map(event => (
+                                                <li className='w-full flex justify-center items-center' key={event._id}>
+                                                    <PwaCards data={event} />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </section>
+                    }
+
                 </section>
-                <div className='pb-24'></div>
             </div>
             <div>
                 <BottomNav />
