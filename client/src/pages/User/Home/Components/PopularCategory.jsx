@@ -127,7 +127,7 @@ const PopularCategory = () => {
                             daysAndDates.map((e) => (
                                 <button
                                     onClick={() => setDayforCategory(e.date)}
-                                    className={`h-7 md:block hover:bg-gray-500 dark:hover:bg-white dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
+                                    className={`h-7 md:block hover:bg-gray-500 dark:hover:bg-white dark:hover:text-black dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
                                         ? 'hover:bg-inherit bg-black border-black text-white'
                                         : 'border-black'
                                         }`}
@@ -159,7 +159,7 @@ const PopularCategory = () => {
                 </div>
                 <div className='relative flex align-middle items-center'>
                     {showLeftButton && (
-                        <button className="absolute left-0 md:-left-2 top-0 bottom-0 z-10" onClick={scrollLeft}>
+                        <button className="flex md:hidden absolute left-0 md:-left-2 top-0 bottom-0 z-10" onClick={scrollLeft}>
                             <img className='rounded-full  bg-white  h-10' src="/images/icons/homebackarrow.svg" alt="" />
                         </button>
                     )}
@@ -211,7 +211,7 @@ const PopularCategory = () => {
                         }
                     </div>
                     {showRightButton && (
-                        <button className="absolute right-0 top-0 bottom-0 z-10" onClick={scrollRight}>
+                        <button className="flex md:hidden absolute right-0 top-0 bottom-0 z-10" onClick={scrollRight}>
                             <img className='rounded-full bg-white h-10' src="/images/icons/homefrontarrow.svg" alt="" />
                         </button>
                     )}
