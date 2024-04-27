@@ -159,7 +159,7 @@ const PopularCategory = () => {
                 </div>
                 <div className='relative flex align-middle items-center'>
                     {showLeftButton && (
-                        <button className="flex md:hidden absolute left-0 md:-left-2 top-0 bottom-0 z-10" onClick={scrollLeft}>
+                        <button className="absolute left-0 md:-left-2 top-0 bottom-0 z-10" onClick={scrollLeft}>
                             <img className='rounded-full  bg-white  h-10' src="/images/icons/homebackarrow.svg" alt="" />
                         </button>
                     )}
@@ -211,7 +211,7 @@ const PopularCategory = () => {
                         }
                     </div>
                     {showRightButton && (
-                        <button className="flex md:hidden absolute right-0 top-0 bottom-0 z-10" onClick={scrollRight}>
+                        <button className="absolute right-0 top-0 bottom-0 z-10" onClick={scrollRight}>
                             <img className='rounded-full bg-white h-10' src="/images/icons/homefrontarrow.svg" alt="" />
                         </button>
                     )}
