@@ -31,7 +31,7 @@ const Home = () => {
     // Get the current date
     const nowdate = moment();
 
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
 
     useEffect(() => {
