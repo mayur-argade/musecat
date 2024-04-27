@@ -8,6 +8,8 @@ const EditPopupMessage = ({ onClose }) => {
     const [description, setDescription] = useState('')
     const [selectedFile, setSelectedFile] = useState(null)
     const [photo, setPhoto] = useState('')
+    const [ctaLink, setCtaLink] = useState('')
+    const [ctaText, setCtaText] = useState('')
     const [isChecked, setIsChecked] = useState(false);
     const [popupData, setPopupData] = useState(null)
 
@@ -51,6 +53,8 @@ const EditPopupMessage = ({ onClose }) => {
                 setTitle(data.data.title)
                 setDescription(data.data.description)
                 setPhoto(data.data.photo)
+                setCtaLink(data.data.ctaLink)
+                setCtaText(data.data.ctaText)
             } catch (error) {
                 console.log(error)
             }
@@ -84,7 +88,9 @@ const EditPopupMessage = ({ onClose }) => {
                 displayPhoto: photo,
                 title: title,
                 description: description,
-                showModal: isChecked
+                showModal: isChecked,
+                ctaLink: ctaLink,
+                ctaText: ctaText
             }
 
             const promise = AdminEditModal(updateData);
@@ -128,14 +134,28 @@ const EditPopupMessage = ({ onClose }) => {
                             </div>
 
                             <div>
+                                <label htmlFor="title" className='text-xs'>Title</label>
                                 <input className="w-full  p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="Title" id='Title'
                                     value={title} onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Title" />
                             </div>
                             <div>
+                                <label htmlFor="title" className='text-xs'>Description</label>
                                 <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="description" id='description'
                                     value={description} onChange={(e) => setDescription(e.target.value)}
                                     placeholder="Description" />
+                            </div>
+                            <div>
+                                <label htmlFor="title" className='text-xs'>Button Text</label>
+                                <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="description" id='description'
+                                    value={ctaText} onChange={(e) => setCtaText(e.target.value)}
+                                    placeholder="Buy Tickets" />
+                            </div>
+                            <div>
+                                <label htmlFor="title" className='text-xs'>Redirect Link</label>
+                                <input className="w-full p-2.5 text-xs bg-white md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="description" id='description'
+                                    value={ctaLink} onChange={(e) => setCtaLink(e.target.value)}
+                                    placeholder="Link address" />
                             </div>
 
 

@@ -47,7 +47,7 @@ exports.createPopup = async (req, res) => {
 
 exports.editPopup = async (req, res) => {
     try {
-        const { id, title, description, showModal, displayPhoto } = req.body;
+        const { id, title, description, showModal, displayPhoto, ctaLink, ctaText } = req.body;
 
         let uploadedPopupPhoto
         if (displayPhoto) {
@@ -56,13 +56,13 @@ exports.editPopup = async (req, res) => {
             })
         }
 
-        console.log(uploadedPopupPhoto)
-
         const data = {
             _id: id,
             title: title,
             description: description,
             showModal: showModal,
+            ctaLink: ctaLink,
+            ctaText: ctaText,
             photo: uploadedPopupPhoto.secure_url
         }
 

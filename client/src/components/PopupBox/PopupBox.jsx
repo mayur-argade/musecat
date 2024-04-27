@@ -4,7 +4,7 @@ const PopupBox = ({ data }) => {
     return (
         <a
             href="#"
-            className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+            className="cursor-default flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800"
         >
             {data.photo && (
                 <div>
@@ -15,13 +15,17 @@ const PopupBox = ({ data }) => {
                     />
                 </div>
             )}
-            <div className="flex flex-col justify-between p-4 leading-normal">
+            <div className="w-60 flex flex-col justify-between p-4 leading-normal">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {data.title}
                 </h5>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     {data.description}
                 </p>
+
+                <a className='w-1/2 bg-[#C0A04C] hover:bg-[#A48533] px-2 py-1 rounded-md text-white ' href={data.ctaLink}>
+                    {data.ctaText}
+                </a>
             </div>
         </a>
     );

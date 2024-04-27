@@ -16,6 +16,14 @@ const popupModel = new mongoose.Schema(
             type: String,
             required: true,
         },
+        ctaText: {
+            type: String,
+            required: true,
+        },
+        ctaLink: {
+            type: String,
+            required: true,
+        },
         visible: {
             type: Boolean,
             required: true,

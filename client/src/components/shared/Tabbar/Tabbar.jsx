@@ -60,7 +60,7 @@ const Tabbar = () => {
                         categories.data && categories.data.length > 7 && showMoreCategories && (
                             <div className='h-auto w-40 p-3  absolute right-0 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
                                 {categories.data.slice(7).map((category, index) => (
-                                    <div className='flex hover:bg-slate-50 flex-col px-2 py-1'>
+                                    <div className='flex hover:bg-slate-50 flex-col mx-2 my-1'>
                                         <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
                                     </div>
 
