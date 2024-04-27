@@ -60,7 +60,7 @@ const Tabbar = () => {
                         categories.data && categories.data.length > 7 && showMoreCategories && (
                             <div className='h-auto w-40 p-3  absolute right-0 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
                                 {categories.data.slice(7).map((category, index) => (
-                                    <div className='flex flex-col px-2 py-1'>
+                                    <div className='flex hover:bg-slate-50 flex-col px-2 py-1'>
                                         <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
                                     </div>
 
@@ -102,7 +102,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                         }}
                         onMouseEnter={() => openDropdown()}
                         onMouseLeave={() => closeDropdown()}
-                        className={`relative p-2 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
+                        className={`hover:font-bold relative p-2 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
                     >
                         {category.name}
                     </span>
@@ -153,7 +153,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                 </>
             ) : (
                 <Link onClick={() => handleCategoryChange(category)} to={`/category/${category.categoryURL}`}>
-                    <span className={`ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</span>
+                    <span className={` hover:font-bold ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</span>
                 </Link>
             )
             }

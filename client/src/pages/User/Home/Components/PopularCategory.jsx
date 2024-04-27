@@ -211,7 +211,7 @@ const PopularCategory = () => {
                         }
                     </div>
                     {showRightButton && (
-                        <button className="absolute -right-2 top-0 bottom-0 z-10" onClick={scrollRight}>
+                        <button className="absolute right-0 top-0 bottom-0 z-10" onClick={scrollRight}>
                             <img className='rounded-full bg-white h-10' src="/images/icons/homefrontarrow.svg" alt="" />
                         </button>
                     )}

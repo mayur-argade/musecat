@@ -1,5 +1,16 @@
 ##!/bin/bash
 
+
+https://amadeus.wd3.myworkdayjobs.com/jobs/job/Pune/Associate-Software-Development-Engineer_R18294
+https://careers.micron.com/careers/job/21832005?src=JB-12600&domain=micron.com
+https://jobs.vista.com/Cimpress-Technology/job/Mumbai-Software-Engineer-MH-400033/1155528100/
+https://careers.morningstar.com/us/en/search-results?from=20&s=1
+https://www.shine.com/jobs/node-js-developer-wfo/florican-enterprises-pvt-ltd/14702353?utm_source=linkedin-feed&amp;utm_medium=referral&amp;utm_campaign=linkedin-feed&amp;auto_apply=true
+https://nvent.wd5.myworkdayjobs.com/nVent/job/Mumbai-IN/Software-Developer_R14583
+https://recruitcareers.zappyhire.com/en/shaadi/apply?job=1683
+https://boards.greenhouse.io/embed/job_app?token=4405881005&source=LinkedIn
+https://jobs.marriott.com/marriott/jobs/24064799?lang=zh-tw&utm_medium=jobboard&utm_source=LinkedInOrganic
+
 curl -i -X POST \
   -H "Accept:application/json" \
   -H  "Content-Type:application/json" \

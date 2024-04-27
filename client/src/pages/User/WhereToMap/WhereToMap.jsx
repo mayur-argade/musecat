@@ -87,8 +87,8 @@ const WhereToMap = () => {
                     </button>
                     <span className='text-2xl font-bold'> Where To Map</span>
                 </div>
-                <div className="flex justify-around align-top ">
-                    <div className="md:drop-shadow-2xl map w-full md:w-9/12 h-auto ">
+                <div className="flex flex-col justify-center items-center md:flex-row md:justify-around align-top ">
+                    <div className="mx-4 p-4 md:drop-shadow-2xl map w-full md:w-9/12 h-auto ">
                         <MapComponent onlyMarkerClick={true} onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"500px"} zoom={10} />
                         {
                             mapAddress.lat != null || mapAddress.lng != null
