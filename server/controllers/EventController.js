@@ -131,7 +131,9 @@ exports.createEvent = async (req, res) => {
                 }
             }
 
-            categoryData.events.push(event._id)
+            if (!categoryData.events.includes(event._id)) {
+                categoryData.events.push(event._id);
+            }
             categoryData.save()
         }
 

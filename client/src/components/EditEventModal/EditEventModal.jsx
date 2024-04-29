@@ -50,7 +50,7 @@ const EditEventModal = ({ onClose, data }) => {
     }, []);
 
     let check = true;
-    if (data.date.dateType == 'recurring') {
+    if (data.date.type == 'recurring') {
         check = false
     }
 
@@ -287,6 +287,10 @@ const EditEventModal = ({ onClose, data }) => {
                 endDate: endDate
             }
         } else if (dateType == 'recurring') {
+            eventdate.recurring = {
+                startDate: startDate,
+                endDate: endDate
+            }
             eventdate.recurring.days = selectedDays
         }
 

@@ -780,28 +780,19 @@ const AddEventModal = ({ onClose, verified }) => {
                                         </div>
                                     </div>
                                     <div className="w-full flex justify-between">
-                                        {/* <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Phone No. with Country code * </label>
-                                            <input
-                                                value={number}
-                                                type='tel'
-                                                className='px-0 py-0.5 w-full border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Phone number'
-                                                onChange={((e) => setNumber(e.target.value))}
-                                            />
-                                        </div> */}
-
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Contact No. with Country code</label>
+                                        
+                                        <div className='dark:text-black w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1 dark:text-white ' htmlFor="first name">Contact No. with Country code</label>
                                             <PhoneInput
+                                            className='dark:text-black'
                                                 placeholder="Enter phone number"
                                                 value={number}
                                                 onChange={setNumber} />
                                         </div>
 
 
-                                        <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
-                                            <label className='text-xs mt-1' htmlFor="first name">Whatsapp No. with Country code</label>
+                                        <div className='dark:text-black w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
+                                            <label className='text-xs mt-1 dark:text-white' htmlFor="first name">Whatsapp No. with Country code</label>
                                             <PhoneInput
                                                 placeholder="Enter Whatsapp number"
                                                 value={wpNumber}

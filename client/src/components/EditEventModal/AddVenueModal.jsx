@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import SearchLocationInput from '../GoogleMap/GooglePlcasesApi';
 import MapComponent from '../GoogleMap/Map';
 import { VendorCreateVenue } from '../../http/index'
 import Tooltip from '../shared/Tooltip/Tooltip'
+import JoditEditor from 'jodit-react';
 
 const AddVenueModal = ({ onClose, verified, message }) => {
     const [selectedLocation, setSelectedLocation] = useState({
@@ -11,6 +12,58 @@ const AddVenueModal = ({ onClose, verified, message }) => {
         lng: 58.37132692337036,
     });
 
+
+
+    const editor = useRef(null);
+
+
+    const config = {
+        placeholder: "Enter Event Specific Details in brief..",
+        buttons: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
+        buttonsMD: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
+        buttonsSM: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
+        buttonsXS: [
+            'bold',
+            'strikethrough',
+            'underline',
+            'italic', '|',
+            'font',
+            'fontsize',
+            'align', 'undo', 'redo', '|',
+            'hr',
+            'print',
+        ],
+    }
     const [verifiedValue, setVerfiedValue] = useState(verified)
     const [selectedFile, setSelectedFile] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -83,7 +136,7 @@ const AddVenueModal = ({ onClose, verified, message }) => {
 
     return (
         <div>
- 
+
             <div>
                 <div>
                     {
@@ -102,11 +155,29 @@ const AddVenueModal = ({ onClose, verified, message }) => {
                                             placeholder="Venue Name" />
                                     </div>
 
-                                    <div>
+                                    <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] dark:text-black pl-2 pr-2 rounded-lg'>
+                                        <label className='text-sm font-semibold mt-1' htmlFor="first name">
+                                            <div className="flex w-full">
+                                                <span className='ml-0 dark:text-white'>
+                                                    Venue Short Description  <span className='ml-0 text-lg font-bold'> * </span>
+                                                </span>
+                                                <Tooltip data={"Add specific information about venue, This information is Event Specific"} />
+                                            </div>
+                                        </label>
+                                        <JoditEditor
+                                            ref={editor}
+                                            value={address}
+                                            config={config}
+                                            tabIndex={1} // tabIndex of textarea
+                                            onBlur={newContent => setAddress(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        />
+                                    </div>
+
+                                    {/* <div>
                                         <input className="w-full p-2.5 text-xs bg-white dark:bg-[#454545] dark:text-white dark:border-0 dark:ring-0 md:bg-gray-100 focus:outline-none border border-gray-200 rounded-md text-gray-600" type="text" for="firstname" id='firstname'
                                             value={address} onChange={(e) => setAddress(e.target.value)}
                                             placeholder="Venue short description" />
-                                    </div>
+                                    </div> */}
 
                                     <div className="flex items-center justify-center w-full">
                                         <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-[#454545] hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">

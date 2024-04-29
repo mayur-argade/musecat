@@ -140,7 +140,7 @@ const VenueDescription = () => {
                                     {response.data.venue.name}
                                 </p>
                                 <p className='md:ml-5 font-normal text-lg md:text-lg '>
-                                    {response.data.venue.address}
+                                    <div className='dark:bg-[#2c2c2c] dark:text-white' dangerouslySetInnerHTML={{ __html: response.data.venue.address }} />
                                 </p>
                             </div>
                     }

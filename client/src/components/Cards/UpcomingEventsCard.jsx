@@ -81,7 +81,7 @@ const UpcomingEventsCard = ({ event, showNumberBox, setNumber }) => {
                         <div className='flex flex-col p-2'>
                             <p className='text-sm mt-2 font-medium truncate'>{event.title},</p>
                             <p className='text-sm mt-2 font-medium'>{event.location?.name || '\u00A0'}</p>
-                            <p className='mt-1 mb-1 text-xs font-light'>{event.eventCategory.map((obj) => obj.name).join(', ')}</p>
+                            <p className='mt-1 mb-1 text-xs font-light truncate'>{event.eventCategory.map((obj) => obj.name).join(', ')}</p>
                             <div className='flex items-center justify-between space-x-2'>
 
                                 <button onClick={(e) => { e.stopPropagation(); handleBooking(e) }} type='button' className='text-white hover:bg-[#A48533] bg-[#C0A04C] focus:ring-0 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] w-full'>

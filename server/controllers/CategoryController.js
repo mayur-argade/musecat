@@ -467,7 +467,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
             if (filterdate) {
                 const onlyDate = moment(filterdate).format("YYYY-MM-DD")
                 const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
-                const endDate = new Date(`${onlyDate}T23:00:00.000Z`)
+                const endDate = new Date(`${onlyDate}T00:00:00.000Z`)
                 const currentDay = moment(startDate).format('dddd').toLowerCase()
 
                 console.log(startDate)
@@ -508,7 +508,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 }
             } else {
                 const filterDate = moment().format("YYYY-MM-DD")
-                const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+                const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
                 console.log(todayDate)
                 const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -578,7 +578,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
             if (filterdate) {
                 const onlyDate = moment(filterdate).format("YYYY-MM-DD")
                 const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
-                const endDate = new Date(`${onlyDate}T23:00:00.000Z`)
+                const endDate = new Date(`${onlyDate}T00:00:00.000Z`)
                 const currentDay = moment(startDate).format('dddd').toLowerCase()
 
                 console.log(startDate)
@@ -619,8 +619,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 }
             } else {
                 const filterDate = moment().format("YYYY-MM-DD")
-                const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-                console.log(todayDate)
+                const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
                 const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
                 query = {

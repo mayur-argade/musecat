@@ -545,10 +545,8 @@ const EventDescription = () => {
                                                         :
                                                         <p>
                                                             On {response.data.eventDetails.date.recurring.days
-                                                                .join(", ")
-                                                                .charAt(0)
-                                                                .toUpperCase() +
-                                                                response.data.eventDetails.date.recurring.days.join(", ").slice(1)}
+                                                                .map(day => day.charAt(0).toUpperCase() + day.slice(1))
+                                                                .join(", ")}
                                                         </p>
                                                 }
                                             </div>
@@ -792,11 +790,11 @@ const EventDescription = () => {
                                     {
                                         response.data != null ?
                                             <>
-                                                {moment(response.data.eventDetails.date.dateRange.endDate).isAfter(moment(), 'day') || moment(response.data.eventDetails.date.recurring.endDate).isAfter(moment(), 'day')
+                                                {moment(response.data.eventDetails.date?.dateRange?.endDate).isAfter(moment(), 'day') || moment(response.data.eventDetails.date?.recurring?.endDate).isAfter(moment(), 'day')
                                                     ?
                                                     <div>
                                                         {
-                                                            showBooking && (
+                                                            ticketSale && (
                                                                 <div className="booknow">
                                                                     <button type="button" onClick={() => handleBooking(response.data.eventDetails._id)} class="w-full text-white bg-[#C0A04C] hover:text-white  font-medium rounded-lg text-sm px-4 py-3 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-blue-800 hover:bg-[#A48533]">
                                                                         {

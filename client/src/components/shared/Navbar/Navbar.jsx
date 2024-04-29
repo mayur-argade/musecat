@@ -609,8 +609,13 @@ const CategoryLink = ({ category }) => {
                                             }
                                         }}
                                         onMouseLeave={() => setShowDays(false)}
-                                        className={`ml-0 block px-4 py-2 hover:bg-gray-100 dark:border-0 dark:hover:bg-gray-600 dark:hover:text-white text-sm font-normal cursor-pointer pointer-cursor`} aria-current="page">
+                                        className={`flex align-middle items-center ml-0 block px-4 py-2 hover:bg-gray-100 dark:border-0 dark:hover:bg-gray-600 dark:hover:text-white text-sm font-normal cursor-pointer pointer-cursor`} aria-current="page">
                                         {subcategory.name}
+                                        {
+                                            subcategory.name == 'Dinner' && (
+                                                <svg className='h-5 w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"></path><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg>
+                                            )
+                                        }
                                     </span>
 
                                     {subcategory.name === "Dinner" && showDays && (
