@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import CategoryCard from '../../../../components/Cards/CategoryCard'
 import CategorySkeleton from '../../../../components/shared/skeletons/CategorySkeleton'
@@ -16,6 +16,9 @@ const PopularCategory = () => {
     const [showLeftButton, setShowLeftButton] = useState(false);
     const [showRightButton, setShowRightButton] = useState(false);
     const [scrollRefresh, setScrollRefresh] = useState(false)
+
+    const navigate = useNavigate()
+
     useEffect(() => {
         const container = containerRef.current;
         setScrollRefresh(!scrollRefresh)
@@ -126,8 +129,8 @@ const PopularCategory = () => {
                         {
                             daysAndDates.map((e) => (
                                 <button
-                                    onClick={() => setDayforCategory(e.date)}
-                                    className={`h-7 md:block hover:bg-gray-500 dark:hover:bg-white dark:hover:text-black dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
+                                    onClick={() => navigate(`category/weeklyoffers?subcategory=${e.day}`)}
+                                    className={`h-7 md:block hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
                                         ? 'hover:bg-inherit bg-black border-black text-white'
                                         : 'border-black'
                                         }`}

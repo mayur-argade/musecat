@@ -362,28 +362,28 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                                         </li>
                                         <li>
-                                            {/* <Link to='/category/events' className={`${window.location.pathname == '/whereto' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}> */}
-                                            <div className="dropdown-container relative">
-                                                <a
-                                                    href='#'
-                                                    className="pointer-cursor hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
-                                                    onMouseEnter={() => openDropdown()}
-                                                    onMouseLeave={() => closeDropdown()}
-                                                >
-                                                    Where to ?
-                                                </a>
-                                                {isDropdownOpen && (
-                                                    <div
+                                            <div className={`${window.location.pathname.includes('/category/') ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
+                                                <div className="dropdown-container relative">
+                                                    <a
+                                                        href='#'
+                                                        className="pointer-cursor hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
                                                         onMouseEnter={() => openDropdown()}
                                                         onMouseLeave={() => closeDropdown()}
-                                                        className="py-2 z-50 dropdown absolute -right-2 w-52 h-auto bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
-                                                        {categories.data && categories.data.map((category, index) => (
-                                                            <CategoryLink key={index} category={category} />
-                                                        ))}
-                                                    </div>
-                                                )}
+                                                    >
+                                                        Where to ?
+                                                    </a>
+                                                    {isDropdownOpen && (
+                                                        <div
+                                                            onMouseEnter={() => openDropdown()}
+                                                            onMouseLeave={() => closeDropdown()}
+                                                            className="py-2 z-50 dropdown absolute -right-2 w-52 h-auto bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white ">
+                                                            {categories.data && categories.data.map((category, index) => (
+                                                                <CategoryLink key={index} category={category} />
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                            {/* </Link> */}
                                         </li>
                                         <li>
                                             <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
@@ -584,7 +584,7 @@ const CategoryLink = ({ category }) => {
                         onClick={() => navigate(`/category/${category.categoryURL}`)}
                         onMouseEnter={() => openDropdown()}
                         onMouseLeave={() => closeDropdown()}
-                        className={`hover:bg-slate-100 dark:hover:bg-slate-400 dark:hover:text-black overflow-y-auto py-2 px-3 relative m-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
+                        className={`hover:bg-slate-100 dark:hover:bg-slate-500 dark:hover:text-white overflow-y-auto py-2 px-3 relative m-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
 
                     >
                         <div className='flex items-center align-middle relative'
@@ -597,7 +597,7 @@ const CategoryLink = ({ category }) => {
                         <ul
                             onMouseEnter={() => openDropdown()}
                             onMouseLeave={() => closeDropdown()}
-                            className="absolute border border-1 inset-y-0 left-48 z-50 w-52 bg-white dark:bg-[#454545] dark:text-white">
+                            className="absolute border border-1 inset-y-0 py-2 left-48 z-50 w-52 bg-white dark:bg-[#454545] dark:text-white">
                             {category.subCategories.map((subcategory, index) => (
                                 <li key={index}>
 
@@ -609,7 +609,7 @@ const CategoryLink = ({ category }) => {
                                             }
                                         }}
                                         onMouseLeave={() => setShowDays(false)}
-                                        className={`ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-sm font-normal cursor-pointer pointer-cursor`} aria-current="page">
+                                        className={`ml-0 block px-4 py-2 hover:bg-gray-100 dark:border-0 dark:hover:bg-gray-600 dark:hover:text-white text-sm font-normal cursor-pointer pointer-cursor`} aria-current="page">
                                         {subcategory.name}
                                     </span>
 
@@ -619,13 +619,13 @@ const CategoryLink = ({ category }) => {
                                             onMouseEnter={() => {
                                                 setShowDays(true)
                                             }}
-                                            className="w-52 border border-1 z-50 dropdown absolute inset-y-0 p-3 bg-white rounded-md dark:bg-[#454545] dark:text-white"
-                                            style={{left: '100%' }}>
+                                            className="w-52 border border-1 z-50 dropdown absolute inset-y-0 py-2 bg-white rounded-md dark:bg-[#454545] dark:text-white"
+                                            style={{ left: '100%' }}>
                                             {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day, index) => (
                                                 <li
                                                     onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}&day=${day}`)}
                                                     key={index}>
-                                                    <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">{day} Dinner</a>
+                                                    <a href="#" className={`ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-sm font-normal cursor-pointer pointer-cursor`} aria-current="page">{day} Dinner</a>
                                                 </li>
                                             ))}
                                         </ul>
@@ -637,7 +637,7 @@ const CategoryLink = ({ category }) => {
                 </>
             ) : (
                 <Link to={`/category/${category.categoryURL}`}>
-                    <div className={`hover:bg-slate-100 dark:hover:bg-slate-400 dark:hover:text-black  py-2 px-3 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</div>
+                    <div className={`hover:bg-slate-100 dark:hover:bg-slate-400 dark:hover:text-white  py-2 px-3 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</div>
                 </Link>
             )
             }

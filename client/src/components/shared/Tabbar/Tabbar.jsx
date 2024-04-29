@@ -49,18 +49,18 @@ const Tabbar = () => {
                 <div className='relative z-30'>
                     {
                         categories.data && categories.data.length > 7 && (
-                            <div onClick={() => setShowMoreCategories(!showMoreCategories)} className='relative flex align-middle items-center'>
-                                <span className={`p-[2px]  ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
-                                <img className="pointer-cursor dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
-                                <img className="pointer-cursor dark:flex hidden h-2 ml-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
+                            <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} onClick={() => setShowMoreCategories(!showMoreCategories)} className='mt-[1.5px] relative flex align-middle items-center hover:font-bold'>
+                                <span className={`ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
+                                <img className="cursor-pointer dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
+                                <img className="cursor-pointer dark:flex hidden h-2 ml-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
                             </div>
                         )
                     }
                     {
                         categories.data && categories.data.length > 7 && showMoreCategories && (
-                            <div className='h-auto w-40 p-3  absolute right-0 bg-white dark:bg-[#2c2c2c] drop-shadow-md'>
+                            <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} className='h-auto w-40 p-3 absolute right-0 bg-white dark:bg-[#454545] drop-shadow-md'>
                                 {categories.data.slice(7).map((category, index) => (
-                                    <div className='flex hover:bg-slate-50 flex-col mx-2 my-1'>
+                                    <div className='flex hover:bg-slate-50 dark:hover:bg-slate-500 flex-col rounded'>
                                         <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
                                     </div>
 
@@ -91,21 +91,23 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
     const closeDropdown = () => setShowDropdown(false)
 
     return (
-        <div className="dark:bg-[#2c2c2c]" key={category.id}>
+        <div className="dark:bg-transparent" key={category.id}>
 
             {category.subCategories && category.subCategories.length > 0 ? (
                 <>
-                    <span
+                    <div
                         onClick={() => {
                             navigate(`/category/${category.categoryURL}`);
                             handleCategoryChange(category); // Call setCategory with the current category
                         }}
                         onMouseEnter={() => openDropdown()}
                         onMouseLeave={() => closeDropdown()}
-                        className={`hover:font-bold relative p-2 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
+                        className={`cursor-pointer hover:font-bold relative px-1 py-1 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
                     >
-                        {category.name}
-                    </span>
+                        <span className='ml-0 cursor-pointer hover:font-bold'>
+                            {category.name}
+                        </span>
+                    </div>
 
                     {showDropdown && (
                         <ul
@@ -113,7 +115,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                             onMouseLeave={() => closeDropdown()}
                             className="border border-1 z-50 dropdown absolute w-48 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white">
                             {category.subCategories.map((subcategory, index) => (
-                                <div className='w-full px-2 py-1'>
+                                <div className='w-full py-1'>
                                     <li key={index}>
 
                                         <span
@@ -124,7 +126,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                                                 }
                                             }}
                                             onMouseLeave={() => setShowDays(false)}
-                                            className={`ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-sm`} aria-current="page">
+                                            className={`hover:font-bold cursor-pointer ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-sm`} aria-current="page">
                                             {subcategory.name}
                                         </span>
 
@@ -134,11 +136,13 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                                                 onMouseEnter={() => {
                                                     setShowDays(true)
                                                 }}
-                                                className="border border-1 z-50 dropdown absolute w-48 p-3 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
+                                                className="border border-1 z-50 dropdown absolute w-48 py-2 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white"
                                                 style={{ top: '40%', left: '100%' }}>
                                                 {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day, index) => (
                                                     <li
-                                                        onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}&day=${day}`)}
+                                                        onClick={() => navigate(`/category/${category.categoryURL}?subcategory=${subcategory.name}&day=${day}`)
+                                                        }
+                                                        className='px-2 py-1 hover:bg-slate-100 dark:hover:bg-slate-500'
                                                         key={index}>
                                                         <a href="#" className={`block text-sm py-4 my-2  pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">{day} Dinner</a>
                                                     </li>
@@ -153,7 +157,9 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                 </>
             ) : (
                 <Link onClick={() => handleCategoryChange(category)} to={`/category/${category.categoryURL}`}>
-                    <span className={` hover:font-bold ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>{category.name}</span>
+                    <div className={`hover:font-bold ml-0 px-1 py-1 text-sm duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>
+                        <span className='ml-0'>{category.name}</span>
+                    </div>
                 </Link>
             )
             }

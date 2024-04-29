@@ -10,7 +10,14 @@ const EventCard = ({ data, width, showNumberBox }) => {
     // console.log(data)
 
     const [isLiked, setIsLiked] = useState(false)
-    const [startDate, setStartDate] = useState(data.date.dateRange.startDate)
+    let startDateEvent;
+    if (data.date.type == 'dateRange') {
+
+        startDateEvent = data.date.dateRange.startDate
+    } else {
+        startDateEvent = data.date.recurring.StartDate
+    }
+    const [startDate, setStartDate] = useState(startDateEvent)
 
     const { user, isAuth } = useSelector((state) => state.auth);
 
@@ -39,7 +46,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
                 if (eventStartDate.isBefore(today)) {
                     setStartDate(today)
                 } else {
-                    setStartDate(data.date.dateRange.startDate)
+                    setStartDate(data.date.recurring.startDate)
                 }
             }
         }

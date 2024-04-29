@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { GetAllCategory } from '../../../http';
 const SubTabbar = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [categories, setCategories] = useState([])
     const [categoryData, setCategoryData] = useState(null)
+    const [querySubcategory, setQuerySubCategory] = useState(null)
     let { category: categoryname } = useParams()
 
+    const location = useLocation();
     useEffect(() => {
+
+        const searchParams = new URLSearchParams(location.search);
+        const subcategory = searchParams.get('subcategory');
+        console.log('Subcategory:', subcategory);
+        setQuerySubCategory(subcategory)
 
         const fetchCategory = async () => {
             const res = await GetAllCategory()
@@ -19,7 +26,7 @@ const SubTabbar = () => {
 
         fetchCategory()
 
-    }, [categoryname])
+    }, [categoryname, location.search])
 
 
 
@@ -43,7 +50,7 @@ const SubTabbar = () => {
                         }
                     }}
                     onMouseLeave={handleCloseDropdown}>
-                    <span className='ml-0' onClick={() => navigate(`?subcategory=${subcategory.name}`)}>
+                    <span className={`${querySubcategory == subcategory.name ? 'font-bold' : ''} ml-0`} onClick={() => navigate(`?subcategory=${subcategory.name}`)}>
                         {subcategory.name}
                     </span>
                     {showDropdown && subcategory.name == 'Dinner' && (

@@ -427,7 +427,7 @@ exports.getCategoryAllEvents = async (req, res) => {
             match: query,
         })
 
-        // console.log("all event catgories", categoriesWithEvents)
+        console.log("all event catgories", categoriesWithEvents)
 
         events = categoriesWithEvents.reduce((acc, category) => {
             acc.push(...category.events);
@@ -446,48 +446,6 @@ exports.getCategoryAllEvents = async (req, res) => {
             );
         }
 
-
-        // if (events.length <= 0) {
-        //     const filterDate = moment().format("YYYY-MM-DD")
-        //     const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-        //     const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-
-        //     query = {
-        //         archived: false,
-        //         verified: true,
-        //         type: 'event',
-        //         $or: [
-        //             {
-        //                 'date.dateRange.endDate': { $gte: todayDate }
-        //             },
-        //             {
-        //                 'date.dateRange.endDate': null
-        //             }
-        //             ,
-        //             {
-        //                 $and: [
-        //                     {
-        //                         $or: [
-        //                             {
-        //                                 'date.recurring.endDate': { $gte: todayDate },
-        //                                 'date.recurring.days': { $in: day } // Replace with a function to get today's day
-
-        //                             },
-        //                             {
-        //                                 'date.recurring.endDate': { $gte: null },
-        //                                 'date.recurring.days': { $in: day } // Replace with a function to get today's day
-        //                             }
-        //                         ]
-        //                     },
-        //                 ]
-        //             },
-        //         ],
-        //     }
-
-        //     events = await eventService.findAllEvents(query)
-
-        // }
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: events
@@ -587,6 +545,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 }
             }
 
+
             let categoriesWithEvents = await CategoryModel.find({ categoryURL: category }).populate({
                 path: 'events',
                 populate: {
@@ -594,6 +553,8 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 },
                 match: query,
             })
+
+            console.log(categoriesWithEvents)
 
             events = categoriesWithEvents.reduce((acc, category) => {
                 acc.push(...category.events);
