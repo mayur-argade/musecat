@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Accordian from '../../components/Accordian/Accordian'
-import { ClientEventDetailsApi, addToFavorites, VedorDetails } from '../../http'
+import { ClientEventDetailsApi, changeVerifyStatus, changeTrendingStatus, changeArchiveStatus } from '../../http'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { setEvent } from '../../store/eventSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,7 +14,7 @@ import AdminNavbar from '../../components/shared/Navbar/AdminNavbar'
 
 const AdminEventDescription = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+    const [refresh, setRefresh] = useState(false)
     const [images, setImages] = useState([]);
     const handleShowNextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -260,7 +260,7 @@ const AdminEventDescription = () => {
         }
         fetchdata()
 
-    }, [eventid, user, isAuth, fetchLikes]);
+    }, [eventid, user, isAuth, fetchLikes, refresh]);
 
 
     const ContentDisplay = ({ currentContent }) => {
@@ -353,12 +353,68 @@ const AdminEventDescription = () => {
 
     const handleVerifyChange = async (event) => {
         const newValue = event.target.checked;
+        const confirm = window.confirm(event.target.checked ? "Verify Event ?" : "Unverify Event")
+
+        if (confirm) {
+            try {
+                const promise = changeVerifyStatus({ eventid: eventid, status: newValue });
+                await toast.promise(promise, {
+                    loading: 'Updating Event...', // Optional loading message
+                    success: 'Event updated', // Optional success message
+                    error: (error) => `Error: ${error.response.data.data}`,
+                });
+
+                setRefresh(!refresh)
+            } catch (error) {
+                // toast.error(error.response.data.data);
+            } finally {
+                setLoading(false);
+            }
+        }
     }
 
-    const handleTrendingChange = async () => {
+    const handleTrendingChange = async (event) => {
+        const newValue = event.target.checked;
+        const confirm = window.confirm(event.target.checked ? "Add to Trending Events ?" : "Remove from Trending Events ?")
+
+        if (confirm) {
+            try {
+                const promise = changeTrendingStatus({ eventid: eventid, status: newValue });
+                await toast.promise(promise, {
+                    loading: 'Updating Event...', // Optional loading message
+                    success: 'Event updated', // Optional success message
+                    error: (error) => `Error: ${error.response.data.data}`,
+                });
+
+                setRefresh(!refresh)
+            } catch (error) {
+                // toast.error(error.response.data.data);
+            } finally {
+                setLoading(false);
+            }
+        }
     }
 
-    const handleArchivedChange = async () => {
+    const handleArchivedChange = async (event) => {
+        const newValue = event.target.checked;
+        const confirm = window.confirm(event.target.checked ? "Archive this event" : "Remove from archived Events ?")
+
+        if (confirm) {
+            try {
+                const promise = changeArchiveStatus({ eventid: eventid, status: newValue });
+                await toast.promise(promise, {
+                    loading: 'Updating Event...', // Optional loading message
+                    success: 'Event updated', // Optional success message
+                    error: (error) => `Error: ${error.response.data.data}`,
+                });
+
+                setRefresh(!refresh)
+            } catch (error) {
+                // toast.error(error.response.data.data);
+            } finally {
+                setLoading(false);
+            }
+        }
     }
 
     return (
@@ -421,7 +477,11 @@ const AdminEventDescription = () => {
                                                                                     }
                                                                                 </p>
                                                                                 :
-                                                                                <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
+                                                                                <p>
+                                                                                    On {response.data.eventDetails.date.recurring.days
+                                                                                        .map(day => day.charAt(0).toUpperCase() + day.slice(1))
+                                                                                        .join(", ")}
+                                                                                </p>
                                                                         }
                                                                     </div>
                                                                 </div>
@@ -574,7 +634,7 @@ const AdminEventDescription = () => {
                                                                         <div className='shadow-lg w-full p-3 rounded-md space-y-3'>
                                                                             <div class="flex items-center ps-4 border border-gray-200 rounded ">
                                                                                 <input id="trendingEvent"
-                                                                                    checked={trendingEvent}
+                                                                                    defaultChecked={trendingEvent}
                                                                                     type="checkbox"
                                                                                     value=""
                                                                                     onChange={handleTrendingChange}
@@ -584,14 +644,14 @@ const AdminEventDescription = () => {
                                                                             </div>
                                                                             <div class="flex items-center ps-4 border border-gray-200 rounded ">
                                                                                 <input id="verifyEvent"
-                                                                                    checked={verified}
+                                                                                    defaultChecked={verified}
                                                                                     onChange={handleVerifyChange}
                                                                                     type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] focus:ring-2 " />
                                                                                 <label for="verifyEvent" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Verify Event</label>
                                                                             </div>
                                                                             <div class="flex items-center ps-4 border border-gray-200 rounded ">
                                                                                 <input id="archiveEvent"
-                                                                                    checked={archived}
+                                                                                    defaultChecked={archived}
                                                                                     onChange={handleArchivedChange}
                                                                                     type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] focus:ring-2 " />
                                                                                 <label for="archiveEvent" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Archive Event</label>

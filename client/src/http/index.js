@@ -115,6 +115,9 @@ export const AdminEditVenue = (data) => api.patch('venue/admin/edit-venue', data
 export const AdminEditModal = (data) => api.put('/admin/popup/edit-popup', data)
 export const AdminSetVisibilityOfModal = (data) => api.put('/admin/popup/edit-view-popup', data)
 export const getPopupModal = (data) => api.get(`/admin/popup/get-popup/${data}`, data)
+export const changeArchiveStatus = (data) => api.patch(`/admin/archive-event`, data)
+export const changeTrendingStatus = (data) => api.patch(`/admin/trending-event`, data)
+export const changeVerifyStatus = (data) => api.patch(`/admin/verifyUnverify-event`, data)
 
 
 export const handleUpload = (formData) => {

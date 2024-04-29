@@ -880,6 +880,112 @@ module.exports.customQue = async (req, res) => {
     }
 }
 
+exports.changeTrendingStatus = async (req, res) => {
+    const { eventid, status } = req.body
+    console.log(req.body)
+
+
+    try {
+        let event = await eventService.findEvent({ _id: eventid })
+        console.log(event)
+
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                data: "Event not found"
+            })
+        } else if (event.location.verified == false) {
+            return res.status(400).json({
+                succss: false,
+                data: `Please Verify Venue ${event.location.name} first which is associated with this event `
+            })
+        }
+
+        const updatedData = {
+            _id: eventid,
+            trending: status
+        }
+
+        event = await eventService.updateEvent(updatedData)
+
+        return res.status(200).json({
+            success: true,
+            data: "Event updated"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.changeArchiveStatus = async (req, res) => {
+    const { eventid, status } = req.body
+    console.log(req.body)
+
+
+    try {
+        let event = await eventService.findEvent({ _id: eventid })
+        console.log(event)
+
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                data: "Event not found"
+            })
+        }
+
+        const updatedData = {
+            _id: eventid,
+            archived: status
+        }
+
+        event = await eventService.updateEvent(updatedData)
+
+        return res.status(200).json({
+            success: true,
+            data: "Event updated"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.changeVerifyStatus = async (req, res) => {
+    const { eventid, status } = req.body
+    console.log(req.body)
+
+
+    try {
+        let event = await eventService.findEvent({ _id: eventid })
+        console.log(event)
+
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                data: "Event not found"
+            })
+        } else if (event.location.verified == false) {
+            return res.status(400).json({
+                succss: false,
+                data: `Please Verify Venue ${event.location.name} first which is associated with this event `
+            })
+        }
+
+        const updatedData = {
+            _id: eventid,
+            verified: status
+        }
+
+        event = await eventService.updateEvent(updatedData)
+
+        return res.status(200).json({
+            success: true,
+            data: "Event updated"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // --------------------Client side ---------------
 module.exports.getUpcomingEvents = async (req, res) => {
     try {

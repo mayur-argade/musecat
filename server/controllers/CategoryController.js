@@ -210,6 +210,7 @@ exports.getAllCategories = async (req, res) => {
 exports.getCategoriesWithEvents = async (req, res) => {
     const date = req.query.date
 
+    
     try {
         const categories = await categoryService.findAllCategory();
 
