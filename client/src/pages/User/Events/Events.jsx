@@ -373,7 +373,7 @@ const Events = () => {
                                             ref={dropdownRef}
                                         >
                                             <div className="p-5">
-                                                {
+                                                {/* {
                                                     category == 'events' && (
                                                         <div className="popular">
                                                             <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
@@ -399,7 +399,7 @@ const Events = () => {
                                                             }
                                                         </div>
                                                     )
-                                                }
+                                                } */}
 
                                                 <div className="popular">
                                                     <span className='ml-0 font-semibold text-sm'>Features</span>

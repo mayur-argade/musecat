@@ -27,7 +27,7 @@ const ResendDialogueBox = ({ onClose, email }) => {
                     </h5>
                     <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
                         <span className='font-semibold'>
-                            Check your Mail box for verification link
+                            Check your Mailbox for verification link
                         </span>
                         <br /> Click on the Button to complete the verification process, You might need to check the spam folder
                     </p>

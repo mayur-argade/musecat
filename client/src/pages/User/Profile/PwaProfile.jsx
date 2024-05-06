@@ -114,7 +114,7 @@ const WebProfile = () => {
                                     </button>
 
                                     <button onClick={isShareSupported ? handleShare : undefined} disabled={!isShareSupported} className='w-full border border-t-0 border-r-0 border-l-0 py-4 border-b-white flex align-middle items-center'>
-                                        <img className='flex dark:hidden' src="/images/icons/share.svg" alt="" />
+                                        <img className='flex dark:hidden' src="/images/icons/share-svg.svg" alt="" />
                                         <img className='hidden dark:flex' src="/images/icons/share-light.svg" alt="" />
                                         <span>Invite a Friend</span>
                                     </button>

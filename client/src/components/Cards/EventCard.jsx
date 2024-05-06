@@ -10,14 +10,30 @@ const EventCard = ({ data, width, showNumberBox }) => {
     // console.log(data)
 
     const [isLiked, setIsLiked] = useState(false)
+    let eventType = data.date.type;
+    let showDateField = `${moment().format("ddd,DD MMMM YYYY")}`
+
+    if (eventType == 'recurring') {
+        showDateField = `every ${data.date.recurring.days.join(',')}`
+    }
+    else if (eventType == 'dateRange') {
+        if (data.date.dateRange.endDate == null || data.date.dateRange.endDate == 'null' || data.date.showEndDate == false) {
+            showDateField = moment().format("ddd,DD MMMM YYYY")
+        }
+        else {
+            showDateField = `${moment(data.date.dateRange.startDate).format('Do MMM')} to ${moment(data.date.dateRange.endDate).format('Do MMM')}`
+        }
+    }
+
     let startDateEvent;
+
+
     if (data.date.type == 'dateRange') {
 
         startDateEvent = data.date.dateRange.startDate
     } else {
         startDateEvent = data.date.recurring.StartDate
     }
-    const [startDate, setStartDate] = useState(startDateEvent)
 
     const { user, isAuth } = useSelector((state) => state.auth);
 
@@ -27,30 +43,6 @@ const EventCard = ({ data, width, showNumberBox }) => {
         // Check if the user is logged in and the event.likes array includes the user's ID
         setIsLiked(isAuth && data.likes.includes(user._id));
     }, [data.likes, user, isAuth]);
-
-    useEffect(() => {
-        if (data.date.type == 'dateRange') {
-            const eventStartDate = moment(data.date.dateRange.startDate)
-            const today = moment()
-            if (data.date.dateRange.startDate) {
-                if (eventStartDate.isBefore(today)) {
-                    setStartDate(today)
-                } else {
-                    setStartDate(data.date.dateRange.startDate)
-                }
-            }
-        } else {
-            const eventStartDate = moment(data.date.recurring.startDate)
-            const today = moment()
-            if (data.date.recurring.startDate) {
-                if (eventStartDate.isBefore(today)) {
-                    setStartDate(today)
-                } else {
-                    setStartDate(data.date.recurring.startDate)
-                }
-            }
-        }
-    }, [])
 
     const favoriteFeature = async (eventid) => {
         // console.log(eventid)
@@ -71,7 +63,6 @@ const EventCard = ({ data, width, showNumberBox }) => {
         }
     }
 
-
     return (
         <>
             <div onClick={(() => navigate(`/events/${data._id}`))} className={`cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] dark:text-white my-2`}>
@@ -90,17 +81,13 @@ const EventCard = ({ data, width, showNumberBox }) => {
                     }
                 </button>
                 <div className="p-1 pt-4 pb-2 mx-1">
-                    {
-                        data.date.type == 'dateRange'
-                            ?
-                            <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium'>{moment(startDate ?? "").format("ddd,DD MMMM YYYY")}</p>
-                            :
-                            <p className='text-xss m:text-xs mt-1 m:mt-2 font-medium'>
-                                {data.date.recurring.days.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
-                            </p>
-                    }
-                    <p className='text-xss m:text-xs mt-1 m:mt-2 font-medium truncate'>
-                        {data.title},
+                    <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium'>On 
+                    <span className='ml-1 font-semibold'>
+                        {showDateField}
+                    </span>
+                    </p>
+                    <p className='text-xss m:text-xs mt-1 m:mt-2 font-bold truncate'>
+                    {data.title.charAt(0).toUpperCase() + data.title.slice(1)},
                     </p>
                     <p className='text-xss m:text-xs m:mt-2 font-medium truncate'>{data.location?.name.length > 25 ? data.location?.name.substring(0, 25) : data.location.name}</p>
                     <p className="text-xss mt-1 m:mt-2 mb-1 m:text-xs font-light truncate">{
@@ -113,38 +100,3 @@ const EventCard = ({ data, width, showNumberBox }) => {
 }
 
 export default EventCard
-
-{/* <div className='cursor-pointer' onClick={(() => navigate(`/events/${data._id}`))}>
-<div className="relative rounded-md mb-6 s:w-52 m:w-44 l:w-52 h-80 mx-2 max-h-96 bg-[#F3F3F3] top-0">
-    <div className='absolute bottom-0 left-0 flex flex-col'>
-        <img className="relative rounded-lg h-52 w-52 object-cover" src={`${data.displayPhoto}`} alt="" />
-        <button onClick={(e) => {
-            e.stopPropagation(); // Prevent click event from propagating
-            favoriteFeature(data._id);
-        }} className="absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2">
-            {
-                isLiked ?
-                    <img className='' src="/images/icons/heart-fav.svg" alt="" />
-                    :
-                    <img src="/images/icons/heart.svg" alt="" />
-            }
-        </button>
-        <div className='flex flex-col p-2' >
-            {
-                data.date.type == 'dateRange'
-                    ?
-                    <p className='text-xs mt-2 font-medium'>{moment(data.date.dateRange?.startDate ?? "").format("ddd,DD MMMM YYYY")}</p>
-                    :
-                    <p className='text-xs mt-2 font-medium'>
-                        {data.date.recurring.days.includes(moment().format('dddd').toLowerCase()) ? moment().format('dddd') : "date"}
-                    </p>
-            }
-            <p className='text-xs mt-2 font-medium'>
-                {data.title},
-            </p>
-            <p className='text-xs mt-2 font-medium'>{ data.location?.name.length > 25 ? data.location?.name.substring(0,25) : data.location.name }</p>
-            <p className="mt-1 mb-1 text-xs font-light">{data.type}</p>
-        </div>
-    </div>
-</div>
-</div> */}

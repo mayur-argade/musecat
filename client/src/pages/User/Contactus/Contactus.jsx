@@ -149,7 +149,7 @@ const Contactus = () => {
                 </div>
 
                 <div className="relative ml-4 mt-4 ">
-                    <span className='font-bold text-lg md:ml-4'>our socials</span>
+                    <span className='font-bold text-lg md:ml-4'>Follow us on Social Media</span>
                     <img className='ml-24 h-8' src="/images/assets/arrow.png" alt="" />
                     <div className="ml-36 flex space-x-3 socialmedia">
 

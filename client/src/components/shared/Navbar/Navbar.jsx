@@ -1,15 +1,27 @@
 import './navbar.css'
 import React, { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { clientLogout, vendorLogout, GetNotificationCount, GetAllCategory } from '../../../http';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../../store/authSlice'
 import toast, { Toaster } from 'react-hot-toast';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import queryString from 'query-string';
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
+    const [expandedCategory, setExpandedCategory] = useState(null);
+    const navigate = useNavigate();
+
+    const handleCategoryClick = (categoryURL, hasSubCategories) => {
+        // If the category has subcategories, toggle the expanded state
+        if (hasSubCategories) {
+            setExpandedCategory((prevCategory) => (prevCategory === categoryURL ? null : categoryURL));
+        } else {
+            navigate(`/category/${categoryURL}`);
+        }
+    };
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isAccOpen, setIsAccOpen] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +29,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const [unread, setUnread] = useState(false)
     const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate();
     const dropdownRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -121,7 +132,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     }, []);
 
 
-
+    const location = useLocation();
+    const queryParams = queryString.parse(location.search);
+    const subcategory = queryString.parse(location.subcategory)
 
     useEffect(() => {
         const getNotificationCountFunction = async () => {
@@ -164,7 +177,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     <img className='dark:flex hidden' src="/images/icons/back-arrow-light.svg" alt="" />
                                 </button>
                                 <span className='capitalize md:hidden text-xl font-bold'>
-                                    {categoryName}
+                                    {
+                                        queryParams.subcategory ?
+                                            <>{queryParams.subcategory}</>
+                                            :
+                                            categoryName
+
+                                    }
                                 </span>
                                 <Link to="/" class="hidden flex md:flex items-center">
                                     <img src="/images/logo/logo-main.webp" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />
@@ -477,18 +496,54 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                             {isAccOpen && (
 
                                 <div className={`flex flex-col space-y-4 overflow-y transition-all duration-200 pl-3 mt-3`}>
-                                    {
-                                        categories.data && categories.data.length > 0 && (
+                                    {categories.data && categories.data.length > 0 && (
+                                        categories.data.map((cat, index) => (
+                                            <div key={index}>
+                                                <div
+                                                    onClick={() => handleCategoryClick(cat.categoryURL, cat.subCategories && cat.subCategories.length > 0)}
+                                                    className='flex align-middle space-x-2 font-medium'
+                                                >
+                                                    {cat.name}
+                                                    {
+                                                        cat.subCategories && cat.subCategories.length > 0 && (
+                                                            <>
+                                                                <img className="dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
+                                                                <img className="dark:flex hidden h-2 mt-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
+                                                            </>
+                                                        )
+                                                    }
+                                                </div>
+                                                {expandedCategory === cat.categoryURL && cat.subCategories && cat.subCategories.length > 0 && (
+                                                    <div className='flex flex-col'>
+                                                        {cat.subCategories.map((subCategory, subIndex) => (
+                                                            <>
+                                                                <Link key={subIndex} to={`/category/${cat.categoryURL}?subcategory=${subCategory.name}`} className='ml-4 my-1 font-medium'>
+                                                                    {subCategory.name}
+                                                                </Link>
+                                                                {
+                                                                    subCategory.name == 'Dinner' && (
+                                                                        <>
+                                                                            {Array.from({ length: 7 }, (_, i) => {
+                                                                                // Create an array of day names from Sunday to Saturday
+                                                                                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                                                                const dayName = daysOfWeek[i];
 
-                                            categories.data.map((cat, index) => (
-                                                <Link to={`/category/${cat.categoryURL}`}>
-                                                    <p className='font-medium'>
-                                                        {cat.name}
-                                                    </p>
-                                                </Link>
-                                            ))
-                                        )
-                                    }
+                                                                                return (
+                                                                                    <div className='ml-4 ' key={i} onClick={() => navigate(`/category/${cat.categoryURL }?subcategory=${subCategory.name}&day=${dayName}`)}>
+                                                                                        <span className='font-sm'>{dayName} Dinner</span>
+                                                                                    </div>
+                                                                                );
+                                                                            })}
+                                                                        </>
+                                                                    )
+                                                                }
+                                                            </>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
                             )}
                         </div>

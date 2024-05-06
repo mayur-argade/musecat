@@ -55,8 +55,10 @@ const Favorites = () => {
                         response.data != null && response.data.length == 0 && (
                             <div className='grid grid-flow-row grid-cols-1 '>
                                 <div className='h-80 flex flex-col justify-center items-center'>
-                                    <img className='h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
-                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Favorites list looking bare? Add some events to bring it to life!</span>
+                                    <img className='dark:hidden flex h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                    <img className='hidden dark:flex h-40 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
+                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>No favorites yet. <br />
+                                        Tap the heart to add to your favorite list!</span>
                                 </div>
 
                             </div>

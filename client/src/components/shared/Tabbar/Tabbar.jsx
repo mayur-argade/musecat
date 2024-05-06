@@ -60,10 +60,15 @@ const Tabbar = () => {
                         categories.data && categories.data.length > 7 && showMoreCategories && (
                             <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} className='h-auto w-40 p-3 absolute right-0 bg-white dark:bg-[#454545] drop-shadow-md'>
                                 {categories.data.slice(7).map((category, index) => (
-                                    <div className='flex hover:bg-slate-50 dark:hover:bg-slate-500 flex-col rounded'>
-                                        <CategoryLink key={index} category={category} handleCategoryChange={handleCategoryChange} />
-                                    </div>
-
+                                    <>
+                                        {
+                                            category.name !== 'Ladies Night' && (
+                                                <div className='flex hover:bg-slate-50 dark:hover:bg-slate-500 flex-col rounded' key={index}>
+                                                    <CategoryLink category={category} handleCategoryChange={handleCategoryChange} />
+                                                </div>
+                                            )
+                                        }
+                                    </>
                                 ))}
                             </div>
                         )

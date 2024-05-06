@@ -119,7 +119,7 @@ const Login = () => {
                     <img className='h-6 md:h-12' src="/images/logo/login-logo.png" alt="" />
                 </div>
 
-                <div class="max-w-sm max-h-72 h-auto w-full bg:white dark:bg-[#2c2c2c] dark:text-white dark:border-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 md:bg-white rounded-xl p-4 space-y-3 border border-white">
+                <div class="max-w-sm max-h-72 h-auto w-full bg:white dark:bg-[#2c2c2c] dark:text-white dark:border-0 bg-clip-padding backdrop-filter    backdrop-blur-sm bg-opacity-20 md:bg-white rounded-xl p-4 space-y-3 border border-white">
                     <div class="mb-4">
                         <h2 class="text-xl font-bold dark:text-white text-white md:text-black">Welcome Back</h2>
                     </div>
@@ -191,7 +191,7 @@ const Login = () => {
                         <img className="flex dark:hidden" src="/images/icons/email-icon.png" alt="" />
                         <img className="dark:flex hidden" src="/images/icons/email-light.svg" alt="" />
                         <span className='mx-auto text-center'>
-                            Continue for signup
+                            Continue with email
                         </span>
                     </button>
                 </div>
@@ -201,7 +201,7 @@ const Login = () => {
                     <div>
                         <div>
                             <div className='calendar-overlay'>
-                                <div className='relative text-black'>
+                                <div className='px-3 relative text-black'>
                                     <div className='absolute top-0 right-0'>
                                         <button onClick={() => setShowVerificationPopup(false)} className='text-white hover:underline'><img className=' bg-white rounded-full h-7 cursor-pointer' src="/images/icons/cancel-icon-new.png" alt="" /></button>
                                     </div>

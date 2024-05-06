@@ -1,15 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../../../components/shared/Navbar/Navbar'
 import BottomNav from '../../../components/shared/BottomNav/BottomNav'
+import { GetAllCategory } from '../../../http'
+import WhereTo from '../Home/Components/WhereTo'
 
 const SearchPWA = () => {
 
     const navigate = useNavigate()
     const [query, setQuery] = useState('')
+    const [showAll, setShowAll] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            setLoading(true);
+            try {
+                const res = await GetAllCategory();
+                setCategories(res.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+
+    }, []);
 
     return (
-        <div className=' dark:bg-[#2c2c2c] dark:text-white '>
+        <div className='min-h-screen dark:bg-[#2c2c2c] dark:text-white '>
             <Navbar />
             <section className='dark:bg-[#2c2c2c]'>
                 <div className='searchbar mt-5 relative ml-9 mr-9 shadow-xl rounded-xl'>
@@ -26,13 +48,19 @@ const SearchPWA = () => {
                 </div>
 
                 <div className='space-y-3 py-3 w-full event-list flex flex-col justify-center align-middle items-center'>
-                    <Link to='/category/events'>
-                        <div className="relative">
-                            <img className="rounded-xl h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/events.jpg" alt="" />
-                            <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Events</span>
-                        </div>
-                    </Link>
-                    <Link to='/category/weeklyoffers'>
+                    <WhereTo />
+                    {/* {
+                        categories && categories.data.map((category) => (
+                            <Link to='/category/events'>
+                                <div className="relative">
+                                    <img className="rounded-xl h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src={category.photo} alt="" />
+                                    <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Events</span>
+                                </div>
+                            </Link>
+                        ))
+                    } */}
+
+                    {/* <Link to='/category/weeklyoffers'>
                         <div className='relative'>
                             <img className="rounded-xl h-36 w-80 bg-gray-400 bg-blend-multiply hover:bg-grey-500 bg-gray-400 bg-blend-multiply" src="/images/assets/offers.jpg" alt="" />
                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Weekly Offers</span>
@@ -57,7 +85,7 @@ const SearchPWA = () => {
                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>Things to do</span>
 
                         </div>
-                    </Link>
+                    </Link> */}
                 </div>
             </section>
             <div className='dark:bg-[#2c2c2c] pb-20'>

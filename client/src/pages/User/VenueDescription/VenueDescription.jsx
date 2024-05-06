@@ -136,21 +136,22 @@ const VenueDescription = () => {
                             </div>
                             :
                             <div className='mt-3 mb-5'>
-                                <p className='md:ml-5 font-bold text-lg md:text-2xl '>
+                                <p className='md:ml-2 font-bold text-lg md:text-2xl '>
                                     {response.data.venue.name}
                                 </p>
-                                <p className='md:ml-5 font-normal text-lg md:text-lg '>
+                                <p className='md:ml-2 font-normal text-lg md:text-lg '>
                                     <div className='dark:bg-[#2c2c2c] dark:text-white' dangerouslySetInnerHTML={{ __html: response.data.venue.address }} />
                                 </p>
                             </div>
                     }
+                    <hr />
+                    <br />
 
 
-
-
-                    <div className='mainContainer grid grid-cols-1 lg:grid-cols-3'>
+                    <div className='mainContainer grid grid-cols-1 lg:grid-cols-3 '>
                         <div className="1 col-span-2">
                             <div className="left w-full ">
+                                <span className='ml-0 font-bold text-2xl'>What's On {response.data ? response.data.venue.name : ''}</span>
                                 <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                     {
                                         response.data != null && (
@@ -182,7 +183,7 @@ const VenueDescription = () => {
                             </div>
                         </div>
 
-                        <div className="2 flex md:justify-center lg:justify-end ">
+                        <div className="mt-10 flex md:justify-center lg:justify-end ">
                             <div className="relative mx-auto md:mx-0">
                                 <div className="block md:hidden mt-3">
                                     <p className="text-xl font-bold mt-3">

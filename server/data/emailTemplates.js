@@ -15,7 +15,7 @@ exports.userSignupEmail = (username, token) => {
                   </tr>
                 </tbody>
               </table>
-              <p style="font-size:15px;line-height:1.4;margin:0 0 15px;color:#3c4149">This link and code will only be valid for the next 10 minutes. If the link does not work, you can use the login verification code directly:</p>
+              <p style="font-size:15px;line-height:1.4;margin:0 0 15px;color:#3c4149">This link will only be valid for the next 10 minutes. If the link does not work, you can use the login verification code directly:</p>
               <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#dfe1e4;margin:42px 0 26px" /><a target="_blank" style="color:#b4becc;text-decoration:none;font-size:14px" href="https://muscatwhereto.com">Muscat Where To</a>
             </td>
           </tr>

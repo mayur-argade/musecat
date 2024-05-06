@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import UpcomingEventsCard from '../../../../components/Cards/UpcomingEventsCard'
 import SkeletonCard from '../../../../components/shared/skeletons/SkeletonCard'
-import { ClientUpcomingEvents } from '../../../../http'
+import { getCategoryEvents } from '../../../../http'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import Calendar from 'react-calendar';
@@ -10,13 +10,13 @@ import 'react-calendar/dist/Calendar.css';
 const UpcomingEvents = () => {
 
     const [showCalender, setShowCalender] = useState(false)
-    const [overflowing, isOverflowing] = useState(false)
+    const [overflowing, setOverflowing] = useState(false)
     const [date, setDate] = useState('')
     const [upcomingEvents, setUpcomingEvents] = useState('')
     const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false)
     const next7Days = [];
     const currentDate = moment();
-
+    const containerRef = useRef(null);
     const calendarRef = useRef(null);
 
     const handleCalenderClickOutside = (e) => {
@@ -44,10 +44,14 @@ const UpcomingEvents = () => {
     useEffect(() => {
         const fetchdata = async () => {
             setUpcomingEventsLoading(true)
-            // console.log("this is date passing", date)
             try {
-                const { data } = await ClientUpcomingEvents(date)
-                // console.log("upcoming events", data.data)
+                const categorydata = {
+                    category: "events",
+                    filterdate: new Date(date)
+                }
+
+                const { data } = await getCategoryEvents(categorydata, `?search=${null}`)
+                // console.log(data.data)
                 setUpcomingEvents(data)
                 setUpcomingEventsLoading(false)
             } catch (error) {
@@ -55,8 +59,17 @@ const UpcomingEvents = () => {
                 console.log(error)
             }
         }
+
         fetchdata()
     }, [date]);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        // setScrollRefresh(!scrollRefresh)
+        if (container) {
+            setOverflowing(container.scrollWidth > container.clientWidth);
+        }
+    }, []);
 
     useEffect(() => {
         document.addEventListener('mousedown', handleCalenderClickOutside);
@@ -193,7 +206,7 @@ const UpcomingEvents = () => {
                 </div>
 
                 <div>
-                    <div id="upcomingContent" className='flex w-full justify-between overflow-x-auto'>
+                    <div id="upcomingContent" ref={containerRef} className='flex w-full justify-between overflow-x-auto'>
                         {
                             upcomingEvents.data == null || upcomingEvents.data == undefined
                                 ?
@@ -228,7 +241,7 @@ const UpcomingEvents = () => {
                     </div>
                     <div>
                         <div className="mt-2 place-items-center  hidden md:flex  justify-center items-center space-x-4">
-                            {isOverflowing && (
+                            {overflowing && (
                                 <>
                                     <button onClick={scrollLeft}>
                                         <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
