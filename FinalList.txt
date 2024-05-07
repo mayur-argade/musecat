@@ -5,6 +5,16 @@
 5. Admin & Vendor Event Description changes
 
 
+Date Range 
+start date and end date 
+start date till offer last 
+start date 
+
+recurring 
+on days till offer last 
+on days till end date 
+
+
 
 3. Facebook login make it work (not done)
 5. Error Page when server is offline or any runtime error happens (not done)

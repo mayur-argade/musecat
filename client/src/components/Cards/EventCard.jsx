@@ -11,7 +11,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
 
     const [isLiked, setIsLiked] = useState(false)
     let eventType = data.date.type;
-    let showDateField = `on ${moment().format("ddd,DD MMMM YYYY")}`
+    let showDateField = `On ${moment().format("ddd,DD MMMM YYYY")}`
 
 
     if (eventType === 'recurring') {
@@ -19,25 +19,36 @@ const EventCard = ({ data, width, showNumberBox }) => {
         let endDateRecurr = ''
         if (data.date.recurring.endDate) {
             endDateRecurr = moment(data.date.recurring.endDate).format('DD MMMM')
-        }else {
+        } else {
             endDateRecurr = 'untill offer lasts'
         }
         if (days.length === 1) {
-            showDateField = `On ${days[0]} till ${endDateRecurr}`;
+            showDateField = `On every ${days[0]} till ${endDateRecurr}`;
         } else if (days.length === 2) {
-            showDateField = `On ${days.join(' and ')} till ${endDateRecurr}`;
+            showDateField = `On every ${days.join(' and ')} till ${endDateRecurr}`;
         } else {
             const lastDay = days.pop();
-            showDateField = `On ${days.join(', ')}, and ${lastDay} till ${endDateRecurr}`;
+            showDateField = `On every ${days.join(', ')}, and ${lastDay} till ${endDateRecurr}`;
         }
     }
     else if (eventType == 'dateRange') {
-        if (data.date.dateRange.endDate == null || data.date.dateRange.endDate == 'null' || data.date.showEndDate == false) {
-            showDateField = `on ${moment().format("ddd,DD MMMM YYYY")} until offer lasts`
+        if (data.date.dateRange.endDate == null || data.date.dateRange.endDate == 'null' || data.date.showEndDate == false || data.date.showEndDate == undefined) {
+            showDateField = `From ${moment().format("ddd,DD MMMM YYYY")} until offer lasts`
+        }
+        else if (data.date.dateRange.endDate) {
+            // Assuming data.date.dateRange.startDate and data.date.dateRange.endDate are in string format
+            const startDate = moment(data.date.dateRange.startDate).startOf('day');
+            const endDate = moment(data.date.dateRange.endDate).startOf('day');
+
+            if (startDate.isSame(endDate)) {
+                showDateField = `On ${startDate.format('ddd,DD MMMM YYYY')}`;
+            } else if (startDate.isBefore(endDate)) {
+                showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+            }
         }
         else {
-            showDateField = `from ${moment(data.date.dateRange.startDate).format('Do MMM')} to ${moment(data.date.dateRange.endDate).format('Do MMM')}`
-        }
+            showDateField = `From ${moment(data.date.dateRange.startDate).format('Do MMM')} to ${moment(data.date.dateRange.endDate).format('Do MMM')}`
+        }       
     }
 
     let startDateEvent;
