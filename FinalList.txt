@@ -1,25 +1,16 @@
-1. Add option to edit the pop up in admin (not done)
-2. Events page & Where to Map page pointer restricted (done)
+1. Homepage Popular category
+2. Crop image
+3. Card date changes 
+4. Event Description changes 
+5. Admin & Vendor Event Description changes
+
+
+
 3. Facebook login make it work (not done)
-4. Change helpcenter to tawk.io (done)
 5. Error Page when server is offline or any runtime error happens (not done)
-6. Booking page footer line (done)
 7. Select date in book seats page (partially done)
-8. Open new window for social media & Add all social media links at one place and give option to admin to edit those (paritally done)
-9. Change popular searches on the card (done)
 10. Additional images is not working (not done)
-11. create two categories pool and beach and ladies night
-12. create backend apis to change the trending archived and verified status
 
-
-1. Add option to edit the modal pop up 
-2. Change categories and venue page design  (done)
-3. Add venue should be directly gets verified if it is from the vendor (done)
-4. Add venue should show a different success message (done)
-5. analytics page redirection (done)
 6. categories serial ordering (not now)
 7. Events verify, archive, trending apis and frontend integration 
 8. latest one -> On the homepage there should only 5 events and 5 offers and 5 vendors 5 users
-9. Admin Event Description changes 
-10 Admin Booked seats changes 
-11. Remove mobile widget from the app

@@ -329,6 +329,85 @@ exports.getCategoriesWithEvents = async (req, res) => {
     }
 }
 
+// exports.getCategoriesWithEvents = async (req, res) => {
+
+//     const array = ['Friday Brunch', "Ladies Night", "Afternoon Tea", "Thursday Dinner", "Happy Hour", "Pool & Beach", "Kids Corner"]
+//     // eat and drinks  
+//     // ladies night 
+//     // Pool and beach 
+//     // Kids corner
+
+//     const data = []
+
+//     const filterDate = moment().format("YYYY-MM-DD")
+//     const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
+//     const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+
+
+//     try {
+
+//         let query = {
+//             archived: false,
+//             verified: true,
+//             type: 'event',
+//             $or: [
+//                 {
+//                     'date.dateRange.endDate': { $gte: todayDate }
+//                 },
+//                 {
+//                     'date.dateRange.endDate': null
+//                 }
+//                 ,
+//                 {
+//                     $and: [
+//                         {
+//                             $or: [
+//                                 {
+//                                     'date.recurring.endDate': { $gte: todayDate },
+//                                     'date.recurring.days': { $in: day } // Replace with a function to get today's day
+
+//                                 },
+//                                 {
+//                                     'date.recurring.endDate': { $gte: null },
+//                                     'date.recurring.days': { $in: day } // Replace with a function to get today's day
+//                                 }
+//                             ]
+//                         },
+//                     ]
+//                 },
+//             ],
+//         }
+
+//         let categoriesWithEvents = await CategoryModel.find({ categoryURL: 'eat&drinks' }).populate({
+//             path: 'events',
+//             populate: {
+//                 path: 'location',
+//             },
+//             match: query,
+//         })
+
+//         console.log(categoriesWithEvents)
+
+//         return res.status(200).json({
+//             success: true,
+//             data: {
+//                 categoryId: "category._id",
+//                 categoryName: "category.name",
+//                 categoryURL: "category.categoryURL",
+//                 photo: "category.photo",
+//                 validOfferCount: 0,
+//             }
+//         })
+//     }
+//     catch (error) {
+//         console.error('Error:', error);
+//         return res.status(500).json({
+//             success: false,
+//             data: "INTERNAL SERVER ERROR"
+//         })
+//     }
+// }
 
 // exports.getCategoryAllEvents = async (req, res) => {
 //     // taking parameters like categoryname, searchquery, date

@@ -11,17 +11,32 @@ const EventCard = ({ data, width, showNumberBox }) => {
 
     const [isLiked, setIsLiked] = useState(false)
     let eventType = data.date.type;
-    let showDateField = `${moment().format("ddd,DD MMMM YYYY")}`
+    let showDateField = `on ${moment().format("ddd,DD MMMM YYYY")}`
 
-    if (eventType == 'recurring') {
-        showDateField = `every ${data.date.recurring.days.join(',')}`
+
+    if (eventType === 'recurring') {
+        const days = data.date.recurring.days;
+        let endDateRecurr = ''
+        if (data.date.recurring.endDate) {
+            endDateRecurr = moment(data.date.recurring.endDate).format('DD MMMM')
+        }else {
+            endDateRecurr = 'untill offer lasts'
+        }
+        if (days.length === 1) {
+            showDateField = `On ${days[0]} till ${endDateRecurr}`;
+        } else if (days.length === 2) {
+            showDateField = `On ${days.join(' and ')} till ${endDateRecurr}`;
+        } else {
+            const lastDay = days.pop();
+            showDateField = `On ${days.join(', ')}, and ${lastDay} till ${endDateRecurr}`;
+        }
     }
     else if (eventType == 'dateRange') {
         if (data.date.dateRange.endDate == null || data.date.dateRange.endDate == 'null' || data.date.showEndDate == false) {
-            showDateField = moment().format("ddd,DD MMMM YYYY")
+            showDateField = `on ${moment().format("ddd,DD MMMM YYYY")} until offer lasts`
         }
         else {
-            showDateField = `${moment(data.date.dateRange.startDate).format('Do MMM')} to ${moment(data.date.dateRange.endDate).format('Do MMM')}`
+            showDateField = `from ${moment(data.date.dateRange.startDate).format('Do MMM')} to ${moment(data.date.dateRange.endDate).format('Do MMM')}`
         }
     }
 
@@ -81,13 +96,13 @@ const EventCard = ({ data, width, showNumberBox }) => {
                     }
                 </button>
                 <div className="p-1 pt-4 pb-2 mx-1">
-                    <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium'>On 
-                    <span className='ml-1 font-semibold'>
-                        {showDateField}
-                    </span>
+                    <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium truncate'>
+                        <span className='ml-0 font-semibold'>
+                            {showDateField}
+                        </span>
                     </p>
                     <p className='text-xss m:text-xs mt-1 m:mt-2 font-bold truncate'>
-                    {data.title.charAt(0).toUpperCase() + data.title.slice(1)},
+                        {data.title.charAt(0).toUpperCase() + data.title.slice(1)},
                     </p>
                     <p className='text-xss m:text-xs m:mt-2 font-medium truncate'>{data.location?.name.length > 25 ? data.location?.name.substring(0, 25) : data.location.name}</p>
                     <p className="text-xss mt-1 m:mt-2 mb-1 m:text-xs font-light truncate">{
