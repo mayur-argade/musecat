@@ -11,54 +11,44 @@ const EventCard = ({ data, width, showNumberBox }) => {
 
     const [isLiked, setIsLiked] = useState(false)
     let eventType = data.date.type;
-    let showDateField = `On ${moment().format("ddd,DD MMMM YYYY")}`
+    let showDateField = `${moment().format("ddd,DD MMMM YYYY")}`
 
 
-    if (eventType === 'recurring') {
-        const days = data.date.recurring.days;
-        let endDateRecurr = ''
-        if (data.date.recurring.endDate) {
-            endDateRecurr = moment(data.date.recurring.endDate).format('DD MMMM')
-        } else {
-            endDateRecurr = 'untill offer lasts'
-        }
+    if (eventType != 'dateRange') {
+        const days = data.date.recurring.days.map(day => {
+            return day.charAt(0).toUpperCase() + day.slice(1);
+        });
+        
         if (days.length === 1) {
-            showDateField = `On every ${days[0]} till ${endDateRecurr}`;
+            showDateField = `Every ${days[0]}`;
         } else if (days.length === 2) {
-            showDateField = `On every ${days.join(' and ')} till ${endDateRecurr}`;
+            showDateField = `Every ${days.join(' and ')}`;
         } else {
             const lastDay = days.pop();
-            showDateField = `On every ${days.join(', ')}, and ${lastDay} till ${endDateRecurr}`;
+            showDateField = `Every ${days.join(', ')}, and ${lastDay}`;
         }
     }
     else if (eventType == 'dateRange') {
-        if (data.date.dateRange.endDate == null || data.date.dateRange.endDate == 'null' || data.date.showEndDate == false || data.date.showEndDate == undefined) {
-            showDateField = `From ${moment().format("ddd,DD MMMM YYYY")} until offer lasts`
-        }
-        else if (data.date.dateRange.endDate) {
-            // Assuming data.date.dateRange.startDate and data.date.dateRange.endDate are in string format
-            const startDate = moment(data.date.dateRange.startDate).startOf('day');
-            const endDate = moment(data.date.dateRange.endDate).startOf('day');
-
+        // 1. Start date + end date 
+        // 3. start date == end date 
+        const startDate = moment(data.date.dateRange.startDate).startOf('day');
+        const endDate = moment(data.date.dateRange.endDate).startOf('day');
+        if (data.date.dateRange.endDate) {
             if (startDate.isSame(endDate)) {
-                showDateField = `On ${startDate.format('ddd,DD MMMM YYYY')}`;
-            } else if (startDate.isBefore(endDate)) {
-                showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+                showDateField = `${startDate.format('ddd,DD MMMM YYYY')}`;
+            } else {
+                if (data.showEndDate == false) {
+                    showDateField = `${startDate.format('ddd,DD MMMM YYYY')}`;
+                } else {
+                    showDateField = `${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+                }
             }
+
         }
+        // 2. Start date - end date 
         else {
-            showDateField = `From ${moment(data.date.dateRange.startDate).format('Do MMM')} to ${moment(data.date.dateRange.endDate).format('Do MMM')}`
-        }       
-    }
-
-    let startDateEvent;
-
-
-    if (data.date.type == 'dateRange') {
-
-        startDateEvent = data.date.dateRange.startDate
-    } else {
-        startDateEvent = data.date.recurring.StartDate
+            showDateField = `${moment().format('ddd,DD MMMM YYYY')}`;
+        }
     }
 
     const { user, isAuth } = useSelector((state) => state.auth);
@@ -91,7 +81,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
 
     return (
         <>
-            <div onClick={(() => navigate(`/events/${data._id}`))} className={`cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] dark:text-white my-2`}>
+            <div onClick={(() => navigate(`/events/${data._id}`))} className={`hover:shadow-xl cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] dark:text-white my-2`}>
                 <div className='image'>
                     <img className="rounded-md aspect-square" src={`${data.displayPhoto}`} alt="" />
                 </div>
@@ -107,16 +97,16 @@ const EventCard = ({ data, width, showNumberBox }) => {
                     }
                 </button>
                 <div className="p-1 pt-4 pb-2 mx-1">
-                    <p className='text-xss m:text-xs  mt-1 m:mt-2 font-medium truncate'>
-                        <span className='ml-0 font-semibold'>
+                    <p className='text-xss md:text-xs  mt-1 m:mt-2 font-medium truncate'>
+                        <span className='ml-0 font-normal'>
                             {showDateField}
                         </span>
                     </p>
-                    <p className='text-xss m:text-xs mt-1 m:mt-2 font-bold truncate'>
+                    <p className='text-xs md:text-sm mt-1 md:mt-2 font-semibold truncate'>
                         {data.title.charAt(0).toUpperCase() + data.title.slice(1)},
                     </p>
-                    <p className='text-xss m:text-xs m:mt-2 font-medium truncate'>{data.location?.name.length > 25 ? data.location?.name.substring(0, 25) : data.location.name}</p>
-                    <p className="text-xss mt-1 m:mt-2 mb-1 m:text-xs font-light truncate">{
+                    <p className='text-xs md:text-xs md:mt-1 text-[#C0A04C] font-medium truncate'>{data.location.name}</p>
+                    <p className="text-xss mt-1 md:mt-2 mb-1 md:text-xs font-light truncate">{
                         data.eventCategory.map(obj => obj.name).join(', ')
                     }</p>
                 </div>

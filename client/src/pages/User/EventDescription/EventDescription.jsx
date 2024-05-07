@@ -133,7 +133,7 @@ const EventDescription = () => {
     const [showBooking, setShowBooking] = useState(true)
 
     const dispatch = useDispatch();
-    let showDateField;
+    let showDateField = `On ${moment().format("ddd,DD MMMM YYYY")}`;
     useEffect(() => {
 
         const fetchdata = async () => {
@@ -320,43 +320,50 @@ const EventDescription = () => {
             }
 
             let eventType = response.data.eventDetails.date.type;
-            showDateField = `On ${moment().format("ddd,DD MMMM YYYY")}`
 
 
-            if (eventType === 'recurring') {
-                const days = response.data.eventDetails.date.recurring.days;
+
+            if (eventType != 'dateRange') {
+                const days = response.data.eventDetails.date.recurring.days.map(day => {
+                    return day.charAt(0).toUpperCase() + day.slice(1);
+                });
+
                 let endDateRecurr = ''
                 if (response.data.eventDetails.date.recurring.endDate) {
-                    endDateRecurr = moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')
+                    endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`
                 } else {
                     endDateRecurr = 'untill offer lasts'
                 }
+
                 if (days.length === 1) {
-                    showDateField = `On every ${days[0]} till ${endDateRecurr}`;
+                    showDateField = `On Every ${days[0]} ${endDateRecurr}`;
                 } else if (days.length === 2) {
-                    showDateField = `On every ${days.join(' and ')} till ${endDateRecurr}`;
+                    showDateField = `On Every ${days.join(' and ')} ${endDateRecurr}`;
                 } else {
                     const lastDay = days.pop();
-                    showDateField = `On every ${days.join(', ')}, and ${lastDay} till ${endDateRecurr}`;
+                    showDateField = `On Every ${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;
                 }
             }
             else if (eventType == 'dateRange') {
-                if (response.data.eventDetails.date.dateRange.endDate == null || response.data.eventDetails.date.dateRange.endDate == 'null' || response.data.eventDetails.date.showEndDate == false || response.data.eventDetails.date.showEndDate == undefined) {
-                    showDateField = `From ${moment().format("ddd,DD MMMM YYYY")} until offer lasts`
-                }
-                else if (response.data.eventDetails.date.dateRange.endDate) {
-                    // Assuming response.data.eventDetails.date.dateRange.startDate and response.data.eventDetails.date.dateRange.endDate are in string format
-                    const startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
-                    const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
-
+                // 1. Start date + end date 
+                // 3. start date == end date 
+                const startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
+                const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
+                if (response.data.eventDetails.date.dateRange.endDate) {
                     if (startDate.isSame(endDate)) {
                         showDateField = `On ${startDate.format('ddd,DD MMMM YYYY')}`;
-                    } else if (startDate.isBefore(endDate)) {
-                        showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+                    } else {
+                        if (response.data.eventDetails.showEndDate == false) {
+                            showDateField = `From ${startDate.format('ddd,DD MMMM YYYY')} untill offer lasts`;
+                        } else {
+                            showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+                        }
                     }
+
                 }
+                // 2. Start date - end date 
                 else {
-                    showDateField = `From ${moment(response.data.eventDetails.date.dateRange.startDate).format('Do MMM')} to ${moment(response.data.eventDetails.date.dateRange.endDate).format('Do MMM')}`
+                    showDateField = `From ${moment().format('ddd,DD MMMM YYYY')} untill offer lasts`;
                 }
             }
 

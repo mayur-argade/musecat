@@ -66,6 +66,29 @@ exports.createEvent = async (req, res) => {
 
         // console.log(additinalPhotos)
 
+        function isDinnerCategoryExists(categories) {
+            for (let i = 0; i < categories.length; i++) {
+                if (categories[i].name.toLowerCase().includes("dinner")) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        if (date.type != 'dateRange' && date.recurring.days.length > 0 && isDinnerCategoryExists(eventCategory)) {
+            // const dinnerCategoryObject = eventCategory.find(category => category.name.toLowerCase().includes("dinner"));
+            const recurringDays = date.recurring.days;
+
+            recurringDays.forEach(day => {
+                eventCategory.push({
+                    name: day.charAt(0).toUpperCase() + day.slice(1) + " Dinner",
+                    categoryURL: day.toLowerCase() + "dinner"
+                });
+            });
+        }
+
+        console.log(eventCategory)
+
         const data = {
             title: title,
             shortDescription: shortDescription,
@@ -122,19 +145,12 @@ exports.createEvent = async (req, res) => {
                 // If not found in main categories, search in subcategories of all categories
                 categoryData = await categoryService.findSubcategory(categoryURL);
 
-                if (!categoryData) {
-                    // If not found in subcategories either, return error
-                    return res.status(404).json({
-                        success: false,
-                        data: "Category not found"
-                    });
-                }
             }
 
-            if (!categoryData.events.includes(event._id)) {
+            if (categoryData && !categoryData.events.includes(event._id)) {
                 categoryData.events.push(event._id);
+                categoryData.save()
             }
-            categoryData.save()
         }
 
 
