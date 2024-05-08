@@ -20,11 +20,13 @@ const VendorHome = () => {
     const [eventsLoading, setEventsLoading] = useState(false)
     const closeModal = () => {
         setShowAddEvent(false);
+        document.body.style.overflow = 'auto'; // Reset overflow
     };
 
     const handleClick = () => {
-        setShowAddEvent(true)
-    }
+        setShowAddEvent(true);
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    };
     const closeOfferModal = () => {
         setShowAddOffer(false)
     }

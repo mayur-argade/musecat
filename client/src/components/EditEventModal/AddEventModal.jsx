@@ -8,7 +8,7 @@ import AddVenueModal from './AddVenueModal';
 import Features from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import Tooltip from '../shared/Tooltip/Tooltip'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 
@@ -18,6 +18,7 @@ const AddEventModal = ({ onClose, verified }) => {
     const [verifiedValue, setVerifiedValue] = useState(verified)
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [value, setValue] = useState()
+
     useEffect(() => {
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
         if (
@@ -292,9 +293,11 @@ const AddEventModal = ({ onClose, verified }) => {
         setCategories(updatedCategories);
     };
 
-    const handleSave = async (verified) => {
-        let momentstart = moment(startDate);
-        let momentend = moment(endDate);
+    const handleSave = async () => {
+
+        const momentstart = moment(startDate).tz('Asia/Muscat') // Assuming startDate is in UTC
+        const momentend = moment(endDate).tz('Asia/Muscat') // Assuming endDate is in UTC
+
         if (!title) {
             return toast.error("Title is missing")
         }
@@ -516,6 +519,7 @@ const AddEventModal = ({ onClose, verified }) => {
                                         <Tooltip data={"Select dates on which your event is going to happen if Event is of type recurring then you can tick recurring and select Days, If you want clients to show Ending date for the event toggle the show ending date button"} />
                                     </div>
                                 </p>
+
                                 <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                     <div className="flex w-full row1 space-x-4 ">
                                         <div className='w-full  flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
@@ -556,6 +560,7 @@ const AddEventModal = ({ onClose, verified }) => {
 
                                     {/* <label htmlFor="recurring">Recurring Event ?</label> */}
                                 </div>
+
                                 {
                                     datetype
                                         ?
@@ -645,6 +650,7 @@ const AddEventModal = ({ onClose, verified }) => {
                                         )}
                                     </select>
                                 </div>
+
                                 <button onClick={(() => setShowVenuecreate(!showVenuecreate))}>
                                     {
                                         showVenuecreate
@@ -718,6 +724,7 @@ const AddEventModal = ({ onClose, verified }) => {
                                             <Tooltip data={"Select All the applicable features, you can select multiple features also"} />
                                         </div>
                                     </h3>
+
                                     <ul class="w-full flex flex-wrap">
                                         {
                                             Features.list.map((feature) => (
@@ -736,8 +743,6 @@ const AddEventModal = ({ onClose, verified }) => {
                                         }
                                     </ul>
                                 </div>
-
-
 
                                 <div className="flex w-full">
                                     <span className='ml-2 text-sm font-semibold  dark:text-white ml-0'>
@@ -780,11 +785,11 @@ const AddEventModal = ({ onClose, verified }) => {
                                         </div>
                                     </div>
                                     <div className="w-full flex justify-between">
-                                        
+
                                         <div className='dark:text-black w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1 dark:text-white ' htmlFor="first name">Contact No. with Country code</label>
                                             <PhoneInput
-                                            className='dark:text-black'
+                                                className='dark:text-black'
                                                 placeholder="Enter phone number"
                                                 value={number}
                                                 onChange={setNumber} />
@@ -884,7 +889,6 @@ const AddEventModal = ({ onClose, verified }) => {
                                     />
                                 </div>
 
-
                                 <div>
 
                                     <div className="flex w-full">
@@ -934,8 +938,6 @@ const AddEventModal = ({ onClose, verified }) => {
                                     )}
                                 </div>
 
-
-
                                 <div className="mt-4 flex w-full items-center align-middle">
                                     <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
                                         Featured Image
@@ -961,8 +963,6 @@ const AddEventModal = ({ onClose, verified }) => {
                                     onChange={captureAdditionalPhotos}
                                     accept="image/*"
                                     multiple id="photo" type="file" />
-
-
 
                                 <div className="flex w-full items-center align-middle">
                                     <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
@@ -1015,8 +1015,6 @@ const AddEventModal = ({ onClose, verified }) => {
                                 </div>
 
                             </div>
-
-
                         </div>
                     </section>
                     :
@@ -1027,13 +1025,8 @@ const AddEventModal = ({ onClose, verified }) => {
                         </div>
                     </div>
             }
-
-
         </div >
     )
-    // }
-
-
 }
 
 export default AddEventModal

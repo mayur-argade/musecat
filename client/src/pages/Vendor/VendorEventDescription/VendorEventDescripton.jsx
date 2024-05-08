@@ -6,7 +6,7 @@ import Footer from '../../../components/shared/Footer/Footer'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { setEvent } from '../../../store/eventSlice'
 import { useDispatch } from 'react-redux'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import toast, { Toaster } from 'react-hot-toast';
 import MapComponent from '../../../components/GoogleMap/Map'
 import { useSelector } from 'react-redux'
@@ -374,11 +374,11 @@ const VendorEventDescripton = () => {
                                                 {
                                                     response.data.eventDetails.date.type == 'dateRange'
                                                         ?
-                                                        <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
+                                                        <p className='text-sm font-semibold'>{moment.utc(response.data.eventDetails.date.dateRange.startDate).tz('Asia/Kolkata').format("DD-MM-YYYY HH:MM:SS")}
                                                             {response.data.eventDetails.showEndDate
                                                                 ?
                                                                 <>
-                                                                    <span className='ml-1 mr-1'>to</span> {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY")}
+                                                                    <span className='ml-1 mr-1'>to</span> {moment(response.data.eventDetails.date.dateRange.endDate).tz('Asia/Kolkata').format("DD-MM-YYYY HH:MM:SS")}
                                                                 </>
                                                                 :
                                                                 <>
