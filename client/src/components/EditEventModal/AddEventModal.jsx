@@ -295,8 +295,8 @@ const AddEventModal = ({ onClose, verified }) => {
 
     const handleSave = async () => {
 
-        const momentstart = moment(startDate).tz('Asia/Muscat') // Assuming startDate is in UTC
-        const momentend = moment(endDate).tz('Asia/Muscat') // Assuming endDate is in UTC
+        const momentstart = moment(startDate).tz('Asia/Kolkata') // Assuming startDate is in UTC
+        const momentend = moment(endDate).tz('Asia/Kolkata') // Assuming endDate is in UTC
 
         if (!title) {
             return toast.error("Title is missing")
@@ -344,8 +344,8 @@ const AddEventModal = ({ onClose, verified }) => {
         eventdate.type = dateType
         if (dateType == 'dateRange') {
             eventdate.dateRange = {
-                startDate: startDate,
-                endDate: endDate
+                startDate: momentstart,
+                endDate: momentstart
             }
         } else if (dateType == 'recurring') {
             eventdate = {
@@ -356,8 +356,8 @@ const AddEventModal = ({ onClose, verified }) => {
             eventdate.recurring.days = selectedDays
             eventdate.recurring.startTime = startTime
             eventdate.recurring.endTime = endTime
-            eventdate.recurring.startDate = startDate
-            eventdate.recurring.endDate = endDate
+            eventdate.recurring.startDate = momentstart
+            eventdate.recurring.endDate = momentstart
         }
         for (const category of categories) {
             if (category.seats != null) {
