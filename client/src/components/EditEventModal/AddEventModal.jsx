@@ -11,6 +11,11 @@ import Tooltip from '../shared/Tooltip/Tooltip'
 import moment from 'moment-timezone'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
+import ReactDOM from "react-dom";
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+import Modal from "react-modal";
+import CropEasy from '../Crop/CropEasy';
 
 const AddEventModal = ({ onClose, verified }) => {
     const editor = useRef(null);
@@ -18,7 +23,7 @@ const AddEventModal = ({ onClose, verified }) => {
     const [verifiedValue, setVerifiedValue] = useState(verified)
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [value, setValue] = useState()
-
+    // const [openCrop, setOpenCrop] = useState(false);
     useEffect(() => {
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
         if (
@@ -168,17 +173,31 @@ const AddEventModal = ({ onClose, verified }) => {
         setSelectedCategories(uniqueSelectedOptions);
     };
 
+    const [file, setFile] = useState(null);
+    const [photoURL, setPhotoURL] = useState('');
+    const [openCrop, setOpenCrop] = useState(false);
+
+    const handleCropComplete = (url, file) => {
+        // Do something with the URL and file, such as storing them in state
+        setPhoto(url)
+        // console.log("Cropped File:", file);
+      };
+
     function capturePhoto(e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
-                setPhoto(reader.result);
-                // console.log(reader.result);
+                const base64String = reader.result;
+                setFile(file);
+                setPhoto(base64String);
+                setPhotoURL(URL.createObjectURL(file));
+                setOpenCrop(true);
             };
         }
     }
+
 
     function captureSeatingMap(e) {
         const file = e.target.files[0];
@@ -192,15 +211,14 @@ const AddEventModal = ({ onClose, verified }) => {
         }
     }
 
+
+
     function captureBanner(e) {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = function () {
-                setBanner(reader.result);
-                // console.log(reader.result);
-            };
+            setFile(file);
+            setPhotoURL(URL.createObjectURL(file));
+            setOpenCrop(true);
         }
     }
 
@@ -292,7 +310,12 @@ const AddEventModal = ({ onClose, verified }) => {
         updatedCategories[index][field] = value;
         setCategories(updatedCategories);
     };
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
+    const reqCloseCrop = () => {
+        setOpenCrop(false)
+
+    }
     const handleSave = async () => {
 
         const momentstart = moment(startDate).tz('Asia/Kolkata') // Assuming startDate is in UTC
@@ -345,7 +368,7 @@ const AddEventModal = ({ onClose, verified }) => {
         if (dateType == 'dateRange') {
             eventdate.dateRange = {
                 startDate: momentstart,
-                endDate: momentstart
+                endDate: momentend
             }
         } else if (dateType == 'recurring') {
             eventdate = {
@@ -950,7 +973,9 @@ const AddEventModal = ({ onClose, verified }) => {
                                     onChange={capturePhoto}
                                     accept="image/*"
                                     id="photo" type="file" />
-
+                                {openCrop && (
+                                    <CropEasy onCropComplete={handleCropComplete} photoURL={photoURL} setOpenCrop={setOpenCrop} setPhotoURL={setPhoto} setFile={setFile} />
+                                )}
 
                                 <div className="mt-2 flex w-full items-center align-middle">
                                     <span className='mt-1 ml-2 text-xs font-medium  dark:text-white ml-0'>
@@ -985,12 +1010,15 @@ const AddEventModal = ({ onClose, verified }) => {
                                     <Tooltip data={"Add Banner image for your event"} />
                                 </div>
 
-                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545]  dark:placeholder-gray-400 mb-1" id="file_input"
-
-                                    onChange={captureBanner}
-                                    accept="image/*"
-                                    type="file" />
-
+                                <div className="">
+                                    <input
+                                        className="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545]  dark:placeholder-gray-400 mb-1"
+                                        id="file_input"
+                                        onChange={captureBanner}
+                                        accept="image/*"
+                                        type="file"
+                                    />
+                                </div>
 
                                 <div className="flex w-full items-center align-middle">
                                     <span className='ml-2 text-xs font-medium  dark:text-white ml-0'>

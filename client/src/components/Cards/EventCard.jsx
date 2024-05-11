@@ -83,7 +83,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
         <>
             <div onClick={(() => navigate(`/events/${data._id}`))} className={`hover:shadow-xl cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] dark:text-white my-2`}>
                 <div className='image'>
-                    <img className="rounded-md aspect-square" src={`${data.displayPhoto}`} alt="" />
+                    <img className="rounded-md w-full object-contain aspect-square" src={`${data.displayPhoto}`} alt="" />
                 </div>
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent click event from propagating
