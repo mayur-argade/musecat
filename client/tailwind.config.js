@@ -8,6 +8,10 @@ module.exports = {
     important: "#root",
     theme: {
         extend: {
+            fontFamily: {
+                'garamond': ['EB Garamond', 'serif'],
+                // You can add more font families here if needed
+              },
             fontSize: {
                 xm: '0.5rem',
                 xss: '0.6rem'
@@ -55,6 +59,7 @@ module.exports = {
         },
     },
     plugins: [
+        require('tailwindcss-textshadow'),
         // require('flowbite/plugin'),
         require('tailwindcss-box-shadow'),
     ],

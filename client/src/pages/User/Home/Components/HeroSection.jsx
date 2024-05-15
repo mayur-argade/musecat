@@ -67,7 +67,7 @@ const HeroSection = () => {
                     </>
                     :
                     <div
-                        class="h-4/6 NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692687464/bgHome_byrjjp.jpg')]">
+                        class="h-4/6 NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1715548094/muscat/offers/bgHome_bq3uwo.webp')]">
                         <header className='p-5 md:p-10 '>
 
                             <div className="">
@@ -77,10 +77,10 @@ const HeroSection = () => {
                                 >
                                     <div className='flex justify-center md: pt-0 md:p-10'>
                                         <p className='pb-5 leading-loose text-4xl md:text-5xl text-center text-white font-bold'>
-                                            <span className='ml-0 dark:text-black'>Muscat Where To</span>
+                                            <span className={`ml-0 dark:text-black font-light text-shadow-lg font-garamond uppercase`}>Muscat Where To</span>
 
-                                            <p className='text-center text-xl md:text-2xl mb-2 md:dark:text-black'>
-                                                <span className='ml-0'>
+                                            <p className='text-center text-xl md:text-3xl mb-2 md:dark:text-black'>
+                                                <span className='ml-0 font-thin text-shadow-lg font-garamond tracking-wider'>
                                                     Latest Offers and Events in Muscat
                                                 </span>
                                             </p>
