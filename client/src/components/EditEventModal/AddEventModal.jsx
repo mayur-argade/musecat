@@ -345,7 +345,7 @@ const AddEventModal = ({ onClose, verified }) => {
         if (dateType == 'dateRange') {
             eventdate.dateRange = {
                 startDate: momentstart,
-                endDate: momentstart
+                endDate: momentend
             }
         } else if (dateType == 'recurring') {
             eventdate = {
@@ -357,7 +357,7 @@ const AddEventModal = ({ onClose, verified }) => {
             eventdate.recurring.startTime = startTime
             eventdate.recurring.endTime = endTime
             eventdate.recurring.startDate = momentstart
-            eventdate.recurring.endDate = momentstart
+            eventdate.recurring.endDate = momentend
         }
         for (const category of categories) {
             if (category.seats != null) {

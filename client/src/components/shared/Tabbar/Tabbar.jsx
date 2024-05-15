@@ -54,8 +54,8 @@ const Tabbar = () => {
                         <div className='relative z-30'>
                             {
                                 categories.data && categories.data.length > 7 && (
-                                    <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} onClick={() => setShowMoreCategories(!showMoreCategories)} className='mt-[1.5px] relative flex align-middle items-center hover:font-bold'>
-                                        <span className={`ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
+                                    <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} onClick={() => setShowMoreCategories(!showMoreCategories)} className='mt-1 relative flex align-middle items-center hover:font-bold'>
+                                        <span className={`ml-0 text-base bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
                                         <img className="cursor-pointer dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
                                         <img className="cursor-pointer dark:flex hidden h-2 ml-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
                                     </div>
@@ -115,7 +115,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                         }}
                         onMouseEnter={() => openDropdown()}
                         onMouseLeave={() => closeDropdown()}
-                        className={`cursor-pointer hover:font-bold relative px-1 py-1 ml-0 text-sm bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
+                        className={`cursor-pointer hover:font-bold relative px-1 py-1 ml-0 text-base bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
                     >
                         <span className='ml-0 cursor-pointer hover:font-bold'>
                             {category.name}
@@ -139,7 +139,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                                                 }
                                             }}
                                             onMouseLeave={() => setShowDays(false)}
-                                            className={`hover:font-bold cursor-pointer ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-sm`} aria-current="page">
+                                            className={`hover:font-bold cursor-pointer ml-0 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-base font-medium`} aria-current="page">
                                             {subcategory.name}
                                         </span>
 
@@ -170,7 +170,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                 </>
             ) : (
                 <Link onClick={() => handleCategoryChange(category)} to={`/category/${category.categoryURL}`}>
-                    <div className={`hover:font-bold ml-0 px-1 py-1 text-sm duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>
+                    <div className={`hover:font-bold ml-0 px-1 py-1 text-base duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>
                         <span className='ml-0'>{category.name}</span>
                     </div>
                 </Link>

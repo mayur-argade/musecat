@@ -7,7 +7,7 @@ const Accordian = ({ title, content, isOpened, onClick, color, textcol, contentf
         <div className='mb-6'>
             <div onClick={onClick} className={`cursor-pointer ${color}`}>
                 <div className="flex justify-between align-middle">
-                    <p className={` ${textcol}`}>{title}</p>
+                    <p className={`text-lg ${textcol}`}>{title}</p>
                     {isOpened ? (
                         <p className="font-bold text-xl">
                             -

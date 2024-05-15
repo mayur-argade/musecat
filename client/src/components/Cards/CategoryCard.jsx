@@ -2,7 +2,7 @@ import React from 'react'
 
 const CategoryCard = ({ data }) => {
     return (
-        <div className="relative">
+        <div className="relative group">
         <img
           className="grayscale-10 rounded-lg object-cover w-44 h-64 md:w-56 md:h-72 snap-start"
           src={data.photo}

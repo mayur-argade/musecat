@@ -172,7 +172,7 @@ const HeroSection = () => {
                                                     }}
                                                         type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:[#A48533] font-medium rounded-lg text-sm px-8 py-2 text-center mr-3 md:mr-0  flex align-middle justify-center items-center">
                                                         <img src="/images/icons/search1.svg" className="h-4 w-4" alt="" srcset="" />
-                                                        <span>Search</span>
+                                                        <span className='ml-1 text-base'>Search</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -180,28 +180,28 @@ const HeroSection = () => {
 
                                             <div className='flex flex-wrap align-middle items-center justify-between mt-5 w-full'>
                                                 <div className='pl-4'>
-                                                    <p className='hidden font-bold text-md md:block text-left align-middle mb-1'>
+                                                    <p className='text-base hidden font-bold text-md md:block text-left align-middle mb-1'>
                                                         Popular Searches
                                                     </p>
                                                     <div className='hidden md:flex justify-between space-y-2 md:space-x-52 overflow-x'>
                                                         <div className='flex flex-wrap justify-center md:space-x-2  ' style={{ overflowX: 'auto' }}>
                                                             <Link className='my-1' to='/category/fridaybrunch'>
-                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Friday Brunch</button>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Friday Brunch</button>
                                                             </Link>
                                                             <Link className='my-1' to='/category/ladiesnight'>
-                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Ladies Night</button>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Ladies Night</button>
                                                             </Link>
                                                             <Link className='my-1' to='/category/eat&drink?subcategory=Afternoon%20Tea'>
-                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Afternoon Tea</button>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Afternoon Tea</button>
                                                             </Link>
                                                             <Link className='my-1' to='/category/eat&drink?subcategory=Dinner&day=Thursday'>
-                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Thursday Dinner</button>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Thursday Dinner</button>
                                                             </Link>
                                                             <Link className='my-1' to='/category/eat&drink?subcategory=Happy%20Hour'>
-                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Happy Hour</button>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Happy Hour</button>
                                                             </Link>
                                                             <Link className='my-1' to='/category/poolandbeach'>
-                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-xs hover:text-white'>Pool And Beach</button>
+                                                                <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Pool And Beach</button>
                                                             </Link>
                                                         </div>
                                                     </div>

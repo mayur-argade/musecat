@@ -563,8 +563,8 @@ const EventDescription = () => {
                                         </>
                                         :
                                         <>
-                                            <p className='text-xl md:text-3xl font-bold'>{response.data.eventDetails.title}</p>
-                                            <p className='text-sm md:text-md font-light'>{response.data.eventDetails.shortDescription} at
+                                            <p className='text-xl md:text-4xl font-bold'>{response.data.eventDetails.title}</p>
+                                            <p className='text-sm md:text-lg font-light'>{response.data.eventDetails.shortDescription} at
                                                 <Link to={`/venue/${response.data.eventDetails.location._id}`} className='text-[#C0A04C]'>
                                                     <span className='ml-1 font-medium'>
                                                         {response.data.eventDetails.location?.name || ""}
@@ -573,7 +573,7 @@ const EventDescription = () => {
                                             <div className='mt-4 flex justify-center space-x-2 text-center'>
                                                 <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
                                                 <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
-                                                <p className='text-xs md:text-sm font-semibold'>
+                                                <p className='text-xs md:text-base font-semibold'>
                                                     {showDateField}
                                                 </p>
                                             </div>

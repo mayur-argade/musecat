@@ -241,7 +241,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                     ref={dropdownRef}
                                                 >
                                                     <div className="px-3 flex flex-col">
-                                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                                                        <ul class="py-2 text-base text-black dark:text-gray-200" aria-labelledby="doubleDropdownButton">
                                                             <Link to={
                                                                 window.location.pathname.includes('/vendor/')
                                                                     ?
@@ -249,43 +249,43 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                                     :
                                                                     `/profile`
                                                             }>
-                                                                <a href="#" class="flex block px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                                    <img src="/images/icons/user.svg" className="dark:hidden flex h-5 mr-2 fill-current text-gray-900 dark:text-white" alt="" />
-                                                                    <img src="/images/icons/user-light.svg" className="dark:flex hidden h-5 mr-2 fill-current text-gray-900 dark:text-white" alt="" />
+                                                                <a href="#" class="flex block px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white align-middle items-center">
+                                                                    <img src="/images/icons/user.svg" className="dark:hidden flex h-4 mr-2 fill-current text-gray-900 dark:text-white" alt="" />
+                                                                    <img src="/images/icons/user-light.svg" className="dark:flex hidden h-4 mr-2 fill-current text-gray-900 dark:text-white" alt="" />
                                                                     Profile</a>
                                                             </Link>
                                                             {
                                                                 window.location.pathname.includes('/vendor/')
                                                                     ?
                                                                     <>
-                                                                        <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                            <img src="/images/icons/log-out.svg" className='h-5 mr-2 ' alt="" />
+                                                                        <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white align-middle items-center'>
+                                                                            <img src="/images/icons/log-out.svg" className='h-4 mr-2 ' alt="" />
                                                                             logout
                                                                         </button>
-                                                                        <button onClick={() => navigate('/vendor/hostedevents')} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                            <img src="/images/icons/hostedevents.png" className='h-5 mr-2 ' alt="" />
+                                                                        <button onClick={() => navigate('/vendor/hostedevents')} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white align-middle items-center'>
+                                                                            <img src="/images/icons/hostedevents.png" className='h-4 mr-2 ' alt="" />
                                                                             Hosted Events
                                                                         </button>
                                                                     </>
                                                                     :
                                                                     <>
                                                                         <Link to="/favorites">
-                                                                            <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                                <img src="/images/icons/heartNav.svg" className='dark:hidden flex h-5 mr-2 ' alt="" />
-                                                                                <img src="/images/icons/heartNav-light.svg" className='dark:flex hidden h-5 mr-2 ' alt="" />
+                                                                            <button className='flex align-middle items-center w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                                <img src="/images/icons/heartNav.svg" className='dark:hidden flex h-4 mr-2 ' alt="" />
+                                                                                <img src="/images/icons/heartNav-light.svg" className='dark:flex hidden h-4 mr-2 ' alt="" />
                                                                                 Favorites
                                                                             </button>
                                                                         </Link>
                                                                         <Link to="/pastpurchase">
-                                                                            <button className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                                <img src="/images/icons/pastpurchased.svg" className='dark:hidden flex h-5 mr-2 ' alt="" />
-                                                                                <img src="/images/icons/pastpurchased-light.svg" className='dark:flex hidden h-5 mr-2 ' alt="" />
+                                                                            <button className='flex align-middle items-center w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                                <img src="/images/icons/pastpurchased.svg" className='dark:hidden flex h-4 mr-2 ' alt="" />
+                                                                                <img src="/images/icons/pastpurchased-light.svg" className='dark:flex hidden h-4 mr-2 ' alt="" />
                                                                                 Past Purchased
                                                                             </button>
                                                                         </Link>
-                                                                        <button onClick={userLogout} className='flex align-middle w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
-                                                                            <img src="/images/icons/log-out-light.svg" className='dark:flex hidden h-5 mr-2 ' alt="" />
-                                                                            <img src="/images/icons/log-out.svg" className='dark:hidden flex h-5 mr-2 ' alt="" />
+                                                                        <button onClick={userLogout} className='flex align-middle items-center w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white'>
+                                                                            <img src="/images/icons/log-out-light.svg" className='dark:flex hidden h-4 mr-2 ' alt="" />
+                                                                            <img src="/images/icons/log-out.svg" className='dark:hidden flex h-4 mr-2 ' alt="" />
                                                                             Logout
                                                                         </button>
                                                                     </>
@@ -376,7 +376,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-[#2c2c2c] md:dark:bg-[#2c2c2c] dark:border-gray-700">
                                         <li>
                                             <Link to='/' className={`${window.location.pathname == '/' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
-                                                <a href="#" className={`block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Home</a>
+                                                <a href="#" className={`block text-lg py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold`} aria-current="page">Home</a>
                                             </Link>
 
                                         </li>
@@ -385,7 +385,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                 <div className="dropdown-container relative">
                                                     <a
                                                         href='#'
-                                                        className="pointer-cursor hover-trigger block text-sm py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
+                                                        className="pointer-cursor hover-trigger block text-lg py-2 pl-3 pr-4 md:p-0 hover:font-bold md:dark:font-bold"
                                                         onMouseEnter={() => openDropdown()}
                                                         onMouseLeave={() => closeDropdown()}
                                                     >
@@ -406,12 +406,12 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                         </li>
                                         <li>
                                             <Link to='/aboutus' className={`${window.location.pathname == '/aboutus' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
-                                                <a href="#" className="block text-sm py-2 pl-3 pr-4 rounded hover:bg-gray-100 hover:font-bold md:hover:bg-transparent md:p-0 md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                                                <a href="#" className="block text-lg py-2 pl-3 pr-4 rounded hover:bg-gray-100 hover:font-bold md:hover:bg-transparent md:p-0 md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
                                             </Link>
                                         </li>
                                         <li>
                                             <Link to='/contactus' className={`${window.location.pathname == '/contactus' ? 'font-bold underline underline-offset-2 decoration-2 decoration-[#C0A04C]' : ''}`}>
-                                                <a href="#" className="block text-sm py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:font-bold md:p-0 md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                                                <a href="#" className="block text-lg py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:font-bold md:p-0 md:dark:hover:font-bold dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
                                             </Link>
                                         </li>
                                     </ul>
@@ -558,13 +558,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                         {
                             isAuth && (
                                 <div className='NoStandalone flex flex-col space-y-8 '>
-                                    <Link Link to='/profile' className={`${window.location.pathname == '/profile' ? 'font-bold' : 'font-medium '}`}>
+                                    <Link Link to='/profile' className={`text-lg ${window.location.pathname == '/profile' ? 'font-bold' : 'font-medium '}`}>
                                         <span className=' hover:border'>profile</span>
                                     </Link>
-                                    <Link Link to='/favorites' className={`${window.location.pathname == '/favorites' ? 'font-bold' : 'font-medium '}`}>
+                                    <Link Link to='/favorites' className={`text-base ${window.location.pathname == '/favorites' ? 'font-bold' : 'font-medium '}`}>
                                         <span className=' hover:border'>Favorites</span>
                                     </Link>
-                                    <Link Link to='/pastpurchase' className={`${window.location.pathname == '/pastpurchased' ? 'font-bold' : 'font-medium '}`}>
+                                    <Link Link to='/pastpurchase' className={`text-base ${window.location.pathname == '/pastpurchased' ? 'font-bold' : 'font-medium '}`}>
                                         <span className=' hover:border'>Past Purchased</span>
                                     </Link>
                                 </div>
