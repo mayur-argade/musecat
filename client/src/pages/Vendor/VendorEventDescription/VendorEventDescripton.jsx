@@ -109,7 +109,7 @@ const VendorEventDescripton = () => {
 
     document.title = 'Event Info'
     const dispatch = useDispatch();
-
+    let showDateField = `On ${moment().format("ddd,DD MMMM YYYY")}`;
     // console.log("isMobile", isMobile)
     const onMarkerClick = () => {
         console.log("ok")
@@ -235,6 +235,7 @@ const VendorEventDescripton = () => {
 
                 setIsLiked(isAuth && data.data.eventDetails.likes.includes(user._id))
 
+
             } catch (error) {
                 console.log(error)
             }
@@ -274,7 +275,50 @@ const VendorEventDescripton = () => {
     let eventStart;
     let eventEnd;
     if (response.data != null) {
+        let eventType = response.data.eventDetails.date.type;
+        if (eventType != 'dateRange') {
+            const days = response.data.eventDetails.date.recurring.days.map(day => {
+                return day.charAt(0).toUpperCase() + day.slice(1);
+            });
 
+            let endDateRecurr = ''
+            if (response.data.eventDetails.date.recurring.endDate) {
+                endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`
+            } else {
+                endDateRecurr = 'untill offer lasts'
+            }
+
+            if (days.length === 1) {
+                showDateField = `On Every ${days[0]} ${endDateRecurr}`;
+            } else if (days.length === 2) {
+                showDateField = `On Every ${days.join(' and ')} ${endDateRecurr}`;
+            } else {
+                const lastDay = days.pop();
+                showDateField = `On Every ${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;
+            }
+        }
+        else if (eventType == 'dateRange') {
+            // 1. Start date + end date 
+            // 3. start date == end date 
+            const startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
+            const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
+            if (response.data.eventDetails.date.dateRange.endDate) {
+                if (startDate.isSame(endDate)) {
+                    showDateField = `On ${startDate.format('ddd,DD MMMM YYYY')}`;
+                } else {
+                    if (response.data.eventDetails.showEndDate == false) {
+                        showDateField = `From ${startDate.format('ddd,DD MMMM YYYY')} untill offer lasts`;
+                    } else {
+                        showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+                    }
+                }
+
+            }
+            // 2. Start date - end date 
+            else {
+                showDateField = `From ${moment().format('ddd,DD MMMM YYYY')} untill offer lasts`;
+            }
+        }
         if (response.data.eventDetails && response.data.eventDetails.categories) {
             const availableTickets = response.data.eventDetails.categories
             availableTickets.map((category) => {
@@ -371,23 +415,9 @@ const VendorEventDescripton = () => {
                                             <div className='mt-4 flex justify-center space-x-2 text-center'>
                                                 <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
                                                 <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
-                                                {
-                                                    response.data.eventDetails.date.type == 'dateRange'
-                                                        ?
-                                                        <p className='text-sm font-semibold'>{moment.utc(response.data.eventDetails.date.dateRange.startDate).tz('Asia/Kolkata').format("DD-MM-YYYY HH:MM:SS")}
-                                                            {response.data.eventDetails.showEndDate
-                                                                ?
-                                                                <>
-                                                                    <span className='ml-1 mr-1'>to</span> {moment(response.data.eventDetails.date.dateRange.endDate).tz('Asia/Kolkata').format("DD-MM-YYYY HH:MM:SS")}
-                                                                </>
-                                                                :
-                                                                <>
-                                                                </>
-                                                            }
-                                                        </p>
-                                                        :
-                                                        <p>{response.data.eventDetails.date.recurring.days.join(" ")}</p>
-                                                }
+                                                <p className='text-xs md:text-base font-semibold'>
+                                                    {showDateField}
+                                                </p>
                                             </div>
                                         </div>
 

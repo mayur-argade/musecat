@@ -191,7 +191,7 @@ const Login = () => {
                         <img className="flex dark:hidden" src="/images/icons/email-icon.png" alt="" />
                         <img className="dark:flex hidden" src="/images/icons/email-light.svg" alt="" />
                         <span className='mx-auto text-center'>
-                            Continue with email
+                            Continue with Email
                         </span>
                     </button>
                 </div>
