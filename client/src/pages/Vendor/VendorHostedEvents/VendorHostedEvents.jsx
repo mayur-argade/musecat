@@ -6,7 +6,7 @@ import VendorOfferCard from '../../../components/Cards/VendorOfferCard';
 import Footer from '../../../components/shared/Footer/Footer';
 import { VendorHostedEventsApi, GetAllCategory } from '../../../http/index';
 import { Link } from 'react-router-dom';
-import Features from '../../../utils/Data'
+import { Features } from '../../../utils/Data'
 import SkeletonCard from '../../../components/shared/skeletons/SkeletonCard';
 const VendorHostedEvents = () => {
 

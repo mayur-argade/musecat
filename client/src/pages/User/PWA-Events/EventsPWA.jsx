@@ -7,7 +7,7 @@ import SubEventCard from '../../../components/Cards/SubEventCard'
 import DatePicker from "react-datepicker";
 import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
-import Features from '../../../utils/Data'
+import { Features } from '../../../utils/Data'
 import PwaCards from '../../../components/Cards/PwaCards'
 
 const EventsPWA = () => {

@@ -4,7 +4,7 @@ import { VendorUpdateEvent, GetAllCategory, getAllVenues, handleUpload } from '.
 import JoditEditor from 'jodit-react';
 import toast, { Toaster } from 'react-hot-toast';
 import AddVenueModal from './AddVenueModal';
-import Features from '../../utils/Data'
+import { Features } from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import axios from "axios";
 import moment from 'moment'

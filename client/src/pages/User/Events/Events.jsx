@@ -11,7 +11,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom'
 import SkeletonCard from '../../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
-import Features from '../../../utils/Data'
+import { Features } from '../../../utils/Data'
 import './events.css'
 import DatePicker from "react-datepicker";
 import moment from 'moment'

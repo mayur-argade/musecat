@@ -4,7 +4,7 @@ import JoditEditor from 'jodit-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { VendorCreateOffer, GetAllCategory, getAllVenues, handleUpload } from '../../http/index'
 import AddVenueModal from './AddVenueModal';
-import Features from '../../utils/Data'
+import { Features } from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import Tooltip from '../shared/Tooltip/Tooltip'
 import moment from 'moment'
