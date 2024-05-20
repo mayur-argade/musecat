@@ -16,7 +16,7 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import Modal from "react-modal";
 import CropEasy from '../Crop/CropEasy';
-import AddEvent from '../Forms/AddEvent';
+import AddEvent from '../Forms/AddEvent/AddEvent';
 
 const AddEventModal = ({ onClose, verified }) => {
     const editor = useRef(null);

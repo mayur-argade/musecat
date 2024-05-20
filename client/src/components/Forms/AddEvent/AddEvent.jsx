@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Tooltip from '../shared/Tooltip/Tooltip'; // Assuming Tooltip is a separate component
+import Tooltip from '../../shared/Tooltip/Tooltip'; // Assuming Tooltip is a separate component
 import JoditEditor from 'jodit-react';
-import { Features, config } from '../../utils/Data';
-import AddVenueModal from '../EditEventModal/AddVenueModal';
-import CategorySelector from '../shared/CategorySelector/CategorySelector';
-import { GetAllCategory, getAllVenues } from '../../http';
+import { Features, config } from '../../../utils/Data';
+import AddVenueModal from '../../EditEventModal/AddVenueModal';
+import CategorySelector from '../../shared/CategorySelector/CategorySelector';
+import { GetAllCategory, getAllVenues } from '../../../http';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 
 const AddEvent = () => {
     const formRef = useRef(null);
     const editorRef = useRef(null)
+    const venueEditorRef = useRef(null)
     const [loading, setLoading] = useState(false)
     const [datetype, setDatetype] = useState(true);
     const [selectedDays, setSelectedDays] = useState([]);
@@ -35,6 +36,7 @@ const AddEvent = () => {
 
         const formData = new FormData(formRef.current);
         formData.append('content', editorRef.current.value);
+        formData.append('venueInformation', venueEditorRef.current.value)
         formData.append('days', JSON.stringify(selectedDays))
         formData.append('location', location);
         formData.append('venueDescription', venueDescription);
@@ -308,11 +310,9 @@ const AddEvent = () => {
                     </div>
                 </label>
                 <JoditEditor
-                    ref={editorRef}
-                    value={venueDescription}
+                    ref={venueEditorRef}
                     config={config}
                     tabIndex={1}
-                    onBlur={newContent => setVenueDescription(newContent)}
                 />
             </div>
 
@@ -447,7 +447,7 @@ const AddEvent = () => {
                 </div>
             </div>
 
-            <div className="flex w-full">
+            {/* <div className="flex w-full">
                 <span className='ml-2 text-sm font-semibold  dark:text-white ml-0'>
                     Ticket Sales
                 </span>
@@ -559,7 +559,7 @@ const AddEvent = () => {
                         + Add term and condition
                     </button>
                 )}
-            </div>
+            </div> */}
             <button type="submit">Submit</button>
         </form>
     )
