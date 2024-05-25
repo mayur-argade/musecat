@@ -4,7 +4,14 @@ const notificationService = require('../services/notification-service')
 
 exports.getVendorNotification = async (req, res) => {
 
+    const data = {
+        receiverid: req.user._id,
+        status: "read"
+    }
+
     try {
+        const updatedResult = await notificationService.updateNotification(data)
+
         const notifications = await notificationService.getAllNotifications({ receiverid: req.user._id })
 
         let messages = [];
@@ -140,13 +147,12 @@ exports.sendNotificationToUsers = async (req, res) => {
 
         if (vendor) {
             // Fetch all user IDs from the database
-            const allUserIds = await VendorModel.find({ isVerified: true, role: 'vendor' }, '_id');
+            const allVendorIds = await VendorModel.find({ isVerified: true, role: 'vendor' }, '_id');
 
-            const stringIds = allUserIds.map(vendor => vendor._id.toString());
-            // console.log(stringIds);
+            console.log(allVendorIds)
 
             // Create notifications for each user
-            const notificationPromises = stringIds.map(async (userId) => {
+            const notificationPromises = allVendorIds.map(async (userId) => {
                 const userNotification = {
                     senderid: req.user._id,
                     receiverid: userId._id.toString(),

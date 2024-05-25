@@ -171,7 +171,12 @@ const eventSchema = new mongoose.Schema({
     archived: {
         type: Boolean,
         default: false
-    }
+    },
+
+    draft: {
+        type: Boolean,
+        default: false
+    },
 },
     {
         timestamps: true

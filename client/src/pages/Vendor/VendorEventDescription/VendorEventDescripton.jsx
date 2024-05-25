@@ -285,7 +285,7 @@ const VendorEventDescripton = () => {
             if (response.data.eventDetails.date.recurring.endDate) {
                 endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`
             } else {
-                endDateRecurr = 'untill offer lasts'
+                endDateRecurr = ''
             }
 
             if (days.length === 1) {
@@ -304,10 +304,10 @@ const VendorEventDescripton = () => {
             const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
             if (response.data.eventDetails.date.dateRange.endDate) {
                 if (startDate.isSame(endDate)) {
-                    showDateField = `On ${startDate.format('ddd,DD MMMM YYYY')}`;
+                    showDateField = `On ${startDate.format('dddd, DD MMMM YYYY')}`;
                 } else {
                     if (response.data.eventDetails.showEndDate == false) {
-                        showDateField = `From ${startDate.format('ddd,DD MMMM YYYY')} untill offer lasts`;
+                        showDateField = `On ${startDate.format('dddd, DD MMMM YYYY')} `;
                     } else {
                         showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
                     }
@@ -316,7 +316,7 @@ const VendorEventDescripton = () => {
             }
             // 2. Start date - end date 
             else {
-                showDateField = `From ${moment().format('ddd,DD MMMM YYYY')} untill offer lasts`;
+                showDateField = `From ${moment().format('ddd,DD MMMM YYYY')} `;
             }
         }
         if (response.data.eventDetails && response.data.eventDetails.categories) {
@@ -478,7 +478,7 @@ const VendorEventDescripton = () => {
                                                             // hover-trigger flex items-center shadow-md shadow-gray-500 text-black text-sm hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:ring-[#C0A04C] font-medium rounded-md text-sm md:py-1 pl-2 pr-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-white dark:focus:ring-[#C0A04C]
                                                             className='flex justify-center align-middle items-center space-x-2 bg-[#C0A04C] hover:bg-[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#A48533] px-2 rounded-md shadow-md shadow-gray-500 font-medium text-sm md:py-1'>
                                                             <img className='md:h-3 h-3 mr-1 ' src="/images/icons/share.svg" alt="" />
-                                                            Share
+                                                            <span className='ml-0 text-white'>Share</span>
                                                         </button>
                                                         {isDropdownOpen && (
                                                             <div

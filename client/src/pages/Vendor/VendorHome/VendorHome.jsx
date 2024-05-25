@@ -4,23 +4,28 @@ import PastPurchaseCard from '../../../components/Cards/PastPurchaseCard'
 import VendorOfferCard from '../../../components/Cards/VendorOfferCard'
 import Footer from '../../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
-import { VendorHomeApi, VendorUnverifiedEvents } from '../../../http/index'
+import { VendorHomeApi, VendorUnverifiedEvents, GetVendorUnreadNotification } from '../../../http/index'
 import AddEventModal from '../../../components/EditEventModal/AddEventModal'
 import AddOfferModal from '../../../components/EditEventModal/AddOfferModal'
 import VendorUnverifedCard from '../../../components/Cards/VendorUnverifedCard'
+import toast, { Toaster } from 'react-hot-toast'
 
 const VendorHome = () => {
 
     document.title = 'Vendor ~ Home'
 
     const [response, setReponse] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const [showAddEvent, setShowAddEvent] = useState(false)
     const [showAddOffer, setShowAddOffer] = useState(false)
     const [unverifiedEvents, setUnverifiedEvents] = useState({})
     const [eventsLoading, setEventsLoading] = useState(false)
     const closeModal = () => {
-        setShowAddEvent(false);
-        document.body.style.overflow = 'auto'; // Reset overflow
+        const confirm = window.confirm("Do you really want to go back? You will lose your progress.")
+        if (confirm) {
+            setShowAddEvent(false);
+            document.body.style.overflow = 'auto'; // Reset overflow
+        }
     };
 
     const handleClick = () => {
@@ -28,7 +33,10 @@ const VendorHome = () => {
         document.body.style.overflow = 'hidden'; // Prevent scrolling
     };
     const closeOfferModal = () => {
-        setShowAddOffer(false)
+        const confirm = window.confirm("Do you really want to go back? You will lose your progress.")
+        if (confirm) {
+            setShowAddOffer(false)
+        }
     }
 
 
@@ -36,10 +44,19 @@ const VendorHome = () => {
         setShowAddOffer(true)
     }
 
+
+
     useEffect(() => {
         const fetchdata = async () => {
             try {
                 const { data } = await VendorHomeApi()
+                const notificationCount = await GetVendorUnreadNotification();
+                console.log(notificationCount)
+                if (notificationCount.data.data > 0) {
+                    toast('You have a new Notification', {
+                        icon: '🔔',
+                    });
+                }
                 // console.log(data.data)
                 setReponse(data)
             } catch (error) {
@@ -61,6 +78,9 @@ const VendorHome = () => {
         }
 
         fetchEvents()
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
     }, []);
 
 
@@ -69,7 +89,6 @@ const VendorHome = () => {
             <div className="z-50 sticky top-0 shadow-lg">
                 <Navbar />
             </div>
-
             <section className='lg:mr-48 lg:ml-48 mt-5 ml-6 mr-6'>
                 <div className="grid md:grid-cols-2 header">
                     <div className='drop-shadow-xl'>
@@ -198,15 +217,18 @@ const VendorHome = () => {
                 <div className="fixed inset-0 flex justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
                     <div className="relative rounded-lg ">
                         <AddEventModal
+                            setIsLoading={setIsLoading}
                             isOpen={showAddEvent}
                             onClose={closeModal} />
                         {/* Close button */}
-                        <button
-                            onClick={closeModal}
-                            className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                        >
-                            <img src="/images/icons/cancel-icon.png" alt="" />
-                        </button>
+                        {!isLoading &&
+                            <button
+                                onClick={closeModal}
+                                className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            >
+                                <img src="/images/icons/cancel-icon.png" alt="" />
+                            </button>
+                        }
                     </div>
                 </div>
             )}

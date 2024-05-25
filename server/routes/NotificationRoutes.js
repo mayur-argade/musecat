@@ -10,5 +10,6 @@ router.route('/notification/delete').delete(isLoggedin, isVerified, clearNotific
 router.route('/user/notification/all').patch(isUserLoggedin, getUserNotification)
 router.route('/user/notification/delete').delete(isUserLoggedin, clearUserNotification)
 router.route('/notification/count').get(isUserLoggedin, countunreadNotifications)
+router.route('/vendor/notification/count').get(isLoggedin, countunreadNotifications)
 router.route('/notification/send-notification').post(isLoggedin, sendNotificationToUsers)
 module.exports = router;

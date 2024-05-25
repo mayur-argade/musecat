@@ -11,60 +11,92 @@ const EventModel = require('../models/EventModel')
 const ics = require('ics')
 const { writeFileSync } = require('fs');
 const { transporter } = require('../services/mail-service')
-
+const vendorService = require('../services/vendor-service')
+const VendorModel = require('../models/VendorModel')
+const notificationService = require('../services/notification-service')
 // vendor side
 exports.createEvent = async (req, res) => {
     let { title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
-    } = req.body
+    } = req.body;
 
+    console.log('Request body:', req.body);
 
     if (!title || !displayPhoto || !shortDescription || !description || !location || !date || !eventCategory) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: "Required fields are missing"
-        })
+        });
     }
 
-
-    let event = {}
+    let event = {};
 
     try {
-        let uploadedEventPhoto = ''
+        let uploadedEventPhoto = '';
         if (displayPhoto) {
-            uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
-                folder: "muscat/events",
-            })
-            // console.log(uploadedEventPhoto)
-        }
-
-        let uploadedSeatingMap = ''
-
-        if (seatingMap) {
-            uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
-                folder: "muscat/events",
-            })
-        }
-
-        let uploadedBanner = ''
-        if (banner) {
-            uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
-                folder: "muscat/events",
-            })
-        }
-
-        let uploadResult;
-        let additinalPhotos = []
-        if (additinalImages && additinalImages.length != 0) {
-            for (let i = 0; i < additinalImages.length; i++) {
-                // console.log(additinalImages[i])
-                uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+            try {
+                uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
                     folder: "muscat/events",
-                })
-                additinalPhotos.push(uploadResult.secure_url)
+                    transformation: [{ format: 'webp' }]
+                });
+            } catch (err) {
+                console.error('Error uploading display photo:', err);
+                return res.status(400).json({
+                    success: false,
+                    data: "Failed to upload display photo"
+                });
             }
         }
 
-        // console.log(additinalPhotos)
+        let uploadedSeatingMap = '';
+        if (seatingMap && seatingMap !== 'null' && seatingMap !== '') {
+            try {
+                uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
+                    folder: "muscat/events",
+                    transformation: [{ format: 'webp' }]
+                });
+            } catch (err) {
+                console.error('Error uploading seating map:', err);
+                return res.status(400).json({
+                    success: false,
+                    data: "Failed to upload seating map"
+                });
+            }
+        }
+
+        let uploadedBanner = '';
+        if (banner && banner !== 'null' && banner !== '') {
+            try {
+                uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
+                    folder: "muscat/events",
+                    transformation: [{ format: 'webp' }]
+                });
+            } catch (err) {
+                console.error('Error uploading banner:', err);
+                return res.status(400).json({
+                    success: false,
+                    data: "Failed to upload banner"
+                });
+            }
+        }
+
+        let additinalPhotos = [];
+        if (additinalImages && additinalImages.length != 0) {
+            try {
+                for (let i = 0; i < additinalImages.length; i++) {
+                    const uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
+                        folder: "muscat/events",
+                        transformation: [{ format: 'webp' }]
+                    });
+                    additinalPhotos.push(uploadResult.secure_url);
+                }
+            } catch (err) {
+                console.error('Error uploading additional images:', err);
+                return res.status(400).json({
+                    success: false,
+                    data: "Failed to upload additional images"
+                });
+            }
+        }
 
         function isDinnerCategoryExists(categories) {
             for (let i = 0; i < categories.length; i++) {
@@ -76,9 +108,7 @@ exports.createEvent = async (req, res) => {
         }
 
         if (date.type != 'dateRange' && date.recurring.days.length > 0 && isDinnerCategoryExists(eventCategory)) {
-            // const dinnerCategoryObject = eventCategory.find(category => category.name.toLowerCase().includes("dinner"));
             const recurringDays = date.recurring.days;
-
             recurringDays.forEach(day => {
                 eventCategory.push({
                     name: day.charAt(0).toUpperCase() + day.slice(1) + " Dinner",
@@ -87,7 +117,7 @@ exports.createEvent = async (req, res) => {
             });
         }
 
-        console.log(eventCategory)
+        console.log(eventCategory);
 
         const data = {
             title: title,
@@ -96,25 +126,18 @@ exports.createEvent = async (req, res) => {
             date: date,
             location: location,
             venueInfo: venueInfo,
-
             eventCategory: eventCategory,
             features: features,
-
             whatsapp: whatsapp,
             email: email,
             facebook: facebook,
             instagram: instagram,
             phoneNo: phone,
             website: website,
-
             categories: categories,
-
             termsAndConditions: termsAndConditions,
-
             custom: custom,
-
             vendorid: req.user._id,
-
             verified: verified,
             displayPhoto: uploadedEventPhoto.secure_url,
             banner: uploadedBanner.secure_url,
@@ -124,49 +147,55 @@ exports.createEvent = async (req, res) => {
             type: 'event',
             showEndDate: showEndDate,
             discountOnApp: discountOnApp
-        }
+        };
 
-        console.log(date)
+        console.log(date);
 
-        event = await eventService.createEvent(data)
+        event = await eventService.createEvent(data);
 
         let categoryData;
         for (let i = 0; i < eventCategory.length; i++) {
             const categoryURL = eventCategory[i].categoryURL;
 
-            // Check in main categories
-            categoryData = await categoryService.findCategory({
-                categoryURL: categoryURL
-            });
-
-
-
+            categoryData = await categoryService.findCategory({ categoryURL: categoryURL });
             if (!categoryData) {
-                // If not found in main categories, search in subcategories of all categories
                 categoryData = await categoryService.findSubcategory(categoryURL);
-
             }
 
             if (categoryData && !categoryData.events.includes(event._id)) {
                 categoryData.events.push(event._id);
-                categoryData.save()
+                categoryData.save();
             }
         }
 
 
-        res.status(statusCode.SUCCESS.code).json({
+        const allUserIds = await VendorModel.find({ role: 'admin' }, '_id');
+
+        // Create notifications for each user
+        const notificationPromises = allUserIds.map(async (userId) => {
+            const notification = {
+                senderid: req.user._id,
+                receiverid: userId._id.toString(),
+                msg: `New event ${title} has been added by ${req.user.firstname} and requires your verification.`
+            };
+            // console.log(userId)
+            return await notificationService.createNotification(notification);
+        });
+
+        res.status(200).json({
             success: true,
             data: event
-        })
+        });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
             success: false,
             data: "Internal server error"
-        })
+        });
     }
-}
+};
+
 
 exports.updateEvent = async (req, res) => {
     let { eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
