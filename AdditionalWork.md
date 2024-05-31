@@ -1,39 +1,54 @@
-User Login
-- User verification link through Email
+Vendor
+- Vendor Home
+    - Check ongoing and unverified events 
 
-User/Vendor Reset Password
-- Whole functionality and UI
+- Vendor Event Description
+    - Date field setting
+    - If Vendor Edits the event then make it unverified
+    - Send notification to the admin if vendor edits the event
+    - Show Link of photos which vendor is using. 
 
-Home 
-- Dark mode for website
-- Navbar categorical dropdown with subcategories nested dropdown
-- Tabbar Component with categories and nested subcategories
+- Vendor Hosted Events
+    - All ongoing events
+    - All archived events
+    - All expired events
+    - All unverified events
+    - search query
+    - React window
+    - skeleton changes
 
-Popular Categories
-- Initially it should be showing todays events later changed to it should show all events and after clicking on day it should show events count of that focused day
+-----------------------------------In progress---------------------------------------
+- Vendor signup
+    - Give Option to select the country code
+    - make fields bigger and also size
+    
+- Vendor Profile
+    - If edits information by the vendor then notify admin about it 
 
-Upcoming Events (currently What's On)
-- Dynamic Calender which will highlight events
-- Initially it should be showing todays events later changed to it should show all events and after clicking on day it should show events count of that focused day
-- Upcoming Event card Book seat button Logic/Redirection changes [Call now and Book Ticket]
-- Upcoming Card aspect ratio changes
+- Vendor Booked Tickets
+    - Show booked tickets
+    - Cancel option for the tickets
+    - refund check
+    - Add data about the refund and also show complete information about the ticket to the vendor
 
-Editor's Pick
-- Changed to MWt's Favorites
+------------------------------------Done----------------------------------------------
 
-Where To?
-- Dynamically fetch Mentioned categories and after clicking on view more extend the menu and fetch other categories
+- Vendor Notification
+    - Get all notifications
+    - clear all notifications
 
+- Vendor Activation
+    - Show this if vendor is not verified    
 
--
+- Vendor Signup
+    - Check all the fields and conditions (done)
+    - check mail and send notification to the admin about new profile
 
+- Vendor Signin
+    - Create a resend email functionality
+    - add expiry time to it
+    
+- Vendor Profile
+    - Profile photo 
+    - undefined message
 
-Events page
-    Filters
-        1. Search Query
-        2. Features & Distance & Categories
-        3. Date
-        4. Map
-
-Main filtering based on category
-Date and search query

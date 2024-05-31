@@ -13,13 +13,19 @@ const VendorNotification = () => {
 
     const [response, setResponse] = useState({});
     const [refresh, setRefresh] = useState(false)
+    const [showClearButton, setShowClearButton] = useState(false)
 
     useEffect(() => {
         const fetchdata = async () => {
             try {
                 const { data } = await GetVendorNotification()
-                console.log(data.data)
+                // console.log("notification data",data.data)
                 setResponse(data)
+                if (data.data.length > 0) {
+                    setShowClearButton(true)
+                }else {
+                    setShowClearButton(false)
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -47,6 +53,7 @@ const VendorNotification = () => {
             console.error(error);
         }
     };
+
     return (
         <div className='dark:bg-[#2c2c2c] dark:text-white'>
             <Navbar />
@@ -59,7 +66,11 @@ const VendorNotification = () => {
                         </button>
                         <p className='text-xl font-bold'>Notification center</p>
                     </div>
-                    <button type="button" onClick={() => deleteNotification()} class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0">Clear All</button>
+                    {
+                        showClearButton && (
+                            <button type="button" onClick={() => deleteNotification()} class="text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#C0A04C] dark:hover:bg-[#A48533] dark:focus:ring-0">Clear All</button>
+                        )
+                    }
                 </div>
                 <div className='w-full flex flex-col space-y-4'>
                     {

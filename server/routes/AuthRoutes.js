@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { isLoggedin, isUserLoggedin, requiredRole } = require("../middleware/authMiddleware")
 
-const { vendorFacebookLogin, vendorGoogleLogin, addToCalender, vendorRegister, resendVerificationMail, vendorLogin, register, clientLogin, refresh, logout, verify, clientGoogleLogin, sendMailForgotPassword, resetpassword, vendorEmailVerify, sendForgetMailToVendor, resetVendorPassword, facebookLogin, GetStreamUserToken, GetStreamVendorToken } = require('../controllers/AuthController')
+const { vendorResendVerification, vendorFacebookLogin, vendorGoogleLogin, addToCalender, vendorRegister, resendVerificationMail, vendorLogin, register, clientLogin, refresh, logout, verify, clientGoogleLogin, sendMailForgotPassword, resetpassword, vendorEmailVerify, sendForgetMailToVendor, resetVendorPassword, facebookLogin, GetStreamUserToken, GetStreamVendorToken } = require('../controllers/AuthController')
 
 router.route('/user/stream-token').patch(isUserLoggedin, GetStreamUserToken)
 router.route('/vendor/stream-token').patch(isLoggedin, GetStreamVendorToken)
@@ -28,6 +28,7 @@ router.route('/vendor/verify/:token').patch(vendorEmailVerify)
 router.route('/vendor/forget-password/send-mail').patch(sendForgetMailToVendor)
 router.route('/vendor/reset-password/:token').patch(resetVendorPassword)
 router.route('/vendor/logout').post(logout)
+router.route('/vendor/resend-verification-link').post(vendorResendVerification)
 
 router.route('/admin/register').post(isUserLoggedin, requiredRole("admin"), vendorRegister);
 

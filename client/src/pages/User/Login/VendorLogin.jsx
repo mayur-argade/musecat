@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-
+import VendorResendDialogueBox from '../../../components/ResendDialogueBox/VendorResendDialogueBox';
 
 const VendorLogin = () => {
     const fb_clientId = process.env.REACT_APP_FB_CLIENT_ID
@@ -15,7 +15,7 @@ const VendorLogin = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
-
+    const [showVerificationPopup, setShowVerificationPopup] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -86,7 +86,10 @@ const VendorLogin = () => {
                 navigate('/vendor/home');
             }
         } catch (error) {
-            // console.log(error.response.data.data)
+            console.log(error.response.data.data)
+            if (error.response.status == 400 || error.response.data.data == "Verify your Email address") {
+                setShowVerificationPopup(true)
+            }
             toast.error(error.response.data.data)
             console.log(error)
         }
@@ -163,6 +166,22 @@ const VendorLogin = () => {
                     </button>
                 </div>
 
+                {
+                    showVerificationPopup && (
+                        <div>
+                            <div>
+                                <div className='calendar-overlay'>
+                                    <div className='px-3 relative text-black'>
+                                        <div className='absolute top-0 right-0'>
+                                            <button onClick={() => setShowVerificationPopup(false)} className='text-white hover:underline'><img className=' bg-white rounded-full h-7 cursor-pointer' src="/images/icons/cancel-icon-new.png" alt="" /></button>
+                                        </div>
+                                        <VendorResendDialogueBox onClose={() => setShowVerificationPopup(false)} email={email} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
             </section>
 
         </section>

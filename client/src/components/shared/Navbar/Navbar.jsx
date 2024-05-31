@@ -1,7 +1,7 @@
 import './navbar.css'
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
-import { clientLogout, vendorLogout, GetNotificationCount, GetAllCategory } from '../../../http';
+import { clientLogout, vendorLogout, GetNotificationCount, GetAllCategory, GetVendorUnreadNotification } from '../../../http';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../../store/authSlice'
@@ -12,6 +12,7 @@ import queryString from 'query-string';
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     const [expandedCategory, setExpandedCategory] = useState(null);
+    const [vendorUnread, setVendorUnread] = useState(false)
     const navigate = useNavigate();
 
     const handleCategoryClick = (categoryURL, hasSubCategories) => {
@@ -150,11 +151,22 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             }
         }
 
+        const getNotificationCountVendor = async () => {
+            const notificationCount = await GetVendorUnreadNotification();
+            console.log(notificationCount)
+            if (notificationCount.data.data > 0) {
+                setVendorUnread(true)
+            }
+        }
+
         if (isAuth == true && user.type == 'user') {
             getNotificationCountFunction()
         }
+        else if (isAuth == true && user.role == 'vendor') {
+            getNotificationCountVendor()
+        }
 
-    }, [categoryName])
+    }, [isAuth, user])
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -258,13 +270,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                                 window.location.pathname.includes('/vendor/')
                                                                     ?
                                                                     <>
-                                                                        <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white align-middle items-center'>
-                                                                            <img src="/images/icons/log-out.svg" className='h-4 mr-2 ' alt="" />
-                                                                            logout
-                                                                        </button>
                                                                         <button onClick={() => navigate('/vendor/hostedevents')} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white align-middle items-center'>
                                                                             <img src="/images/icons/hostedevents.png" className='h-4 mr-2 ' alt="" />
                                                                             Hosted Events
+                                                                        </button>
+                                                                        <button onClick={funVendorLogout} className='flex w-full block px-4 py-2 hover:bg-gray-100 text-left dark:hover:bg-gray-600 dark:hover:text-white align-middle items-center'>
+                                                                            <img src="/images/icons/log-out.svg" className='h-4 mr-2 ' alt="" />
+                                                                            logout
                                                                         </button>
                                                                     </>
                                                                     :
@@ -358,8 +370,16 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                                             </li>
                                             <li>
-                                                <Link to='/vendor/notification' className={`${window.location.pathname == '/vendor/notification' ? 'font-bold' : ''}`}>
-                                                    <a href="#" className="block py-2 pl-3 pr-4  md:p-0  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><span className='text-sm'>Notification</span></a>
+                                                <Link to='/vendor/notification' className={`${window.location.pathname === '/vendor/notification' ? 'font-bold' : ''}`}>
+                                                    <a href="#" className="relative block py-2 pl-3 pr-4 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                                                        <span className='text-sm'>Notification</span>
+                                                        {vendorUnread &&
+                                                            <>
+                                                                <span className="absolute top-0 -right-2 mt-1 mr-1 h-1 w-1 bg-red-600 rounded-full animate-ping"></span>
+                                                                <span className="absolute top-0 -right-2 mt-1 mr-1 h-1 w-1 bg-red-600 rounded-full"></span>
+                                                            </>
+                                                        }
+                                                    </a>
                                                 </Link>
                                             </li>
                                             <li>
@@ -529,7 +549,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                                                                 const dayName = daysOfWeek[i];
 
                                                                                 return (
-                                                                                    <div className='ml-4 ' key={i} onClick={() => navigate(`/category/${cat.categoryURL }?subcategory=${subCategory.name}&day=${dayName}`)}>
+                                                                                    <div className='ml-4 ' key={i} onClick={() => navigate(`/category/${cat.categoryURL}?subcategory=${subCategory.name}&day=${dayName}`)}>
                                                                                         <span className='font-sm'>{dayName} Dinner</span>
                                                                                     </div>
                                                                                 );

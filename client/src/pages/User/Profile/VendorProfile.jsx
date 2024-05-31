@@ -18,7 +18,7 @@ const Profile = () => {
     const [photo, setPhoto] = useState('')
     const [selectedPhoto, setSelectedPhoto] = useState(null)
     const [formChanged, setFormChanged] = useState(false);
-
+    const [refresh, setRefresh] = useState(false)
 
     // Function to handle input change
     const handleInputChange = () => {
@@ -31,40 +31,68 @@ const Profile = () => {
                 const { data } = await vendorProfileApi()
                 console.log(data.data)
                 setReponse(data)
-                setFirstname(data.data.firstname)
-                setLastname(data.data.lastname)
-                setEmail(data.data.email)
+                // setFirstname(data.data.firstname)
+                // setLastname(data.data.lastname)
+                // setEmail(data.data.email)
             } catch (error) {
                 console.log(error)
             }
         }
 
         fetchdata()
-    }, []);
+    }, [refresh]);
 
     async function handleUpdate() {
         if (!formChanged) {
             toast.error("No changes made.");
             return;
         }
-        try {
-            const updatedata = {
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                photo: photo
-            }
-            setLoading(true)
-            const { data } = await VendorUpdateProfileApi(updatedata)
-            if (data.success == true) {
-                toast.success("vendor updated Successfully")
-                window.location.reload()
-            }
-            console.log(data)
 
+        try {
+            const updatedData = {};
+
+            // Update object only with changed values
+            if (firstname !== '') {
+                updatedData.firstname = firstname;
+            }
+            if (lastname !== '') {
+                updatedData.lastname = lastname;
+            }
+            if (email !== '') {
+                updatedData.email = email;
+            }
+            if (photo !== null) {  // Assuming a null value for unchanged photo
+                updatedData.photo = photo;
+            }
+
+            setLoading(true);
+            const { data } = await VendorUpdateProfileApi(updatedData);
+
+            if (data.success) {
+                toast.success("Vendor updated Successfully");
+                setRefresh(!refresh);
+
+                // Clear only changed fields
+                if (updatedData.firstname) {
+                    setFirstname('');
+                }
+                if (updatedData.lastname) {
+                    setLastname('');
+                }
+                if (updatedData.email) {
+                    setEmail('');
+                }
+                if (updatedData.photo) {
+                    setPhoto(null);
+                }
+            }
+
+            console.log(data);
         } catch (error) {
-            console.log(error)
-            toast.error(error.response.data.data)
+            console.error(error);
+            toast.error(error.response.data.data);
+        } finally {
+            setLoading(false); // Ensure loading state is reset even on errors
         }
     }
 
@@ -140,8 +168,13 @@ const Profile = () => {
                                 <div className="relative flex align-middle">
                                     <input
                                         type="text"
+                                        value={firstname}
                                         className='dark:bg-[#454545] dark:placeholder:text-white border-none ring-0 dark:text-white w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
-                                        onChange={(e) => setFirstname(e.target.value)}
+                                        onChange={(e) => {
+                                            setFirstname(e.target.value);
+                                            handleInputChange(); // Call handleInputChange here
+                                        }}
+                                        // onChange={(e) => setFirstname(e.target.value)}
                                         placeholder='John'
                                     />
                                     <button onClick={handleUpdate} className='h-6 absoulte right-0'>
@@ -154,8 +187,13 @@ const Profile = () => {
                                 <div className="relative flex align-middle">
                                     <input
                                         type="text"
+                                        value={lastname}
                                         className='dark:bg-[#454545] dark:placeholder:text-white border-none ring-0 dark:text-white w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200  outline-0 text-sm font-medium text-black'
-                                        onChange={(e) => setLastname(e.target.value)}
+                                        onChange={(e) => {
+                                            setLastname(e.target.value);
+                                            handleInputChange(); // Call handleInputChange here
+                                        }}
+                                        // onChange={(e) => setLastname(e.target.value)}
                                         placeholder='John'
                                     />
                                     <button onClick={handleUpdate} className='h-6 absoulte right-0'>
@@ -172,8 +210,13 @@ const Profile = () => {
                             <div className="relative flex w-full">
                                 <input
                                     type="text"
+                                    value={email}
                                     className='dark:bg-[#454545] dark:placeholder:text-white border-none ring-0 dark:text-white  w-full border bg-neutral-200 border-neutral-200 focus:border-neutral-200 focus:ring-neutral-200 outline-0 text-sm font-medium text-black'
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        handleInputChange(); // Call handleInputChange here
+                                    }}
+                                    // onChange={(e) => setEmail(e.target.value)}
                                     placeholder='John'
                                 />
                                 <button onClick={handleUpdate} className='h-6 absoulte right-0'>

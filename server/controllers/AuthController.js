@@ -12,7 +12,7 @@ const { google } = require('googleapis')
 const moment = require('moment');
 const { userSignupEmail, vendorSignupEmail, resetPasswordLink } = require('../data/emailTemplates');
 const StreamChat = require('stream-chat').StreamChat;
-
+const VendorModel = require('../models/VendorModel')
 const serverClient = StreamChat.getInstance(process.env.STREAM_API_KEY, process.env.STREAM_API_SECRET);
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
@@ -894,8 +894,6 @@ exports.vendorRegister = async (req, res) => {
         }
 
         let uploadedLogo = ''
-        let uploadedCrImage = ''
-
 
         if (logo) {
             uploadedLogo = await cloudinary.v2.uploader.upload(logo, {
@@ -905,7 +903,13 @@ exports.vendorRegister = async (req, res) => {
 
         let data;
 
-        const token = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+        const randomToken = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+
+        // Calculate expiry time in milliseconds
+        const expiryTime = Date.now() + (10 * 60 * 1000);
+
+        // Encode expiry time in the token
+        const tokenWithExpiry = `${randomToken}.${expiryTime}`;
 
         if (role == "admin") {
             data = {
@@ -934,13 +938,15 @@ exports.vendorRegister = async (req, res) => {
                 crNo: crNo,
                 logo: uploadedLogo.secure_url,
                 crImage: crImage,
-                emailVerificationToken: token
+                emailVerificationToken: tokenWithExpiry
             }
         }
 
         user = await vendorService.createVendor(data)
 
         user.password = null
+
+        return await notificationService.createNotification(notification);
 
         const mailOptions = {
             from: 'argademayur2002@gmail.com',
@@ -1209,7 +1215,21 @@ exports.vendorEmailVerify = async (req, res) => {
         const verifiedUser = await vendorService.findVendor({ _id: vendor._id })
 
         if (verifiedUser.emailVerificationToken == null && verifiedUser.emailVerified == true) {
+            const allUserIds = await VendorModel.find({ role: 'admin' }, '_id');
+
+            // Create notifications for each user
+            const notificationPromises = allUserIds.map(async (userId) => {
+                const notification = {
+                    senderid: req.user._id,
+                    receiverid: userId._id.toString(),
+                    msg: `New vendor registration: Please verify ${verifiedUser.firstname} ${verifiedUser.lastname}`
+                };
+                // console.log(userId)
+                return await notificationService.createNotification(notification);
+            });
+
             return res.status(statusCode.SUCCESS.code).json("Account Verification Successfull")
+
         } else {
             return res.status(statusCode.INTERNAL_SERVER_ERROR.code).json("Failed to activate user Contact customer service")
         }
@@ -1337,4 +1357,75 @@ exports.resetVendorPassword = async (req, res) => {
         })
     }
 
+}
+
+exports.vendorResendVerification = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                data: "Bad Request"
+            })
+        }
+        const vendor = await vendorService.findVendor({ email: email })
+
+        if (!vendor) {
+            return res.status(404).json({
+                success: false,
+                data: "User Not found"
+            })
+        }
+
+        if (vendor.isVerified == false) {
+            const randomToken = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
+
+            // Calculate expiry time in milliseconds
+            const expiryTime = Date.now() + (10 * 60 * 1000);
+
+            // Encode expiry time in the token
+            const tokenWithExpiry = `${randomToken}.${expiryTime}`;
+
+            const updateToken = await vendorService.updateVendor(
+                {
+                    _id: vendor._id,
+                    emailVerificationToken: tokenWithExpiry
+                }
+            )
+
+            console.log("update response", updateToken)
+
+            const mailOptions = {
+                from: 'argademayur2002@gmail.com',
+                to: email,
+                subject: 'Account Verification for Muscat',
+                html: vendorSignupEmail(vendor.firstname, vendor.lastname, tokenWithExpiry),
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res
+                        .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+                            success: false,
+                            data: "failed to send a email, Please check your input email"
+                        });
+                } else {
+                    return res.status(statusCode.BAD_REQUEST.code).json({
+                        success: false,
+                        data: "Verfication link has been sent to your email Address"
+                    }
+                    )
+                }
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Account is Already verified"
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }

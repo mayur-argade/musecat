@@ -5,7 +5,7 @@ const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../mid
 
 const { getUserNotification, getVendorNotification, clearNotifications, clearUserNotification, countunreadNotifications, sendNotificationToUsers } = require('../controllers/NotifcationController')
 
-router.route('/notification/all').get(isLoggedin, isVerified, getVendorNotification)
+router.route('/notification/all').patch(isLoggedin, isVerified, getVendorNotification)
 router.route('/notification/delete').delete(isLoggedin, isVerified, clearNotifications)
 router.route('/user/notification/all').patch(isUserLoggedin, getUserNotification)
 router.route('/user/notification/delete').delete(isUserLoggedin, clearUserNotification)

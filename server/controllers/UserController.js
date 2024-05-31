@@ -34,6 +34,12 @@ exports.updateVendorProfile = async (req, res) => {
             })
         }
 
+        let statusVerified = req.user.isVerified;
+        let emailVerified = req.user.emailVerified;
+        if (req.user.email != email) {
+            emailVerified = false
+            statusVerified = false
+        }
         const data = {
             _id: req.user._id,
             firstname: firstname,
@@ -47,7 +53,10 @@ exports.updateVendorProfile = async (req, res) => {
             companyDisplayName: companyDisplayName,
             crNo: crNo,
             logo: uploadedLogo.secure_url,
-            crImage: uploadedCrImage.secure_url
+            crImage: uploadedCrImage.secure_url,
+            isVerified: statusVerified,
+            emailVerified: emailVerified
+
         }
 
         const vendor = await vendorService.updateVendor(data)

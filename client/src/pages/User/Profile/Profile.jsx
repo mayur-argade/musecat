@@ -22,6 +22,7 @@ const Profile = () => {
     const [email, setEmail] = useState('')
     const [selectedPhoto, setSelectedPhoto] = useState(null)
     const [savedCard, setSavedCards] = useState([])
+    const [cardLoading, setCardLoading] = useState(false)
     const [formChanged, setFormChanged] = useState(false);
     const [refresh, setRefresh] = useState(false)
 
@@ -37,15 +38,18 @@ const Profile = () => {
                 console.log(data.data)
                 setReponse(data)
 
+                setCardLoading(true)
                 const { data: res } = await getCustomersSavedCards()
 
                 console.log(res)
                 setSavedCards(res.data)
+                setCardLoading(false)
                 setFirstname(data.data.firstname)
                 setLastname(data.data.lastname)
                 setEmail(data.data.email)
             } catch (error) {
                 console.log(error)
+                setCardLoading(false)
                 toast.error(error.response.data.data)
                 if (error.response.request.status == 401) {
                     navigate('/login')
@@ -155,24 +159,48 @@ const Profile = () => {
                                         <div className="right">
                                             <div className="flex-col md:flex-row flex md:space-x-20  md:justify-center md:items-center w-52">
                                                 <div>
+                                                    <style>
+                                                        {`
+          .placeholder-uppercase::placeholder {
+            text-transform: uppercase;
+          }
+        `}
+                                                    </style>
                                                     <label for="first_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">First name</label>
                                                     {
                                                         response.data != null
                                                             ?
-                                                            <input type="text" id="first_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
-                                                                placeholder={`${response.data.firstname}`} disabled />
+                                                            <input
+                                                                type="text"
+                                                                id="first_name"
+                                                                className="placeholder-uppercase bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1"
+                                                                placeholder={response.data.firstname ? response.data.firstname : ''}
+                                                                disabled
+                                                            />
                                                             :
                                                             <input type="text" id="first_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 " disabled />
 
                                                     }
                                                 </div>
                                                 <div>
+                                                    <style>
+                                                        {`
+          .placeholder-uppercase::placeholder {
+            text-transform: uppercase;
+          }
+        `}
+                                                    </style>
                                                     <label for="last_name" class="block mb-2 text-xs font-medium text-gray-900 dark:text-white">Last name</label>
                                                     {
                                                         response.data != null
                                                             ?
-                                                            <input type="text" id="last_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
-                                                                placeholder={`${response.data.lastname}`} disabled />
+                                                            <input
+                                                                type="text"
+                                                                id="first_name"
+                                                                className="placeholder-uppercase bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1"
+                                                                placeholder={response.data.lastname ? response.data.lastname : ''}
+                                                                disabled
+                                                            />
                                                             :
                                                             <input type="text" id="last_name" class="bg-neutral-200 dark:bg-[#454545] dark:placeholder:text-white border-none text-gray-900 text-sm rounded-lg block w-52 md:w-full p-1 "
                                                                 disabled />
@@ -256,11 +284,16 @@ const Profile = () => {
                                 </div>
                             </div>
 
+
                             <div className="savedCards mt-10 ">
-                                <div className="text-2xl">Saved Cards</div>
+                                {
+                                    !cardLoading && savedCard.length > 0 && (
+                                        <div className="text-2xl">Saved Cards</div>
+                                    )
+                                }
                                 <div className="mx-2 grid place-items-center grid-flow-row gap:6 md:gap-8 text-neutral-600 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                                     {
-                                        savedCard != null
+                                        savedCard != false
                                             ?
                                             savedCard.length > 0
                                                 ?
@@ -273,7 +306,7 @@ const Profile = () => {
                                                 <></>
                                             :
                                             <>
-                                                loading
+
                                             </>
                                     }
                                 </div>
@@ -284,9 +317,9 @@ const Profile = () => {
                     {
                         displayModal ? (
                             <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm">
-                                <div className="relative rounded-lg">
-                                    <section className="md:mt-12 flex bg-white drop-shadow-2xl rounded-lg">
-                                        <div className="w-96 md:w-[35rem]">
+                                <div className=" rounded-lg">
+                                    <section className="relative md:mt-12 flex bg-white drop-shadow-2xl rounded-lg">
+                                        <div className=" w-80  md:w-[35rem]">
                                             <div className="modal bg-white dark:bg-[#2c2c2c] px-5 py-5">
                                                 <div className="space-y-4 max-h-auto overflow-y-auto">
                                                     <div className="flex items-center justify-center w-full">
@@ -311,10 +344,10 @@ const Profile = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        <button onClick={ImageModal} className="absolute -top-7 -right-2 m-2 text-gray-600 hover:text-gray-800 focus:outline-none">
+                                            <img className='bg-white rounded-full p-1 h-5 w-5' src="/images/icons/cancel-icon.png" alt="" />
+                                        </button>
                                     </section>
-                                    <button onClick={ImageModal} className="absolute top-3 -right-5 m-2 text-gray-600 hover:text-gray-800 focus:outline-none">
-                                        <img src="/images/icons/cancel-icon.png" alt="" />
-                                    </button>
                                 </div>
                             </div>
                         ) : (

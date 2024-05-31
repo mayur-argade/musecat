@@ -50,13 +50,13 @@ const VendorHome = () => {
         const fetchdata = async () => {
             try {
                 const { data } = await VendorHomeApi()
-                const notificationCount = await GetVendorUnreadNotification();
-                console.log(notificationCount)
-                if (notificationCount.data.data > 0) {
-                    toast('You have a new Notification', {
-                        icon: '🔔',
-                    });
-                }
+                // const notificationCount = await GetVendorUnreadNotification();
+                // console.log(notificationCount)
+                // if (notificationCount.data.data > 0) {
+                //     toast('You have a new Notification', {
+                //         icon: '🔔',
+                //     });
+                // }
                 // console.log(data.data)
                 setReponse(data)
             } catch (error) {

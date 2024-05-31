@@ -332,7 +332,7 @@ const EventDescription = () => {
                 if (response.data.eventDetails.date.recurring.endDate) {
                     endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`
                 } else {
-                    endDateRecurr = 'untill offer lasts'
+                    endDateRecurr = ''
                 }
 
                 if (days.length === 1) {
@@ -351,10 +351,10 @@ const EventDescription = () => {
                 const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
                 if (response.data.eventDetails.date.dateRange.endDate) {
                     if (startDate.isSame(endDate)) {
-                        showDateField = `On ${startDate.format('ddd,DD MMMM YYYY')}`;
+                        showDateField = `On ${startDate.format('dddd,DD MMMM YYYY')}`;
                     } else {
                         if (response.data.eventDetails.showEndDate == false) {
-                            showDateField = `From ${startDate.format('ddd,DD MMMM YYYY')} untill offer lasts`;
+                            showDateField = `on ${startDate.format('dddd,DD MMMM YYYY')}`;
                         } else {
                             showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
                         }
@@ -363,7 +363,7 @@ const EventDescription = () => {
                 }
                 // 2. Start date - end date 
                 else {
-                    showDateField = `From ${moment().format('ddd,DD MMMM YYYY')} untill offer lasts`;
+                    showDateField = `On ${moment().format('dddd, DD MMMM YYYY')}`;
                 }
             }
 
