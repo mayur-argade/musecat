@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "http://157.230.88.103/static/css/main.25b9d4e1.css",
+    "main.js": "http://157.230.88.103/static/js/main.fdda1857.js",
+    "static/js/703.e87620f6.chunk.js": "http://157.230.88.103/static/js/703.e87620f6.chunk.js",
+    "static/js/513.baca3871.chunk.js": "http://157.230.88.103/static/js/513.baca3871.chunk.js",
+    "static/js/878.1b8d15c1.chunk.js": "http://157.230.88.103/static/js/878.1b8d15c1.chunk.js",
+    "static/js/208.a5ec6d26.chunk.js": "http://157.230.88.103/static/js/208.a5ec6d26.chunk.js",
+    "static/js/787.d5fa4d18.chunk.js": "http://157.230.88.103/static/js/787.d5fa4d18.chunk.js",
+    "service-worker.js": "http://157.230.88.103/service-worker.js",
+    "index.html": "http://157.230.88.103/index.html",
+    "main.25b9d4e1.css.map": "http://157.230.88.103/static/css/main.25b9d4e1.css.map",
+    "main.fdda1857.js.map": "http://157.230.88.103/static/js/main.fdda1857.js.map",
+    "703.e87620f6.chunk.js.map": "http://157.230.88.103/static/js/703.e87620f6.chunk.js.map",
+    "513.baca3871.chunk.js.map": "http://157.230.88.103/static/js/513.baca3871.chunk.js.map",
+    "878.1b8d15c1.chunk.js.map": "http://157.230.88.103/static/js/878.1b8d15c1.chunk.js.map",
+    "208.a5ec6d26.chunk.js.map": "http://157.230.88.103/static/js/208.a5ec6d26.chunk.js.map",
+    "787.d5fa4d18.chunk.js.map": "http://157.230.88.103/static/js/787.d5fa4d18.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.25b9d4e1.css",
+    "static/js/main.fdda1857.js"
+  ]
+}
