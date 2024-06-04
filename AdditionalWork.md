@@ -1,3 +1,26 @@
+Remove offers from the vendor home
+
+
+--> Vendor Signup 
+--> Vendor Login 
+--> Vendor Create Event (Thursday Dinner, Friday Weekly Offer, Kids Corner, Friday Brunch, What's On)
+--> Admin Login
+--> Search Event
+--> Open Event
+--> Edit Event
+--> Verify Event
+--> Vendor Login
+--> Vendor Notification
+--> Vendor Edit Event
+--> Goes again for reverification
+--> Verifies Event 
+--> Vendor Notification 
+--> Client Book Event
+--> Client Ticket
+--> Client Email ticket
+--> Client Add to calender
+--> Client View on Map
+------------------------------------------------------------------------------------
 Vendor
 - Vendor Home
     - Check ongoing and unverified events 

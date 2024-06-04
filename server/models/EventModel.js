@@ -34,7 +34,10 @@ const eventSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-
+    featuredPhoto : {
+        type: String,
+        required: true
+    },
     date: {
         type: {
             type: String,

@@ -16,12 +16,12 @@ const VendorModel = require('../models/VendorModel')
 const notificationService = require('../services/notification-service')
 // vendor side
 exports.createEvent = async (req, res) => {
-    let { title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
+    let { featuredPhoto, title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
     } = req.body;
 
     console.log('Request body:', req.body);
 
-    if (!title || !displayPhoto || !shortDescription || !description || !location || !date || !eventCategory) {
+    if (!featuredPhoto || !title || !displayPhoto || !shortDescription || !description || !location || !date || !eventCategory) {
         return res.status(statusCode.BAD_REQUEST.code).json({
             success: false,
             data: "Required fields are missing"
@@ -35,6 +35,21 @@ exports.createEvent = async (req, res) => {
         if (displayPhoto) {
             try {
                 uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
+                    folder: "muscat/events",
+                    transformation: [{ format: 'webp' }]
+                });
+            } catch (err) {
+                console.error('Error uploading display photo:', err);
+                return res.status(400).json({
+                    success: false,
+                    data: "Failed to upload display photo"
+                });
+            }
+        }
+        let uploadedFeaturedPhoto = ''
+        if (featuredPhoto) {
+            try {
+                uploadedFeaturedPhoto = await cloudinary.v2.uploader.upload(featuredPhoto, {
                     folder: "muscat/events",
                     transformation: [{ format: 'webp' }]
                 });
@@ -146,7 +161,8 @@ exports.createEvent = async (req, res) => {
             AdditionalPhotos: additinalPhotos,
             type: 'event',
             showEndDate: showEndDate,
-            discountOnApp: discountOnApp
+            discountOnApp: discountOnApp,
+            featuredPhoto: uploadedFeaturedPhoto.secure_url
         };
 
         console.log(date);
@@ -690,11 +706,12 @@ exports.vendorHome = async (req, res) => {
     const { _id } = req.user
 
     try {
-        const filterDate = moment().format("YYYY-MM-DD")
-        const today = new Date(`${filterDate}T23:00:00.000Z`)
-        console.log(today)
-        // const today = new Date()
+        // const filterDate = moment().format("YYYY-MM-DD")
+        // const today = new Date(`${filterDate}T23:00:00.000Z`)
+        const today = new Date();
+
         const currentDay = moment().format('dddd').toLowerCase()
+
         const events = await eventService.findAllEvents(
             {
                 vendorid: _id,
@@ -723,7 +740,7 @@ exports.vendorHome = async (req, res) => {
                                         'date.recurring.endDate': { $gte: today }
                                     },
                                     {
-                                        'date.recurring.startDate': null,
+                                        'date.recurring.startDate': today,
                                         'date.recurring.endDate': null
                                     }
                                 ]
@@ -733,47 +750,48 @@ exports.vendorHome = async (req, res) => {
                 ],
             }
         )
-
-        const offers = await eventService.findAllEvents(
-            {
-                vendorid: _id, // Assuming you pass the vendor id as a route parameter
-                type: 'offer',
-                verified: true,
-                archived: false,
-                $or: [
-                    {
-                        'date.dateRange.startDate': { $lte: today },
-                        'date.dateRange.endDate': { $gte: today }
-                    }
-                    ,
-                    {
-                        $and: [
-                            {
-                                'date.recurring.days': { $in: currentDay }
-                            },
-                            {
-                                $or: [
-                                    {
-                                        'date.recurring.startDate': { $lte: today },
-                                        'date.recurring.endDate': { $gte: today }
-                                    },
-                                    {
-                                        'date.recurring.startDate': null,
-                                        'date.recurring.endDate': null
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-            }
-        )
+        
+        // phase 2 of vouchers
+        // const offers = await eventService.findAllEvents(
+        //     {
+        //         vendorid: _id, // Assuming you pass the vendor id as a route parameter
+        //         type: 'offer',
+        //         verified: true,
+        //         archived: false,
+        //         $or: [
+        //             {
+        //                 'date.dateRange.startDate': { $lte: today },
+        //                 'date.dateRange.endDate': { $gte: today }
+        //             }
+        //             ,
+        //             {
+        //                 $and: [
+        //                     {
+        //                         'date.recurring.days': { $in: currentDay }
+        //                     },
+        //                     {
+        //                         $or: [
+        //                             {
+        //                                 'date.recurring.startDate': { $lte: today },
+        //                                 'date.recurring.endDate': { $gte: today }
+        //                             },
+        //                             {
+        //                                 'date.recurring.startDate': null,
+        //                                 'date.recurring.endDate': null
+        //                             }
+        //                         ]
+        //                     }
+        //                 ]
+        //             }
+        //         ],
+        //     }
+        // )
 
         res.status(200).json({
             success: true,
             data: {
                 ongoingEvents: events,
-                ongoingOffers: offers
+                ongoingOffers: []
             }
         })
     } catch (error) {
@@ -812,7 +830,7 @@ exports.VendorUnverifiedListings = async (req, res) => {
                                         'date.recurring.endDate': { $gte: today }
                                     },
                                     {
-                                        'date.recurring.startDate': null,
+                                        // 'date.recurring.startDate': null,
                                         'date.recurring.endDate': null
                                     }
                                 ]

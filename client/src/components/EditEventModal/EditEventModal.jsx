@@ -8,6 +8,7 @@ import { Features } from '../../utils/Data'
 import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import axios from "axios";
 import moment from 'moment'
+import CropEasy from '../Crop/CropEasy'
 
 const EditEventModal = ({ onClose, data }) => {
 
@@ -25,6 +26,9 @@ const EditEventModal = ({ onClose, data }) => {
     const [listCategory, setListCategory] = useState([])
     const [listVenues, setListVenues] = useState([])
     const [subLoading, setSubLoading] = useState(false)
+    const [openCrop, setOpenCrop] = useState(false);
+    const [file, setFile] = useState(null);
+    const [photoURL, setPhotoURL] = useState('');
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -134,14 +138,23 @@ const EditEventModal = ({ onClose, data }) => {
         setSelectedCategories(uniqueSelectedOptions);
     };
 
+    const handleCropComplete = (url, file) => {
+        // Do something with the URL and file, such as storing them in state
+        setPhoto(url)
+        // console.log("Cropped File:", file);
+    };
+
     function capturePhoto(e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
-                setPhoto(reader.result);
-                // console.log(reader.result);
+                const base64String = reader.result;
+                setFile(file);
+                setPhoto(base64String);
+                setPhotoURL(URL.createObjectURL(file));
+                setOpenCrop(true);
             };
         }
     }
@@ -797,10 +810,13 @@ const EditEventModal = ({ onClose, data }) => {
 
 
                                 <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1"
+                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:placeholder-gray-400 mb-1"
                                     onChange={capturePhoto}
                                     accept="image/*"
                                     id="photo" type="file" />
+                                {openCrop && (
+                                    <CropEasy onCropComplete={handleCropComplete} photoURL={photoURL} setOpenCrop={setOpenCrop} setPhotoURL={setPhoto} setFile={setFile} />
+                                )}
 
                                 <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1"

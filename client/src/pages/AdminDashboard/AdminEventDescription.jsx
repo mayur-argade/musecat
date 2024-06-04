@@ -260,7 +260,7 @@ const AdminEventDescription = () => {
         }
         fetchdata()
 
-    }, [eventid, user, isAuth, fetchLikes, refresh]);
+    }, [eventid, user, isAuth, fetchLikes, refresh, showModal]);
 
 
     const ContentDisplay = ({ currentContent }) => {
@@ -292,7 +292,56 @@ const AdminEventDescription = () => {
     let bookedSeats = 0;
     let eventStart;
     let eventEnd;
+    let showDateField = ''
     if (response.data != null) {
+
+        let eventType = response.data.eventDetails.date.type;
+
+
+
+        if (eventType != 'dateRange') {
+            const days = response.data.eventDetails.date.recurring.days.map(day => {
+                return day.charAt(0).toUpperCase() + day.slice(1);
+            });
+
+            let endDateRecurr = ''
+            if (response.data.eventDetails.date.recurring.endDate) {
+                endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`
+            } else {
+                endDateRecurr = ''
+            }
+
+            if (days.length === 1) {
+                showDateField = `On Every ${days[0]} ${endDateRecurr}`;
+            } else if (days.length === 2) {
+                showDateField = `On Every ${days.join(' and ')} ${endDateRecurr}`;
+            } else {
+                const lastDay = days.pop();
+                showDateField = `On Every ${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;
+            }
+        }
+        else if (eventType == 'dateRange') {
+            // 1. Start date + end date 
+            // 3. start date == end date 
+            const startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
+            const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
+            if (response.data.eventDetails.date.dateRange.endDate) {
+                if (startDate.isSame(endDate)) {
+                    showDateField = `On ${startDate.format('dddd,DD MMMM YYYY')}`;
+                } else {
+                    if (response.data.eventDetails.showEndDate == false) {
+                        showDateField = `on ${startDate.format('dddd,DD MMMM YYYY')}`;
+                    } else {
+                        showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
+                    }
+                }
+
+            }
+            // 2. Start date - end date 
+            else {
+                showDateField = `On ${moment().format('dddd, DD MMMM YYYY')}`;
+            }
+        }
 
         if (response.data.eventDetails && response.data.eventDetails.categories) {
             const availableTickets = response.data.eventDetails.categories
@@ -463,25 +512,7 @@ const AdminEventDescription = () => {
                                                                     <div className='mt-4 flex justify-center space-x-2 text-center'>
                                                                         <img className='h-5' src="/images/icons/eventcal.svg" alt="" />
                                                                         {
-                                                                            response.data.eventDetails.date.type == 'dateRange'
-                                                                                ?
-                                                                                <p className='text-sm font-semibold'>{moment(response.data.eventDetails.date.dateRange.startDate).format("dddd, MMMM D, YYYY")}
-                                                                                    {response.data.eventDetails.showEndDate
-                                                                                        ?
-                                                                                        <>
-                                                                                            to {moment(response.data.eventDetails.date.dateRange.endDate).format("dddd, MMMM D, YYYY | HH:mm")}
-                                                                                        </>
-                                                                                        :
-                                                                                        <>
-                                                                                        </>
-                                                                                    }
-                                                                                </p>
-                                                                                :
-                                                                                <p>
-                                                                                    On {response.data.eventDetails.date.recurring.days
-                                                                                        .map(day => day.charAt(0).toUpperCase() + day.slice(1))
-                                                                                        .join(", ")}
-                                                                                </p>
+                                                                            <span className=''>{showDateField}</span>
                                                                         }
                                                                     </div>
                                                                 </div>

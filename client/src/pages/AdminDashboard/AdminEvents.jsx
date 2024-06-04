@@ -14,6 +14,9 @@ const AdminEvents = () => {
     const [loading, setLoading] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const [searchQuery, setSearchQuery] = useState('')
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const fetchEvents = async () => {
             setLoading(true)
@@ -101,7 +104,16 @@ const AdminEvents = () => {
                         <div className="heading">
                             <div className="flex justify-between">
                                 <span className="text-2xl font-semibold">Events</span>
-                                <button onClick={handleClick} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Event</button>
+                                <div className='flex'>
+                                    <input
+                                        type="text"
+                                        id="table-search"
+                                        className={`dark:bg-[#454545] dark:placeholder-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="Search "
+                                    />
+                                    <button onClick={handleClick} className='ml-5 px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Event</button>
+                                </div>
                             </div>
                             <hr className='mt-3 mb-3' />
 
@@ -257,7 +269,11 @@ const AdminEvents = () => {
                                                     :
                                                     <tbody>
                                                         {
-                                                            events.data.map((event, index) => (
+                                                            events.data.filter(event =>
+                                                                event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                                                event.vendorid.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                                                (event.location?.name && event.location.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                                                            ).map((event, index) => (
                                                                 <tr key={event._id}>
                                                                     <Link to={`/admin/event/${event._id}`}>
                                                                         <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
@@ -328,6 +344,7 @@ const AdminEvents = () => {
                             <AddEventModal
                                 isOpen={showAddEvent}
                                 onClose={closeModal}
+                                setIsLoading={setIsLoading}
                                 verified={true} />
                             {/* Close button */}
                             <button

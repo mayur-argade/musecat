@@ -33,6 +33,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
     const [wpNumber, setWpNumber] = useState('')
     const [openCrop, setOpenCrop] = useState(false);
     const [photo, setPhoto] = useState(null)
+    const [featuredPhoto, setFeaturedPhoto] = useState(null)
     const [additinalPhotos, setAdditionalPhotos] = useState([])
     const [seatingMap, setSeatingMap] = useState(null)
     const [banner, setBanner] = useState(null)
@@ -170,6 +171,9 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
             else if (!formDataObj.location) {
                 return toast.error("Location is missing")
             }
+            else if(!featuredPhoto) {
+                return toast.error("Featured Photo is not there")
+            }
             else if (!photo) {
                 return toast.error("Featured Photo is missing")
             }
@@ -208,7 +212,8 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                 whatsapp: formDataObj.whatsappNumber.split("+")[1],
                 website: formDataObj.website,
                 phone: formDataObj.phoneNumber.split("+")[1],
-                showEndDate: showEndDate
+                showEndDate: showEndDate,
+                featuredPhoto: featuredPhoto
             }
 
             console.log(eventdata)
@@ -352,9 +357,10 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
-                const base64String = reader.result;
+                // const base64String = reader.result;
                 setFile(file);
-                setPhoto(base64String);
+                setFeaturedPhoto(reader.result);
+                // console.log(photo)
                 setPhotoURL(URL.createObjectURL(file));
                 setOpenCrop(true);
             };

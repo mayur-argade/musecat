@@ -118,10 +118,11 @@ const MapComponent = ({ onlyMarkerClick, showInfoWindow, redirectToGoogleMap, co
                                     <InfoWindow
                                         position={selectedLocation}
                                         onCloseClick={handleMarkerClose}
-
                                     >
-                                        <div onClick={() => redirectToGoogleMaps(selectedLocation.lat, selectedLocation.lng)} className="cursor-pointer flex justify-center align-middle items-center space-x-3">
-                                            {/* Replace with your card component */}
+                                        <div
+                                            onClick={() => redirectToGoogleMaps(selectedLocation.lat, selectedLocation.lng)}
+                                            className="info-window-content font-poppins cursor-pointer flex justify-center align-middle items-center space-x-3"
+                                        >
                                             <img src={image} className="h-5 w-5" alt="Marker" style={{ width: '30px', height: 'auto' }} />
                                             <h3 className="dark:text-black">{title}</h3>
                                         </div>

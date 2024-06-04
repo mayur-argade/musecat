@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
 import { GetAllCategory } from '../../../../http/index';
 
@@ -86,4 +86,4 @@ const WhereTo = () => {
     )
 }
 
-export default WhereTo
+export default memo(WhereTo)

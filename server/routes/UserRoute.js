@@ -6,10 +6,12 @@ const { isLoggedin, isVerified, isUserLoggedin, requiredRole } = require('../mid
 const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser, getVendorsProfile, getPaymentMethods } = require('../controllers/UserController')
 const { vendorHome } = require('../controllers/EventController')
 
+// vendor Homepage
+router.route('/vendor/home').get(isLoggedin, isVerified, vendorHome)
+
 router.route('/vendor/update-profile').patch(isLoggedin, updateVendorProfile)
 router.route('/vendor/profile').get(isLoggedin, getVendorProfile)
 router.route('/vendor/notifications').get(isLoggedin, isVerified, getAllNotifications)
-router.route('/vendor/home').get(isLoggedin, isVerified, vendorHome)
 
 router.route('/user/update-profile').patch(isUserLoggedin, updateUserProfile)
 router.route('/user/profile').get(isUserLoggedin, getUserProfile)

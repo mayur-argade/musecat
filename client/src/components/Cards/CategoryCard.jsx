@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react';
 
 const CategoryCard = ({ data }) => {
     return (
@@ -22,4 +22,4 @@ const CategoryCard = ({ data }) => {
     )
 }
 
-export default CategoryCard
+export default memo(CategoryCard);
