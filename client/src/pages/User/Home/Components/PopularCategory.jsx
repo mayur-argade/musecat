@@ -122,43 +122,97 @@ const PopularCategory = () => {
             <section className='w-full md:w-full sm:mx-5 md:mx-10 md:w-9/12 xl:w-9/12 2xl:w-7/12'>
                 <div className='flex justify-between align-middle items-center'>
 
-                    <div className="left flex items-center align-middle ">
-                        <span className='text-xl font-bold md:text-2xl md:font-[700]'>Popular Categories</span></div>
+                    {category.data != null || category.data != undefined
+                        ?
+                        <>
+                            {
+                                category.data.length !== 0 &&
+                                (
+                                    <>
+                                        <div className="left flex items-center align-middle ">
+                                            <span className='text-xl font-bold md:text-2xl md:font-[700]'>Popular Categories</span></div>
 
-                    <div className="hidden right md:flex space-x-2">
-                        {
-                            daysAndDates.map((e) => (
-                                <button
-                                    onClick={() => navigate(`category/weeklyoffers?subcategory=${e.day}`)}
-                                    className={`h-7 md:block hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
-                                        ? 'hover:bg-inherit bg-black border-black text-white'
-                                        : 'border-black'
-                                        }`}
-                                >
-                                    {e.day}
-                                </button>
-                            ))
-                        }
+                                        <div className="hidden right md:flex space-x-2">
+                                            {
+                                                daysAndDates.map((e) => (
+                                                    <button
+                                                        onClick={() => navigate(`category/weeklyoffers?subcategory=${e.day}`)}
+                                                        className={`h-7 md:block hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
+                                                            ? 'hover:bg-inherit bg-black border-black text-white'
+                                                            : 'border-black'
+                                                            }`}
+                                                    >
+                                                        {e.day}
+                                                    </button>
+                                                ))
+                                            }
 
-                        <div className='block selectoption pr-2 md:hidden'>
-                            <select
-                                id="countries"
-                                className="bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-full p-1.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
-                            >
-                                {daysAndDates.map((e) => (
-                                    <option
-                                        key={e.date} // Make sure to add a unique key prop when mapping in React
-                                        value={e.date}
-                                        onClick={() => setDayforCategory(e.date)}
-                                        className={`hover:bg-[#C0A04C] hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date ? 'bg-[#C0A04C] text-white' : '' // Apply different styling for the selected option
-                                            }`}
-                                    >
-                                        {e.day}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                                            <div className='block selectoption pr-2 md:hidden'>
+                                                <select
+                                                    id="countries"
+                                                    className="bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-full p-1.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                                >
+                                                    {daysAndDates.map((e) => (
+                                                        <option
+                                                            key={e.date} // Make sure to add a unique key prop when mapping in React
+                                                            value={e.date}
+                                                            onClick={() => setDayforCategory(e.date)}
+                                                            className={`hover:bg-[#C0A04C] hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date ? 'bg-[#C0A04C] text-white' : '' // Apply different styling for the selected option
+                                                                }`}
+                                                        >
+                                                            {e.day}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            }
+                        </>
+                        :
+                        <>
+                            <>
+                                <div className="left flex items-center align-middle ">
+                                    <span className='text-xl font-bold md:text-2xl md:font-[700]'>Popular Categories</span></div>
+
+                                <div className="hidden right md:flex space-x-2">
+                                    {
+                                        daysAndDates.map((e) => (
+                                            <button
+                                                onClick={() => navigate(`category/weeklyoffers?subcategory=${e.day}`)}
+                                                className={`h-7 md:block hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:hover:text-black hover:text-white rounded-full  dark:border-white px-3 py-1 text-xs border ${selectedDay == e.date
+                                                    ? 'hover:bg-inherit bg-black border-black text-white'
+                                                    : 'border-black'
+                                                    }`}
+                                            >
+                                                {e.day}
+                                            </button>
+                                        ))
+                                    }
+
+                                    <div className='block selectoption pr-2 md:hidden'>
+                                        <select
+                                            id="countries"
+                                            className="bg-black border border-gray-300 text-white text-sm rounded-full focus:ring-[#C0A04C] focus:border-[#C0A04C] block w-full p-1.5 px-3.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]"
+                                        >
+                                            {daysAndDates.map((e) => (
+                                                <option
+                                                    key={e.date} // Make sure to add a unique key prop when mapping in React
+                                                    value={e.date}
+                                                    onClick={() => setDayforCategory(e.date)}
+                                                    className={`hover:bg-[#C0A04C] hover:text-white rounded-full border-black px-3 py-1 text-xs border ${selectedDay == e.date ? 'bg-[#C0A04C] text-white' : '' // Apply different styling for the selected option
+                                                        }`}
+                                                >
+                                                    {e.day}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </>
+                        </>
+                    }
                 </div>
                 <div className='relative flex align-middle items-center'>
                     {showLeftButton && (
@@ -193,9 +247,9 @@ const PopularCategory = () => {
                                     category.data.length === 0
                                         ?
                                         <>
-                                            <div className='flex justify-center'>
+                                            {/* <div className='flex justify-center'>
                                                 <img className='h-60' src="/images/assets/logo-main.png" alt="" />
-                                            </div>
+                                            </div> */}
                                         </>
                                         :
                                         category.data.map((category) => {
@@ -239,20 +293,54 @@ const PopularCategory = () => {
                         </>
                     </div>
 
-                    <div className=' flex justify-end space-x-1 align-middle items-center'>
-                        <div className='flex justify-end align-middle items-center'>
-                            <Link to='/whereto' className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-4 flex justify-center align-middle items-center'>
-                                <img className='dark:hidden flex h-6 mr-1' src="/images/icons/map.svg" alt="" />
-                                <img className='hidden dark:flex h-6 mr-1' src="/images/icons/homeMap-light.svg" alt="" />
-                                <p className='text-sm font-medium '>View map</p>
-                            </Link>
-                        </div>
-                        <div className=''>
-                            <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
-                                <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
-                            </Link>
-                        </div>
-                    </div>
+                    {category.data != null || category.data != undefined
+                        ?
+                        <>
+                            {
+                                category.data.length !== 0 &&
+                                (
+                                    <>
+                                        <div className=' flex justify-end space-x-1 align-middle items-center'>
+                                            <div className='flex justify-end align-middle items-center'>
+                                                <Link to='/whereto' className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-4 flex justify-center align-middle items-center'>
+                                                    <img className='dark:hidden flex h-6 mr-1' src="/images/icons/map.svg" alt="" />
+                                                    <img className='hidden dark:flex h-6 mr-1' src="/images/icons/homeMap-light.svg" alt="" />
+                                                    <p className='text-sm font-medium '>View map</p>
+                                                </Link>
+                                            </div>
+                                            <div className=''>
+                                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                                                    <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                    </>
+                                )
+                            }
+                        </>
+                        :
+                        <>
+                            <>
+                                <div className=' flex justify-end space-x-1 align-middle items-center'>
+                                    <div className='flex justify-end align-middle items-center'>
+                                        <Link to='/whereto' className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-4 flex justify-center align-middle items-center'>
+                                            <img className='dark:hidden flex h-6 mr-1' src="/images/icons/map.svg" alt="" />
+                                            <img className='hidden dark:flex h-6 mr-1' src="/images/icons/homeMap-light.svg" alt="" />
+                                            <p className='text-sm font-medium '>View map</p>
+                                        </Link>
+                                    </div>
+                                    <div className=''>
+                                        <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                                            <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
+                                        </Link>
+                                    </div>
+                                </div>
+
+                            </>
+                        </>
+                    }
+
 
                 </div>
             </section>

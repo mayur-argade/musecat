@@ -147,15 +147,20 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 }
 
             } catch (error) {
-
+                console.log('something haapped')
             }
         }
 
         const getNotificationCountVendor = async () => {
-            const notificationCount = await GetVendorUnreadNotification();
-            console.log(notificationCount)
-            if (notificationCount.data.data > 0) {
-                setVendorUnread(true)
+            try {
+
+                const notificationCount = await GetVendorUnreadNotification();
+                console.log(notificationCount)
+                if (notificationCount.data.data > 0) {
+                    setVendorUnread(true)
+                }
+            } catch {
+
             }
         }
 

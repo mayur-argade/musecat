@@ -103,7 +103,12 @@ exports.getUserNotification = async (req, res) => {
 
 exports.countunreadNotifications = async (req, res) => {
     try {
-
+        if(!req.user){
+            return res.status(404).json({
+                success: false,
+                data: "no user found"
+            })
+        }
         const notificationCount = await notificationService.countNotification({ receiverid: req.user._id, status: "unread" })
 
         return res.status(200).json({

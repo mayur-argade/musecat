@@ -128,82 +128,171 @@ const UpcomingEvents = () => {
     return (
         <section className='flex justify-center items-center align-middle mt-5'>
             <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
-                <div className='flex justify-between items-center '>
-                    <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>What’s On</span></div>
-                    <div className="flex items-center align-middle ">
-                        <div onClick={(() => setShowCalender(true))} className="calender date-picker cursor-pointer ">
-                            <img className="calender h-8 mr-2 flex dark:hidden" src="/images/assets/calender-icon.png" alt="" />
-                            <img className="calender h-8 mr-2 hidden dark:flex" src="/images/icons/eventcal-light.svg" alt="" />
-                        </div>
-                        {
-                            showCalender && (
-                                <div>
-                                    <div>
-                                        <div className='calendar-overlay'>
-                                            <div className='relative text-black'>
-                                                <div className='absolute top-0'>
-                                                    <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
-                                                </div>
-                                                <div ref={calendarRef}>
-                                                    <Calendar
-                                                        className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
-                                                        value={date}
-                                                        onChange={handleDateChange}
-                                                        tileContent={({ date, view }) =>
-                                                            view === 'month' && highlightedDates.some((highlightedDate) =>
-                                                                highlightedDate.getDate() === date.getDate() &&
-                                                                highlightedDate.getMonth() === date.getMonth() &&
-                                                                highlightedDate.getFullYear() === date.getFullYear()
-                                                            ) ? (
-                                                                <div className="highlighted-date">
-                                                                    <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
+                {
+                    upcomingEvents.data != null || upcomingEvents.data != undefined
+                        ?
+                        <>
+                            {
+                                upcomingEvents.data.length == 0
+                                    ?
+                                    <></>
+                                    :
+                                    <div className='flex justify-between items-center '>
+                                        <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>What’s On</span></div>
+                                        <div className="flex items-center align-middle ">
+                                            <div onClick={(() => setShowCalender(true))} className="calender date-picker cursor-pointer ">
+                                                <img className="calender h-8 mr-2 flex dark:hidden" src="/images/assets/calender-icon.png" alt="" />
+                                                <img className="calender h-8 mr-2 hidden dark:flex" src="/images/icons/eventcal-light.svg" alt="" />
+                                            </div>
+                                            {
+                                                showCalender && (
+                                                    <div>
+                                                        <div>
+                                                            <div className='calendar-overlay'>
+                                                                <div className='relative text-black'>
+                                                                    <div className='absolute top-0'>
+                                                                        <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
+                                                                    </div>
+                                                                    <div ref={calendarRef}>
+                                                                        <Calendar
+                                                                            className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
+                                                                            value={date}
+                                                                            onChange={handleDateChange}
+                                                                            tileContent={({ date, view }) =>
+                                                                                view === 'month' && highlightedDates.some((highlightedDate) =>
+                                                                                    highlightedDate.getDate() === date.getDate() &&
+                                                                                    highlightedDate.getMonth() === date.getMonth() &&
+                                                                                    highlightedDate.getFullYear() === date.getFullYear()
+                                                                                ) ? (
+                                                                                    <div className="highlighted-date">
+                                                                                        <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
+                                                                                    </div>
+                                                                                ) : null
+                                                                            }
+                                                                        />
+                                                                    </div>
                                                                 </div>
-                                                            ) : null
-                                                        }
-                                                    />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+                                            <div>
+                                                <div className='hidden md:block flex space-x-1'>
+                                                    {next7Days.map((item) => (
+                                                        <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                                            ? 'bg-black text-white'
+                                                            : ''
+                                                            }`}>
+                                                            <div className='flex flex-col'>
+                                                                <p>
+                                                                    {item.day}
+                                                                </p>
+                                                                <p className='font-semibold'>
+                                                                    {item.date}
+                                                                </p>
+                                                            </div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className='block md:hidden'>
+                                                <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
+                                                    <div onClick={() => setnewfilterdate(next7Days[0].actualdate)} className='flex flex-col'>
+                                                        <p>
+                                                            {next7Days[0].day}
+                                                        </p>
+                                                        <p>
+                                                            {next7Days[0].date}
+                                                        </p>
+                                                    </div>
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                            }
+                        </>
+                        :
+                        <div className='flex justify-between items-center '>
+                            <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>What’s On</span></div>
+                            <div className="flex items-center align-middle ">
+                                <div onClick={(() => setShowCalender(true))} className="calender date-picker cursor-pointer ">
+                                    <img className="calender h-8 mr-2 flex dark:hidden" src="/images/assets/calender-icon.png" alt="" />
+                                    <img className="calender h-8 mr-2 hidden dark:flex" src="/images/icons/eventcal-light.svg" alt="" />
+                                </div>
+                                {
+                                    showCalender && (
+                                        <div>
+                                            <div>
+                                                <div className='calendar-overlay'>
+                                                    <div className='relative text-black'>
+                                                        <div className='absolute top-0'>
+                                                            <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
+                                                        </div>
+                                                        <div ref={calendarRef}>
+                                                            <Calendar
+                                                                className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
+                                                                value={date}
+                                                                onChange={handleDateChange}
+                                                                tileContent={({ date, view }) =>
+                                                                    view === 'month' && highlightedDates.some((highlightedDate) =>
+                                                                        highlightedDate.getDate() === date.getDate() &&
+                                                                        highlightedDate.getMonth() === date.getMonth() &&
+                                                                        highlightedDate.getFullYear() === date.getFullYear()
+                                                                    ) ? (
+                                                                        <div className="highlighted-date">
+                                                                            <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
+                                                                        </div>
+                                                                    ) : null
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    )
+                                }
+                                <div>
+                                    <div className='hidden md:block flex space-x-1'>
+                                        {next7Days.map((item) => (
+                                            <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                                ? 'bg-black text-white'
+                                                : ''
+                                                }`}>
+                                                <div className='flex flex-col'>
+                                                    <p>
+                                                        {item.day}
+                                                    </p>
+                                                    <p className='font-semibold'>
+                                                        {item.date}
+                                                    </p>
+                                                </div>
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
-                            )
-                        }
-                        <div>
-                            <div className='hidden md:block flex space-x-1'>
-                                {next7Days.map((item) => (
-                                    <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
-                                        ? 'bg-black text-white'
-                                        : ''
-                                        }`}>
-                                        <div className='flex flex-col'>
+
+                                <div className='block md:hidden'>
+                                    <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
+                                        <div onClick={() => setnewfilterdate(next7Days[0].actualdate)} className='flex flex-col'>
                                             <p>
-                                                {item.day}
+                                                {next7Days[0].day}
                                             </p>
-                                            <p className='font-semibold'>
-                                                {item.date}
+                                            <p>
+                                                {next7Days[0].date}
                                             </p>
                                         </div>
                                     </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className='block md:hidden'>
-                            <button className='hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2'>
-                                <div onClick={() => setnewfilterdate(next7Days[0].actualdate)} className='flex flex-col'>
-                                    <p>
-                                        {next7Days[0].day}
-                                    </p>
-                                    <p>
-                                        {next7Days[0].date}
-                                    </p>
                                 </div>
-                            </button>
+
+                            </div>
+
                         </div>
-
-                    </div>
-
-                </div>
+                }
 
                 <div>
                     <div id="upcomingContent" ref={containerRef} className='flex w-full overflow-x-auto'>
@@ -224,7 +313,7 @@ const UpcomingEvents = () => {
                                     : upcomingEvents.data.length === 0
                                         ?
                                         <div className='flex justify-center'>
-                                            <img className='h-60' src="/images/assets/logo-main.png" alt="" />
+                                            {/* <img className='h-60' src="/images/assets/logo-main.png" alt="" /> */}
                                         </div>
                                         :
                                         upcomingEvents.data.map((event) => (
@@ -253,11 +342,16 @@ const UpcomingEvents = () => {
                             )}
                         </div>
                     </div>
-                    <div className='flex justify-end'>
-                        <Link className='dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
-                            <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
-                        </Link>
-                    </div>
+                    {
+                        upcomingEvents.data != null && upcomingEvents.data.length != 0 && (
+                            <div className='flex justify-end'>
+                                <Link className='dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                                    <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
+                                </Link>
+                            </div>
+                        )
+                    }
+
                 </div>
             </section>
             {
