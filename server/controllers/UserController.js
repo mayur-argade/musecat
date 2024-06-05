@@ -13,6 +13,7 @@ const paymentService = require('../services/payment-service')
 const notificationService = require('../services/notification-service')
 const { transporter } = require('../services/mail-service')
 const { contactUsEmail } = require('../data/emailTemplates');
+const { db } = require('../config/firebase');
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -735,4 +736,23 @@ exports.getPaymentMethods = async (req, res) => {
     console.log("user -------->", user)
     const card = await paymentService.listCustomerPaymentMethods(req.user.payment_customer_id)
     res.status(200).json(card)
+}
+
+exports.addUserEmailTofirebase = async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).send('Email is required');
+    }
+
+    try {
+        await db.collection('subscribers').add({ email });
+        res.status(200).json({
+            success: true,
+            data: 'Subscribed successfully!'
+        });
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.message);
+    }
 }

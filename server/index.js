@@ -2,6 +2,7 @@ const app = require('./app');
 const connectdb = require('./config/connectdb');
 require('dotenv').config();
 const cloudinary = require('cloudinary')
+const { db } = require('./config/firebase')
 
 // Connection with the database
 connectdb();
@@ -18,5 +19,7 @@ cloudinary.config({
 
 // Creating a basic server
 app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server is running at port: ${process.env.PORT || 3000} 🚀`);
+    db.settings({ ignoreUndefinedProperties: true });
+    db.collection('subscribers').get()
+    console.log(`Server is running at port: ${process.env.PORT || 3000} 🚀`);
 });

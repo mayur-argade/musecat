@@ -1,5 +1,27 @@
 Remove offers from the vendor home
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDZvvhl5XEPRZADUT4afGRPfCi-tghtTjY",
+  authDomain: "muscat-ad508.firebaseapp.com",
+  projectId: "muscat-ad508",
+  storageBucket: "muscat-ad508.appspot.com",
+  messagingSenderId: "475181278057",
+  appId: "1:475181278057:web:7ba1b27c1f1afa8306d3f8",
+  measurementId: "G-R84RNLEMKT"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 
 --> Vendor Signup 
 --> Vendor Login 

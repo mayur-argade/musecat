@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isVerified, isUserLoggedin, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser, getVendorsProfile, getPaymentMethods } = require('../controllers/UserController')
+const { addUserEmailTofirebase, updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser, getVendorsProfile, getPaymentMethods } = require('../controllers/UserController')
 const { vendorHome } = require('../controllers/EventController')
 
 // vendor Homepage
@@ -18,6 +18,8 @@ router.route('/user/profile').get(isUserLoggedin, getUserProfile)
 router.route('/user/write-contactmsg').post(writeContactMessage)
 
 router.route('/user/favorites').get(isUserLoggedin, getFavoriteEvents)
+
+router.route('/user/add-to-newsletter').post(addUserEmailTofirebase)
 
 router.route('/user/eventDetails/:eventid').get(getEventDetails)
 
