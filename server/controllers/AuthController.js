@@ -875,6 +875,8 @@ exports.vendorRegister = async (req, res) => {
 
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage, role, isVerified } = req.body
 
+    // console.log(req.body)
+
     if (!role) {
         if (!firstname || !lastname || !email || !password || !mobilenumber || !address || !accountType || !companyname || !companyDisplayName || !crNo) {
             return res.status(statusCode.BAD_REQUEST.code).json({
@@ -901,6 +903,7 @@ exports.vendorRegister = async (req, res) => {
             })
         }
 
+        console.log(uploadedLogo.secure_url)
         let data;
 
         const randomToken = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
@@ -944,16 +947,20 @@ exports.vendorRegister = async (req, res) => {
 
         user = await vendorService.createVendor(data)
 
+        console.log(user)
+
         user.password = null
 
-        return await notificationService.createNotification(notification);
+        // await notificationService.createNotification(notification);
 
         const mailOptions = {
             from: 'argademayur2002@gmail.com',
             to: email,
             subject: 'Account Verification for Muscat',
-            html: vendorSignupEmail(firstname, lastname, token),
+            html: vendorSignupEmail(firstname, lastname, tokenWithExpiry),
         };
+
+        console.log(mailOptions)
 
         if (role == "admin") {
             return res.status(200).json({
@@ -963,6 +970,7 @@ exports.vendorRegister = async (req, res) => {
         }
 
         transporter.sendMail(mailOptions, (error, info) => {
+            console.log(info)
             if (error) {
                 console.log(error)
                 return res
@@ -970,14 +978,15 @@ exports.vendorRegister = async (req, res) => {
                         success: false,
                         data: "failed to send a email, Please check your input email"
                     });
-            } else {
-                return res
-                    .status(statusCode.SUCCESS.code).json({
-                        success: true,
-                        data: `Email sent successFully Kindly Verify your account ${token}`
-                    });
             }
         });
+
+        return res
+            .status(statusCode.SUCCESS.code).json({
+                success: true,
+                data: `Email sent successFully to ${email}, Kindly Verify your account`
+            });
+
 
     } catch (error) {
         console.log(error)
