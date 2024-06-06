@@ -25,5 +25,7 @@
 24. Sign in and Sign up functionality with token expiration redirection 
 25. Remove local storage setting and add query redirection for login 
 26. For admin add redirection to email if it is expirying someting 
+27. Vendor profile modification in the admin side
+28. give option to view the cr pdf 
 
 

@@ -77,8 +77,6 @@ const EditEventModal = ({ onClose, data }) => {
         eventstarttime = data.date.recurring.startTime
     }
 
-    console.log("--> --> -->", eventstartdate)
-    console.log("--> --> -->", eventenddate)
 
     const [title, setTitle] = useState(data.title)
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
@@ -118,7 +116,7 @@ const EditEventModal = ({ onClose, data }) => {
     const [banner, setBanner] = useState(null)
     const [video, setVideo] = useState(null)
     const [discountOnApp, setDiscountOnApp] = useState(data.discountOnApp || '')
-
+    const [featuredPhoto, setFeaturedPhoto] = useState('')
 
     const [eventCategory, setEventCategory] = useState(undefined)
     const [loading, setLoading] = useState(false)
@@ -150,9 +148,10 @@ const EditEventModal = ({ onClose, data }) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
-                const base64String = reader.result;
+                // const base64String = reader.result;
                 setFile(file);
-                setPhoto(base64String);
+                setFeaturedPhoto(reader.result);
+                // console.log(photo)
                 setPhotoURL(URL.createObjectURL(file));
                 setOpenCrop(true);
             };
@@ -287,24 +286,35 @@ const EditEventModal = ({ onClose, data }) => {
 
 
         let dateType;
-        if (datetype == true) {
-            dateType = 'dateRange'
+        if (datetype === true) {
+            dateType = 'dateRange';
         } else {
-            dateType = 'recurring'
+            dateType = 'recurring';
         }
-        let eventdate = {}
-        eventdate.type = dateType
-        if (dateType == 'dateRange') {
+
+        // Check if any selected categoryURL is a dinner option
+        const daysOfWeek = ['sundaydinner', 'mondaydinner', 'tuesdaydinner', 'wednesdaydinner', 'thursdaydinner', 'fridaydinner', 'saturdaydinner'];
+        const selectedDinnerDays = selectedCategories
+            .filter(category => daysOfWeek.includes(category.categoryURL))
+            .map(category => category.name.split(' ')[0]);
+
+        let eventdate = {};
+        if (selectedDinnerDays.length > 0) {
+            dateType = 'recurring';
+        }
+
+        eventdate.type = dateType;
+        if (dateType === 'dateRange') {
             eventdate.dateRange = {
                 startDate: startDate,
                 endDate: endDate
-            }
-        } else if (dateType == 'recurring') {
+            };
+        } else if (dateType === 'recurring') {
             eventdate.recurring = {
                 startDate: startDate,
-                endDate: endDate
-            }
-            eventdate.recurring.days = selectedDays
+                endDate: endDate,
+                days: selectedDinnerDays.length > 0 ? selectedDinnerDays : selectedDays
+            };
         }
 
         for (const category of categories) {
@@ -366,6 +376,7 @@ const EditEventModal = ({ onClose, data }) => {
             whatsapp: wpNumber,
             website: website,
             phone: number,
+            featuredPhoto: featuredPhoto,
             showEndDate: showEndDate
         }
 

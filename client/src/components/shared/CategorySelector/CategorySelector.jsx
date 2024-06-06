@@ -31,7 +31,24 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
         }
     });
 
+    // Find the index of the "Dinner" category
+    const dinnerCategoryIndex = options.findIndex(option => option.label.toLowerCase() === 'dinner');
 
+    // Create "Sunday Dinner" through "Saturday Dinner" options
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dinnerOptions = daysOfWeek.map(day => ({
+        value: `${day.toLowerCase()}dinner`,
+        label: `${day} Dinner`,
+        data: { isSubcategory: true },
+    }));
+
+    // Insert "Sunday Dinner" through "Saturday Dinner" options after "Dinner" category
+    if (dinnerCategoryIndex !== -1) {
+        options.splice(dinnerCategoryIndex + 1, 0, ...dinnerOptions);
+    } else {
+        // If "Dinner" category not found, append dinnerOptions at the end
+        options.push(...dinnerOptions);
+    }
 
     const selectedOptions = selectedCategories.map(category => ({
         value: category.categoryURL,
@@ -53,6 +70,7 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
         }
     }, []);
 
+    console.log(options)
 
     const handleChange = (selectedOptions) => {
         const selectedCategories = selectedOptions.map(option => {
@@ -74,10 +92,31 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
                         name: subcategory.name,
                         categoryURL: subcategory.categoryURL,
                     };
+                } else {
+                    // Check if the option is one of the "Dinner" options
+                    const dayOfWeekOption = daysOfWeek.find(day => `${day.toLowerCase()}dinner` === option.value);
+                    if (dayOfWeekOption) {
+                        return {
+                            name: `${dayOfWeekOption} Dinner`,
+                            categoryURL: option.value,
+                        };
+                    }
                 }
             }
         });
 
+        const hasDinner = selectedCategories.some(category =>
+            daysOfWeek.some(day => category.categoryURL === `${day.toLowerCase()}dinner`)
+        );
+
+        // If any dinner options are selected, add { name: "Dinner", categoryURL: "dinner" }
+        if (hasDinner) {
+            selectedCategories.push({
+                name: "Dinner",
+                categoryURL: "dinner"
+            });
+        }
+        
         onChange(selectedCategories);
     };
 

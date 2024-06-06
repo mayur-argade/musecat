@@ -77,33 +77,44 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
 
             let eventType = 'dateRange';
             if (formDataObj.hasOwnProperty('recurring')) {
-                eventType = 'recurring'
+                eventType = 'recurring';
             }
 
-            let eventdate = {}
-            eventdate.type = eventType
-            if (eventType == 'dateRange') {
+            // Check if any selected categoryURL is a dinner option
+            const daysOfWeek = ['sundaydinner', 'mondaydinner', 'tuesdaydinner', 'wednesdaydinner', 'thursdaydinner', 'fridaydinner', 'saturdaydinner'];
+            const selectedDinnerDays = selectedCategories
+                .filter(category => daysOfWeek.includes(category.categoryURL))
+                .map(category => category.name.split(' ')[0].toLowerCase());
+
+
+
+            let eventdate = {};
+            if (selectedDinnerDays.length > 0) {
+                eventType = 'recurring';
+            }
+
+            eventdate.type = eventType;
+            if (eventType === 'dateRange') {
                 eventdate.dateRange = {
                     startDate: momentstart,
                     endDate: momentend
-                }
-            }
-            else if (eventType == 'recurring') {
-                if (selectedDays.length <= 0) {
-                    return toast.error("Please select days if you are selecting recurring event")
+                };
+            } else if (eventType === 'recurring') {
+                if (selectedDinnerDays.length <= 0) {
+                    return toast.error("Please select days if you are selecting a recurring event");
                 }
                 eventdate = {
                     recurring: {
-                        days: []
+                        days: selectedDinnerDays,
+                        startTime: formData.get('startTime'),
+                        endTime: formData.get('endTime'),
+                        startDate: momentstart,
+                        endDate: momentend
                     }
-                }
-                eventdate.recurring.days = selectedDays
-                eventdate.recurring.startTime = formData.startTime
-                eventdate.recurring.endTime = formData.endTime
-                eventdate.recurring.startDate = momentstart
-                eventdate.recurring.endDate = momentend
+                };
             }
 
+            // formData.append('date', JSON.stringify(eventdate));
             formData.append('date', eventdate)
 
             console.log(categories)
@@ -171,7 +182,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
             else if (!formDataObj.location) {
                 return toast.error("Location is missing")
             }
-            else if(!featuredPhoto) {
+            else if (!featuredPhoto) {
                 return toast.error("Featured Photo is not there")
             }
             else if (!photo) {
@@ -186,6 +197,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
             else if (!formDataObj.phoneNumber) {
                 return toast.error("Phone number is Mandatory")
             }
+
 
 
             const eventdata = {
