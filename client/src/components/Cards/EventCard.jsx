@@ -18,11 +18,13 @@ const EventCard = ({ data, width, showNumberBox }) => {
         const days = data.date.recurring.days.map(day => {
             return day.charAt(0).toUpperCase() + day.slice(1);
         });
-        
+
         if (days.length === 1) {
             showDateField = `Every ${days[0]}`;
         } else if (days.length === 2) {
             showDateField = `Every ${days.join(' and ')}`;
+        } else if (days.length === 7) {
+            showDateField = `Daily`
         } else {
             const lastDay = days.pop();
             showDateField = `Every ${days.join(', ')}, and ${lastDay}`;

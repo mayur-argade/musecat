@@ -339,6 +339,8 @@ const EventDescription = () => {
                     showDateField = `On Every ${days[0]} ${endDateRecurr}`;
                 } else if (days.length === 2) {
                     showDateField = `On Every ${days.join(' and ')} ${endDateRecurr}`;
+                } else if (days.length === 7) {
+                    showDateField = `Daily`
                 } else {
                     const lastDay = days.pop();
                     showDateField = `On Every ${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;

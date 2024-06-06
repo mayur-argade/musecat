@@ -503,11 +503,11 @@ exports.getEventById = async (req, res) => {
 
 exports.getAllEvents = async (req, res) => {
     try {
-        const filterDate = moment().format("YYYY-MM-DD")
-        const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-        const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        const filterDate = moment().format("YYYY-MM-DD");
+        const todayDate = new Date(`${filterDate}T23:00:00.000Z`);
+        const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-        query = {
+        const query = {
             archived: false,
             verified: true,
             type: 'event',
@@ -517,50 +517,58 @@ exports.getAllEvents = async (req, res) => {
                 },
                 {
                     'date.dateRange.endDate': null
-                }
-                ,
+                },
                 {
                     $and: [
                         {
                             $or: [
                                 {
                                     'date.recurring.endDate': { $gte: todayDate },
-                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
-
+                                    'date.recurring.days': { $in: day }
                                 },
                                 {
                                     'date.recurring.endDate': { $gte: null },
-                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                                    'date.recurring.days': { $in: day }
                                 }
                             ]
-                        },
+                        }
                     ]
-                },
-            ],
-        }
+                }
+            ]
+        };
 
         let categoriesWithEvents = await CategoryModel.find().populate({
             path: 'events',
             populate: {
-                path: 'location',
+                path: 'location'
             },
-            match: query,
-        })
+            match: query
+        });
 
+        const uniqueEvents = new Set();
         const events = categoriesWithEvents.reduce((acc, category) => {
-            acc.push(...category.events);
+            category.events.forEach(event => {
+                if (!uniqueEvents.has(event._id.toString())) {
+                    uniqueEvents.add(event._id.toString());
+                    acc.push(event);
+                }
+            });
             return acc;
-        }, [])
+        }, []);
 
         return res.status(200).json({
             success: true,
             data: events
-        })
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
     }
+};
 
-}
 
 exports.getVendorAllEventsNOffers = async (req, res) => {
     const vendor = req.user
@@ -750,7 +758,7 @@ exports.vendorHome = async (req, res) => {
                 ],
             }
         )
-        
+
         // phase 2 of vouchers
         // const offers = await eventService.findAllEvents(
         //     {
@@ -1073,6 +1081,12 @@ module.exports.getUpcomingEvents = async (req, res) => {
                 {
                     'date.dateRange.startDate': { $lte: filterDate },
                     'date.dateRange.endDate': { $gte: filterDate2 }
+                },
+                {
+                    'date.dateRange.startDate': { $lte: filterDate },
+                    // 'date.dateRange.startDate': { $lte: specEnd },
+                    'date.dateRange.endDate': { $gte: filterDate2 },
+                    // 'date.dateRange.endDate': { $gte: specEnd }
                 },
                 {
                     'date.dateRange.startDate': { $lte: filterDate },

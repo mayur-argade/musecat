@@ -453,7 +453,7 @@ exports.getCategoryAllEvents = async (req, res) => {
         if (search) {
 
         }
-        
+
         if (filterdate != null || filterdate != undefined) {
             const onlyDate = moment(filterdate).format("YYYY-MM-DD")
             const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
@@ -584,6 +584,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
             const onlyDate = moment(filterdate).format("YYYY-MM-DD")
             const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
             const endDate = new Date(`${onlyDate}T00:00:00.000Z`)
+            const specEnd = new Date(`${onlyDate}T23:59:00.000Z`)
             const currentDay = moment(startDate).format('dddd').toLowerCase()
 
             console.log(startDate)
@@ -596,6 +597,12 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                     {
                         'date.dateRange.startDate': { $lte: startDate },
                         'date.dateRange.endDate': { $gte: endDate }
+                    },
+                    {
+                        'date.dateRange.startDate': { $lte: specEnd },
+                        // 'date.dateRange.startDate': { $lte: specEnd },
+                        'date.dateRange.endDate': { $gte: startDate },
+                        // 'date.dateRange.endDate': { $gte: specEnd }
                     },
                     {
                         'date.dateRange.startDate': { $lte: startDate },
