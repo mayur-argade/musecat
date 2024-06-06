@@ -11,7 +11,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
 
     const [isLiked, setIsLiked] = useState(false)
     let eventType = data.date.type;
-    let showDateField = `${moment().format("ddd,DD MMMM YYYY")}`
+    let showDateField = `${moment().format("ddd, DD MMMM YYYY")}`
 
 
     if (eventType != 'dateRange') {
@@ -35,10 +35,10 @@ const EventCard = ({ data, width, showNumberBox }) => {
         const endDate = moment(data.date.dateRange.endDate).startOf('day');
         if (data.date.dateRange.endDate) {
             if (startDate.isSame(endDate)) {
-                showDateField = `${startDate.format('ddd,DD MMMM YYYY')}`;
+                showDateField = `${startDate.format('ddd, DD MMMM YYYY')}`;
             } else {
                 if (data.showEndDate == false) {
-                    showDateField = `${startDate.format('ddd,DD MMMM YYYY')}`;
+                    showDateField = `${startDate.format('ddd, DD MMMM YYYY')}`;
                 } else {
                     showDateField = `${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
                 }
@@ -47,7 +47,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
         }
         // 2. Start date - end date 
         else {
-            showDateField = `${moment().format('ddd,DD MMMM YYYY')}`;
+            showDateField = `${moment().format('ddd, DD MMMM YYYY')}`;
         }
     }
 

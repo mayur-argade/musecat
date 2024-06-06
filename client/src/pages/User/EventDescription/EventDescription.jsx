@@ -169,7 +169,7 @@ const EventDescription = () => {
 
                 setImages((prevImages) => {
                     const uniqueImages = new Set([
-                        ...(data.data.eventDetails.displayPhoto ? [data.data.eventDetails.displayPhoto] : []),
+                        ...(data.data.eventDetails.featuredPhoto ? [data.data.eventDetails.featuredPhoto] : []),
                         ...(data.data.eventDetails.AdditionalPhotos || []),
                         ...(data.data.eventDetails.banner || []),
                         ...(data.data.eventDetails.video ? [data.data.eventDetails.video] : []),

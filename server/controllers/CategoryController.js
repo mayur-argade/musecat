@@ -443,13 +443,17 @@ exports.getCategoriesWithEvents = async (req, res) => {
 
 exports.getCategoryAllEvents = async (req, res) => {
     // taking parameters like categoryname, searchquery, date
-    const { category, filterdate, subCategory, offerDay } = req.body
+    const { search, category, filterdate, subCategory, offerDay } = req.body
     console.log(req.body)
+
 
     let events;
     let query;
     try {
+        if (search) {
 
+        }
+        
         if (filterdate != null || filterdate != undefined) {
             const onlyDate = moment(filterdate).format("YYYY-MM-DD")
             const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
@@ -796,3 +800,4 @@ exports.getCategoryAllEvents2 = async (req, res) => {
         console.log(error)
     }
 }
+

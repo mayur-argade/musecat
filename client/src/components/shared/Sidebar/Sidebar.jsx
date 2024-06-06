@@ -51,7 +51,7 @@ const Sidebar = () => {
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
                                     <div class="h-2 w-2 rotate-45 bg-white"></div>
                                 </div>
-                                Events
+                                Events / Offers
                             </div>
                         </div>
                     </Link>
@@ -62,7 +62,7 @@ const Sidebar = () => {
                                 <div class="z-50 absolute inset-0 -left-1 flex items-center">
                                     <div class="h-2 w-2 rotate-45 bg-white"></div>
                                 </div>
-                                Offers
+                                Vouchers
                             </div>
                         </div>
                     </Link>

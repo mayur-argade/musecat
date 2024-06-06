@@ -151,7 +151,7 @@ const VenueDescription = () => {
                     <div className='mainContainer grid grid-cols-1 lg:grid-cols-3 '>
                         <div className="1 col-span-2">
                             <div className="left w-full ">
-                                <span className='ml-0 font-bold text-2xl'>What's On {response.data ? response.data.venue.name : ''}</span>
+                                <span className='ml-0 font-bold text-2xl'>What's On at {response.data ? response.data.venue.name : ''}</span>
                                 <div className="md:grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 large:grid-cols-4 snap-x carousel pt-0 flex items-center justify-start overflow-x-auto scroll-smooth  scrollbar-hide ">
                                     {
                                         response.data != null && (
