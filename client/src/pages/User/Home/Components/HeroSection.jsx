@@ -102,7 +102,7 @@ const HeroSection = () => {
                                                                     onClick={() => {
                                                                         // Check if the query is not empty before navigating
                                                                         if (query.trim() !== '') {
-                                                                            navigate(`/Category/events?search=${query}`);
+                                                                            navigate(`/Category/events%20&%20offers?search=${query}`);
                                                                         }
                                                                     }}
                                                                     type="button" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-[#C0A04C] rounded-r-lg border border-[#C0A04C] hover:bg-[#C0A04C]  focus:[#A48533] dark:bg-[#C0A04C] dark:hover:bg-[#C0A04C] dark:focus:ring-[#C0A04C]">
@@ -167,7 +167,7 @@ const HeroSection = () => {
                                                     <button onClick={() => {
                                                         // Check if the query is not empty before navigating
                                                         if (query.trim() !== '') {
-                                                            navigate(`/Category/events?search=${query}`);
+                                                            navigate(`/Category/events%20&%20offers?search=${query}`);
                                                         }
                                                     }}
                                                         type="button" class="shadow-lg shadow-cyan-500/25 align-middle text-white bg-[#C0A04C] hover:bg-[#A48533] hover:text-white focus:[#A48533] font-medium rounded-lg text-sm px-8 py-2 text-center mr-3 md:mr-0  flex align-middle justify-center items-center">

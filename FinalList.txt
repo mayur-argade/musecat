@@ -1,5 +1,5 @@
-1. Search Events functionality
-2. Alignment of the events for the homepage 
+1. Search Events functionality (done)
+2. Alignment of the events for the homepage (done)
 3. Change google credentials to muscatwhereto.com 
 4. Change facebook credentials to muscatwhereto.com
 5. Error Page when server is offline or any runtime error happens (not done)
