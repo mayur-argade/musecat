@@ -349,9 +349,13 @@ const EventDescription = () => {
             else if (eventType == 'dateRange') {
                 // 1. Start date + end date 
                 // 3. start date == end date 
-                const startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
+
+                let startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
                 const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
                 if (response.data.eventDetails.date.dateRange.endDate) {
+                    if (startDate.isBefore(moment().startOf('day'))) {
+                        startDate = moment().format('dddd, DD MMMM YYYY');
+                    }
                     if (startDate.isSame(endDate)) {
                         showDateField = `On ${startDate.format('dddd,DD MMMM YYYY')}`;
                     } else {
@@ -365,7 +369,11 @@ const EventDescription = () => {
                 }
                 // 2. Start date - end date 
                 else {
-                    showDateField = `On ${moment().format('dddd, DD MMMM YYYY')}`;
+                    if (startDate.isBefore(moment().startOf('day'))) {
+                        showDateField = `On ${moment().format('dddd, DD MMMM YYYY')}`;
+                    } else {
+                        showDateField = `On ${moment(startDate).format('dddd, DD MMMM YYYY')}`;
+                    }
                 }
             }
 

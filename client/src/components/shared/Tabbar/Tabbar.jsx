@@ -63,12 +63,12 @@ const Tabbar = () => {
                             }
                             {
                                 categories.data && categories.data.length > 7 && showMoreCategories && (
-                                    <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} className='h-auto w-40 p-3 absolute right-0 bg-white dark:bg-[#454545] drop-shadow-md'>
+                                    <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} className='h-auto w-40 p-3 absolute right-0 bg-white dark:bg-[#454545] drop-shadow-md rounded'>
                                         {categories.data.slice(7).map((category, index) => (
                                             <>
                                                 {
                                                     category.name !== 'Ladies Night' && (
-                                                        <div className='flex hover:bg-slate-50 dark:hover:bg-slate-500 flex-col rounded' key={index}>
+                                                        <div className='flex hover:bg-slate-50 dark:hover:bg-slate-500 flex-col py-1' key={index}>
                                                             <CategoryLink category={category} handleCategoryChange={handleCategoryChange} />
                                                         </div>
                                                     )
@@ -126,7 +126,7 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                         <ul
                             onMouseEnter={() => openDropdown()}
                             onMouseLeave={() => closeDropdown()}
-                            className="border border-1 z-50 dropdown absolute w-48 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white">
+                            className="border border-transparent border-0 dark:border-0  z-50 dropdown absolute w-48 bg-white rounded-md drop-shadow-md dark:bg-[#454545] dark:text-white">
                             {category.subCategories.map((subcategory, index) => (
                                 <div className='w-full py-1'>
                                     <li key={index}>

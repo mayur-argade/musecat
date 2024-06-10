@@ -53,9 +53,9 @@ const EditEventModal = ({ onClose, data }) => {
         console.log("currentDate=", currentDate)
     }, []);
 
-    let check = true;
-    if (data.date.type == 'recurring') {
-        check = false
+    let rangeEvent = true;
+    if (data.date.type != 'dateRange') {
+        rangeEvent = false
     }
 
     let eventstartdate = '';
@@ -71,8 +71,8 @@ const EditEventModal = ({ onClose, data }) => {
             eventenddate = undefined
         }
     } else {
-        eventstartdate = data.date.recurring.startDate
-        eventenddate = data.date.recurring.endDate
+        eventstartdate = moment(data.date.recurring.startDate).format('YYYY-MM-DDTHH:mm')
+        eventenddate = moment(data.date.recurring.endDate).format('YYYY-MM-DDTHH:mm')
         eventendtime = data.date.recurring.endTime
         eventstarttime = data.date.recurring.startTime
     }
@@ -82,7 +82,7 @@ const EditEventModal = ({ onClose, data }) => {
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
     const [content, setContent] = useState(data.description)
 
-    const [datetype, setDatetype] = useState(check)
+    const [datetype, setDatetype] = useState(rangeEvent)
     const [startDate, setStartDate] = useState(eventstartdate)
     const [endDate, setEndDate] = useState(eventenddate)
     const [selectedDays, setSelectedDays] = useState(data.date.recurring.days);
@@ -479,7 +479,7 @@ const EditEventModal = ({ onClose, data }) => {
 
                                 <div className="flex space-x-2 align-middle ml-2 mt-1 mb-3">
                                     <label className="block">
-                                        <input defaultChecked={!check} type="checkbox" className="text-[#A48533] focus:ring-[#A48533] w-4 h-4 rounded" name="recurring" id="recurring" onChange={((e) => setDatetype(!e.target.checked))} />
+                                        <input onChange={((e) => setDatetype(!e.target.checked))} defaultChecked={!datetype} type="checkbox" className="text-[#A48533] focus:ring-[#A48533] w-4 h-4 rounded" name="recurring" id="recurring" />
                                         <span className='ml-1 text-sm '>
                                             Recurring Event ?
                                         </span>
@@ -488,7 +488,7 @@ const EditEventModal = ({ onClose, data }) => {
                                     {/* <label htmlFor="recurring">Recurring Event ?</label> */}
                                 </div>
                                 {
-                                    datetype
+                                    datetype || data.date.type == 'dateRange'
                                         ?
                                         <></>
                                         :
@@ -508,7 +508,7 @@ const EditEventModal = ({ onClose, data }) => {
                                                                     onChange={() => handleDayClick(day)}
                                                                 />
                                                                 <span className='ml-0 text-sm '>
-                                                                    {day}
+                                                                    {day.charAt(0).toUpperCase() + day.slice(1)}
                                                                 </span>
                                                             </label>
                                                         </div>

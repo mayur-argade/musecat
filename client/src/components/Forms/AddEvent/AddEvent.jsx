@@ -86,6 +86,11 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                 .filter(category => daysOfWeek.includes(category.categoryURL))
                 .map(category => category.name.split(' ')[0].toLowerCase());
 
+            selectedDinnerDays.forEach(day => {
+                if (!selectedDays.includes(day)) {
+                    selectedDays.push(day);
+                }
+            });
 
 
             let eventdate = {};
@@ -100,12 +105,12 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                     endDate: momentend
                 };
             } else if (eventType === 'recurring') {
-                if (selectedDinnerDays.length <= 0) {
+                if (selectedDays.length <= 0) {
                     return toast.error("Please select days if you are selecting a recurring event");
                 }
                 eventdate = {
                     recurring: {
-                        days: selectedDinnerDays,
+                        days: selectedDays,
                         startTime: formData.get('startTime'),
                         endTime: formData.get('endTime'),
                         startDate: momentstart,
