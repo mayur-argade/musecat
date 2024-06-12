@@ -180,6 +180,16 @@ const eventSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+
+    showStartDate: {
+        type: Boolean, 
+        default: true
+    },
+
+    showInEventCalender: {
+        type: Boolean,
+        default: false
+    }
 },
     {
         timestamps: true

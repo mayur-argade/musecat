@@ -16,7 +16,7 @@ const VendorModel = require('../models/VendorModel')
 const notificationService = require('../services/notification-service')
 // vendor side
 exports.createEvent = async (req, res) => {
-    let { featuredPhoto, title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
+    let { showStartDate, showInEventCalender, featuredPhoto, title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
     } = req.body;
 
     console.log('Request body:', req.body);
@@ -162,10 +162,12 @@ exports.createEvent = async (req, res) => {
             type: 'event',
             showEndDate: showEndDate,
             discountOnApp: discountOnApp,
-            featuredPhoto: uploadedFeaturedPhoto.secure_url
+            featuredPhoto: uploadedFeaturedPhoto.secure_url,
+            showStartDate: showStartDate,
+            showInEventCalender: showInEventCalender
         };
 
-        console.log(date);
+        // console.log(date);
 
         event = await eventService.createEvent(data);
 
@@ -214,7 +216,7 @@ exports.createEvent = async (req, res) => {
 
 
 exports.updateEvent = async (req, res) => {
-    let { eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+    let { showStartDate, showInEventCalender, eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
         date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type, seatingMap, showEndDate, venueInfo, additinalImages, website, phone
     } = req.body
 
@@ -291,6 +293,9 @@ exports.updateEvent = async (req, res) => {
 
             type: type,
             discountOnApp: discountOnApp,
+
+            showStartDate: showStartDate,
+            showInEventCalender: showInEventCalender,
         }
 
         let categoryData;
@@ -1237,6 +1242,7 @@ exports.getDateWiseEvents = async (req, res) => {
             const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
             query = {
+                showInEventCalender: true,
                 archived: false,
                 verified: true,
                 type: 'event',
@@ -1278,6 +1284,7 @@ exports.getDateWiseEvents = async (req, res) => {
 
             query = {
                 archived: false,
+                showInEventCalender: true,
                 verified: true,
                 type: 'event',
                 $or: [

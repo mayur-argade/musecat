@@ -9,6 +9,7 @@ import CategorySelector from '../shared/CategorySelector/CategorySelector';
 import axios from "axios";
 import moment from 'moment'
 import CropEasy from '../Crop/CropEasy'
+import Tooltip from '../shared/Tooltip/Tooltip';
 
 const EditEventModal = ({ onClose, data }) => {
 
@@ -89,7 +90,8 @@ const EditEventModal = ({ onClose, data }) => {
     const [startTime, setStartTime] = useState(eventstarttime || '')
     const [endTime, setEndTime] = useState(eventendtime || '')
     const [showEndDate, setShowEndDate] = useState(data.showEndDate);
-
+    const [showStartDate, setShowStartDate] = useState(data.showStartDate)
+    const [showInEventCalender, setShowInEventCalender] = useState(data.showInEventCalender)
 
     const [location, setLocation] = useState(data.location._id)
     const [showVenuecreate, setShowVenuecreate] = useState(false)
@@ -377,7 +379,9 @@ const EditEventModal = ({ onClose, data }) => {
             website: website,
             phone: number,
             featuredPhoto: featuredPhoto,
-            showEndDate: showEndDate
+            showEndDate: showEndDate,
+            showStartDate: showStartDate,
+            showInEventCalender: showInEventCalender
         }
 
         console.log(eventdata)
@@ -447,6 +451,9 @@ const EditEventModal = ({ onClose, data }) => {
                                 </div>
 
                                 <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
+                                <p className='ml-2 text-sm'>Selected Date : {endDate
+                                    ? `${moment(startDate).format('DD-MM-YYYY')} till ${moment(endDate).format('DD-MM-YYYY')}`
+                                    : `${moment(startDate).format('DD-MM-YYYY')}`}</p>
                                 <div className="flex align-middle items-center  w-full mt-2 space-x-4">
                                     <div className="flex w-full row1 space-x-4 ">
                                         <div className='w-full  flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
@@ -534,17 +541,56 @@ const EditEventModal = ({ onClose, data }) => {
                                         </div>
                                 }
 
-                                <label className="relative inline-flex items-center mb-5 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        // value=""
-                                        className="sr-only peer"
-                                        onChange={handleCheckboxChange}
-                                        checked={showEndDate} // Bind the checked state to the showEndDate state
-                                    />
-                                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                    <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
-                                </label>
+                                <div className='flex align-middle items-center space-x-3'>
+                                    {
+                                        startDate && startDate != '' && (
+                                            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    value=""
+                                                    className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
+                                                    onChange={() => setShowStartDate(!showStartDate)}
+                                                    checked={showStartDate} // Bind the checked state to the showEndDate state
+                                                />
+                                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+
+                                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show Start date </span>
+                                                <Tooltip data={"If you Don't want to show Event/Offer start date on Event/Offer Card and Event/Offer page then toggle this button."} />
+                                            </label>
+                                        )
+
+                                    }
+                                    {
+                                        endDate && endDate != '' && (
+                                            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    value=""
+                                                    className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
+                                                    onChange={handleCheckboxChange}
+                                                    checked={showEndDate} // Bind the checked state to the showEndDate state
+                                                />
+                                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
+                                                <Tooltip data={"If you want to show Event/Offer end date on Event/Offer Card and Event/Offer page then toggle this button."} />
+                                            </label>
+                                        )
+                                    }
+                                    <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            value=""
+                                            className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
+                                            onChange={() => setShowInEventCalender(!showInEventCalender)}
+                                            checked={showInEventCalender} // Bind the checked state to the showEndDate state
+                                        />
+                                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show Event/Offer in calender</span>
+                                        {/* <Tooltip data={"."} /> */}
+                                    </label>
+
+                                </div>
+
 
 
                                 <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
@@ -819,9 +865,11 @@ const EditEventModal = ({ onClose, data }) => {
                                     )}
                                 </div>
 
+                                <br />
 
-                                <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Featured Image</label>
-                                <input class="block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:placeholder-gray-400 mb-1"
+                                <label class=" text-base font-medium  dark:text-white" for="file_input">Featured Image</label>
+                                <p className='flex text-sm pb-2'>Uploaded Image: <a className='ml-2 text-[#A48533] flex align-middle items-center' href={data.displayPhoto} target="_blank" rel="noopener noreferrer">Display photo  <svg className='dark:hidden text-[#A48533] flex ml-2 h-3' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#A48533"><path fill="none" d="M0 0h24v24H0z"></path><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a></p>
+                                <input class=" block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:placeholder-gray-400 mb-1"
                                     onChange={capturePhoto}
                                     accept="image/*"
                                     id="photo" type="file" />
@@ -829,28 +877,28 @@ const EditEventModal = ({ onClose, data }) => {
                                     <CropEasy onCropComplete={handleCropComplete} photoURL={photoURL} setOpenCrop={setOpenCrop} setPhotoURL={setPhoto} setFile={setFile} />
                                 )}
 
-                                <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Additional Images</label>
+                                <label class="mt-1 ml-1 text-base font-medium  dark:text-white" for="file_input">Additional Images</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1"
                                     onChange={captureAdditionalPhotos}
                                     accept="image/*"
                                     multiple id="photo" type="file" />
 
 
-                                <label class="mt-1 ml-2 text-xs font-medium  dark:text-white" for="file_input">Seating Map</label>
+                                <label class="mt-1 ml-1 text-base font-medium  dark:text-white" for="file_input">Seating Map</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1"
 
                                     onChange={captureSeatingMap}
                                     accept="image/*"
                                     id="photo" type="file" />
 
-                                <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Banner</label>
+                                <label class="ml-1 text-basefont-medium  dark:text-white" for="file_input">Banner</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1" id="file_input"
 
                                     onChange={captureBanner}
                                     accept="image/*"
                                     type="file" />
 
-                                <label class="ml-2 text-xs font-medium  dark:text-white" for="file_input">Video</label>
+                                <label class="ml-1 text-base font-medium  dark:text-white" for="file_input">Video</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1" id="file_input"
                                     accept="video/*"
                                     onChange={(e) => setCrfile(e.target.files[0])}

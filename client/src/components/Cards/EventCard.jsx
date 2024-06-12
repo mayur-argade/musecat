@@ -100,9 +100,14 @@ const EventCard = ({ data, width, showNumberBox }) => {
                 </button>
                 <div className="p-1 pt-4 pb-2 mx-1">
                     <p className='text-xss md:text-xs  mt-1 m:mt-2 font-medium truncate'>
-                        <span className='ml-0 font-normal'>
-                            {showDateField}
-                        </span>
+                        {
+                            data.showStartDate && data.showStartDate == true &&
+                            (
+                                <span className='ml-0 font-normal'>
+                                    {showDateField}
+                                </span>
+                            )
+                        }
                     </p>
                     <p className='text-xs md:text-sm mt-1 md:mt-2 font-semibold truncate'>
                         {data.title.charAt(0).toUpperCase() + data.title.slice(1)},

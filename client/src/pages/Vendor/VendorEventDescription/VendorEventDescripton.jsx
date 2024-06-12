@@ -289,12 +289,12 @@ const VendorEventDescripton = () => {
             }
 
             if (days.length === 1) {
-                showDateField = `On Every ${days[0]} ${endDateRecurr}`;
+                showDateField = `${days[0]} ${endDateRecurr}`;
             } else if (days.length === 2) {
-                showDateField = `On Every ${days.join(' and ')} ${endDateRecurr}`;
+                showDateField = `${days.join(' and ')} ${endDateRecurr}`;
             } else {
                 const lastDay = days.pop();
-                showDateField = `On Every ${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;
+                showDateField = `${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;
             }
         }
         else if (eventType == 'dateRange') {
@@ -304,10 +304,10 @@ const VendorEventDescripton = () => {
             const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
             if (response.data.eventDetails.date.dateRange.endDate) {
                 if (startDate.isSame(endDate)) {
-                    showDateField = `On ${startDate.format('dddd, DD MMMM YYYY')}`;
+                    showDateField = `${startDate.format('dddd, DD MMMM YYYY')}`;
                 } else {
                     if (response.data.eventDetails.showEndDate == false) {
-                        showDateField = `On ${startDate.format('dddd, DD MMMM YYYY')} `;
+                        showDateField = `${startDate.format('dddd, DD MMMM YYYY')} `;
                     } else {
                         showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
                     }
@@ -412,13 +412,17 @@ const VendorEventDescripton = () => {
                                                         {response.data.eventDetails.location?.name || ""}
                                                     </span>
                                                 </Link></p>
-                                            <div className='mt-4 flex justify-center space-x-2 text-center'>
-                                                <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
-                                                <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
-                                                <p className='text-xs md:text-base font-semibold'>
-                                                    {showDateField}
-                                                </p>
-                                            </div>
+                                            {
+                                                response.data.eventDetails.showStartDate && response.data.eventDetails.showStartDate == true && (
+                                                    <div className='mt-4 flex justify-center space-x-2 text-center'>
+                                                        <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
+                                                        <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
+                                                        <p className='text-xs md:text-base font-semibold'>
+                                                            {showDateField}
+                                                        </p>
+                                                    </div>
+                                                )
+                                            }
                                         </div>
 
                                         <div className="mt-8 grid grid-cols-4">

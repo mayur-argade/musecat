@@ -42,6 +42,8 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
     const [file, setFile] = useState(null);
     const [photoURL, setPhotoURL] = useState('');
     const [showEndDate, setShowEndDate] = useState(false)
+    const [showStartDate, setShowStartDate] = useState(true)
+    const [showInEventCalender, setShowInEventCalender] = useState(true)
     const [eventInformation, setEventInformation] = useState('')
     const [venueInformation, setVenueInformation] = useState('')
     const [startDate, setStartDate] = useState('')
@@ -230,6 +232,8 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                 website: formDataObj.website,
                 phone: formDataObj.phoneNumber.split("+")[1],
                 showEndDate: showEndDate,
+                showStartDate: showStartDate,
+                showInEventCalender: showInEventCalender,
                 featuredPhoto: featuredPhoto
             }
 
@@ -445,6 +449,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
         setShowEndDate(!showEndDate); // Toggle the state when the checkbox is changed
     };
 
+
     const getCurrentDateTimeLocal = () => {
         const now = new Date();
         const year = now.getFullYear();
@@ -587,46 +592,61 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                                             </label>
                                         </div>
                                     ))}
-
-                                    <div className='flex'>
-                                        <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 mr-2 rounded-lg'>
-                                            <label className='input-container text-xs mt-1' htmlFor="startTime">Start Time</label>
-                                            <input
-                                                type="time"
-                                                id="session-time"
-                                                name="startTime"
-                                                className="px-0 py-0.5 placeholder:text-sm border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm text-sm font-medium"
-                                            />
-                                        </div>
-                                        <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
-                                            <label className='input-container text-xs mt-1' htmlFor="endTime">End Time</label>
-                                            <input
-                                                type="time"
-                                                id="session-time"
-                                                name="endTime"
-                                                className="px-0 py-0.5 placeholder:text-sm border bg-transparent dark:bg-[#454545] border-0 focus:border-0 focus:ring-0 outline-0 placeholder:text-sm text-sm font-medium"
-                                            />
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         )}
 
-                        {
-                            endDate && endDate != '' && (
-                                <label className="relative inline-flex items-center mb-5 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        value=""
-                                        className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
-                                        onChange={handleCheckboxChange}
-                                        checked={showEndDate} // Bind the checked state to the showEndDate state
-                                    />
-                                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                    <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
-                                </label>
-                            )
-                        }
+                        <div className='flex space-x-3'>
+                            {
+                                startDate && startDate != '' && (
+                                    <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            value=""
+                                            className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
+                                            onChange={() => setShowStartDate(!showStartDate)}
+                                            checked={showStartDate} // Bind the checked state to the showEndDate state
+                                        />
+                                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show Start date </span>
+                                        <Tooltip data={"If you Don't want to show Event/Offer start date on Event/Offer Card and Event/Offer page then toggle this button."} />
+                                    </label>
+                                )
+
+                            }
+                            {
+                                endDate && endDate != '' && (
+                                    <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            value=""
+                                            className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
+                                            onChange={handleCheckboxChange}
+                                            checked={showEndDate} // Bind the checked state to the showEndDate state
+                                        />
+                                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show End date</span>
+                                        <Tooltip data={"If you want to show Event/Offer end date on Event/Offer Card and Event/Offer page then toggle this button."} />
+                                    </label>
+                                )
+                            }
+
+                            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    value=""
+                                    className="text-[#A48533] focus:ring-[#A48533] sr-only peer"
+                                    onChange={() => setShowInEventCalender(!showInEventCalender)}
+                                    checked={showInEventCalender} // Bind the checked state to the showEndDate state
+                                />
+                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show Event/Offer in calender</span>
+                                {/* <Tooltip data={"."} /> */}
+                            </label>
+
+                        </div>
+
 
                         {/* Location */}
                         <div className='flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
