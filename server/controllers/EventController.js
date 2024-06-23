@@ -216,7 +216,7 @@ exports.createEvent = async (req, res) => {
 
 
 exports.updateEvent = async (req, res) => {
-    let { showStartDate, showInEventCalender, eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
+    let { featuredPhoto, showStartDate, showInEventCalender, eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
         date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type, seatingMap, showEndDate, venueInfo, additinalImages, website, phone
     } = req.body
 
@@ -258,6 +258,22 @@ exports.updateEvent = async (req, res) => {
             }
         }
 
+        let uploadedFeaturedPhoto = ''
+        if (featuredPhoto) {
+            try {
+                uploadedFeaturedPhoto = await cloudinary.v2.uploader.upload(featuredPhoto, {
+                    folder: "muscat/events",
+                    transformation: [{ format: 'webp' }]
+                });
+            } catch (err) {
+                console.error('Error uploading display photo:', err);
+                return res.status(400).json({
+                    success: false,
+                    data: "Failed to upload display photo"
+                });
+            }
+        }
+
         const data = {
             _id: eventid,
             title: title,
@@ -290,6 +306,7 @@ exports.updateEvent = async (req, res) => {
             seatingMap: uploadedSeatingMap.secure_url,
             banner: uploadedBanner.secure_url,
             video: video,
+            featuredPhoto: uploadedFeaturedPhoto.secure_url,
 
             type: type,
             discountOnApp: discountOnApp,

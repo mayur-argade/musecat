@@ -79,6 +79,7 @@ export const CategoryCount = (data) => api.get(`category/eventcounts${data}`, da
 export const WhereToEvents = (data) => api.get('/whereto/allevents', data)
 export const AllDateEvents = (data) => api.post('/events/alldates', data)
 export const sendIcsFile = (data) => api.post('/user/addtocalender', data)
+export const addToNewsLetter = (data) => api.post('/user/add-to-newsletter', data)
 
 export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`, data)
 export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)

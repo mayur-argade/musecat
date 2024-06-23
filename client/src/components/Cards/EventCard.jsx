@@ -110,7 +110,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
                         }
                     </p>
                     <p className='text-xs md:text-sm mt-1 md:mt-2 font-semibold truncate'>
-                        {data.title.charAt(0).toUpperCase() + data.title.slice(1)},
+                        {data.title.charAt(0).toUpperCase() + data.title.slice(1)}
                     </p>
                     <p className='text-xs md:text-xs md:mt-1 text-[#C0A04C] font-medium truncate'>{data.location.name}</p>
                     <p className="text-xss mt-1 md:mt-2 mb-1 md:text-xs font-light truncate">{

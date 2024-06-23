@@ -356,7 +356,7 @@ const EventDescription = () => {
                     if (startDate.isBefore(moment().startOf('day'))) {
                         startDate = moment().format('dddd, DD MMMM YYYY');
                     }
-                    if (startDate.isSame(endDate)) {
+                    if (moment.isMoment(startDate) && moment.isMoment(endDate) && startDate.isValid() && startDate.isSame(endDate)) {
                         showDateField = `${startDate.format('dddd,DD MMMM YYYY')}`;
                     } else {
                         if (response.data.eventDetails.showEndDate == false) {
@@ -544,13 +544,14 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <span className='text-lg font-bold'>
-                                            {
+                                            {/* {
                                                 response.data.eventDetails.type == 'event'
                                                     ?
                                                     <>Event</>
                                                     :
                                                     <>Voucher</>
-                                            } Description
+                                            } */}
+                                             Description
                                         </span>
                                     )
                                 }

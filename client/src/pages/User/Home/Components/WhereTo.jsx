@@ -38,7 +38,7 @@ const WhereTo = () => {
 
     return (
         <section className='flex justify-center items-center align-middle py-5'>
-            <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+            <section className='w-full md:w-full sm:mx-5 lg:w-10/12 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                 {
                     !loading && visibleCategories && visibleCategories.length !== 0 && (
                         <div className='flex justify-between '>

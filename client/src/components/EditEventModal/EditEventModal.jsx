@@ -10,6 +10,7 @@ import axios from "axios";
 import moment from 'moment'
 import CropEasy from '../Crop/CropEasy'
 import Tooltip from '../shared/Tooltip/Tooltip';
+import PhoneInput from 'react-phone-number-input'
 
 const EditEventModal = ({ onClose, data }) => {
 
@@ -81,7 +82,7 @@ const EditEventModal = ({ onClose, data }) => {
 
     const [title, setTitle] = useState(data.title)
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
-    const [content, setContent] = useState(data.description)
+    const [content, setContent] = useState()
 
     const [datetype, setDatetype] = useState(rangeEvent)
     const [startDate, setStartDate] = useState(eventstartdate)
@@ -103,8 +104,8 @@ const EditEventModal = ({ onClose, data }) => {
     const [fb, setFb] = useState(data.facebook)
     const [insta, setInsta] = useState(data.instagram)
     const [mail, setMail] = useState(data.email)
-    const [number, setNumber] = useState(data.phoneNo)
-    const [wpNumber, setWpNumber] = useState(data.whatsapp)
+    const [number, setNumber] = useState('')
+    const [wpNumber, setWpNumber] = useState('')
     const [website, setWebsite] = useState(data.website)
 
 
@@ -443,10 +444,11 @@ const EditEventModal = ({ onClose, data }) => {
                                     <label className='text-sm dark:text-white font-semibold mt-1' htmlFor="first name">Event Information  *</label>
                                     <JoditEditor
                                         ref={editor}
-                                        value={content}
+                                        value={data.description}
                                         config={config}
                                         tabIndex={1} // tabIndex of textarea
-                                        onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onBlur={newContent => setContent(newContent)}
+                                        onChange={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                                     />
                                 </div>
 
@@ -729,24 +731,29 @@ const EditEventModal = ({ onClose, data }) => {
                                     <div className="w-full flex justify-between">
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Phone No. *</label>
-                                            <input
-                                                defaultValue={data.phoneNo}
-                                                type='tel'
-                                                className='px-0 py-0.5 w-full border bg-transparent border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
-                                                placeholder='Phone number'
-                                                onChange={((e) => setNumber(e.target.value))}
+                                            <PhoneInput
+                                                className='dark:text-black'
+                                                placeholder="Enter phone number"
+                                                value={`+${data.phoneNo}`}
+                                                onChange={setNumber}
                                             />
                                         </div>
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>
                                             <label className='text-xs mt-1' htmlFor="first name">Whatsapp No.</label>
-                                            <input
+                                            <PhoneInput
+                                                className='dark:text-black'
+                                                placeholder="Enter phone number"
+                                                value={`+${data.whatsapp}`}
+                                                onChange={setWpNumber}
+                                            />
+                                            {/* <input
                                                 defaultValue={data.whatsapp}
                                                 type="number"
                                                 className='px-0 py-0.5 w-full border bg-transparent border-0 focus:border-0 focus:ring-0  outline-0 placeholder:text-sm font-medium '
                                                 placeholder='Whatsapp number'
                                                 onChange={((e) => setWpNumber(e.target.value))}
-                                            />
+                                            /> */}
                                         </div>
 
                                         <div className='w-full mx-1 my-1 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] pl-2 pr-2 rounded-lg'>

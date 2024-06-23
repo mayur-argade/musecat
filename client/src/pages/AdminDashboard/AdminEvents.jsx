@@ -103,7 +103,7 @@ const AdminEvents = () => {
                     <div className="headline ">
                         <div className="heading">
                             <div className="flex justify-between">
-                                <span className="text-2xl font-semibold">Events</span>
+                                <span className="text-2xl font-semibold">Events/Offers</span>
                                 <div className='flex'>
                                     <input
                                         type="text"

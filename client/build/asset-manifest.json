@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "https://omanwhereto.com/static/css/main.e89dfcc4.css",
-    "main.js": "https://omanwhereto.com/static/js/main.f5978b61.js",
+    "main.css": "https://omanwhereto.com/static/css/main.467e5906.css",
+    "main.js": "https://omanwhereto.com/static/js/main.60047539.js",
     "static/js/703.e87620f6.chunk.js": "https://omanwhereto.com/static/js/703.e87620f6.chunk.js",
     "static/js/513.baca3871.chunk.js": "https://omanwhereto.com/static/js/513.baca3871.chunk.js",
     "static/js/878.1b8d15c1.chunk.js": "https://omanwhereto.com/static/js/878.1b8d15c1.chunk.js",
@@ -9,8 +9,8 @@
     "static/js/787.d5fa4d18.chunk.js": "https://omanwhereto.com/static/js/787.d5fa4d18.chunk.js",
     "service-worker.js": "https://omanwhereto.com/service-worker.js",
     "index.html": "https://omanwhereto.com/index.html",
-    "main.e89dfcc4.css.map": "https://omanwhereto.com/static/css/main.e89dfcc4.css.map",
-    "main.f5978b61.js.map": "https://omanwhereto.com/static/js/main.f5978b61.js.map",
+    "main.467e5906.css.map": "https://omanwhereto.com/static/css/main.467e5906.css.map",
+    "main.60047539.js.map": "https://omanwhereto.com/static/js/main.60047539.js.map",
     "703.e87620f6.chunk.js.map": "https://omanwhereto.com/static/js/703.e87620f6.chunk.js.map",
     "513.baca3871.chunk.js.map": "https://omanwhereto.com/static/js/513.baca3871.chunk.js.map",
     "878.1b8d15c1.chunk.js.map": "https://omanwhereto.com/static/js/878.1b8d15c1.chunk.js.map",
@@ -18,7 +18,7 @@
     "787.d5fa4d18.chunk.js.map": "https://omanwhereto.com/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e89dfcc4.css",
-    "static/js/main.f5978b61.js"
+    "static/css/main.467e5906.css",
+    "static/js/main.60047539.js"
   ]
 }

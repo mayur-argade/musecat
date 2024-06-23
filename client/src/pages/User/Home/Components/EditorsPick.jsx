@@ -42,7 +42,7 @@ const EditorsPick = () => {
                     editorpickLoading
                         ?
                         <section className='flex justify-center items-center align-middle mt-5'>
-                            <section className='w-full md:w-full sm:mx-5 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+                            <section className='w-full md:w-full sm:mx-5 lg:w-10/12 md:mx-5 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
                                 <div className='flex justify-between'>
                                     <div className="left"><span className='text-xl font-bold md:text-2xl md:font-[700]'>MWT's Favorites</span></div>
                                     <div className="right">

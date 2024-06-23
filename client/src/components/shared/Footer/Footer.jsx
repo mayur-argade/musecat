@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
+import { addToNewsLetter } from '../../../http';
 
 const Footer = () => {
 
     const navigate = useNavigate()
+    const [email, setEmail] = useState('');
 
-    async function submit() {
-        // toast.success("Added to newsletter")
+
+    async function submit(event) {
+        event.preventDefault();
+        try {
+            const promise = addToNewsLetter({ email: email });
+            await toast.promise(promise, {
+                loading: 'Adding to newsletter ...',
+                success: 'Subscribed to newsletter',
+                error: (error) => `${error.response.data.data}`,
+            });
+        } catch (error) {
+            console.log(error)
+        }
     }
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     return (
@@ -41,7 +54,7 @@ const Footer = () => {
                                                     </svg>
                                                 </div>
                                                 <div className='md:w-1/2 relative '>
-                                                    <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border-none rounded-lg bg-white focus:ring-[#C0A04C] focus:border-[#C0A04C] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]" required />
+                                                    <input onChange={(e) => setEmail(e.target.value)} type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border-none rounded-lg bg-white focus:ring-[#C0A04C] focus:border-[#C0A04C] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C]" required />
                                                     <button onClick={submit} type="submit" class="absolute text-white absolute right-2.5 bottom-2.5 bg-[#C0A04C] hover:bg-[#A48533] focus:ring-4 focus:outline-none focus:ring-[#A48533] font-medium rounded-lg text-sm px-4 py-2 dark:bg-[#A48533] dark:hover:bg-[#A48533] dark:focus:ring-[#A48533]">Submit</button>
                                                 </div>
                                             </div>
@@ -74,8 +87,8 @@ const Footer = () => {
                                                 <a class="hover:opacity-75 cursor-pointer" href="mailto:info@muscatwhereto.com" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> Email </span>
                                                     <div className='flex justify-center align-middle items-center h-8 w-8 rounded-full border border-2 dark:border-white border-black'>
-                                                    <img className='h-4 hidden dark:flex' src="/images/icons/threads-icon-light.svg" alt="" />
-                                                    <img className='h-4 flex dark:hidden ' src="/images/icons/threads-icon.svg" alt="" />
+                                                        <img className='h-4 hidden dark:flex' src="/images/icons/threads-icon-light.svg" alt="" />
+                                                        <img className='h-4 flex dark:hidden ' src="/images/icons/threads-icon.svg" alt="" />
                                                     </div>
 
                                                 </a>

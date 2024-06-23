@@ -67,7 +67,7 @@ const HeroSection = () => {
                     </>
                     :
                     <div
-                        class="h-4/6 NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1715548094/muscat/offers/bgHome_bq3uwo.webp')]">
+                        class="h-4/6 NoHeader bg-center bg-no-repeat bg-cover bg-[url('https://res.cloudinary.com/dxmbvi3gf/image/upload/v1718917038/bgHome_byrjjp_fhtxmt.webp')]">
                         <header className='p-5 md:p-10 '>
 
                             <div className="">

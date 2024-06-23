@@ -746,13 +746,26 @@ exports.addUserEmailTofirebase = async (req, res) => {
     }
 
     try {
+        // Check if the email is already present in the database
+        const emailQuerySnapshot = await db.collection('subscribers')
+            .where('email', '==', email)
+            .get();
+
+        if (!emailQuerySnapshot.empty) {
+            return res.status(400).json({
+                success: false,
+                data: 'Email is already subscribed'
+            });
+        }
+
+        // If email is not found, add it to the collection
         await db.collection('subscribers').add({ email });
         res.status(200).json({
             success: true,
             data: 'Subscribed successfully!'
         });
     } catch (error) {
-        console.log(error)
+        console.error(error);
         res.status(500).send(error.message);
     }
 }

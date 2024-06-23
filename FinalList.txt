@@ -1,31 +1,41 @@
 1. Search Events functionality (done)
-2. Alignment of the events for the homepage (done)
+17. Edit event crop feature modification (done)
+6. Link subscribe to newletter api with the frontend (done)
+7. Call now button showing same number (done)
+
+23. Remove everything from the internal testing and push everything into client testing 
+13. On the server add timzone as muscat oman
+
+CLIENT
+2. Alignment of the events for the homepage
+18. Adding sliding arrows everywhere dynamic and beautifull
+25. Remove local storage setting and add query redirection for login 
+11. Check distance filter is right or wrong
+12. Modify events fetch apis with the new date thing
+16. Add to calender feature modification as per dynamic date
+24. Sign in and Sign up functionality with token expiration redirection 
+9. Mobile screen footer navigation
+
+ADMIN
+21. latest one -> On the homepage there should only 5 events and 5 offers and 5 vendors 5 users
+26. For admin add redirection to email if it is expirying someting 
+28. give option to view the cr pdf 
+22. Admin screens ui developement
+22. Admin setting option to set all the fields which are defined 
+8. Give option for admin to edit the number and social media links
+27. Vendor profile modification in the admin side
+
+VENDOR
+19. Additional images is not working (not done)
+14. While adding event add timzone as muscat oman
+
+
 3. Change google credentials to muscatwhereto.com 
 4. Change facebook credentials to muscatwhereto.com
 5. Error Page when server is offline or any runtime error happens (not done)
-6. Link subscribe to newletter api with the frontend
-7. Call now button showing same number
-8. Give option for user to edit the number and social media links
-9. Mobile screen footer navigation
 10. Remove stream chat components and code
-11. Check distance filter is right or wrong
-12. Modify events fetch apis with the new date thing
-13. On the server add timzone as muscat oman
-14. While adding event add timzone as muscat oman
-15. Give title to the google information window use title short description and photo
-16. Add to calender feature modification as per dynamic date
-17. Edit event crop feature modification
-18. Adding sliding arrows everywhere dynamic and beautifull
-19. Additional images is not working (not done)
 20. categories serial ordering (not now)
-21. latest one -> On the homepage there should only 5 events and 5 offers and 5 vendors 5 users
-22. Admin screens ui developement
-22. Admin setting option to set all the fields which are defined 
-23. Remove everything from the internal testing and push everything into client testing 
-24. Sign in and Sign up functionality with token expiration redirection 
-25. Remove local storage setting and add query redirection for login 
-26. For admin add redirection to email if it is expirying someting 
-27. Vendor profile modification in the admin side
-28. give option to view the cr pdf 
+15. Give title to the google information window use title short description and photo (not now)
+
 
 

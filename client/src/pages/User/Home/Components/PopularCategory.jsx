@@ -119,7 +119,7 @@ const PopularCategory = () => {
 
     return (
         <div className='flex justify-center items-center align-middle mt-5'>
-            <section className='w-full md:w-full sm:mx-5 md:mx-10 md:w-9/12 xl:w-9/12 2xl:w-7/12'>
+            <section className='w-full md:w-full sm:mx-5 md:mx-10 lg:w-10/12 md:w-8.5/12 xl:w-8.5/12 2xl:w-7/12'>
                 <div className='flex justify-between align-middle items-center'>
 
                     {category.data != null || category.data != undefined
@@ -215,11 +215,6 @@ const PopularCategory = () => {
                     }
                 </div>
                 <div className='relative flex align-middle items-center'>
-                    {showLeftButton && (
-                        <button className="absolute left-0 md:-left-2 top-0 bottom-0 z-10" onClick={scrollLeft}>
-                            <img className='rounded-full  bg-white  h-10' src="/images/icons/homebackarrow.svg" alt="" />
-                        </button>
-                    )}
                     <div id="content" ref={containerRef} className=' carousel p-4 flex items-center justify-start overflow-x-auto scroll-smooth md:scrollbar-hide space-x-5'>
                         {
                             category.data == null || category.data == undefined
@@ -267,11 +262,6 @@ const PopularCategory = () => {
                                         })
                         }
                     </div>
-                    {showRightButton && (
-                        <button className="absolute right-0 top-0 bottom-0 z-10" onClick={scrollRight}>
-                            <img className='rounded-full bg-white h-10' src="/images/icons/homefrontarrow.svg" alt="" />
-                        </button>
-                    )}
                 </div>
 
                 <div className='grid md:grid-cols-3 flex align-middle'>
@@ -279,16 +269,16 @@ const PopularCategory = () => {
 
                     <div className=" hidden md:flex  justify-center items-center space-x-4">
                         <>
-                            {isOverflowing && (
-                                <>
-                                    <button onClick={scrollLeft}>
-                                        <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
-                                    </button>
-                                    <button onClick={scrollRight}>
-                                        <img className='h-10 bg-white rounded-full' src="/images/icons/homefrontarrow.svg" alt="" />
-                                    </button>
-                                </>
-                            )}
+                            {/* {isOverflowing && (
+                                <> */}
+                            <button onClick={scrollLeft}>
+                                <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
+                            </button>
+                            <button onClick={scrollRight}>
+                                <img className='h-10 bg-white rounded-full' src="/images/icons/homefrontarrow.svg" alt="" />
+                            </button>
+                            {/* </>
+                            )} */}
 
                         </>
                     </div>
