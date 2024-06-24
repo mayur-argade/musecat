@@ -276,47 +276,46 @@ const VendorEventDescripton = () => {
     let eventEnd;
     if (response.data != null) {
         let eventType = response.data.eventDetails.date.type;
-        if (eventType != 'dateRange') {
+        if (eventType !== 'dateRange') {
             const days = response.data.eventDetails.date.recurring.days.map(day => {
                 return day.charAt(0).toUpperCase() + day.slice(1);
             });
 
-            let endDateRecurr = ''
+            let endDateRecurr = '';
             if (response.data.eventDetails.date.recurring.endDate) {
-                endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`
-            } else {
-                endDateRecurr = ''
+                endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`;
             }
 
             if (days.length === 1) {
                 showDateField = `${days[0]} ${endDateRecurr}`;
             } else if (days.length === 2) {
                 showDateField = `${days.join(' and ')} ${endDateRecurr}`;
+            } else if (days.length === 7) {
+                showDateField = 'Daily';
             } else {
                 const lastDay = days.pop();
                 showDateField = `${days.join(', ')}, and ${lastDay} ${endDateRecurr}`;
             }
-        }
-        else if (eventType == 'dateRange') {
-            // 1. Start date + end date 
-            // 3. start date == end date 
-            const startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
+        } else if (eventType === 'dateRange') {
+            let startDate = moment(response.data.eventDetails.date.dateRange.startDate).startOf('day');
             const endDate = moment(response.data.eventDetails.date.dateRange.endDate).startOf('day');
+
+            if (startDate.isBefore(moment().startOf('day'))) {
+                startDate = moment().startOf('day');
+            }
+
             if (response.data.eventDetails.date.dateRange.endDate) {
-                if (startDate.isSame(endDate)) {
+                if (startDate.isSame(endDate, 'day')) {
                     showDateField = `${startDate.format('dddd, DD MMMM YYYY')}`;
                 } else {
-                    if (response.data.eventDetails.showEndDate == false) {
-                        showDateField = `${startDate.format('dddd, DD MMMM YYYY')} `;
+                    if (response.data.eventDetails.showEndDate === false) {
+                        showDateField = `${startDate.format('dddd, DD MMMM YYYY')}`;
                     } else {
                         showDateField = `From ${startDate.format('Do MMM')} to ${endDate.format('Do MMM')}`;
                     }
                 }
-
-            }
-            // 2. Start date - end date 
-            else {
-                showDateField = `From ${moment().format('ddd,DD MMMM YYYY')} `;
+            } else {
+                showDateField = `${startDate.format('dddd, DD MMMM YYYY')}`;
             }
         }
         if (response.data.eventDetails && response.data.eventDetails.categories) {
