@@ -103,7 +103,7 @@ const AdminEvents = () => {
                     <div className="headline ">
                         <div className="heading">
                             <div className="flex justify-between">
-                                <span className="text-2xl font-semibold">Events/Offers</span>
+                                <span className="text-2xl font-semibold">Event/Offer</span>
                                 <div className='flex'>
                                     <input
                                         type="text"
@@ -112,7 +112,7 @@ const AdminEvents = () => {
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Search "
                                     />
-                                    <button onClick={handleClick} className='ml-5 px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Event</button>
+                                    <button onClick={handleClick} className='ml-5 px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Events/Offers</button>
                                 </div>
                             </div>
                             <hr className='mt-3 mb-3' />

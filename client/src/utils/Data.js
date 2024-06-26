@@ -22,6 +22,18 @@ const Features = {
         "BBQ",
         "Brunch",
         "Sushi",
+        "Indoor",
+        "Majlis",
+        "Mini Golf",
+        "Water Park",
+        "Golf",
+        "Spa",
+        "Infinite Pool",
+        "Indoor Pool",
+        "Snacks",
+        "Cigar Lounge",
+        "Happy Hour",
+        "View"
     ],
 };
 

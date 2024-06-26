@@ -14,6 +14,7 @@ const AdminVenue = () => {
     const [showAddVenue, setShowAddVenue] = useState(false)
     const [selectedVenue, setSelectedVenue] = useState({})
     const [refresh, setRefresh] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('')
 
     const apiRefreshstate = () => {
         setRefresh(!refresh)
@@ -128,7 +129,18 @@ const AdminVenue = () => {
                         <div className="z-10 heading mx-4 pb-20">
                             <div className="flex justify-between">
                                 <span className="text-2xl font-semibold">Venues</span>
-                                <button onClick={() => handleCategoryClick()} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Venue</button>
+                                <div>
+                                    <div className='flex space-x-5'>
+                                        <input
+                                            type="text"
+                                            id="table-search"
+                                            className={`dark:bg-[#454545] dark:placeholder-[#454545] placeholder-gray-50 md:placeholder-gray-500 bg-gray-50 border border-gray-300 text-gray-900 md:text-gray-900 text-sm rounded-lg focus:ring-[#C0A04C] focus:border-[#C0A04C] block pl-5 p-2 dark:border-[#454545] dark:text-white dark:focus:ring-[#C0A04C] dark:focus:border-[#C0A04C] w-14 md:w-44 focus:w-32 md:focus:w-44`}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            placeholder="Search "
+                                        />
+                                        <button onClick={() => handleCategoryClick()} className='px-1.5 py-1 bg-blue-800 text-sm text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-5'>Add Venue</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <hr className='mt-3 mb-3' />
@@ -202,14 +214,17 @@ const AdminVenue = () => {
                                                 :
                                                 <tbody>
                                                     {
-                                                        venues.data.map((cat, index) => (
+                                                        venues.data.filter(event =>
+                                                                event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                                                event.address.toLowerCase().includes(searchQuery.toLowerCase())
+                                                            ).map((cat, index) => (
                                                             <tr key={index}>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     {cat.name}
                                                                 </td>
                                                                 {/* </Link> */}
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 w-96">
-                                                                    {cat.address}
+                                                                    <div dangerouslySetInnerHTML={{ __html: cat.address }}></div>
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                     <a href={`${cat.photo}`} target="_blank" rel="noopener noreferrer">Link</a>

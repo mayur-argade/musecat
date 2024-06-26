@@ -72,7 +72,7 @@ const UpcomingEventsCard = ({ event, showNumberBox, setNumber }) => {
         <div className='dark:text-white mt-2'>
             <div>
                 <Toaster />
-                <div onClick={() => navigate(`/events/${event._id}`)} className='cursor-pointer relative rounded-2xl w-52 mx-2 md:w-80 mb-2 bg-[#F3F3F3] dark:bg-[#454545] top-0 md:mt-5'>
+                <div onClick={() => navigate(`/events/${event._id}`)} className='cursor-pointer relative rounded-2xl w-52 mx-2 md:w-[19.5rem] mb-2 bg-[#F3F3F3] dark:bg-[#454545] top-0 md:mt-5'>
                     <div className='top-0 rounded-2xl'>
                         <img className='rounded-2xl object-cover aspect-square' src={event.displayPhoto} alt='' />
                         <button onClick={(e) => { e.stopPropagation(); favoriteFeature(event._id); }} className='absolute top-2 right-2 bg-white text-black rounded-full z-20 p-2'>

@@ -127,7 +127,7 @@ const UpcomingEvents = () => {
 
     return (
         <section className='flex justify-center items-center align-middle mt-5'>
-            <section className='w-full md:w-full sm:mx-5 md:mx-5 lg:w-10/12 md:w-10/12 xl:w-9/12 2xl:w-7/12'>
+            <section className='w-full md:w-full sm:mx-5 md:mx-5 lg:w-10/12 md:w-8.5/12 xl:w-8.5/12 2xl:w-7/12'>
                 {
                     upcomingEvents.data != null || upcomingEvents.data != undefined
                         ?

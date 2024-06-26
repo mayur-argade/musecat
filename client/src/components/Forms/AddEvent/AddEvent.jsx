@@ -556,7 +556,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                             </div>
                         </div>
 
-                        <div className="flex space-x-2 align-middle ml-2 mt-1 mb-3">
+                        <div className="flex space-x-2 align-middle ml-2 mt-1">
                             <label className="block">
                                 <input
                                     type="checkbox"
@@ -573,7 +573,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
 
                         {!datetype && (
                             <div>
-                                <p className='text-sm mt-2'>Select Days of the Week For recurring event :</p>
+                                <p className='ml-2 text-sm mt-1'>Select Days of the Week For recurring event :</p>
                                 <div className='flex space-x-4 align-middle items-center'>
                                     {days.map((day, index) => (
                                         <div className='mx-2' key={index}>
@@ -596,7 +596,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                             </div>
                         )}
 
-                        <div className='flex space-x-3'>
+                        <div className='flex space-x-3 mt-2'>
                             {
                                 startDate && startDate != '' && (
                                     <label className="relative inline-flex items-center mb-5 cursor-pointer">
