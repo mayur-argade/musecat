@@ -9,27 +9,33 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
 
     categories.forEach(category => {
         if (category && category.categoryURL) {
-            // Add the main category
-            options.push({
-                value: category.categoryURL,
-                label: category.name,
-                data: { isMainCategory: true },
-            });
+            // Check if the main category is already present
+            if (!options.some(option => option.value === category.categoryURL)) {
+                options.push({
+                    value: category.categoryURL,
+                    label: category.name,
+                    data: { isMainCategory: true },
+                });
+            }
         }
 
         if (category.subCategories && category.subCategories.length > 0) {
             // Add subcategories nested under the main category
             category.subCategories.forEach(subcategory => {
                 if (subcategory && subcategory.categoryURL) {
-                    options.push({
-                        value: subcategory.categoryURL,
-                        label: subcategory.name,
-                        data: { isSubcategory: true },
-                    });
+                    // Check if the subcategory is already present
+                    if (!options.some(option => option.value === subcategory.categoryURL)) {
+                        options.push({
+                            value: subcategory.categoryURL,
+                            label: subcategory.name,
+                            data: { isSubcategory: true },
+                        });
+                    }
                 }
             });
         }
     });
+
 
     // Find the index of the "Dinner" category
     const dinnerCategoryIndex = options.findIndex(option => option.label.toLowerCase() === 'dinner');
@@ -105,20 +111,30 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
             }
         });
 
-        const hasDinner = selectedCategories.some(category =>
+        // Remove undefined values that might have been returned from map
+        const uniqueSelectedCategories = selectedCategories.filter(category => category);
+
+        // Check if "Dinner" options are present
+        const hasDinner = uniqueSelectedCategories.some(category =>
             daysOfWeek.some(day => category.categoryURL === `${day.toLowerCase()}dinner`)
         );
 
         // If any dinner options are selected, add { name: "Dinner", categoryURL: "dinner" }
-        if (hasDinner) {
-            selectedCategories.push({
+        if (hasDinner && !uniqueSelectedCategories.some(category => category.categoryURL === "dinner")) {
+            uniqueSelectedCategories.push({
                 name: "Dinner",
                 categoryURL: "dinner"
             });
         }
-        
-        onChange(selectedCategories);
+
+        // Ensure no duplicates in selectedCategories
+        const finalSelectedCategories = uniqueSelectedCategories.filter((category, index, self) =>
+            index === self.findIndex(c => c.categoryURL === category.categoryURL)
+        );
+
+        onChange(finalSelectedCategories);
     };
+
 
     const customStyles = {
         control: (baseStyles, state) => ({

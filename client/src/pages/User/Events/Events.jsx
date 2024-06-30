@@ -494,7 +494,9 @@ const Events = () => {
                                                                 :
                                                                 response.data
                                                                     .filter((item) => {
-                                                                        const searchResults = search.toLocaleLowerCase() === '' ? true : item.title.toLowerCase().includes(search);
+                                                                        const searchResults = search.toLocaleLowerCase() === ''
+                                                                            ? true
+                                                                            : item.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
 
                                                                         const categoryMatch =
                                                                             selectedCategories.length === 0 ||

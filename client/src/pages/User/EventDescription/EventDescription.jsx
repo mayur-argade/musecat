@@ -17,7 +17,7 @@ import ICalendarLink from "react-icalendar-link";
 import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const EventDescription = () => {
-    document.title = 'Event Info'
+    
 
     let { eventid } = useParams();
     const [overflowing, isOverflowing] = useState(false)
@@ -73,6 +73,11 @@ const EventDescription = () => {
     // console.log("isMobile",isMobileDevice)
     const [visible, setVisible] = useState(false)
 
+    document.title = response.data && response.data.eventDetails && response.data.eventDetails.title
+        ? response.data.eventDetails.title
+        : 'Default Title';
+
+        
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 80) {
