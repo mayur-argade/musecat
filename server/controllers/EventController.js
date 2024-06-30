@@ -302,7 +302,7 @@ exports.updateEvent = async (req, res) => {
             custom: custom,
 
             displayPhoto: uploadedEventPhoto.secure_url,
-            AdditionalPhotos: additinalPhotos,
+            // AdditionalPhotos: additinalPhotos,
             seatingMap: uploadedSeatingMap.secure_url,
             banner: uploadedBanner.secure_url,
             video: video,
@@ -314,6 +314,12 @@ exports.updateEvent = async (req, res) => {
             showStartDate: showStartDate,
             showInEventCalender: showInEventCalender,
         }
+
+        // Only update additionalPhotos if new images were uploaded
+        if (additionalPhotos.length > 0) {
+            data.additionalPhotos = additionalPhotos;
+        }
+
 
         let categoryData;
         for (let i = 0; i < eventCategory.length; i++) {
