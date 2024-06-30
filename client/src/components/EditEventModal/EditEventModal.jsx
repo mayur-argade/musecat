@@ -65,28 +65,32 @@ const EditEventModal = ({ onClose, data }) => {
     let eventstarttime = '';
     let eventendtime = '';
 
-    if (data.date.type == 'dateRange') {
-        eventstartdate = moment(data.date.dateRange.startDate).format('YYYY-MM-DDTHH:mm')
-        if (data.date.dateRange.endDate) {
-            eventenddate = moment(data.date.dateRange.endDate).format('YYYY-MM-DDTHH:mm')
+    if (data.date.type === 'dateRange') {
+        eventstartdate = moment(data.date.dateRange.startDate).format('YYYY-MM-DDTHH:mm');
+        if (data.date.dateRange.endDate && moment(data.date.dateRange.endDate).isValid()) {
+            eventenddate = moment(data.date.dateRange.endDate).format('YYYY-MM-DDTHH:mm');
         } else {
-            eventenddate = undefined
+            eventenddate = undefined;
         }
     } else {
-        eventstartdate = moment(data.date.recurring.startDate).format('YYYY-MM-DDTHH:mm')
-        eventenddate = moment(data.date.recurring.endDate).format('YYYY-MM-DDTHH:mm')
-        eventendtime = data.date.recurring.endTime
-        eventstarttime = data.date.recurring.startTime
+        eventstartdate = moment(data.date.recurring.startDate).format('YYYY-MM-DDTHH:mm');
+        if (data.date.recurring.endDate && moment(data.date.recurring.endDate).isValid()) {
+            eventenddate = moment(data.date.recurring.endDate).format('YYYY-MM-DDTHH:mm');
+        } else {
+            eventenddate = undefined;
+        }
+        eventstarttime = data.date.recurring.startTime;
+        eventendtime = data.date.recurring.endTime;
     }
 
+    const [startDate, setStartDate] = useState(eventstartdate);
+    const [endDate, setEndDate] = useState(eventenddate);
 
     const [title, setTitle] = useState(data.title)
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
     const [content, setContent] = useState()
 
     const [datetype, setDatetype] = useState(rangeEvent)
-    const [startDate, setStartDate] = useState(eventstartdate)
-    const [endDate, setEndDate] = useState(eventenddate)
     const [selectedDays, setSelectedDays] = useState(data.date.recurring.days);
     const [startTime, setStartTime] = useState(eventstarttime || '')
     const [endTime, setEndTime] = useState(eventendtime || '')
@@ -97,7 +101,7 @@ const EditEventModal = ({ onClose, data }) => {
     const [location, setLocation] = useState(data.location._id)
     const [showVenuecreate, setShowVenuecreate] = useState(false)
     const [venueDescription, setVenueDescription] = useState(data.venueInfo)
-    const [selectedCategories, setSelectedCategories] = useState(data.eventCategory)
+    const [selectedCategories, setSelectedCategories] = useState(Array.from(new Map(data.eventCategory.map(subcategory => [subcategory.name, subcategory])).values()))
     const [selectedFeature, setSelectedFeatures] = useState(data.features)
 
 
