@@ -939,7 +939,7 @@ const EventDescription = () => {
                                             {
                                                 response.data.upcomingEvents.map((event) => (
                                                     <div >
-                                                        < EventCard width={'w-44 md:w-52'} data={event} />
+                                                        <EventCard width={'w-44 md:w-52'} data={event} />
                                                     </div>
                                                 ))
                                             }

@@ -34,6 +34,7 @@ const AdminEventDescription = () => {
 
     const closeModal = () => {
         setShowModal(false);
+        setRefresh(!refresh)
     };
 
     const [showModal, setShowModal] = useState(false)
@@ -157,7 +158,7 @@ const AdminEventDescription = () => {
                         ...(data.data.eventDetails.AdditionalPhotos || []),
                         ...(data.data.eventDetails.banner || []),
                         ...(data.data.eventDetails.video ? [data.data.eventDetails.video] : []),
-                        ...prevImages,
+                        // ...prevImages,`
                     ]);
 
                     // Convert the Set back to an array

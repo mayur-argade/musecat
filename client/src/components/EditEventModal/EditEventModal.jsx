@@ -108,8 +108,8 @@ const EditEventModal = ({ onClose, data }) => {
     const [fb, setFb] = useState(data.facebook)
     const [insta, setInsta] = useState(data.instagram)
     const [mail, setMail] = useState(data.email)
-    const [number, setNumber] = useState('')
-    const [wpNumber, setWpNumber] = useState('')
+    const [number, setNumber] = useState(`${data.phoneNo}`)
+    const [wpNumber, setWpNumber] = useState(`${data.whatsapp}`)
     const [website, setWebsite] = useState(data.website)
 
 
@@ -200,34 +200,34 @@ const EditEventModal = ({ onClose, data }) => {
             };
         }
     }
-
+    
     function captureAdditionalPhotos(e) {
         const files = e.target.files;
-
+    
         if (files) {
-            const newImages = Array.from(files);
-            const imagePromises = newImages.map((file) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        resolve(event.target.result);
-                    };
-                    reader.onerror = (error) => {
-                        reject(error);
-                    };
-                    reader.readAsDataURL(file);
-                });
+          const newImages = Array.from(files);
+          const imagePromises = newImages.map((file) => {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                resolve(event.target.result);
+              };
+              reader.onerror = (error) => {
+                reject(error);
+              };
+              reader.readAsDataURL(file);
             });
-
-            Promise.all(imagePromises)
-                .then((base64Images) => {
-                    setAdditionalPhotos([...additinalPhotos, ...base64Images]);
-                })
-                .catch((error) => {
-                    console.error("Error converting images to base64:", error);
-                });
+          });
+    
+          Promise.all(imagePromises)
+            .then((base64Images) => {
+              setAdditionalPhotos(base64Images); // Overwrite with new images
+            })
+            .catch((error) => {
+              console.error("Error converting images to base64:", error);
+            });
         }
-    }
+      }
 
     const handleDayClick = (day) => {
         setDatetype(false)
@@ -501,7 +501,7 @@ const EditEventModal = ({ onClose, data }) => {
                                     {/* <label htmlFor="recurring">Recurring Event ?</label> */}
                                 </div>
                                 {
-                                    datetype || data.date.type == 'dateRange'
+                                    datetype && data.date.type == 'dateRange'
                                         ?
                                         <></>
                                         :
@@ -879,7 +879,7 @@ const EditEventModal = ({ onClose, data }) => {
                                 <br />
 
                                 <label class=" text-base font-medium  dark:text-white" for="file_input">Featured Image</label>
-                                <p className='flex text-sm pb-2'>Uploaded Image: <a className='ml-2 text-[#A48533] flex align-middle items-center' href={data.displayPhoto} target="_blank" rel="noopener noreferrer">Display photo  <svg className='dark:hidden text-[#A48533] flex ml-2 h-3' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#A48533"><path fill="none" d="M0 0h24v24H0z"></path><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a></p>
+                                <p className='flex text-sm pb-2'>Uploaded Image: <a className='ml-2 text-[#A48533] flex align-middle items-center' href={data.featuredPhoto} target="_blank" rel="noopener noreferrer">Display photo  <svg className='dark:hidden text-[#A48533] flex ml-2 h-3' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#A48533"><path fill="none" d="M0 0h24v24H0z"></path><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a></p>
                                 <input class=" block w-full text-sm text-gray-900 border border-0 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:placeholder-gray-400 mb-1"
                                     onChange={capturePhoto}
                                     accept="image/*"
@@ -889,6 +889,28 @@ const EditEventModal = ({ onClose, data }) => {
                                 )}
 
                                 <label class="mt-1 ml-1 text-base font-medium  dark:text-white" for="file_input">Additional Images</label>
+                                <div>
+                                    <p className='flex text-sm pb-2'>Uploaded Additional Images:
+                                        {
+                                            data.AdditionalPhotos && data.AdditionalPhotos.length > 0 ? (
+                                                <ul className='flex space-x-4'>
+                                                    {data.AdditionalPhotos.map((image, index) => (
+                                                        <li key={index} className='flex text-sm pb-2'>
+                                                            <a className='ml-2 text-[#A48533] flex align-middle items-center' href={image} target="_blank" rel="noopener noreferrer">
+                                                                Additional Image {index + 1}
+                                                                <svg className='dark:hidden text-[#A48533] flex ml-2 h-3' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#A48533">
+                                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                    <path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <></>
+                                            )}
+                                    </p>
+                                </div>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-[#E7E7E7] dark:text-gray-400 focus:outline-none dark:bg-[#454545] dark:border-0 dark:placeholder-gray-400 mb-1"
                                     onChange={captureAdditionalPhotos}
                                     accept="image/*"

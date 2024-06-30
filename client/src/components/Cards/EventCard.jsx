@@ -101,12 +101,16 @@ const EventCard = ({ data, width, showNumberBox }) => {
                 <div className="p-1 pt-4 pb-2 mx-1">
                     <p className='text-xss md:text-xs  mt-1 m:mt-2 font-medium truncate'>
                         {
-                            data.showStartDate && data.showStartDate == true &&
-                            (
-                                <span className='ml-0 font-normal'>
-                                    {showDateField}
-                                </span>
-                            )
+                            data.showStartDate && data.showStartDate == true
+                                ?
+                                <>
+                                    <span span className='ml-0 font-normal'>
+                                        {showDateField}
+                                    </span>
+                                </>
+                                :
+                                <><span></span></>
+
                         }
                     </p>
                     <p className='text-xs md:text-sm mt-1 md:mt-2 font-semibold truncate'>
@@ -114,10 +118,10 @@ const EventCard = ({ data, width, showNumberBox }) => {
                     </p>
                     <p className='text-xs md:text-xs md:mt-1 text-[#C0A04C] font-medium truncate'>{data.location.name}</p>
                     <p className="text-xss mt-1 md:mt-2 mb-1 md:text-xs font-light truncate">
-                    {[...new Set(data.eventCategory.map(subcategory => subcategory.name))].join(', ')}
+                        {[...new Set(data.eventCategory.map(subcategory => subcategory.name))].join(', ')}
                     </p>
                 </div>
-            </div>
+            </div >
         </>
     )
 }
