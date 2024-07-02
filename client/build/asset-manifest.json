@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "https://omanwhereto.com/static/css/main.31c1caf3.css",
-    "main.js": "https://omanwhereto.com/static/js/main.2e6f571c.js",
+    "main.js": "https://omanwhereto.com/static/js/main.80488e5f.js",
     "static/js/703.e87620f6.chunk.js": "https://omanwhereto.com/static/js/703.e87620f6.chunk.js",
     "static/js/513.baca3871.chunk.js": "https://omanwhereto.com/static/js/513.baca3871.chunk.js",
     "static/js/878.1b8d15c1.chunk.js": "https://omanwhereto.com/static/js/878.1b8d15c1.chunk.js",
@@ -10,7 +10,7 @@
     "service-worker.js": "https://omanwhereto.com/service-worker.js",
     "index.html": "https://omanwhereto.com/index.html",
     "main.31c1caf3.css.map": "https://omanwhereto.com/static/css/main.31c1caf3.css.map",
-    "main.2e6f571c.js.map": "https://omanwhereto.com/static/js/main.2e6f571c.js.map",
+    "main.80488e5f.js.map": "https://omanwhereto.com/static/js/main.80488e5f.js.map",
     "703.e87620f6.chunk.js.map": "https://omanwhereto.com/static/js/703.e87620f6.chunk.js.map",
     "513.baca3871.chunk.js.map": "https://omanwhereto.com/static/js/513.baca3871.chunk.js.map",
     "878.1b8d15c1.chunk.js.map": "https://omanwhereto.com/static/js/878.1b8d15c1.chunk.js.map",
@@ -19,6 +19,6 @@
   },
   "entrypoints": [
     "static/css/main.31c1caf3.css",
-    "static/js/main.2e6f571c.js"
+    "static/js/main.80488e5f.js"
   ]
 }

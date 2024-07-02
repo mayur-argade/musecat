@@ -1,6 +1,7 @@
 const UserModel = require('../models/UserModel');
 const VendorModel = require('../models/VendorModel');
 const notificationService = require('../services/notification-service')
+const { admin } = require('../config/firebase')
 
 exports.getVendorNotification = async (req, res) => {
 
@@ -103,7 +104,7 @@ exports.getUserNotification = async (req, res) => {
 
 exports.countunreadNotifications = async (req, res) => {
     try {
-        if(!req.user){
+        if (!req.user) {
             return res.status(404).json({
                 success: false,
                 data: "no user found"
@@ -146,6 +147,23 @@ exports.sendNotificationToUsers = async (req, res) => {
                 return await notificationService.createNotification(userNotification);
             });
 
+            const message = {
+                notification: {
+                    title: 'New Notification',
+                    body: 'Admin has posted a new notification.',
+                },
+                token: '<FCM_DEVICE_TOKEN>',
+            };
+
+            admin.messaging().send(message)
+                .then((response) => {
+                    console.log('Successfully sent message:', response);
+                })
+                .catch((error) => {
+                    console.log('Error sending message:', error);
+                });
+
+
             // Wait for all notifications to be created
             const notifications = await Promise.all(notificationPromises);
         }
@@ -186,4 +204,17 @@ exports.sendNotificationToUsers = async (req, res) => {
 
     }
 
+}
+
+let deviceTokens = [];
+
+exports.saveFcmTokens = async (req, res) => {
+    const { token } = req.body;
+    if (token && !deviceTokens.includes(token)) {
+        deviceTokens.push(token);
+        console.log(deviceTokens)
+        res.status(200).send('Token saved successfully');
+    } else {
+        res.status(400).send('Invalid token or token already exists');
+    }
 }

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
+import { useLocation } from 'react-router-dom';
 
 const CategorySelector = ({ categories, selectedCategories, onChange }) => {
 
+    const location = useLocation();
     console.log(selectedCategories)
 
     const options = [];
@@ -64,17 +66,22 @@ const CategorySelector = ({ categories, selectedCategories, onChange }) => {
     const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
-        // Check if user prefers dark mode
-        if (
-            localStorage.getItem('color-theme') === 'dark' ||
-            (!('color-theme' in localStorage) &&
-                window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-            setDarkMode(true);
-        } else {
-            setDarkMode(false);
+        // Check if we are on an admin route
+        const isAdminRoute = location.pathname.startsWith('/admin');
+
+        if (!isAdminRoute) {
+            // Check if user prefers dark mode
+            if (
+                localStorage.getItem('color-theme') === 'dark' ||
+                (!('color-theme' in localStorage) &&
+                    window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ) {
+                setDarkMode(true);
+            } else {
+                setDarkMode(false);
+            }
         }
-    }, []);
+    }, [location.pathname]);
 
     console.log(options)
 

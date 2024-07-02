@@ -306,7 +306,7 @@ const AdminEventDescription = () => {
             });
 
             let endDateRecurr = '';
-            if (response.data.eventDetails.date.recurring.endDate) {
+            if (response.data.eventDetails.date.recurring.endDate && response.data.eventDetails.showEndDate) {
                 endDateRecurr = `till ${moment(response.data.eventDetails.date.recurring.endDate).format('DD MMMM')}`;
             }
 
@@ -513,7 +513,7 @@ const AdminEventDescription = () => {
                                                                         response.data.eventDetails.showStartDate && response.data.eventDetails.showStartDate == true && (
                                                                             <div className='mt-4 flex justify-center space-x-2 text-center'>
                                                                                 <img className='h-5 flex dark:hidden' src="/images/icons/eventcal.svg" alt="" />
-                                                                                {/* <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" /> */}
+                                                                                <img className='h-5 hidden dark:flex' src="/images/icons/eventcal-light.svg" alt="" />
                                                                                 <p className='text-xs md:text-base font-semibold'>
                                                                                     {showDateField}
                                                                                 </p>

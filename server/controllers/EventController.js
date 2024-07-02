@@ -218,47 +218,56 @@ exports.createEvent = async (req, res) => {
 exports.updateEvent = async (req, res) => {
     let { featuredPhoto, showStartDate, showInEventCalender, eventid, title, displayPhoto, banner, video, shortDescription, description, location, custom, features, termsAndConditions,
         date, categories, eventCategory, instagram, facebook, whatsapp, email, discountOnApp, type, seatingMap, showEndDate, venueInfo, additinalImages, website, phone
-    } = req.body
+    } = req.body;
 
+    if (!eventid) {
+        return res.status(400).json({
+            success: false,
+            data: "Event ID is required"
+        });
+    }
 
-    let event = {}
+    if (!title || !description) {
+        return res.status(400).json({
+            success: false,
+            data: "Title and description are required"
+        });
+    }
 
     try {
-        let uploadedEventPhoto = ''
+        let uploadedEventPhoto = '';
         if (displayPhoto) {
             uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
                 folder: "muscat/events",
-            })
-            // console.log(uploadedEventPhoto)
+            });
         }
 
-        let uploadedBanner = ''
+        let uploadedBanner = '';
         if (banner) {
             uploadedBanner = await cloudinary.v2.uploader.upload(banner, {
                 folder: "muscat/events",
-            })
+            });
         }
 
         let uploadedSeatingMap = '';
         if (seatingMap) {
             uploadedSeatingMap = await cloudinary.v2.uploader.upload(seatingMap, {
                 folder: "muscat/events",
-            })
+            });
         }
 
         let uploadResult;
-        let additinalPhotos = []
-        if (additinalImages && additinalImages.length != 0) {
+        let additinalPhotos = [];
+        if (additinalImages && additinalImages.length > 0) {
             for (let i = 0; i < additinalImages.length; i++) {
-                // console.log(additinalImages[i])
                 uploadResult = await cloudinary.v2.uploader.upload(additinalImages[i], {
                     folder: "muscat/events",
-                })
-                additinalPhotos.push(uploadResult.secure_url)
+                });
+                additinalPhotos.push(uploadResult.secure_url);
             }
         }
 
-        let uploadedFeaturedPhoto = ''
+        let uploadedFeaturedPhoto = '';
         if (featuredPhoto) {
             try {
                 uploadedFeaturedPhoto = await cloudinary.v2.uploader.upload(featuredPhoto, {
@@ -266,10 +275,10 @@ exports.updateEvent = async (req, res) => {
                     transformation: [{ format: 'webp' }]
                 });
             } catch (err) {
-                console.error('Error uploading display photo:', err);
+                console.error('Error uploading featured photo:', err);
                 return res.status(400).json({
                     success: false,
-                    data: "Failed to upload display photo"
+                    data: "Failed to upload featured photo"
                 });
             }
         }
@@ -279,66 +288,51 @@ exports.updateEvent = async (req, res) => {
             title: title,
             shortDescription: shortDescription,
             description: description,
-
             date: date,
             showEndDate: showEndDate,
-
             location: location,
             venueInfo: venueInfo,
-
             eventCategory: eventCategory,
             features: features,
-
             facebook: facebook,
             instagram: instagram,
             email: email,
             phoneNo: phone,
-            whatsapp: whatsapp,
+            whatsapp: whatsapp ? whatsapp : null,
             website: website,
-
-
             categories: categories,
             termsAndConditions: termsAndConditions,
             custom: custom,
-
-            displayPhoto: uploadedEventPhoto.secure_url,
-            // AdditionalPhotos: additinalPhotos,
-            seatingMap: uploadedSeatingMap.secure_url,
-            banner: uploadedBanner.secure_url,
-            video: video,
-            featuredPhoto: uploadedFeaturedPhoto.secure_url,
-
             type: type,
             discountOnApp: discountOnApp,
-
             showStartDate: showStartDate,
             showInEventCalender: showInEventCalender,
-        }
+        };
 
-        // Only update additionalPhotos if new images were uploaded
-        if (additionalPhotos.length > 0) {
-            data.additionalPhotos = additionalPhotos;
-        }
+        console.log(data.whatsapp)
+        // Add uploaded URLs if they exist
+        if (uploadedEventPhoto) data.displayPhoto = uploadedEventPhoto.secure_url;
+        if (uploadedBanner) data.banner = uploadedBanner.secure_url;
+        if (uploadedSeatingMap) data.seatingMap = uploadedSeatingMap.secure_url;
+        if (uploadedFeaturedPhoto) data.featuredPhoto = uploadedFeaturedPhoto.secure_url;
+        if (additinalPhotos.length > 0) data.AdditionalPhotos = additinalPhotos;
 
+        // Update the event
+        let event = await eventService.updateEvent(data);
 
-        let categoryData;
+        // Ensure the event is associated with the correct categories
         for (let i = 0; i < eventCategory.length; i++) {
             const categoryURL = eventCategory[i].categoryURL;
 
             // Check in main categories
-            categoryData = await categoryService.findCategory({
+            let categoryData = await categoryService.findCategory({
                 categoryURL: categoryURL
             });
 
-
-            event = await eventService.updateEvent(data)
-
             if (!categoryData) {
-                // If not found in main categories, search in subcategories of all categories
+                // If not found in main categories, search in subcategories
                 categoryData = await categoryService.findSubcategory(categoryURL);
-
                 if (!categoryData) {
-                    // If not found in subcategories either, return error
                     return res.status(404).json({
                         success: false,
                         data: "Category not found"
@@ -346,26 +340,27 @@ exports.updateEvent = async (req, res) => {
                 }
             }
 
+            // Add event to the category if not already present
             if (!categoryData.events.includes(event._id)) {
-                categoryData.events.push(event._id)
+                categoryData.events.push(event._id);
+                await categoryData.save();
             }
-            categoryData.save()
         }
 
-        res.status(statusCode.SUCCESS.code).json({
+        res.status(200).json({
             success: true,
             data: event
-        })
+        });
 
     } catch (error) {
-        console.log(error);
-        res.status(statusCode.INTERNAL_SERVER_ERROR.code).json({
+        console.error(error);
+        res.status(500).json({
             success: false,
             data: "Internal server error"
-        })
+        });
     }
+};
 
-}
 
 exports.createOffer = async (req, res) => {
     let { title, description, shortDescription, showEndDate, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp

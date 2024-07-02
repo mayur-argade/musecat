@@ -732,10 +732,16 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 match: query,
             })
 
+            const uniqueEventIds = new Set();
             events = categoriesWithEvents.reduce((acc, category) => {
-                acc.push(...category.events);
+                category.events.forEach(event => {
+                    if (!uniqueEventIds.has(event._id.toString())) {
+                        uniqueEventIds.add(event._id.toString());
+                        acc.push(event);
+                    }
+                });
                 return acc;
-            }, [])
+            }, []);
         }
 
         console.log(categoriesWithEvents)
@@ -753,108 +759,6 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 event.date && event.date.recurring && event.date.recurring.days.includes(offerDay.toLowerCase())
             );
         }
-
-        // }
-        // else {
-        //     if (filterdate) {
-        //         const onlyDate = moment(filterdate).format("YYYY-MM-DD")
-        //         const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
-        //         const endDate = new Date(`${onlyDate}T00:00:00.000Z`)
-        //         const currentDay = moment(startDate).format('dddd').toLowerCase()
-
-        //         console.log(startDate)
-        //         console.log(endDate)
-        //         query = {
-        //             archived: false,
-        //             verified: true,
-        //             type: 'event',
-        //             $or: [
-        //                 {
-        //                     'date.dateRange.startDate': { $lte: startDate },
-        //                     'date.dateRange.endDate': { $gte: endDate }
-        //                 },
-        //                 {
-        //                     'date.dateRange.startDate': { $lte: startDate },
-        //                     'date.dateRange.endDate': null
-        //                 }
-        //                 ,
-        //                 {
-        //                     $and: [
-        //                         {
-        //                             $or: [
-        //                                 {
-        //                                     'date.recurring.startDate': { $lte: startDate },
-        //                                     'date.recurring.endDate': { $gte: endDate },
-        //                                     'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-        //                                 },
-        //                                 {
-        //                                     'date.recurring.startDate': { $lte: startDate },
-        //                                     'date.recurring.endDate': { $gte: null },
-        //                                     'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-        //                                 }
-        //                             ]
-        //                         },
-        //                     ]
-        //                 },
-        //             ],
-        //         }
-        //     } else {
-        //         const filterDate = moment().format("YYYY-MM-DD")
-        //         const todayDate = new Date(`${filterDate}T00:00:00.000Z`)
-        //         const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-        //         query = {
-        //             archived: false,
-        //             verified: true,
-        //             type: 'event',
-        //             $or: [
-        //                 {
-        //                     'date.dateRange.endDate': { $gte: todayDate }
-        //                 },
-        //                 {
-        //                     'date.dateRange.endDate': null
-        //                 }
-        //                 ,
-        //                 {
-        //                     $and: [
-        //                         {
-        //                             $or: [
-        //                                 {
-        //                                     'date.recurring.endDate': { $gte: todayDate },
-        //                                     'date.recurring.days': { $in: day } // Replace with a function to get today's day
-
-        //                                 },
-        //                                 {
-        //                                     'date.recurring.endDate': { $gte: null },
-        //                                     'date.recurring.days': { $in: day } // Replace with a function to get today's day
-        //                                 }
-        //                             ]
-        //                         },
-        //                     ]
-        //                 },
-        //             ],
-        //         }
-        //     }
-        //     if (keyword == undefined || keyword == 'undefined' || keyword == null) {
-        //         // console.log("did noting")
-        //     } else {
-        //         query.$and = query.$and || [];
-
-        //         // Fuzzy search with case-insensitivity
-        //         const fuzzySearchPattern = keyword.split('').join('.*?');
-        //         const regex = new RegExp(fuzzySearchPattern, 'i');
-
-        //         // Add search conditions for category name, description, and title
-        //         query.$and.push({
-        //             $or: [
-        //                 { 'description': regex },
-        //                 { 'title': regex }
-        //             ]
-        //         });
-        //     }
-
-        //     events = await eventService.findAllEvents(query);
-        // }
 
         res.status(200).json({
             success: true,

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
-const { getUserNotification, getVendorNotification, clearNotifications, clearUserNotification, countunreadNotifications, sendNotificationToUsers } = require('../controllers/NotifcationController')
+const { saveFcmTokens, getUserNotification, getVendorNotification, clearNotifications, clearUserNotification, countunreadNotifications, sendNotificationToUsers } = require('../controllers/NotifcationController')
 
 router.route('/notification/all').patch(isLoggedin, isVerified, getVendorNotification)
 router.route('/notification/delete').delete(isLoggedin, isVerified, clearNotifications)
@@ -12,4 +12,5 @@ router.route('/user/notification/delete').delete(isUserLoggedin, clearUserNotifi
 router.route('/notification/count').get(isUserLoggedin, countunreadNotifications)
 router.route('/vendor/notification/count').get(isLoggedin, countunreadNotifications)
 router.route('/notification/send-notification').post(isLoggedin, sendNotificationToUsers)
+router.route('/save-token').post(saveFcmTokens);
 module.exports = router;

@@ -52,7 +52,7 @@ const EditEventModal = ({ onClose, data }) => {
         // Get the current date and time as an ISO string
         const currentDate = new Date().toISOString().slice(0, 16);
         setMinDateTime(currentDate);
-        console.log("currentDate=", currentDate)
+        // console.log("currentDate=", currentDate)
     }, []);
 
     let rangeEvent = true;
@@ -65,19 +65,20 @@ const EditEventModal = ({ onClose, data }) => {
     let eventstarttime = '';
     let eventendtime = '';
 
+
     if (data.date.type === 'dateRange') {
-        eventstartdate = moment(data.date.dateRange.startDate).format('YYYY-MM-DDTHH:mm');
+        if (data.date.dateRange.startDate && moment(data.date.dateRange.startDate).isValid()) {
+            eventstartdate = moment(data.date.dateRange.startDate).format('YYYY-MM-DDTHH:mm');
+        }
         if (data.date.dateRange.endDate && moment(data.date.dateRange.endDate).isValid()) {
             eventenddate = moment(data.date.dateRange.endDate).format('YYYY-MM-DDTHH:mm');
-        } else {
-            eventenddate = undefined;
         }
     } else {
-        eventstartdate = moment(data.date.recurring.startDate).format('YYYY-MM-DDTHH:mm');
+        if (data.date.recurring.startDate && moment(data.date.recurring.startDate).isValid()) {
+            eventstartdate = moment(data.date.recurring.startDate).format('YYYY-MM-DDTHH:mm');
+        }
         if (data.date.recurring.endDate && moment(data.date.recurring.endDate).isValid()) {
             eventenddate = moment(data.date.recurring.endDate).format('YYYY-MM-DDTHH:mm');
-        } else {
-            eventenddate = undefined;
         }
         eventstarttime = data.date.recurring.startTime;
         eventendtime = data.date.recurring.endTime;
@@ -91,7 +92,7 @@ const EditEventModal = ({ onClose, data }) => {
     const [content, setContent] = useState()
 
     const [datetype, setDatetype] = useState(rangeEvent)
-    const [selectedDays, setSelectedDays] = useState(data.date.recurring.days);
+    let [selectedDays, setSelectedDays] = useState(data.date.recurring.days);
     const [startTime, setStartTime] = useState(eventstarttime || '')
     const [endTime, setEndTime] = useState(eventendtime || '')
     const [showEndDate, setShowEndDate] = useState(data.showEndDate);
@@ -104,12 +105,12 @@ const EditEventModal = ({ onClose, data }) => {
     const [selectedCategories, setSelectedCategories] = useState(Array.from(new Map(data.eventCategory.map(subcategory => [subcategory.name, subcategory])).values()))
     const [selectedFeature, setSelectedFeatures] = useState(data.features)
 
-
+    const whatsapp = data.whatsapp ? `${data.whatsapp}` : null
     const [fb, setFb] = useState(data.facebook)
     const [insta, setInsta] = useState(data.instagram)
     const [mail, setMail] = useState(data.email)
     const [number, setNumber] = useState(`${data.phoneNo}`)
-    const [wpNumber, setWpNumber] = useState(`${data.whatsapp}`)
+    const [wpNumber, setWpNumber] = useState(whatsapp)
     const [website, setWebsite] = useState(data.website)
 
 
@@ -224,7 +225,7 @@ const EditEventModal = ({ onClose, data }) => {
                     setAdditionalPhotos(base64Images); // Overwrite with new images
                 })
                 .catch((error) => {
-                    console.error("Error converting images to base64:", error);
+                    // console.error("Error converting images to base64:", error);
                 });
         }
     }
@@ -290,71 +291,80 @@ const EditEventModal = ({ onClose, data }) => {
     };
 
     const handleSave = async () => {
-
-
-        let dateType;
-        if (datetype === true) {
-            dateType = 'dateRange';
-        } else {
-            dateType = 'recurring';
-        }
+        let eventType = datetype === true ? 'dateRange' : 'recurring';
 
         // Check if any selected categoryURL is a dinner option
         const daysOfWeek = ['sundaydinner', 'mondaydinner', 'tuesdaydinner', 'wednesdaydinner', 'thursdaydinner', 'fridaydinner', 'saturdaydinner'];
         const selectedDinnerDays = selectedCategories
             .filter(category => daysOfWeek.includes(category.categoryURL))
-            .map(category => category.name.split(' ')[0]);
+            .map(category => category.name.split(' ')[0].toLowerCase());
+
+        let newArray = [...selectedDays]
+        console.log("this is a new array", newArray)
+        selectedDinnerDays.forEach(day => {
+            if (!selectedDays.includes(day)) {
+                newArray.push(day)
+            }
+        });
+
+        console.log(newArray)
+
+        selectedDays = newArray;
 
         let eventdate = {};
-        if (selectedDinnerDays.length > 0) {
-            dateType = 'recurring';
+        if (selectedDays.length > 0) {
+            eventType = 'recurring';
         }
 
-        eventdate.type = dateType;
-        if (dateType === 'dateRange') {
+        // Check if tempSelectedDays is empty when dateType is 'recurring'
+        if (eventType === 'recurring' && selectedDays.length === 0) {
+            return toast.error("Please select days if you are selecting a recurring event");
+        }
+
+        const momentstart = moment(startDate).tz('Asia/Kolkata');
+        const momentend = moment(endDate).tz('Asia/Kolkata');
+
+        eventdate.type = eventType;
+        if (eventType === 'dateRange') {
             eventdate.dateRange = {
-                startDate: startDate,
-                endDate: endDate
+                startDate: momentstart,
+                endDate: momentend
             };
-        } else if (dateType === 'recurring') {
-            eventdate.recurring = {
-                startDate: startDate,
-                endDate: endDate,
-                days: selectedDinnerDays.length > 0 ? selectedDinnerDays : selectedDays
+        } else if (eventType === 'recurring') {
+            eventdate = {
+                recurring: {
+                    days: selectedDays,
+                    startDate: momentstart,
+                    endDate: momentend
+                }
             };
         }
 
         for (const category of categories) {
-            if (category.seats != null) {
-                if (category.seats !== '' && category.seats < 1) {
-                    return toast.error("Enter a valid seat count")
-                }
+            if (category.seats != null && category.seats !== '' && category.seats < 1) {
+                return toast.error("Enter a valid seat count");
             }
             if (category.price != null && category.className == null) {
-                return toast.error("Classname is required if you are entering price")
+                return toast.error("Classname is required if you are entering price");
             }
-            if (category.className != null && category.className.trim() == "") {
-                return toast.error("Classname cannot be an empty string if you want to add price")
+            if (category.className != null && category.className.trim() === "") {
+                return toast.error("Classname cannot be an empty string if you want to add price");
             }
-
         }
 
         let response;
         if (Crfile != null) {
             const formData = new FormData();
             formData.append('file', Crfile);
-            setSubLoading(true)
+            setSubLoading(true);
             response = await handleUpload(formData)
                 .then((response) => {
-                    console.log('Upload successful:', response);
-                    console.log(response.data.data)
-                    setFileURL(response.data.data)
-                    return response.data.data
-                    // Do something with the response if needed
+                    // console.log('Upload successful:', response);
+                    setFileURL(response.data.data);
+                    return response.data.data;
                 })
                 .catch((error) => {
-                    console.error('Error during upload:', error);
-                    // Handle the error if needed
+                    // console.error('Error during upload:', error);
                 });
         }
 
@@ -387,28 +397,27 @@ const EditEventModal = ({ onClose, data }) => {
             showEndDate: showEndDate,
             showStartDate: showStartDate,
             showInEventCalender: showInEventCalender
-        }
+        };
 
-        console.log(eventdata)
+        // console.log(eventdata);
 
-        setSubLoading(true)
+        setSubLoading(true);
         try {
-            console.log(eventdata)
-            const { data } = await VendorUpdateEvent(eventdata)
-            setSubLoading(false)
-            console.log(data)
-            if (data.success == true) {
-                toast.success("Event saved")
-                // window.location.reload()
-            } else if (data.success == false) {
-                toast.error(data.data)
-                // window.alert(data.data)
+            // console.log(eventdata);
+            const { data } = await VendorUpdateEvent(eventdata);
+            setSubLoading(false);
+            // console.log(data);
+            if (data.success) {
+                toast.success("Event saved");
+            } else {
+                toast.error(data.data);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
         onClose(); // This will close the modal
     };
+
 
     return (
         <div>
