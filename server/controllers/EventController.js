@@ -320,32 +320,48 @@ exports.updateEvent = async (req, res) => {
         // Update the event
         let event = await eventService.updateEvent(data);
 
-        // Ensure the event is associated with the correct categories
+
+        let categoryData;
         for (let i = 0; i < eventCategory.length; i++) {
             const categoryURL = eventCategory[i].categoryURL;
 
-            // Check in main categories
-            let categoryData = await categoryService.findCategory({
-                categoryURL: categoryURL
-            });
-
+            categoryData = await categoryService.findCategory({ categoryURL: categoryURL });
             if (!categoryData) {
-                // If not found in main categories, search in subcategories
                 categoryData = await categoryService.findSubcategory(categoryURL);
-                if (!categoryData) {
-                    return res.status(404).json({
-                        success: false,
-                        data: "Category not found"
-                    });
-                }
             }
 
-            // Add event to the category if not already present
-            if (!categoryData.events.includes(event._id)) {
+            if (categoryData && !categoryData.events.includes(event._id)) {
                 categoryData.events.push(event._id);
-                await categoryData.save();
+                categoryData.save();
             }
         }
+
+        // // Ensure the event is associated with the correct categories
+        // for (let i = 0; i < eventCategory.length; i++) {
+        //     const categoryURL = eventCategory[i].categoryURL;
+
+        //     // Check in main categories
+        //     let categoryData = await categoryService.findCategory({
+        //         categoryURL: categoryURL
+        //     });
+
+        //     if (!categoryData) {
+        //         // If not found in main categories, search in subcategories
+        //         categoryData = await categoryService.findSubcategory(categoryURL);
+        //         if (!categoryData) {
+        //             return res.status(404).json({
+        //                 success: false,
+        //                 data: "Category not found"
+        //             });
+        //         }
+        //     }
+
+        //     // Add event to the category if not already present
+        //     if (!categoryData.events.includes(event._id)) {
+        //         categoryData.events.push(event._id);
+        //         await categoryData.save();
+        //     }
+        // }
 
         res.status(200).json({
             success: true,

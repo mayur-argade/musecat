@@ -12,6 +12,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import CropEasy from '../../Crop/CropEasy'
 import moment from 'moment-timezone'
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const AddEvent = ({ setIsLoading, verifiedValue }) => {
     const formRef = useRef(null);
@@ -509,12 +511,17 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                                     <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
                                 </div>
                             </label>
-                            <JoditEditor
+                            <ReactQuill
+                                theme="snow"
+                                value={eventInformation}
+                                onChange={setEventInformation} />
+
+                            {/* <JoditEditor
                                 ref={editorRef}
                                 config={config}
                                 tabIndex={1}
                                 onBlur={newContent => setEventInformation(newContent)}
-                            />
+                            /> */}
                         </div>
 
                         <p className='ml-2 text-sm font-semibold mt-2'>
@@ -609,7 +616,7 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                                         />
                                         <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 
-                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show Start date </span>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Show Date </span>
                                         <Tooltip data={"If you Don't want to show Event/Offer start date on Event/Offer Card and Event/Offer page then toggle this button."} />
                                     </label>
                                 )
@@ -718,12 +725,10 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                                     <Tooltip data={"Add specific information about venue, This information is Event Specific"} />
                                 </div>
                             </label>
-                            <JoditEditor
-                                ref={venueEditorRef}
-                                config={config}
-                                tabIndex={1}
-                                onBlur={newContent => setVenueInformation(newContent)}
-                            />
+                            <ReactQuill
+                                theme="snow"
+                                value={venueInformation}
+                                onChange={setVenueInformation} />
                         </div>
 
                         {/* Relevant Categories */}

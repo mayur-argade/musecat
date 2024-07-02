@@ -11,6 +11,8 @@ import moment from 'moment'
 import CropEasy from '../Crop/CropEasy'
 import Tooltip from '../shared/Tooltip/Tooltip';
 import PhoneInput from 'react-phone-number-input'
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const EditEventModal = ({ onClose, data }) => {
 
@@ -89,7 +91,7 @@ const EditEventModal = ({ onClose, data }) => {
 
     const [title, setTitle] = useState(data.title)
     const [shortDesc, setShortDesc] = useState(data.shortDescription)
-    const [content, setContent] = useState()
+    const [content, setContent] = useState(data.description)
 
     const [datetype, setDatetype] = useState(rangeEvent)
     let [selectedDays, setSelectedDays] = useState(data.date.recurring.days);
@@ -455,14 +457,19 @@ const EditEventModal = ({ onClose, data }) => {
 
                                 <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] dark:text-black pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm dark:text-white font-semibold mt-1' htmlFor="first name">Event Information  *</label>
-                                    <JoditEditor
+                                    <ReactQuill
+                                        theme="snow"
+                                        value={content}
+                                        onChange={setContent} />
+
+                                    {/* <JoditEditor
                                         ref={editor}
                                         value={data.description}
                                         config={config}
                                         tabIndex={1} // tabIndex of textarea
                                         onBlur={newContent => setContent(newContent)}
                                         onChange={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                    />
+                                    /> */}
                                 </div>
 
                                 <p className='ml-2 text-sm font-semibold mt-2'>Select Start Date-time and End Date-time:</p>
@@ -665,13 +672,19 @@ const EditEventModal = ({ onClose, data }) => {
 
                                 <div className='mt-3 flex flex-col bg-[#E7E7E7] dark:bg-[#454545] dark:text-black pl-2 pr-2 rounded-lg'>
                                     <label className='text-sm dark:text-white font-semibold mt-1' htmlFor="first name">Venue Information  *</label>
-                                    <JoditEditor
+
+                                    <ReactQuill
+                                        theme="snow"
+                                        value={venueDescription}
+                                        onChange={setVenueDescription} />
+
+                                    {/* <JoditEditor
                                         ref={editor}
                                         value={venueDescription}
                                         config={config}
                                         tabIndex={1} // tabIndex of textarea
                                         onBlur={newContent => setVenueDescription(newContent)} // preferred to use only this option to update the content for performance reasons
-                                    />
+                                    /> */}
                                 </div>
 
                                 <div className='mt-3 flex flex-col  pl-2 pr-2 rounded-lg'>
