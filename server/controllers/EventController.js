@@ -234,7 +234,18 @@ exports.updateEvent = async (req, res) => {
         });
     }
 
+    
     try {
+        let existingEvent = await eventService.findEvent({_id: eventid});
+        if (!existingEvent) {
+            return res.status(404).json({
+                success: false,
+                data: "Event not found"
+            });
+        }
+        let currentCategories = existingEvent.eventCategory || [];
+        let newCategories = eventCategory || [];
+
         let uploadedEventPhoto = '';
         if (displayPhoto) {
             uploadedEventPhoto = await cloudinary.v2.uploader.upload(displayPhoto, {
@@ -292,7 +303,7 @@ exports.updateEvent = async (req, res) => {
             showEndDate: showEndDate,
             location: location,
             venueInfo: venueInfo,
-            eventCategory: eventCategory,
+            eventCategory: newCategories,
             features: features,
             facebook: facebook,
             instagram: instagram,
@@ -320,6 +331,18 @@ exports.updateEvent = async (req, res) => {
         // Update the event
         let event = await eventService.updateEvent(data);
 
+
+        for (let i = 0; i < currentCategories.length; i++) {
+            const categoryURL = currentCategories[i].categoryURL;
+            if (!newCategories.some(category => category.categoryURL === categoryURL)) {
+                let categoryData = await categoryService.findCategory({ categoryURL: categoryURL }) ||
+                    await categoryService.findSubcategory(categoryURL);
+                if (categoryData) {
+                    categoryData.events = categoryData.events.filter(eventId => eventId.toString() !== event._id.toString());
+                    await categoryData.save();
+                }
+            }
+        }
 
         let categoryData;
         for (let i = 0; i < eventCategory.length; i++) {
