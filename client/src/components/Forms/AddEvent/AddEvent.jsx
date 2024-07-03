@@ -58,8 +58,8 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
         e.preventDefault();
 
         const formData = new FormData(formRef.current);
-        formData.append('description', editorRef.current.value);
-        formData.append('venueInformation', venueEditorRef.current.value)
+        formData.append('description', eventInformation);
+        formData.append('venueInformation', venueInformation)
         formData.append('days', JSON.stringify(selectedDays))
         formData.append('location', location);
         formData.append('selectedCategories', JSON.stringify(selectedCategories));
