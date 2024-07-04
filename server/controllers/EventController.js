@@ -1294,6 +1294,7 @@ exports.getDateWiseEvents = async (req, res) => {
         const { date } = req.body;
         let query;
         const today = moment().startOf('day');
+        const gotDate = moment(date).startOf('day')
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
         if (!date) {
@@ -1350,17 +1351,20 @@ exports.getDateWiseEvents = async (req, res) => {
 
         const events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
 
+        // const today = moment().startOf('day');
         const groupedEvents = events.reduce((acc, event) => {
             if (event.date.type === 'dateRange') {
                 const startDate = moment(event.date.dateRange.startDate).startOf('day');
                 const endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
 
                 for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
-                    const eventDate = m.format('YYYY-MM-DD');
-                    if (!acc[eventDate]) {
-                        acc[eventDate] = [];
+                    if (m.isSameOrAfter(gotDate)) {
+                        const eventDate = m.format('YYYY-MM-DD');
+                        if (!acc[eventDate]) {
+                            acc[eventDate] = [];
+                        }
+                        acc[eventDate].push(event);
                     }
-                    acc[eventDate].push(event);
                 }
             } else if (event.date.type != "dateRange") {
                 const startDate = moment(event.date.recurring.startDate).startOf('day');
@@ -1368,7 +1372,7 @@ exports.getDateWiseEvents = async (req, res) => {
                 const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
 
                 for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
-                    if (recurringDays.includes(dayNames[m.day()])) {
+                    if (m.isSameOrAfter(today) && recurringDays.includes(dayNames[m.day()])) {
                         const eventDate = m.format('YYYY-MM-DD');
                         if (!acc[eventDate]) {
                             acc[eventDate] = [];
