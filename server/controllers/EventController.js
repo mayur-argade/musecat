@@ -234,9 +234,9 @@ exports.updateEvent = async (req, res) => {
         });
     }
 
-    
+
     try {
-        let existingEvent = await eventService.findEvent({_id: eventid});
+        let existingEvent = await eventService.findEvent({ _id: eventid });
         if (!existingEvent) {
             return res.status(404).json({
                 success: false,
@@ -1288,15 +1288,18 @@ exports.getTrendingEvents = async (req, res) => {
 }
 
 
+
 exports.getDateWiseEvents = async (req, res) => {
     try {
-        const { date } = req.body
+        const { date } = req.body;
         let query;
+        const today = moment().startOf('day');
+        const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
         if (!date) {
-            const filterDate = moment().format("YYYY-MM-DD")
-            const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-            console.log(todayDate)
-            const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            const filterDate = today.format("YYYY-MM-DD");
+            const todayDate = new Date(`${filterDate}T23:00:00.000Z`);
+            const currentDay = dayNames[today.day()];
 
             query = {
                 showInEventCalender: true,
@@ -1304,40 +1307,21 @@ exports.getDateWiseEvents = async (req, res) => {
                 verified: true,
                 type: 'event',
                 $or: [
-                    {
-                        'date.dateRange.endDate': { $gte: todayDate }
-                    },
-                    {
-                        'date.dateRange.endDate': null
-                    }
-                    ,
+                    { 'date.dateRange.endDate': { $gte: todayDate } },
+                    { 'date.dateRange.endDate': null },
                     {
                         $and: [
-                            {
-                                $or: [
-                                    {
-                                        'date.recurring.endDate': { $gte: todayDate },
-                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
-
-                                    },
-                                    {
-                                        'date.recurring.endDate': { $gte: null },
-                                        'date.recurring.days': { $in: day } // Replace with a function to get today's day
-                                    }
-                                ]
-                            },
+                            { 'date.recurring.endDate': { $gte: todayDate } },
+                            { 'date.recurring.days': { $in: [currentDay] } }
                         ]
                     },
                 ],
-            }
+            };
         } else {
-            const onlyDate = moment(date).format("YYYY-MM-DD")
-            const startDate = new Date(`${onlyDate}T00:00:00.000Z`)
-            const endDate = new Date(`${onlyDate}T23:00:00.000Z`)
-            const currentDay = moment(startDate).format('dddd').toLowerCase()
-
-            console.log(startDate)
-            console.log(endDate)
+            const onlyDate = moment(date).format("YYYY-MM-DD");
+            const startDate = new Date(`${onlyDate}T00:00:00.000Z`);
+            const endDate = new Date(`${onlyDate}T23:00:00.000Z`);
+            const currentDay = dayNames[moment(startDate).day()];
 
             query = {
                 archived: false,
@@ -1352,67 +1336,67 @@ exports.getDateWiseEvents = async (req, res) => {
                     {
                         'date.dateRange.startDate': { $lte: startDate },
                         'date.dateRange.endDate': null
-                    }
-                    // ,
-                    // {
-                    //     'date.dateRange.startDate': { $lte: startDate },
-                    // }
-                    ,
+                    },
                     {
                         $and: [
-                            {
-                                $or: [
-                                    {
-                                        'date.recurring.startDate': { $lte: startDate },
-                                        'date.recurring.endDate': { $gte: endDate },
-                                        'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-                                    },
-                                    {
-                                        'date.recurring.startDate': { $lte: startDate },
-                                        'date.recurring.endDate': { $gte: null },
-                                        'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-                                    }
-                                ]
-                            },
+                            { 'date.recurring.startDate': { $lte: startDate } },
+                            { $or: [{ 'date.recurring.endDate': { $gte: endDate } }, { 'date.recurring.endDate': null }] },
+                            { 'date.recurring.days': { $in: [currentDay] } }
                         ]
                     },
                 ],
-            }
+            };
         }
+
         const events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
 
-        if (date) {
-            const groupedEvents = events.reduce((acc, event) => {
-                const eventDate = moment(date).startOf('day').format('YYYY-MM-DD');
-                if (!acc[eventDate]) {
-                    acc[eventDate] = [];
-                }
-                acc[eventDate].push(event);
-                return acc;
-            }, {});
-            return res.status(200).json(groupedEvents);
-        }
-
-        // If date is not provided, return events grouped for today's date or before
         const groupedEvents = events.reduce((acc, event) => {
-            let eventDate = moment(event.date.dateRange.startDate).startOf('day').format('YYYY-MM-DD');
-            if (eventDate < moment().startOf('day').format('YYYY-MM-DD')) {
-                eventDate = moment().startOf('day').format('YYYY-MM-DD');
+            if (event.date.type === 'dateRange') {
+                const startDate = moment(event.date.dateRange.startDate).startOf('day');
+                const endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
+
+                for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+                    const eventDate = m.format('YYYY-MM-DD');
+                    if (!acc[eventDate]) {
+                        acc[eventDate] = [];
+                    }
+                    acc[eventDate].push(event);
+                }
+            } else if (event.date.type != "dateRange") {
+                const startDate = moment(event.date.recurring.startDate).startOf('day');
+                const endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
+                const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
+
+                for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+                    if (recurringDays.includes(dayNames[m.day()])) {
+                        const eventDate = m.format('YYYY-MM-DD');
+                        if (!acc[eventDate]) {
+                            acc[eventDate] = [];
+                        }
+                        acc[eventDate].push(event);
+                    }
+                }
             }
-            if (!acc[eventDate]) {
-                acc[eventDate] = [];
-            }
-            acc[eventDate].push(event);
             return acc;
         }, {});
 
-        return res.status(200).json(groupedEvents);
+        // Sort grouped events by date in ascending order
+        const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key) => {
+            sortedAcc[key] = groupedEvents[key];
+            return sortedAcc;
+        }, {});
 
+        return res.status(200).json(sortedGroupedEvents);
 
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            data: "Internal server error"
+        });
     }
-}
+};
+
 // --------------------offers -------------------
 
 
