@@ -1,3 +1,6 @@
+Issues :
+1. Even If Show End Date is false still showing end date 
+
 1. Search Events functionality (done)
 17. Edit event crop feature modification (done)
 6. Link subscribe to newletter api with the frontend (done)
@@ -37,5 +40,10 @@ VENDOR
 20. categories serial ordering (not now)
 15. Give title to the google information window use title short description and photo (not now)
 
-
+- The search option should include vendor name (homepage)
+- The calendar is not showing accurate date (filter)
+- Archive events filter needs to be added 
+- Pagination needs to be added
+- Muscat where to title will become white in dark mode. (done)
+- The wordings need to be reworked on admin panel and vendor panel.
 

@@ -48,14 +48,14 @@ const MapComponent = ({ onlyMarkerClick, showInfoWindow, redirectToGoogleMap, co
     let mapCenter = selectedLocation; // Default to the selectedLocation
 
 
-    if (coordinates) {
-        if (coordinates.length > 1) {
-            // Calculate the center for multiple coordinates
-            const bounds = new window.google.maps.LatLngBounds();
-            coordinates.forEach((coordinate) => bounds.extend(coordinate));
-            mapCenter = bounds.getCenter();
-        }
-    }
+    // if (coordinates) {
+    //     if (coordinates.length > 1) {
+    //         // Calculate the center for multiple coordinates
+    //         const bounds = new window.google.maps.LatLngBounds();
+    //         coordinates.forEach((coordinate) => bounds.extend(coordinate));
+    //         mapCenter = bounds.getCenter();
+    //     }
+    // }
 
 
 

@@ -77,9 +77,9 @@ const HeroSection = () => {
                                 >
                                     <div className='flex justify-center md: pt-0 md:p-10'>
                                         <p className='pb-5 leading-loose text-4xl md:text-5xl text-center text-white font-bold'>
-                                            <span className={`ml-0 dark:text-black font-light text-shadow-lg font-garamond uppercase`}>Muscat Where To</span>
+                                            <span className={`ml-0  font-light text-shadow-lg font-garamond uppercase`}>Muscat Where To</span>
 
-                                            <p className='text-center text-xl md:text-3xl mb-2 md:dark:text-black'>
+                                            <p className='text-center text-xl md:text-3xl mb-2 '>
                                                 <span className='ml-0 font-thin text-shadow-lg font-garamond tracking-wider'>
                                                     Latest Offers and Events in Muscat
                                                 </span>

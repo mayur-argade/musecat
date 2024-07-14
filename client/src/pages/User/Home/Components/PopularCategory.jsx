@@ -269,17 +269,14 @@ const PopularCategory = () => {
 
                     <div className=" hidden md:flex  justify-center items-center space-x-4">
                         <>
-                            {/* {isOverflowing && (
-                                <> */}
                             <button onClick={scrollLeft}>
-                                <img className='h-10 bg-white rounded-full' src="/images/icons/homebackarrow.svg" alt="" />
+                                <img className='h-10 bg-white rounded-full dark:hidden flex' src="/images/icons/homebackarrow.svg" alt="" />
+                                <svg className='h-6  rounded-full dark:flex hidden' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"><path fill="none" d="M0 0h24v24H0z"></path><path d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z"></path></svg>
                             </button>
                             <button onClick={scrollRight}>
-                                <img className='h-10 bg-white rounded-full' src="/images/icons/homefrontarrow.svg" alt="" />
+                                <img className='h-10 bg-white rounded-full dark:hidden flex' src="/images/icons/homefrontarrow.svg" alt="" />
+                                <svg className='h-6  rounded-full dark:flex hidden' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"><path fill="none" d="M0 0h24v24H0z"></path><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
                             </button>
-                            {/* </>
-                            )} */}
-
                         </>
                     </div>
 
@@ -299,7 +296,7 @@ const PopularCategory = () => {
                                                 </Link>
                                             </div>
                                             <div className=''>
-                                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category/events">
+                                                <Link className='w-30 dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center' to="/category">
                                                     <p className='font-medium underline underline-offset-1  pr-2 text-sm font-medium '>view all</p>
                                                 </Link>
                                             </div>

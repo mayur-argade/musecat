@@ -295,7 +295,7 @@ const UpcomingEvents = () => {
                 }
 
                 <div>
-                    <div id="upcomingContent" ref={containerRef} className='mx-3 flex w-full overflow-x-auto'>
+                    <div id="upcomingContent" ref={containerRef} className='pl-3 flex w-full overflow-x-auto'>
                         {
                             upcomingEvents.data == null || upcomingEvents.data == undefined
                                 ?

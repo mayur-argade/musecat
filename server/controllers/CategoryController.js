@@ -590,48 +590,65 @@ exports.getCategoryAllEvents2 = async (req, res) => {
             // Define days of the week for recurring events
             const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-            // Constructing a query for fuzzy search with MongoDB's text index
-            const query = {
-                archived: false,
-                verified: true,
-                type: 'event',
-                $and: [
-                    {
-                        $or: [
-                            { 'date.dateRange.endDate': { $gte: todayDate } },
-                            { 'date.dateRange.endDate': null },
+            // Constructing the aggregation pipeline
+            const pipeline = [
+                {
+                    $match: {
+                        archived: false,
+                        verified: true,
+                        type: 'event',
+                        $and: [
                             {
-                                $and: [
+                                $or: [
+                                    { 'date.dateRange.endDate': { $gte: todayDate } },
+                                    { 'date.dateRange.endDate': null },
                                     {
-                                        $or: [
+                                        $and: [
                                             {
-                                                'date.recurring.endDate': { $gte: todayDate },
-                                                'date.recurring.days': { $in: daysOfWeek }
-                                            },
-                                            {
-                                                'date.recurring.endDate': null,
-                                                'date.recurring.days': { $in: daysOfWeek }
+                                                $or: [
+                                                    {
+                                                        'date.recurring.endDate': { $gte: todayDate },
+                                                        'date.recurring.days': { $in: daysOfWeek }
+                                                    },
+                                                    {
+                                                        'date.recurring.endDate': null,
+                                                        'date.recurring.days': { $in: daysOfWeek }
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
                                 ]
                             }
                         ]
-                    },
-                    // Search in title or description
-                    {
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'venues', // Name of the venues collection
+                        localField: 'location',
+                        foreignField: '_id',
+                        as: 'location'
+                    }
+                },
+                { $unwind: '$location' },
+                {
+                    $match: {
                         $or: [
-                            { 'title': { $regex: keyword, $options: 'i' } }, // Case-insensitive regex
-                            { 'description': { $regex: keyword, $options: 'i' } }
+                            { 'title': { $regex: keyword, $options: 'i' } },
+                            { 'description': { $regex: keyword, $options: 'i' } },
+                            { 'location.name': { $regex: keyword, $options: 'i' } }
                         ]
                     }
-                ]
-            };
+                }
+            ];
 
-            // Fetch events matching the query
-            events = await EventModel.find(query).populate({ path: 'location' });
+            // Execute the aggregation pipeline
+            events = await EventModel.aggregate(pipeline);
+
             // return events;
         }
+
 
 
         else {

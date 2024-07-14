@@ -63,6 +63,7 @@ import GuestRoute from './utils/GuestRoute'
 import Protected from './utils/Protected';
 import SemiProtected from './utils/SemiProtected'
 import ScrollToTop from './utils/ScrollToTop';
+import Categories from './pages/User/Categories/Categories';
 
 
 const queryClient = new QueryClient();
@@ -71,72 +72,71 @@ function App() {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     return (
         <div className="App !dark:bg-[#2c2c2c] dark:text-white">
-            <QueryClientProvider client={queryClient}>
-                <Router>
-                    <ScrollToTop />
-                    <Routes>
-                        <Route path="/" exact element={<Home />} />
-                        <Route path="/user/profile" exact element={<SemiProtected Component={PwaProile} />} />
-                        <Route path="/profile" exact element={<SemiProtected Component={Profile} />} />
-                        <Route path="/favorites" exact element={<SemiProtected Component={Favorites} />} />
-                        <Route path="/category/:category" exact element={<Events />} />
-                        <Route path="/signup" exact element={<Signup />} />
-                        <Route path="/login" exact element={<Login />} />
-                        <Route path="/user/verify-account/:token" exact element={<VerifyUserAccount />} />
-                        <Route path="/aboutus" exact element={<AboutUs />} />
-                        <Route path="/whereto" exact element={<WhereToMap />} />
-                        <Route path="/contactus" exact element={<Contactus />} />
-                        <Route path="/events/:eventid" exact element={<EventDescription />} />
-                        <Route path="/bookticket/:eventid" exact element={<SemiProtected Component={BookTicket} />} />
-                        <Route path="/verifyaccount/:token" exact element={<VerifyUserAccount />} />
-                        <Route path="/reset" exact element={<InputEmail />} />
-                        <Route path="/user/reset-password/:token" exact element={<ResetPassword />} />
-                        <Route path="/venue/:venueid" exact element={<VenueDescription />} />
-                        <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
-                        <Route path="/faq" exact element={<FAQ />} />
-                        <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
-                        <Route path="/event" exact element={<EventsPWA />} />
-                        <Route path="/searchpage" exact element={<SearchPWA />} />
-                        <Route path="/user/notification" exact element={<SemiProtected Component={UserNotification} />} />
-                        <Route path="/user/cookies" exact element={<Cookies />} />
-                        <Route path="/user/privacypolicy" exact element={<PrivacyPolicy />} />
-                        <Route path="/user/termsandconditions" exact element={<TermsAndCondition />} />
-                        <Route path="/user/helpcenter" exact element={<SemiProtected Component={UserHelpCenter} />} />
+            <Router>
+                <ScrollToTop />
+                <Routes>
+                    <Route path="/" exact element={<Home />} />
+                    <Route path="/user/profile" exact element={<SemiProtected Component={PwaProile} />} />
+                    <Route path="/profile" exact element={<SemiProtected Component={Profile} />} />
+                    <Route path="/favorites" exact element={<SemiProtected Component={Favorites} />} />
+                    <Route path="/category/:category" exact element={<Events />} />
+                    <Route path="/signup" exact element={<Signup />} />
+                    <Route path="/login" exact element={<Login />} />
+                    <Route path="/user/verify-account/:token" exact element={<VerifyUserAccount />} />
+                    <Route path="/aboutus" exact element={<AboutUs />} />
+                    <Route path="/whereto" exact element={<WhereToMap />} />
+                    <Route path="/contactus" exact element={<Contactus />} />
+                    <Route path="/events/:eventid" exact element={<EventDescription />} />
+                    <Route path="/bookticket/:eventid" exact element={<SemiProtected Component={BookTicket} />} />
+                    <Route path="/verifyaccount/:token" exact element={<VerifyUserAccount />} />
+                    <Route path="/reset" exact element={<InputEmail />} />
+                    <Route path="/user/reset-password/:token" exact element={<ResetPassword />} />
+                    <Route path="/venue/:venueid" exact element={<VenueDescription />} />
+                    <Route path="/pastpurchase" exact element={<SemiProtected Component={PastPurchase} />} />
+                    <Route path="/faq" exact element={<FAQ />} />
+                    <Route path="/ticketstatus/:ticketid" exact element={<TicketStatus />} />
+                    <Route path="/event" exact element={<EventsPWA />} />
+                    <Route path="/searchpage" exact element={<SearchPWA />} />
+                    <Route path="/user/notification" exact element={<SemiProtected Component={UserNotification} />} />
+                    <Route path="/user/cookies" exact element={<Cookies />} />
+                    <Route path="/user/privacypolicy" exact element={<PrivacyPolicy />} />
+                    <Route path="/user/termsandconditions" exact element={<TermsAndCondition />} />
+                    <Route path="/user/helpcenter" exact element={<SemiProtected Component={UserHelpCenter} />} />
+                    <Route path="/category" exact element={<Categories />} />
 
 
 
-                        {/* vendor pages */}
-                        <Route path="/vendor/login" exact element={<VendorLogin />} />
-                        <Route path="/vendor/signup" exact element={<VendorSignup />} />
-                        <Route path="/vendor/home" exact element={<GuestRoute Component={VendorHome} />} />
-                        <Route path="/vendor/activation" exact element={<VendorActivation />} />
-                        <Route path="/vendor/hostedevents" exact element={<GuestRoute Component={VendorHostedEvents} />} />
-                        <Route path="/vendor/event/:eventid" exact element={<GuestRoute Component={VendorEventDescripton} />} />
-                        <Route path="/vendor/profile" exact element={<GuestRoute Component={VendorProfile} />} />
-                        <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
-                        <Route path="/vendor/notification" exact element={<VendorNotification />} />
-                        <Route path="/vendor/verify-account/:token" exact element={<VerifyVendorAccount />} />
-                        <Route path="/vendor/reset" exact element={<InputEmailVendor />} />
-                        <Route path="/vendor/reset-password/:token" exact element={<ResetPasswordVendor />} />
-                        <Route path="/vendor/helpcenter" exact element={<GuestRoute Component={VendorHelpCenter} />} />
+                    {/* vendor pages */}
+                    <Route path="/vendor/login" exact element={<VendorLogin />} />
+                    <Route path="/vendor/signup" exact element={<VendorSignup />} />
+                    <Route path="/vendor/home" exact element={<GuestRoute Component={VendorHome} />} />
+                    <Route path="/vendor/activation" exact element={<VendorActivation />} />
+                    <Route path="/vendor/hostedevents" exact element={<GuestRoute Component={VendorHostedEvents} />} />
+                    <Route path="/vendor/event/:eventid" exact element={<GuestRoute Component={VendorEventDescripton} />} />
+                    <Route path="/vendor/profile" exact element={<GuestRoute Component={VendorProfile} />} />
+                    <Route path="/vendor/:eventid/bookedtickets" exact element={<GuestRoute Component={VendorBookedTickets} />} />
+                    <Route path="/vendor/notification" exact element={<VendorNotification />} />
+                    <Route path="/vendor/verify-account/:token" exact element={<VerifyVendorAccount />} />
+                    <Route path="/vendor/reset" exact element={<InputEmailVendor />} />
+                    <Route path="/vendor/reset-password/:token" exact element={<ResetPasswordVendor />} />
+                    <Route path="/vendor/helpcenter" exact element={<GuestRoute Component={VendorHelpCenter} />} />
 
-                        {/* admin pages */}
-                        <Route path="/admin/profile/:userid" exact element={<AdminCheckProfile />} />
-                        <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
-                        <Route path="/admin/users" exact element={<AdminUsers />} />
-                        <Route path="/admin/vendors" exact element={<AdminVendors />} />
-                        <Route path="/admin/events" exact element={<AdminEvents />} />
-                        <Route path="/admin/offers" exact element={<AdminOffers />} />
-                        <Route path="/admin/event/:eventid" exact element={<AdminEventDescription />} />
-                        <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
-                        <Route path="/admin/categories" exact element={<AdminCategory />} />
-                        <Route path="/admin/venue" exact element={<AdminVenue />} />
-                        <Route path='/admin/notifications' exact element={<Notifications />} />
-                        <Route path='/admin/helpcenter' element={<SupportChat />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </Router>
-            </QueryClientProvider>
+                    {/* admin pages */}
+                    <Route path="/admin/profile/:userid" exact element={<AdminCheckProfile />} />
+                    <Route path="/admin/home" exact element={<AdminRoute Component={AdminHome} />} />
+                    <Route path="/admin/users" exact element={<AdminUsers />} />
+                    <Route path="/admin/vendors" exact element={<AdminVendors />} />
+                    <Route path="/admin/events" exact element={<AdminEvents />} />
+                    <Route path="/admin/offers" exact element={<AdminOffers />} />
+                    <Route path="/admin/event/:eventid" exact element={<AdminEventDescription />} />
+                    <Route path="/admin/:eventid/bookedtickets" exact element={<AdminBookedTickets />} />
+                    <Route path="/admin/categories" exact element={<AdminCategory />} />
+                    <Route path="/admin/venue" exact element={<AdminVenue />} />
+                    <Route path='/admin/notifications' exact element={<Notifications />} />
+                    <Route path='/admin/helpcenter' element={<SupportChat />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Router>
         </div>
 
     );

@@ -5,7 +5,7 @@ const SubEventCard = ({ data }) => {
     return (
         <>
             <Link to={`/events/${data._id}`}>
-                <div className=" my-3 flex w-80 md:w-72  border border-2 dark:border-0 rounded-xl space-x-2 items-center align-middle bg-white dark:bg-[#454545] hover:bg-[#C0A04C] hover:text-white cursor-pointer drop-shadow-2xl">
+                <div className=" my-3 flex w-80 md:w-72  border border-2 dark:border-0 rounded-xl space-x-2 items-center align-middle bg-white dark:bg-[#454545] hover:bg-[#C0A04C] hover:text-white cursor-pointer ">
                     <div className="image">
                         <img className='ml-0  p-1.5 h-28 w-28 rounded-xl' src={`${data.displayPhoto}`} alt="" />
                     </div>

@@ -12,9 +12,9 @@ import MapComponent from '../../../components/GoogleMap/Map';
 import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const WhereToMap = () => {
-    let [selectedLocation, setSelectedLocation] = useState({
-        lat: 23.58371305879854,
-        lng: 58.37132692337036,
+    let [selectedLocationN, setSelectedLocationN] = useState({
+        lat: 23.58601389653248,
+        lng: 58.37997436523438,
     });
     document.title = 'Where To Map'
 
@@ -89,7 +89,7 @@ const WhereToMap = () => {
                 </div>
                 <div className="flex flex-col justify-center items-center md:flex-row md:justify-around align-top ">
                     <div className="mx-4 p-4 md:drop-shadow-2xl map w-full md:w-9/12 h-auto ">
-                        <MapComponent onlyMarkerClick={true} onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocation} mapSize={"500px"} zoom={10} />
+                        <MapComponent onlyMarkerClick={true} onMarkerClick={handleMarkerClick} enableClick={true} setMapAddress={setMapAddress} coordinates={coordinates} selectedLocation={selectedLocationN} mapSize={"500px"} zoom={11} />
                         {
                             mapAddress.lat != null || mapAddress.lng != null
                                 ?
@@ -120,7 +120,7 @@ const WhereToMap = () => {
                                                 return true;
                                             })
                                             .map((event) => (
-                                                <button key={event.id} onClick={() => setSelectedLocation(event.location.coordinates)}>
+                                                <button key={event.id} onClick={() => setSelectedLocationN(event.location.coordinates)}>
                                                     <SubEventCard data={event} />
                                                 </button>
                                             ))
