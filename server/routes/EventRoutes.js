@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 const { isLoggedin, isUserLoggedin, isVerified, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { createIcsFileAndSend, createEvent, getEventById, getVendorAllEventsNOffers, getDateWiseEvents, getVendorAllEvents, getAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent, VendorUnverifiedListings, changeTrendingStatus, changeArchiveStatus, changeVerifyStatus } = require('../controllers/EventController')
+const { getEventsActiveDates, createIcsFileAndSend, createEvent, getEventById, getVendorAllEventsNOffers, getDateWiseEvents, getVendorAllEvents, getAllEvents, createOffer, updateEvent, addToFavorites, getUpcomingEvents, customQue, getAllOffers, deleteEvent, deleteOffer, getTrendingEvents, getEventsForAdmin, getOffersForAdmin, adminVerifyEvent, VendorUnverifiedListings, changeTrendingStatus, changeArchiveStatus, changeVerifyStatus } = require('../controllers/EventController')
 
 router.route('/vendor/create-event').post(isLoggedin, isVerified, createEvent);
 router.route('/event/:eventid').get(getEventById)
@@ -30,6 +30,7 @@ router.route('/vendor/listing/unverified').get(isLoggedin, isVerified, VendorUnv
 router.route('/user/addtocalender').post(isUserLoggedin, createIcsFileAndSend)
 router.route('/event/like').put(isUserLoggedin, addToFavorites)
 router.route('/events/upcoming-events').get(getUpcomingEvents)
+router.route('/events/calender-dates').get(getEventsActiveDates)
 router.route('/event/:eventid/customq').get(customQue)
 router.route('/offers/').get(getAllOffers)
 router.route('/trending-events').get(getTrendingEvents)

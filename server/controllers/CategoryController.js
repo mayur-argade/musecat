@@ -572,6 +572,15 @@ exports.getCategoryAllEvents = async (req, res) => {
     }
 }
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+
 exports.getCategoryAllEvents2 = async (req, res) => {
     try {
         const { category, filterdate, query: keyword, subCategory, offerDay } = req.body;
@@ -777,9 +786,11 @@ exports.getCategoryAllEvents2 = async (req, res) => {
             );
         }
 
+        const something = await shuffleArray(events);
+
         res.status(200).json({
             success: true,
-            data: events
+            data: something
         })
 
     } catch (error) {

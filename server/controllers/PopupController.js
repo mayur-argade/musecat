@@ -24,7 +24,9 @@ exports.createPopup = async (req, res) => {
             title: title,
             description: description,
             visible: showModal,
-            photo: uploadedPopupPhoto.secure_url
+            photo: uploadedPopupPhoto.secure_url,
+            ctaText: ctaText,
+            ctaLink: ctaLink,
         }
 
         console.log(data)

@@ -17,12 +17,13 @@ import ICalendarLink from "react-icalendar-link";
 import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
 
 const EventDescription = () => {
-    
+
 
     let { eventid } = useParams();
     const [overflowing, isOverflowing] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [images, setImages] = useState([]);
+    const [showEvent, setShowEvent] = useState(true)
     const handleShowNextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     };
@@ -77,7 +78,7 @@ const EventDescription = () => {
         ? response.data.eventDetails.title
         : 'Default Title';
 
-        
+
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 80) {
@@ -146,7 +147,12 @@ const EventDescription = () => {
                 setLoading(true)
                 const { data } = await ClientEventDetailsApi(eventid)
                 // console.log(data.data.eventDetails)
-                setReponse(data)
+                if (data.data.eventDetails.archived == false || data.data.eventDetails.isVerified == true) {
+                    setReponse(data)
+                    setShowEvent(true)
+                } else {
+                    setShowEvent(false)
+                }
 
                 dispatch(setEvent(data.data));
                 setLoading(false)
@@ -521,7 +527,7 @@ const EventDescription = () => {
             </div>
             <div className='px-5 w-full flex justify-center'>
                 <section className='w-full md:w-11/12 md:mx-5 md:w-10/12 xl:w-8/12 2xl:w-7/12'>
-                    {response.data == null && (
+                    {showEvent && response.data == null && (
                         <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 overflow-auto bg-[#FFFFFF] bg-opacity-20 backdrop-blur-sm'>
                             <div class="h-screen w-screen relative flex justify-center items-center">
                                 <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#C0A04C]"></div>
@@ -529,6 +535,29 @@ const EventDescription = () => {
                             </div>
                         </div>
                     )}
+                    <section>
+                        {
+                            !showEvent && (
+                                <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+            <div className="bg-white text-black p-8 rounded-lg shadow-lg relative w-full max-w-lg">
+                {/* Title */}
+                <h1 className="text-2xl font-bold mb-4">Event Archived</h1>
+
+                {/* Description */}
+                <p className="mb-8">We’re sorry, but this event has been archived and is no longer available. Please check out our other upcoming events.</p>
+
+                {/* Back Button */}
+                <button
+                    onClick={() => navigate('/category/events', { replace: true })}
+                    className="absolute bottom-4 right-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
+                >
+                    Go Back
+                </button>
+            </div>
+        </div>
+                            )
+                        }
+                    </section>
                     <section className=''>
                         <section>
                             <div className="hidden md:flex align-middle items-center">
@@ -538,13 +567,6 @@ const EventDescription = () => {
                                 {
                                     response.data != null && (
                                         <span className='text-lg font-bold'>
-                                            {/* {
-                                                response.data.eventDetails.type == 'event'
-                                                    ?
-                                                    <>Event</>
-                                                    :
-                                                    <>Voucher</>
-                                            } */}
                                             Description
                                         </span>
                                     )

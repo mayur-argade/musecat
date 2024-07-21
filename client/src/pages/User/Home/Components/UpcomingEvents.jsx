@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import UpcomingEventsCard from '../../../../components/Cards/UpcomingEventsCard'
 import SkeletonCard from '../../../../components/shared/skeletons/SkeletonCard'
-import { getCategoryEvents } from '../../../../http'
+import { ClientUpcomingEvents, CalenderDates } from '../../../../http'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import MyCalender from '../../../../components/Calender/MyCalender'
+import { useNavigate } from 'react-router-dom'
 
 const UpcomingEvents = () => {
+    const navigate = useNavigate();
 
     const [showCalender, setShowCalender] = useState(false)
     const [overflowing, setOverflowing] = useState(false)
-    const [date, setDate] = useState('')
+
     const [upcomingEvents, setUpcomingEvents] = useState('')
     const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false)
     const next7Days = [];
@@ -23,12 +24,6 @@ const UpcomingEvents = () => {
         if (calendarRef.current && !calendarRef.current.contains(e.target)) {
             setShowCalender(false);
         }
-    };
-
-    const handleDateChange = (newDate) => {
-        setDate(`?date=${(moment(newDate).format('YYYY-MM-DD'))}`);
-        setShowCalender(!showCalender)
-        // You can do further processing with the selected date, such as sending it to the server or updating your state.
     };
 
     const [showNumberBox, setShowNumberBox] = useState(false)
@@ -45,23 +40,19 @@ const UpcomingEvents = () => {
         const fetchdata = async () => {
             setUpcomingEventsLoading(true)
             try {
-                const categorydata = {
-                    category: "events",
-                    filterdate: new Date(date)
-                }
-
-                const { data } = await getCategoryEvents(categorydata, `?search=${null}`)
-                // console.log(data.data)
+                const { data } = await ClientUpcomingEvents()
                 setUpcomingEvents(data)
                 setUpcomingEventsLoading(false)
             } catch (error) {
                 setUpcomingEventsLoading(false)
                 console.log(error)
+            } finally {
+                setUpcomingEventsLoading(false)
             }
         }
 
         fetchdata()
-    }, [date]);
+    }, []);
 
     useEffect(() => {
         const container = containerRef.current;
@@ -106,7 +97,7 @@ const UpcomingEvents = () => {
     const [useFullDate, setUseFullDate] = useState('')
     function setnewfilterdate(actualdate) {
         setUseFullDate(actualdate)
-        setDate(`?date=${actualdate}`)
+        // setDate(`?date=${actualdate}`)
         // console.log(actualdate)
     }
 
@@ -154,22 +145,7 @@ const UpcomingEvents = () => {
                                                                         <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
                                                                     </div>
                                                                     <div ref={calendarRef}>
-                                                                        <Calendar
-                                                                            className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
-                                                                            value={date}
-                                                                            onChange={handleDateChange}
-                                                                            tileContent={({ date, view }) =>
-                                                                                view === 'month' && highlightedDates.some((highlightedDate) =>
-                                                                                    highlightedDate.getDate() === date.getDate() &&
-                                                                                    highlightedDate.getMonth() === date.getMonth() &&
-                                                                                    highlightedDate.getFullYear() === date.getFullYear()
-                                                                                ) ? (
-                                                                                    <div className="highlighted-date">
-                                                                                        <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
-                                                                                    </div>
-                                                                                ) : null
-                                                                            }
-                                                                        />
+                                                                        <MyCalender />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -180,7 +156,7 @@ const UpcomingEvents = () => {
                                             <div>
                                                 <div className='hidden md:block flex space-x-1'>
                                                     {next7Days.map((item) => (
-                                                        <button onClick={() => setnewfilterdate(item.actualdate)} className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                                        <button onClick={() => navigate(`/category/events?date=${item.actualdate}`)} className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
                                                             ? 'bg-black text-white'
                                                             : ''
                                                             }`}>
@@ -233,22 +209,7 @@ const UpcomingEvents = () => {
                                                             <button onClick={() => setShowCalender(false)} className='text-blue-500 hover:underline'>Cancel</button>
                                                         </div>
                                                         <div ref={calendarRef}>
-                                                            <Calendar
-                                                                className='relative z-50 w-80 rounded-lg border-none drop-shadow-md text-xs'
-                                                                value={date}
-                                                                onChange={handleDateChange}
-                                                                tileContent={({ date, view }) =>
-                                                                    view === 'month' && highlightedDates.some((highlightedDate) =>
-                                                                        highlightedDate.getDate() === date.getDate() &&
-                                                                        highlightedDate.getMonth() === date.getMonth() &&
-                                                                        highlightedDate.getFullYear() === date.getFullYear()
-                                                                    ) ? (
-                                                                        <div className="highlighted-date">
-                                                                            <img className='animate-ping flex h-1.5' src="/images/icons/dot.png" alt="" />
-                                                                        </div>
-                                                                    ) : null
-                                                                }
-                                                            />
+                                                            <MyCalender />
                                                         </div>
                                                     </div>
                                                 </div>

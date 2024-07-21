@@ -6,9 +6,9 @@ import EventCard from '../../../components/Cards/EventCard'
 import MapComponent from '../../../components/GoogleMap/Map';
 import Footer from '../../../components/shared/Footer/Footer'
 import TrendingCard from '../../../components/Cards/TrendingCard'
-import { getCategoryEvents, GetAllCategory, GetTrendingEvents } from '../../../http/index'
+import { getCategoryEvents, GetAllCategory, GetTrendingEvents, AllDateEvents } from '../../../http/index'
 import { useParams, useLocation } from 'react-router-dom';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import SkeletonCard from '../../../components/shared/skeletons/SkeletonCard'
 import queryString from 'query-string';
 import { Features } from '../../../utils/Data'
@@ -18,11 +18,13 @@ import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 import BottomNav from '../../../components/shared/BottomNav/BottomNav'
 import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
-
+import BlurFade from '../../../components/MagicUI/BlurFade'
 
 const Events = () => {
 
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams();
+    const homeDate = searchParams.get('date');
 
     let [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
@@ -112,11 +114,14 @@ const Events = () => {
     ));
 
     const ChangeFilterDate = (date) => {
+        console.log("date which is passed by calender", date)
         const format = new Date(date)
         const datemoment = moment(format).format("YYYY-MM-DD")
-        // console.log(datemoment)
+        console.log("Date Moment changing via calender", datemoment)
         setFilterDate(format)
     }
+    console.log("filter date which is setted by calender", filterDate)
+
     const handleFeaturesChange = (feature) => {
         if (selectedFeatures.includes(feature)) {
             // Remove the feature from selectedFeatures
@@ -191,6 +196,7 @@ const Events = () => {
     const offerDay = queryString.parse(location.day)
 
 
+    const [groupedEvents, setGroupedEvents] = useState([])
     const [query, setQuery] = useState('')
 
     let categoryname;
@@ -241,6 +247,41 @@ const Events = () => {
         }
         fetchdata()
     }, [category, filterDate, queryParams.subcategory, queryParams.day]);
+
+
+    useEffect(() => {
+        const fetchdata = async () => {
+            setLoading(true)
+            const dateData = {
+                date: filterDate,
+                trending: trending
+            }
+            try {
+                const { data } = await AllDateEvents(dateData)
+                console.log(data.data)
+                setGroupedEvents(data)
+
+                setLoading(false)
+            } catch (error) {
+                // console.log(error)
+                setLoading(false)
+            }
+        }
+
+        // setFilterDate(formattedDate)
+        fetchdata()
+    }, [filterDate]);
+
+    useEffect(() => {
+        if (homeDate) {
+            console.log("date which is passed by quert", homeDate)
+            const convertedDate = new Date(homeDate)
+            const datemomentconverted = moment(convertedDate).format("YYYY-MM-DD")
+            console.log("Date Moment changing via calender", datemomentconverted)
+            setFilterDate(convertedDate)
+        }
+    }, [])
+
 
     if (response.data != null) {
         response.data.map((event, index) => {
@@ -294,8 +335,6 @@ const Events = () => {
     const handleComponentClick = () => {
         setShowDatePicker(true);
     };
-
-
 
     return (
         <div className='h-screen dark:bg-[#2c2c2c] dark:text-white contactmargine '>
@@ -373,34 +412,6 @@ const Events = () => {
                                             ref={dropdownRef}
                                         >
                                             <div className="p-5">
-                                                {/* {
-                                                    category == 'events' && (
-                                                        <div className="popular">
-                                                            <span className='ml-0 font-semibold text-sm'>Popular Filters</span>
-                                                            {
-                                                                categories.data.map((e) => (
-                                                                    <div class="flex items-center mb-1 mt-2">
-                                                                        <input
-                                                                            id={e.categoryURL}
-                                                                            type="checkbox"
-                                                                            onChange={() => handleCategoryChange(e)}
-                                                                            checked={selectedCategories.includes(e)}
-                                                                            value={e}
-                                                                            className="w-4 h-4 text-[#C0A04C] border-gray-300 rounded focus:ring-[#C0A04C] dark:focus:ring-[#C0A04C] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                                        />
-                                                                        <label
-                                                                            htmlFor={e.categoryURL} // Use htmlFor to associate label with checkbox
-                                                                            className="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300 cursor-pointer" // Add cursor-pointer to make label clickable
-                                                                        >
-                                                                            {e.name}
-                                                                        </label>
-                                                                    </div>
-                                                                ))
-                                                            }
-                                                        </div>
-                                                    )
-                                                } */}
-
                                                 <div className="popular">
                                                     <span className='ml-0 font-semibold text-sm'>Features</span>
                                                     {
@@ -469,98 +480,138 @@ const Events = () => {
                         <div className='min-h-screen  mainContainer grid grid-cols-1 lg:grid-cols-3'>
                             <div className="1 h-11/12 col-span-2 overflow-x-auto">
                                 <div className="left w-full flex justify-center">
-                                    <div className="mx-2 grid grid-flow-row gap:6 md:gap-4 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                    <>
                                         {
-                                            response.data != null && (
+                                            category == 'events' ?
                                                 <>
-                                                    {
-                                                        loading
-                                                            ?
-                                                            <>
-                                                                <SkeletonCard />
-                                                                <SkeletonCard />
-                                                                <SkeletonCard />
-                                                            </>
-                                                            :
-                                                            response.data.length == 0
-                                                                ?
-                                                                <div className='col-span-3'>
-                                                                    <div className='h-80 flex flex-col justify-center items-center'>
-                                                                        <img className='flex dark:hidden h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
-                                                                        <img className='hidden dark:flex h-40 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
-                                                                        <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
+                                                    <div>
+
+                                                        {Object.entries(groupedEvents).map(([date, events]) => {
+                                                            // Filter events based on the search term, convert to lowercase for case-insensitive comparison
+                                                            const filteredEvents = events.filter(event =>
+                                                                search.toLocaleLowerCase() === '' ? true : event.title.toLowerCase().includes(search.toLocaleLowerCase())
+                                                            );
+
+                                                            // Only render dates that have matching events
+                                                            if (filteredEvents.length > 0) {
+                                                                return (
+                                                                    <div className='mb-8' key={date}>
+                                                                        <h2 className='ml-2 text-md font-bold'>
+                                                                            {date !== 'undefined' ? moment(date).format('dddd, MMMM Do YYYY') : ''}
+                                                                        </h2>
+                                                                        <ul className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'>
+                                                                            {filteredEvents.map(event => (
+                                                                                <li className='' key={event._id}>
+                                                                                    <EventCard key={event._id} data={event} />
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>
                                                                     </div>
-                                                                </div>
-                                                                :
-                                                                response.data
-                                                                    .filter((item) => {
-                                                                        const searchResults = search.toLocaleLowerCase() === ''
-                                                                            ? true
-                                                                            : item.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+                                                                );
+                                                            }
 
-                                                                        const categoryMatch =
-                                                                            selectedCategories.length === 0 ||
-                                                                            selectedCategories.some((selectedCategory) => {
-                                                                                return item.eventCategory.some((itemSubcategory) =>
-                                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
-                                                                                );
-                                                                            }) ||
-                                                                            selectedCategories.some((selectedCategory) => {
-                                                                                if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
-                                                                                    console.log("good");
-                                                                                    return (
-                                                                                        selectedCategory.subCategories &&
-                                                                                        selectedCategory.subCategories.some((subCategory) =>
-                                                                                            item.eventCategory &&
-                                                                                            item.eventCategory.some((itemSubcategory) => (
-                                                                                                itemSubcategory.categoryURL === subCategory.categoryURL
-                                                                                            ))
-                                                                                        )
-                                                                                    );
-                                                                                } else {
-                                                                                    console.log("good"); // This will be executed regardless of subCategories
-                                                                                    return item.eventCategory.some((itemSubcategory) =>
-                                                                                        itemSubcategory.categoryURL === selectedCategory.categoryURL
-                                                                                    );
-                                                                                }
-                                                                            });
-
-                                                                        const featureMatch =
-                                                                            selectedFeatures.length == 0 ||
-                                                                            item.features.some(feature => selectedFeatures.includes(feature));
-
-                                                                        const locationMatch =
-                                                                            mapAddress.lat != null && mapAddress.lng != null ?
-                                                                                item.location.coordinates.lat == mapAddress.lat &&
-                                                                                item.location.coordinates.lng == mapAddress.lng :
-                                                                                true;
-
-                                                                        if (selectedDistance.length > 0) {
-                                                                            if (userCord != null) {
-                                                                                const eventDistance = calculateDistance(
-                                                                                    userCord.latitude,
-                                                                                    userCord.longitude,
-                                                                                    item.location.coordinates.lat,
-                                                                                    item.location.coordinates.lng
-                                                                                );
-
-                                                                                const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
-
-                                                                                return distanceFilterMatch && searchResults && featureMatch && categoryMatch && locationMatch;
-                                                                            }
-                                                                        } else {
-                                                                            // No distance filter applied
-                                                                            return searchResults && featureMatch && categoryMatch && locationMatch;
-                                                                        }
-                                                                    }).map((event) => (
-                                                                        <EventCard key={event._id} data={event} />
-                                                                    ))
-                                                    }
+                                                            // If no events match, return null to skip rendering this date
+                                                            return null;
+                                                        })}
+                                                    </div>
                                                 </>
-                                            )
+                                                :
+                                                <div className="mx-2 grid grid-flow-row gap:6 md:gap-4 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                                    {
+                                                        response.data != null && (
+                                                            <>
+                                                                {
+                                                                    loading
+                                                                        ?
+                                                                        <>
+                                                                            <SkeletonCard />
+                                                                            <SkeletonCard />
+                                                                            <SkeletonCard />
+                                                                        </>
+                                                                        :
+                                                                        response.data.length == 0
+                                                                            ?
+                                                                            <div className='col-span-3'>
+                                                                                <div className='h-80 flex flex-col justify-center items-center'>
+                                                                                    <img className='flex dark:hidden h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                                                    <img className='hidden dark:flex h-40 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
+                                                                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>Looks like this category is taking a little break. Check back later for exciting updates!</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            :
+                                                                            response.data
+                                                                                .filter((item) => {
+                                                                                    const searchResults = search.toLocaleLowerCase() === ''
+                                                                                        ? true
+                                                                                        : item.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
 
+                                                                                    const categoryMatch =
+                                                                                        selectedCategories.length === 0 ||
+                                                                                        selectedCategories.some((selectedCategory) => {
+                                                                                            return item.eventCategory.some((itemSubcategory) =>
+                                                                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                                            );
+                                                                                        }) ||
+                                                                                        selectedCategories.some((selectedCategory) => {
+                                                                                            if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                                                                console.log("good");
+                                                                                                return (
+                                                                                                    selectedCategory.subCategories &&
+                                                                                                    selectedCategory.subCategories.some((subCategory) =>
+                                                                                                        item.eventCategory &&
+                                                                                                        item.eventCategory.some((itemSubcategory) => (
+                                                                                                            itemSubcategory.categoryURL === subCategory.categoryURL
+                                                                                                        ))
+                                                                                                    )
+                                                                                                );
+                                                                                            } else {
+                                                                                                console.log("good"); // This will be executed regardless of subCategories
+                                                                                                return item.eventCategory.some((itemSubcategory) =>
+                                                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                                                );
+                                                                                            }
+                                                                                        });
+
+                                                                                    const featureMatch =
+                                                                                        selectedFeatures.length == 0 ||
+                                                                                        item.features.some(feature => selectedFeatures.includes(feature));
+
+                                                                                    const locationMatch =
+                                                                                        mapAddress.lat != null && mapAddress.lng != null ?
+                                                                                            item.location.coordinates.lat == mapAddress.lat &&
+                                                                                            item.location.coordinates.lng == mapAddress.lng :
+                                                                                            true;
+
+                                                                                    if (selectedDistance.length > 0) {
+                                                                                        if (userCord != null) {
+                                                                                            const eventDistance = calculateDistance(
+                                                                                                userCord.latitude,
+                                                                                                userCord.longitude,
+                                                                                                item.location.coordinates.lat,
+                                                                                                item.location.coordinates.lng
+                                                                                            );
+
+                                                                                            const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
+
+                                                                                            return distanceFilterMatch && searchResults && featureMatch && categoryMatch && locationMatch;
+                                                                                        }
+                                                                                    } else {
+                                                                                        // No distance filter applied
+                                                                                        return searchResults && featureMatch && categoryMatch && locationMatch;
+                                                                                    }
+                                                                                }).map((event) => (
+                                                                                    <BlurFade>
+                                                                                        <EventCard key={event._id} data={event} />
+                                                                                    </BlurFade>
+                                                                                ))
+                                                                }
+                                                            </>
+                                                        )
+
+                                                    }
+                                                </div>
                                         }
-                                    </div>
+                                    </>
                                 </div>
                             </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
 import { GetAllCategory } from '../../../../http/index';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const WhereTo = () => {
 
@@ -57,7 +58,14 @@ const WhereTo = () => {
                                 <div className='h-40 md:h-60 grid md:grid-cols-1 grid-rows-2 gap-3'>
                                     <Link to={`/category/${category.categoryURL}`}>
                                         <div className='relative'>
-                                            <img className='rounded-md h-40 md:h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-10' src={category.photo} alt='' />
+                                            <LazyLoadImage
+                                                // alt={image.alt}
+                                                className='rounded-md h-40 md:h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-10'
+                                                // height={image.height}
+                                                src={category.photo} // use normal <img> attributes as props
+                                            // width={image.width} 
+                                            />
+                                            {/* <img className='rounded-md h-40 md:h-60 w-full bg-gray-400 bg-blend-multiply hover:bg-grey-500 grayscale-10' src={category.photo} alt='' /> */}
                                             <div className="rounded absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-0 rounded-lg"></div>
                                             <span className='absolute bottom-0 left-0 text-white p-2 font-bold'>{category.name}</span>
                                         </div>

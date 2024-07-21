@@ -14,7 +14,7 @@ import HeroSection from './Components/HeroSection'
 import PopularCategory from './Components/PopularCategory'
 import Tabbar from '../../../components/shared/Tabbar/Tabbar'
 import { getPopupModal } from '../../../http'
-
+import BlurFade from '../../../components/MagicUI/BlurFade'
 const Home = () => {
 
     document.title = PageTitle.home
@@ -93,15 +93,23 @@ const Home = () => {
                 )}
 
                 <div className="content">
-                    <PopularCategory />
+                    <BlurFade>
+                        <PopularCategory />
+                    </BlurFade>
 
-                    <UpcomingEvents />
+                    <BlurFade>
+                        <UpcomingEvents />
+                    </BlurFade>
 
-                    <EditorsPick />
+                    <BlurFade>
+                        <EditorsPick />
+                    </BlurFade>
 
                     <Vouchers />
 
-                    <WhereTo />
+                    <BlurFade>
+                        <WhereTo />
+                    </BlurFade>
 
                     <ScrollToTop />
                 </div>

@@ -547,6 +547,14 @@ exports.getEventById = async (req, res) => {
     }
     try {
         const event = await eventService.findEvent({ _id: eventid })
+
+        // if(event.archived == true){
+        //     return res.status(200).json({
+        //         success: false,
+        //         data: "Event is archived by the Owner."
+        //     })
+        // }
+
         return res.status(statusCode.SUCCESS.code).json({
             success: true,
             data: event
@@ -1128,86 +1136,41 @@ module.exports.getUpcomingEvents = async (req, res) => {
         console.log(customDate)
         let query = {
             verified: true,
-            archived: false
+            archived: false,
+            showInEventCalender: true,
         };
-        if (customDate) {
-            const timestampFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
-            const filterDate = new Date(`${customDate}T23:00:00.000Z`)
-            const filterDate2 = new Date(`${customDate}T00:00:00.000Z`)
 
-            // // Convert the formatted date string to a JavaScript Date object
-            // const filterDate = new Date(endOfDay);
-            console.log(filterDate)
-            const currentDay = moment(filterDate).format('dddd').toLowerCase()
-            query['$or'] = [
-                {
-                    'date.dateRange.startDate': { $lte: filterDate },
-                    'date.dateRange.endDate': { $gte: filterDate2 }
-                },
-                {
-                    'date.dateRange.startDate': { $lte: filterDate },
-                    // 'date.dateRange.startDate': { $lte: specEnd },
-                    'date.dateRange.endDate': { $gte: filterDate2 },
-                    // 'date.dateRange.endDate': { $gte: specEnd }
-                },
-                {
-                    'date.dateRange.startDate': { $lte: filterDate },
-                    'date.dateRange.endDate': null
-                }
-                ,
-                {
-                    $and: [
-                        {
-                            $or: [
-                                {
-                                    'date.recurring.startDate': { $lte: filterDate },
-                                    'date.recurring.endDate': { $gte: filterDate2 },
-                                    'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-                                },
-                                {
-                                    'date.recurring.startDate': { $lte: filterDate },
-                                    'date.recurring.endDate': { $gte: null },
-                                    'date.recurring.days': { $in: [currentDay] } // Replace with a function to get today's day
-                                }
-                            ]
-                        },
-                    ]
-                },
-            ];
-            eventsOnDate = await eventService.findAllEvents(query);
+        const filterDate = moment().format("YYYY-MM-DD")
+        const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
+        const day = moment(todayDate).format('dddd').toLowerCase()
+        query['$or'] = [
+            {
+                'date.dateRange.endDate': { $gte: todayDate }
+            },
+            {
+                'date.dateRange.endDate': null
+            }
+            ,
+            {
+                $and: [
+                    {
+                        $or: [
+                            {
+                                'date.recurring.endDate': { $gte: todayDate },
+                                'date.recurring.days': { $in: day } // Replace with a function to get today's day
 
-        } else {
-            const filterDate = moment().format("YYYY-MM-DD")
-            const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-            const day = moment(todayDate).format('dddd').toLowerCase()
-            query['$or'] = [
-                {
-                    'date.dateRange.endDate': { $gte: todayDate }
-                },
-                {
-                    'date.dateRange.endDate': null
-                }
-                ,
-                {
-                    $and: [
-                        {
-                            $or: [
-                                {
-                                    'date.recurring.endDate': { $gte: todayDate },
-                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                            },
+                            {
+                                'date.recurring.endDate': { $gte: null },
+                                'date.recurring.days': { $in: day } // Replace with a function to get today's day
+                            }
+                        ]
+                    },
+                ]
+            },
+        ];
+        eventsOnDate = await eventService.findAllEvents(query, 3);
 
-                                },
-                                {
-                                    'date.recurring.endDate': { $gte: null },
-                                    'date.recurring.days': { $in: day } // Replace with a function to get today's day
-                                }
-                            ]
-                        },
-                    ]
-                },
-            ];
-            eventsOnDate = await eventService.findAllEvents(query, 4);
-        }
 
         // Send the events happening on the specified date as a response
         res.status(200).json({
@@ -1222,6 +1185,91 @@ module.exports.getUpcomingEvents = async (req, res) => {
         });
     }
 };
+
+// const moment = require('moment');
+// const eventService = require('../services/eventService'); // Adjust the path to your event service
+
+module.exports.getEventsActiveDates = async (req, res) => {
+    try {
+        // Check if a date is provided in the request query
+        const customDate = req.query.date;
+        console.log(customDate);
+        
+        let query = {
+            verified: true,
+            archived: false,
+            showInEventCalender: true,
+        };
+
+        const filterDate = moment().format("YYYY-MM-DD");
+        const todayDate = new Date(`${filterDate}T23:00:00.000Z`);
+        const day = moment(todayDate).format('dddd').toLowerCase();
+        
+        query['$or'] = [
+            { 'date.dateRange.endDate': { $gte: todayDate } },
+            { 'date.dateRange.endDate': null },
+            {
+                $and: [
+                    {
+                        $or: [
+                            { 'date.recurring.endDate': { $gte: todayDate }, 'date.recurring.days': { $in: [day] } },
+                            { 'date.recurring.endDate': null, 'date.recurring.days': { $in: [day] } }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const eventsOnDate = await eventService.findAllEvents(query);
+
+        let activeDates = new Set();
+
+        // Function to add dates between a range to the activeDates set
+        const addDateRange = (start, end) => {
+            let current = moment(start);
+            const endMoment = moment(end);
+
+            while (current <= endMoment) {
+                activeDates.add(new Date(current.format("YYYY-MM-DD")));
+                current.add(1, 'days');
+            }
+        };
+
+        // Process each event
+        eventsOnDate.forEach(event => {
+            if (event.date.dateRange) {
+                const { startDate, endDate } = event.date.dateRange;
+                if (startDate && endDate) {
+                    addDateRange(startDate, endDate);
+                }
+            }
+            if (event.date.recurring) {
+                const { days, endDate } = event.date.recurring;
+                const recurringEndDate = endDate ? moment(endDate) : moment().add(1, 'year'); // Assuming 1 year max future dates for recurring events
+                let current = moment();
+
+                while (current <= recurringEndDate) {
+                    if (days.includes(current.format('dddd').toLowerCase())) {
+                        activeDates.add(new Date(current.format("YYYY-MM-DD")));
+                    }
+                    current.add(1, 'days');
+                }
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            data: Array.from(activeDates),
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
+    }
+};
+
 
 exports.getTrendingEvents = async (req, res) => {
 
@@ -1322,7 +1370,7 @@ exports.getDateWiseEvents = async (req, res) => {
                 },
             ],
         };
-        
+
         if (trending === true) {
             query.trending = true;
         }

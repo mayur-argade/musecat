@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GetAllCategory } from '../../../http/index';
 import SubTabbar from './SubTabbar';
+import BlurIn from '../../MagicUI/BlurIn';
+// import BlurIn from "@/components/magicui/blur-in";
 
 const Tabbar = () => {
 
@@ -55,7 +57,10 @@ const Tabbar = () => {
                             {
                                 categories.data && categories.data.length > 7 && (
                                     <div onMouseEnter={() => setShowMoreCategories(true)} onMouseLeave={() => setShowMoreCategories(false)} onClick={() => setShowMoreCategories(!showMoreCategories)} className='mt-1 relative flex align-middle items-center hover:font-bold'>
-                                        <span className={`ml-0 text-base bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer `}>More</span>
+                                        <BlurIn
+                                            word='More'
+                                            className="ml-0 text-base bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer "
+                                        />
                                         <img className="cursor-pointer dark:hidden flex h-5 mt-0.5" src="/images/icons/add.svg" alt="Add Icon" />
                                         <img className="cursor-pointer dark:flex hidden h-2 ml-2" src="/images/icons/minus-light.svg" alt="Minus Icon" />
                                     </div>
@@ -117,9 +122,12 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
                         onMouseLeave={() => closeDropdown()}
                         className={`cursor-pointer hover:font-bold relative px-1 py-1 ml-0 text-base bg-left-bottom bg-gradient-to-r from-[#C0A04C] to-[#A48533] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}
                     >
-                        <span className='ml-0 cursor-pointer hover:font-bold'>
-                            {category.name}
-                        </span>
+                        {/* <span className='ml-0 cursor-pointer hover:font-bold'> */}
+                        <BlurIn
+                            word={category.name}
+                            className="ml-0 cursor-pointer hover:font-bol"
+                        />
+                        {/* </span> */}
                     </div>
 
                     {showDropdown && (
@@ -171,7 +179,11 @@ const CategoryLink = ({ category, handleCategoryChange }) => {
             ) : (
                 <Link onClick={() => handleCategoryChange(category)} to={`/category/${category.categoryURL}`}>
                     <div className={`hover:font-bold ml-0 px-1 py-1 text-base duration-500 ease-out cursor-pointer ${window.location.pathname === `/category/${category.categoryURL}` ? 'font-bold' : 'font-normal'}`}>
-                        <span className='ml-0'>{category.name}</span>
+                        <BlurIn
+                            word={category.name}
+                            className="ml-0"
+                        />
+                        {/* <span className='ml-0'>{category.name}</span> */}
                     </div>
                 </Link>
             )

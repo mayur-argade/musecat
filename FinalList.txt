@@ -1,5 +1,28 @@
+TODO: 
+1. Expired events page should not be load (done)
+2. Add filter to the admin side 
+3. Checkbox needs to be handle perfectly.
+4. Reduce image size and upload again for categories 
+5. Pop up box needs to be added.
+6. change the design of the pop up box.
+7. redirection issues needs to be solved.
+8. check events add and edit options. 
+9. Check each page of client vendor admin and make necessary additions. 
+
+
 Issues :
 1. Even If Show End Date is false still showing end date 
+2. What's on from the homepage to upcoming events which are show in calender
+3. Calender to be change to the redirection link
+4. give a scroll animation 
+5. If possible give a datalist option in the search 
+6. Event page what's on change to the datewise events listing
+7. Give a random event order 
+8. If event is archived or expired then it should not be visible to the user 
+
+Theme cyber security
+Events on that theme
+
 
 1. Search Events functionality (done)
 17. Edit event crop feature modification (done)
