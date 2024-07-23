@@ -97,9 +97,9 @@ const Home = () => {
                         <PopularCategory />
                     </BlurFade>
 
-                    <BlurFade>
+                    {/* <BlurFade> */}
                         <UpcomingEvents />
-                    </BlurFade>
+                    {/* </BlurFade> */}
 
                     <BlurFade>
                         <EditorsPick />

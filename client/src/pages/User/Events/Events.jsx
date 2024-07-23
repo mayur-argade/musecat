@@ -25,7 +25,7 @@ const Events = () => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams();
     const homeDate = searchParams.get('date');
-
+    const [page, setPage] = useState(1);
     let [selectedLocation, setSelectedLocation] = useState({
         lat: 23.58371305879854,
         lng: 58.37132692337036,
@@ -248,29 +248,56 @@ const Events = () => {
         fetchdata()
     }, [category, filterDate, queryParams.subcategory, queryParams.day]);
 
+    const [hasMore, setHasMore] = useState(true); // To track if more events are available
+
+    const fetchEvents = async (page) => {
+        setLoading(true);
+        const dateData = {
+            date: filterDate,
+            trending: trending
+        };
+
+        try {
+            const { data } = await AllDateEvents({ ...dateData, page });
+            if (Object.keys(data).length === 0) {
+                setHasMore(false);
+            } else {
+                setGroupedEvents(prevEvents => {
+                    // Merge new events with the existing ones
+                    const newEvents = { ...prevEvents };
+                    Object.entries(data).forEach(([date, events]) => {
+                        if (newEvents[date]) {
+                            newEvents[date] = [...newEvents[date], ...events];
+                        } else {
+                            newEvents[date] = events;
+                        }
+                    });
+                    return newEvents;
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchdata = async () => {
-            setLoading(true)
-            const dateData = {
-                date: filterDate,
-                trending: trending
-            }
-            try {
-                const { data } = await AllDateEvents(dateData)
-                console.log(data.data)
-                setGroupedEvents(data)
-
-                setLoading(false)
-            } catch (error) {
-                // console.log(error)
-                setLoading(false)
-            }
-        }
-
-        // setFilterDate(formattedDate)
-        fetchdata()
+        setPage(1);
+        setHasMore(true);
+        setGroupedEvents({});
+        fetchEvents(1);
     }, [filterDate]);
+
+    const loadMoreEvents = () => {
+        if (hasMore && !loading) {
+            setPage(prevPage => {
+                const nextPage = prevPage + 1;
+                fetchEvents(nextPage);
+                return nextPage;
+            });
+        }
+    };
 
     useEffect(() => {
         if (homeDate) {
@@ -485,7 +512,6 @@ const Events = () => {
                                             category == 'events' ?
                                                 <>
                                                     <div>
-
                                                         {Object.entries(groupedEvents).map(([date, events]) => {
                                                             // Filter events based on the search term, convert to lowercase for case-insensitive comparison
                                                             const filteredEvents = events.filter(event =>
@@ -513,6 +539,21 @@ const Events = () => {
                                                             // If no events match, return null to skip rendering this date
                                                             return null;
                                                         })}
+                                                        {hasMore && !loading && (
+                                                            <div className="flex justify-center align-middle">
+                                                                <button onClick={loadMoreEvents} className="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 ">
+                                                                    Load More
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                        {loading &&
+                                                            <>
+                                                                <div class="flex justify-center items-center">
+                                                                    <div class="absolute animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#C0A04C]"></div>
+                                                                    <img src="/images/logo/logo-main.png" class="h-10" />
+                                                                </div>
+                                                            </>
+                                                        }
                                                     </div>
                                                 </>
                                                 :
@@ -607,7 +648,6 @@ const Events = () => {
                                                                 }
                                                             </>
                                                         )
-
                                                     }
                                                 </div>
                                         }

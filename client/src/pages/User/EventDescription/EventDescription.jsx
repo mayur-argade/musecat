@@ -9,6 +9,7 @@ import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { setEvent } from '../../../store/eventSlice'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
+import ReactHtmlParser from 'react-html-parser';
 import toast, { Toaster } from 'react-hot-toast';
 import MapComponent from '../../../components/GoogleMap/Map'
 import { useSelector } from 'react-redux'
@@ -199,7 +200,7 @@ const EventDescription = () => {
                 if (data.data.eventDetails.description) {
                     newAccordions.push({
                         title: 'Event Details',
-                        content: <div className='dark:bg-[#2c2c2c] dark:text-white' dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
+                        content: <div className='list-disc dark:bg-[#2c2c2c] dark:text-white'>{ReactHtmlParser(data.data.eventDetails.description)}</div> ,
                         isOpened: true,
                     });
                 }

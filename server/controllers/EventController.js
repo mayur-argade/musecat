@@ -1335,11 +1335,9 @@ exports.getTrendingEvents = async (req, res) => {
     })
 }
 
-
-
 exports.getDateWiseEvents = async (req, res) => {
     try {
-        const { date, trending } = req.body;
+        const { date, trending, page = 1 } = req.body;
         const today = moment().startOf('day');
         const gotDate = date ? moment(date).startOf('day') : today;
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -1449,8 +1447,10 @@ exports.getDateWiseEvents = async (req, res) => {
                 return acc;
             }, {});
 
-            const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key) => {
-                sortedAcc[key] = groupedEvents[key];
+            const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key, index) => {
+                if (index >= (page - 1) * 10 && index < page * 10) { // Filter dates based on page
+                    sortedAcc[key] = groupedEvents[key];
+                }
                 return sortedAcc;
             }, {});
 
