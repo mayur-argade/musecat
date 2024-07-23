@@ -38,7 +38,7 @@ const Home = () => {
 
         const fetchData = async () => {
             try {
-                const { data } = await getPopupModal('66197c40f100f8c507519012')
+                const { data } = await getPopupModal('66a028a78a781a068ee8bdea')
                 setPopupData(data.data)
             } catch (error) {
                 console.log(error)

@@ -1,8 +1,8 @@
 TODO: 
 1. Expired events page should not be load (done)
-2. Add filter to the admin side 
+2. Add filter to the admin side done
 3. Checkbox needs to be handle perfectly.
-4. Reduce image size and upload again for categories 
+4. Reduce image size and upload again for categories done 
 5. Pop up box needs to be added.
 6. change the design of the pop up box.
 7. redirection issues needs to be solved.

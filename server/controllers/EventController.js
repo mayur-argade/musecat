@@ -1194,7 +1194,7 @@ module.exports.getEventsActiveDates = async (req, res) => {
         // Check if a date is provided in the request query
         const customDate = req.query.date;
         console.log(customDate);
-        
+
         let query = {
             verified: true,
             archived: false,
@@ -1204,7 +1204,7 @@ module.exports.getEventsActiveDates = async (req, res) => {
         const filterDate = moment().format("YYYY-MM-DD");
         const todayDate = new Date(`${filterDate}T23:00:00.000Z`);
         const day = moment(todayDate).format('dddd').toLowerCase();
-        
+
         query['$or'] = [
             { 'date.dateRange.endDate': { $gte: todayDate } },
             { 'date.dateRange.endDate': null },
@@ -1647,9 +1647,28 @@ exports.getEventsForAdmin = async (req, res) => {
         ];
 
         eventsOnDate = await eventService.findAllEvents(query);
+
+        const expiredEvent = await eventService.findAllEvents({
+            type: 'event',
+            // verified: true,
+            $or: [
+                {
+                    'date.dateRange.endDate': { $lt: todayDate }
+                },
+                { archived: true }
+                ,
+                {
+                    // 'date.recurring.startDate': { $lte: today },
+                    'date.recurring.endDate': { $lt: todayDate },
+                },
+            ],
+
+        })
+
         res.status(200).json({
             success: true,
             data: eventsOnDate,
+            expiredEvents: expiredEvent
         })
     } catch (error) {
         console.log(error)
