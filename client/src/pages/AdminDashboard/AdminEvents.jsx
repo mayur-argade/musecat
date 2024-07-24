@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import AdminNavbar from '../../components/shared/Navbar/AdminNavbar'
 import { Features } from '../../utils/Data'
+// import moment from 'moment';
 
 const AdminEvents = () => {
 
@@ -478,7 +479,55 @@ const AdminEvents = () => {
                                                                                     {[...new Set(event.eventCategory.map(subcategory => subcategory.name))].join(', ')}
                                                                                 </td>
                                                                                 <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                                    {event.verified ?
+                                                                                    {event.archived ? (
+                                                                                        <span className='bg-gray-100 text-gray-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-gray-900 dark:text-gray-300'>
+                                                                                            Archived
+                                                                                        </span>
+                                                                                    ) : (
+                                                                                        (() => {
+                                                                                            const today = moment().startOf('day');
+                                                                                            let isExpired = false;
+
+                                                                                            if (event.date) {
+                                                                                                if (event.date.type === 'dateRange' && event.date.dateRange && event.date.dateRange.endDate) {
+                                                                                                    const dateRangeEndDate = moment(event.date.dateRange.endDate).startOf('day');
+                                                                                                    isExpired = dateRangeEndDate.isBefore(today);
+                                                                                                } else if (event.date.type != 'dateRange' && event.date.recurring && event.date.recurring.endDate) {
+                                                                                                    const recurringEndDate = moment(event.date.recurring.endDate).startOf('day');
+                                                                                                    isExpired = recurringEndDate.isBefore(today);
+                                                                                                }
+                                                                                            }
+
+                                                                                            if (isExpired) {
+                                                                                                return (
+                                                                                                    <span className='bg-yellow-100 text-yellow-800 text-xs font-medium ml-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300'>
+                                                                                                        Expired
+                                                                                                    </span>
+                                                                                                );
+                                                                                            }
+
+                                                                                            return event.verified ? (
+                                                                                                <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
+                                                                                                    Verified
+                                                                                                </span>
+                                                                                            ) : (
+                                                                                                <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                                                    Unverified
+                                                                                                </span>
+                                                                                            );
+                                                                                        })()
+                                                                                    )}
+
+                                                                                    {/* {event.archived ? (
+                                                                                        <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                                            Archived
+                                                                                        </span>
+                                                                                    ) : (
+                                                                                        <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                                            Expired
+                                                                                        </span>
+                                                                                    )} */}
+                                                                                    {/* {event.verified ?
                                                                                         <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
                                                                                             Verified
                                                                                         </span>
@@ -487,7 +536,7 @@ const AdminEvents = () => {
                                                                                             Unverified
                                                                                         </span>
 
-                                                                                    }
+                                                                                    } */}
                                                                                 </td>
                                                                                 <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                                     {event.location?.name || ""}
@@ -569,16 +618,45 @@ const AdminEvents = () => {
                                                                                     {[...new Set(event.eventCategory.map(subcategory => subcategory.name))].join(', ')}
                                                                                 </td>
                                                                                 <td className="flex justify-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                                                                    {event.verified ?
-                                                                                        <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
-                                                                                            Verified
+                                                                                    {event.archived ? (
+                                                                                        <span className='bg-gray-100 text-gray-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-gray-900 dark:text-gray-300'>
+                                                                                            Archived
                                                                                         </span>
-                                                                                        :
-                                                                                        <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
-                                                                                            Unverified
-                                                                                        </span>
+                                                                                    ) : (
+                                                                                        (() => {
+                                                                                            const today = moment().startOf('day');
+                                                                                            let isExpired = false;
 
-                                                                                    }
+                                                                                            if (event.date) {
+                                                                                                if (event.date.type === 'dateRange' && event.date.dateRange && event.date.dateRange.endDate) {
+                                                                                                    const dateRangeEndDate = moment(event.date.dateRange.endDate).startOf('day');
+                                                                                                    isExpired = dateRangeEndDate.isBefore(today);
+                                                                                                } else if (event.date.type != 'dateRange' && event.date.recurring && event.date.recurring.endDate) {
+                                                                                                    const recurringEndDate = moment(event.date.recurring.endDate).startOf('day');
+                                                                                                    isExpired = recurringEndDate.isBefore(today);
+                                                                                                }
+                                                                                            }
+
+                                                                                            if (isExpired) {
+                                                                                                return (
+                                                                                                    <span className='bg-yellow-100 text-yellow-800 text-xs font-medium ml-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300'>
+                                                                                                        Expired
+                                                                                                    </span>
+                                                                                                );
+                                                                                            }
+
+                                                                                            return event.verified ? (
+                                                                                                <span className='bg-green-100 text-green-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300'>
+                                                                                                    Verified
+                                                                                                </span>
+                                                                                            ) : (
+                                                                                                <span className='bg-red-100 text-red-800 text-xs font-medium ml-0 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300'>
+                                                                                                    Unverified
+                                                                                                </span>
+                                                                                            );
+                                                                                        })()
+                                                                                    )}
+
                                                                                 </td>
                                                                                 <td className="text-center px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                                     {event.location?.name || ""}

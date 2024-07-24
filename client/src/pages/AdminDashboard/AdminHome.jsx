@@ -453,7 +453,7 @@ const AdminHome = () => {
                                 </div>
                                 <div className="overflow-x-auto">
 
-                                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <div class="mb-10 relative overflow-x-auto shadow-md sm:rounded-lg">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                 <tr>
@@ -519,7 +519,7 @@ const AdminHome = () => {
                                                     :
                                                     <tbody>
                                                         {
-                                                            response.data.map((event) => (
+                                                            response.data.slice(0, 5).map((event) => (
                                                                 <tr>
                                                                     <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                                                         {event.title}
@@ -556,7 +556,7 @@ const AdminHome = () => {
                             </div>
                         </div>
 
-                        <div className="recentEvents mt-4">
+                        {/* <div className="recentEvents mt-4">
                             <div className='table1 h-96 shadow-md'>
                                 <div className="title mb-2 flex justify-between">
                                     <p className='font-semibold text-lg'>Recently Added Offers</p>
@@ -669,7 +669,7 @@ const AdminHome = () => {
 
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                 </div>

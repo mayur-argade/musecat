@@ -31,7 +31,7 @@ const EditPopupMessage = ({ onClose }) => {
         setIsChecked(isChecked);
 
         try {
-            const promise = AdminSetVisibilityOfModal({ id: '66197c40f100f8c507519012', showModal: isChecked });
+            const promise = AdminSetVisibilityOfModal({ id: '66a028a78a781a068ee8bdea', showModal: isChecked });
             const { data } = await toast.promise(promise, {
                 loading: 'Processing...',
                 success: (data) => data.data.data,
@@ -47,7 +47,7 @@ const EditPopupMessage = ({ onClose }) => {
 
         const fetchData = async () => {
             try {
-                const { data } = await getPopupModal('66197c40f100f8c507519012')
+                const { data } = await getPopupModal('66a028a78a781a068ee8bdea')
                 setPopupData(data.data)
                 setIsChecked(data.data.visible)
                 setTitle(data.data.title)
