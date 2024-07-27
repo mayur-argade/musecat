@@ -174,6 +174,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     }, [isAuth, user])
 
     useEffect(() => {
+        if (sidebar) {
+            document.body.style.overflow = 'hidden'; // Prevent scrolling on the main content area
+        } else {
+            document.body.style.overflow = 'auto'; // Allow scrolling on the main content area
+        }
+    }, [sidebar]);
+
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -473,7 +481,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
             {/* sidebar for mobile view */}
             <nav className={sidebar ? "nav-menu active dark:bg-[#2c2c2c]" : "nav-menu dark:bg-[#2c2c2c]"} >
-                <ul className="relative nav-menu-items dark:text-white" >
+                <ul className="relative nav-menu-items dark:text-white overflow-y-auto" >
                     <li className="dark:bg-[#2c2c2c] navbar-toggle flex justify-between justify-items-end">
                         <Link to="/" class="ml-2 flex md:flex items-center">
                             <img src="/images/logo/logo-main.png" className="dark:hidden flex h-10 md:mr-3" alt="MWT Logo" />

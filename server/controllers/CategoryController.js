@@ -206,128 +206,6 @@ exports.getAllCategories = async (req, res) => {
     }
 }
 
-// Get Event Count for each category
-// exports.getCategoriesWithEvents = async (req, res) => {
-//     const date = req.query.date
-
-
-//     try {
-//         const categories = await categoryService.findAllCategory();
-
-//         console.log(categories)
-
-//         const categoryCounts = [];
-
-
-
-//         for (const category of categories) {
-//             const categoryCount = {
-//                 categoryId: category._id,
-//                 categoryName: category.name,
-//                 categoryURL: category.categoryURL,
-//                 photo: category.photo,
-//                 validOfferCount: 0,
-//             };
-
-//             let query = {
-//                 _id: { $in: category.events },
-//                 verified: true,
-//                 archived: false
-//             };
-
-//             if (date) {
-//                 const filterDate = new Date(`${date}T23:00:00.000Z`)
-//                 const filterDate2 = new Date(`${date}T00:00:00.000Z`)
-//                 // const filterDate = new Date(date);
-//                 const currentDay = moment(filterDate).format('dddd').toLowerCase()
-//                 query['$or'] = [
-//                     {
-//                         'date.dateRange.startDate': { $lte: filterDate },
-//                         'date.dateRange.endDate': { $gte: filterDate2 }
-//                     },
-//                     {
-//                         'date.dateRange.startDate': { $lte: filterDate },
-//                         'date.dateRange.endDate': null
-//                     }
-//                     ,
-//                     {
-//                         $and: [
-//                             {
-//                                 $or: [
-//                                     {
-//                                         'date.recurring.startDate': { $lte: filterDate },
-//                                         'date.recurring.endDate': { $gte: filterDate2 },
-//                                         'date.recurring.days': { $in: [currentDay] }
-//                                     },
-//                                     {
-//                                         'date.recurring.startDate': { $lte: filterDate },
-//                                         'date.recurring.endDate': { $gte: null },
-//                                         'date.recurring.days': { $in: [currentDay] }
-//                                     }
-//                                 ]
-//                             },
-//                         ]
-//                     },
-//                 ];
-//             } else {
-//                 const filterDate = moment().format("YYYY-MM-DD")
-//                 const todayDate = new Date(`${filterDate}T23:00:00.000Z`)
-//                 // const todayDate = new Date();
-//                 const day = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-//                 query['$or'] =
-//                     [
-//                         {
-//                             'date.dateRange.endDate': { $gte: todayDate }
-//                         },
-//                         {
-//                             'date.dateRange.endDate': null
-//                         }
-//                         ,
-//                         {
-//                             $and: [
-//                                 {
-//                                     $or: [
-//                                         {
-//                                             'date.recurring.endDate': { $gte: todayDate },
-//                                             'date.recurring.days': { $in: day } // Replace with a function to get today's day
-
-//                                         },
-//                                         {
-//                                             'date.recurring.endDate': { $gte: null },
-//                                             'date.recurring.days': { $in: day } // Replace with a function to get today's day
-//                                         }
-//                                     ]
-//                                 },
-//                             ]
-//                         },
-//                     ];
-//             }
-
-
-//             const validOfferCount = await Event.countDocuments(query);
-//             // console.log(query)
-
-//             categoryCount.validOfferCount = validOfferCount;
-
-//             categoryCounts.push(categoryCount);
-//         }
-
-
-//         const filteredCategoryCounts = categoryCounts.filter((categoryCount) => categoryCount.validOfferCount >= 1);
-
-//         return res.status(200).json({
-//             success: true,
-//             data: filteredCategoryCounts
-//         })
-//     }
-//     catch (error) {
-//         console.error('Error:', error);
-//         return res.status(500).json({
-//             success: false,
-//             data: "INTERNAL SERVER ERROR"
-//         })
-//     }
-// }
 
 exports.getCategoriesWithEvents = async (req, res) => {
     const array =
@@ -336,37 +214,37 @@ exports.getCategoriesWithEvents = async (req, res) => {
                 name: 'Friday Brunch',
                 categoryURLSync: 'fridaybrunch',
                 categoryURL: 'eat&drink?subcategory=Friday%20Brunch',
-                img: 'https://res.cloudinary.com/mayurs-media/image/upload/v1715124639/muscat/category/fridayBrunch_k3b1xn.jpg',
+                img: 'https://res.cloudinary.com/dxmbvi3gf/image/upload/v1722009990/fridayBrunch_sfgbo3.webp',
             },
             {
                 name: 'Afternoon Tea',
                 categoryURLSync: "afternoontea",
                 categoryURL: 'eat&drink?subcategory=Afternoon%20Tea',
-                img: 'https://res.cloudinary.com/mayurs-media/image/upload/v1715124764/muscat/category/Afternoon_tea_zyw821.jpg',
+                img: 'https://res.cloudinary.com/dxmbvi3gf/image/upload/v1722009991/Afternoon_tea_sbgmvv.webp',
             },
             {
                 name: 'Thursday Dinner',
                 categoryURLSync: "thursdaydinner",
                 categoryURL: 'eat&drink?subcategory=Dinner&day=Thursday',
-                img: 'https://res.cloudinary.com/mayurs-media/image/upload/v1715124815/muscat/category/thursday_dinner_ptwzno.jpg',
+                img: 'https://res.cloudinary.com/dxmbvi3gf/image/upload/v1722009990/thursday_dinner_jejxce.webp',
             },
             {
                 name: 'Happy Hour',
                 categoryURLSync: "happyhour",
                 categoryURL: 'eat&drink?subcategory=Happy%20Hour',
-                img: 'https://res.cloudinary.com/mayurs-media/image/upload/v1715124862/muscat/category/happy_hour_fifylg.jpg',
+                img: 'https://res.cloudinary.com/dxmbvi3gf/image/upload/v1722009990/happy_hour_s2zvyg.webp',
             },
             {
                 name: 'Pool & Beach',
                 categoryURLSync: "poolandbeach",
                 categoryURL: 'poolandbeach',
-                img: 'https://res.cloudinary.com/mayurs-media/image/upload/v1713216207/muscat/category/k476k5iyxhq7jko6sjda.jpg',
+                img: 'https://res.cloudinary.com/dxmbvi3gf/image/upload/v1722009990/poolAndBeach_tl5kfc.webp',
             },
             {
                 name: 'Kids Corner',
                 categoryURLSync: "kidscorner",
                 categoryURL: 'kidscorner',
-                img: 'https://res.cloudinary.com/mayurs-media/image/upload/v1713216228/muscat/category/lz8bd3vgcjqezkdzok6y.jpg',
+                img: 'https://res.cloudinary.com/dxmbvi3gf/image/upload/v1722009990/kidsCorner_ztk09w.webp',
             }
         ]
 

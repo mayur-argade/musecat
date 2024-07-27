@@ -1,13 +1,83 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../../../components/shared/Navbar/Navbar'
 import Footer from '../../../components/shared/Footer/Footer'
 import { Link } from 'react-router-dom'
+import './aboutus.css'
+import InstagramPost from '../../../components/Cards/InstagramPost'
+import BlurFade from '../../../components/MagicUI/BlurFade'
+
 const AboutUs = () => {
     document.title = 'About Us'
+    useEffect(() => {
+        let lastScrollTop = 0;
+        const maxScrollStep = window.innerHeight * 0.10; // Adjust as needed
+        let isFirstScroll = true;
+
+        const handleScroll = () => {
+            const textSection = document.querySelector('.text-section');
+            const imageSection = document.querySelector('.image-section');
+            const triggerPoint = window.innerHeight * 0.10; // Adjust as needed
+
+            if (window.scrollY > triggerPoint) {
+                textSection.classList.add('moved');
+                textSection.classList.remove('space-y-10');
+                textSection.classList.add('space-y-10');
+            } else {
+                textSection.classList.remove('moved');
+                textSection.classList.add('space-y-10');
+                textSection.classList.remove('space-y-10');
+            }
+
+            // Handle image section visibility
+            if (window.scrollY > triggerPoint) {
+                imageSection.classList.add('visible');
+            } else {
+                imageSection.classList.remove('visible');
+            }
+
+            
+        };
+
+        // Attach the scroll event listener to the window
+        window.addEventListener('scroll', handleScroll);
+
+        // Call handleScroll() on page load
+        handleScroll();
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <div className="dark:bg-[#2c2c2c] dark:text-white">
             <Navbar />
-            <section className='contactmargine flex flex-col'>
+
+            <section>
+                <header class="bg-[#FFF8E4] h-screen m-9 rounded-2xl flex align-middle items-center mx-aut">
+                    <section class="space-y-10 text-section">
+                        <h1 class="font-inter text-5xl font-bold leading-tight text-center pt-14">
+                            Revolutionizing Your Muscat Experience <br/> with Muscat Where To
+                        </h1>
+                        <p class="my-5 flex justify-center text-center w-9/12 mx-auto text-[#5E5D6D] leading-7">
+                            Muscat Where To is a platform to discover the latest offers and events in Muscat. Browse through offers, find more info and directions. Find Muscat’s offers and events by type and filters like Eat & Drink, Kids Corner, Health and Beauty, Getaway Deals, Gym Memberships, Activities & Adventure and much more.
+                        </p>
+                        <div class="flex justify-center items-center space-x-2">
+                            <button class="glow-button bg-[#C0A04C] text-white w-44 h-11 px-4 py-2 rounded-lg hover:shadow-lg">
+                                Sign in
+                            </button>
+                            <button class="bg-[#FFF4D6] text-[#C0A04C] w-44 h-11 px-4 py-2 gap-1.5 rounded-lg">
+                                Contact us
+                            </button>
+                        </div>
+                    </section>
+                    <section class="video-section image-section flex justify-center">
+                        <img class="border border-8 border-white mt-10 mx-auto w-9/12 aspect-video rounded-2xl" src="https://images.unsplash.com/photo-1621680696874-edd80ce57b72?q=80&w=1591&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                    </section>
+                </header>
+            </section>
+            {/* <section className='contactmargine flex flex-col'>
                 <div className='h-40 md:h-64 justify-center items-center relative'>
 
                     <div className="relative ">
@@ -64,12 +134,15 @@ const AboutUs = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
+            <BlurFade>
+            <InstagramPost />
+            </BlurFade>
 
-            <div className=''>
+            {/* <div className=''>
                 < Footer />
-            </div>
+            </div> */}
 
         </div>
     )

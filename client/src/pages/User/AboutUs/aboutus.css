@@ -1,0 +1,44 @@
+.header {
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Hide overflow to prevent initial scroll */
+    position: relative;
+    }
+    .text-section {
+    position: relative;
+    transition: transform 0.3s ease; /* Smooth transition */
+    }
+    .text-section.moved {
+    transform: translateY(-20%); /* Adjust movement as needed */
+    }
+    .text-section.space-y-5 {
+    margin-top: 1.25rem; /* Equivalent to space-y-5 */
+    margin-bottom: 1.25rem; /* Equivalent to space-y-5 */
+    }
+    .text-section.space-y-10 {
+    margin-top: 2.5rem; /* Equivalent to space-y-10 */
+    margin-bottom: 2.5rem; /* Equivalent to space-y-10 */
+    }
+    .image-section {
+    position: absolute;
+    top: 100vh; /* Initially position the image section below the viewport */
+    width: 95%;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Initially hidden */
+    }
+    .image-section.visible {
+    top: 80vh; /* Position the image section halfway in the viewport */
+    opacity: 1; /* Show image section */
+    }
+    .image-container {
+    position: relative;
+    height: 50vh; /* Set height for the image container */
+    overflow: hidden; /* Hide overflow */
+    }
+    .glow-button {
+    transition: all 0.3s ease; /* Smooth transition */
+    }
+   
+    .glow-button:hover {
+    box-shadow: 0 0 10px rgba(192, 160, 76, 0.8); /* Glow effect */
+    outline: 4px solid rgba(192, 160, 76, 0.5); /* Optional: Outline glow */
+    }
