@@ -84,6 +84,13 @@ const Events = () => {
         })
     };
 
+    const clearQueryResult = () => {
+        setFilterDate(null);
+        if (window.location.pathname.includes("/events")) {
+            navigate('/category/events', { replace: true })
+        }
+    }
+
     const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
         <button
             onClick={onClick} ref={ref}
@@ -96,7 +103,7 @@ const Events = () => {
                         <span className='text-[#A48533] font-semibold'>
                             {moment(filterDate).format('DD-MM-YYYY')}
                         </span>
-                        <div onClick={() => setFilterDate(null)}>
+                        <div onClick={() => clearQueryResult()}>
                             <img className='h-4 ml-2 flex dark:hidden' src="/images/icons/cancel-icon.png" alt="" />
                             <img className='h-4 ml-2 dark:flex hidden' src="/images/icons/cancel-icon-light.png" alt="" />
                         </div>
@@ -253,7 +260,7 @@ const Events = () => {
     const fetchEvents = async (page) => {
         setLoading(true);
         const dateData = {
-            date: filterDate,
+            date: filterDate ? filterDate : queryParams.date,
             trending: trending
         };
 
@@ -558,97 +565,97 @@ const Events = () => {
                                                 </>
                                                 :
                                                 <div className="mx-2 grid grid-flow-row gap-6 md:gap-4 text-neutral-600 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 no-scrollbar">
-  {
-    response.data != null && (
-      <>
-        {
-          loading
-            ?
-            <>
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-            </>
-            :
-            response.data.length === 0
-              ?
-              <div className='col-span-3'>
-                <div className='h-80 flex flex-col justify-center items-center'>
-                  <img className='flex dark:hidden h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
-                  <img className='hidden dark:flex h-40 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
-                  <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>
-                    Looks like this category is taking a little break. Check back later for exciting updates!
-                  </span>
-                </div>
-              </div>
-              :
-              response.data
-                .filter((item) => {
-                  const searchResults = search.toLocaleLowerCase() === ''
-                    ? true
-                    : item.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+                                                    {
+                                                        response.data != null && (
+                                                            <>
+                                                                {
+                                                                    loading
+                                                                        ?
+                                                                        <>
+                                                                            <SkeletonCard />
+                                                                            <SkeletonCard />
+                                                                            <SkeletonCard />
+                                                                        </>
+                                                                        :
+                                                                        response.data.length === 0
+                                                                            ?
+                                                                            <div className='col-span-3'>
+                                                                                <div className='h-80 flex flex-col justify-center items-center'>
+                                                                                    <img className='flex dark:hidden h-40 aspect-square' src="/images/assets/logo-main.png" alt="" />
+                                                                                    <img className='hidden dark:flex h-40 aspect-square' src="/images/logo/logo-main-light.png" alt="" />
+                                                                                    <span className='text-md text-center mt-1 font-semibold text-gray-700 dark:text-gray-300'>
+                                                                                        Looks like this category is taking a little break. Check back later for exciting updates!
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                            :
+                                                                            response.data
+                                                                                .filter((item) => {
+                                                                                    const searchResults = search.toLocaleLowerCase() === ''
+                                                                                        ? true
+                                                                                        : item.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
 
-                  const categoryMatch =
-                    selectedCategories.length === 0 ||
-                    selectedCategories.some((selectedCategory) => {
-                      return item.eventCategory.some((itemSubcategory) =>
-                        itemSubcategory.categoryURL === selectedCategory.categoryURL
-                      );
-                    }) ||
-                    selectedCategories.some((selectedCategory) => {
-                      if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
-                        return (
-                          selectedCategory.subCategories &&
-                          selectedCategory.subCategories.some((subCategory) =>
-                            item.eventCategory &&
-                            item.eventCategory.some((itemSubcategory) => (
-                              itemSubcategory.categoryURL === subCategory.categoryURL
-                            ))
-                          )
-                        );
-                      } else {
-                        return item.eventCategory.some((itemSubcategory) =>
-                          itemSubcategory.categoryURL === selectedCategory.categoryURL
-                        );
-                      }
-                    });
+                                                                                    const categoryMatch =
+                                                                                        selectedCategories.length === 0 ||
+                                                                                        selectedCategories.some((selectedCategory) => {
+                                                                                            return item.eventCategory.some((itemSubcategory) =>
+                                                                                                itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                                            );
+                                                                                        }) ||
+                                                                                        selectedCategories.some((selectedCategory) => {
+                                                                                            if (selectedCategory.subCategories && selectedCategory.subCategories.length > 0) {
+                                                                                                return (
+                                                                                                    selectedCategory.subCategories &&
+                                                                                                    selectedCategory.subCategories.some((subCategory) =>
+                                                                                                        item.eventCategory &&
+                                                                                                        item.eventCategory.some((itemSubcategory) => (
+                                                                                                            itemSubcategory.categoryURL === subCategory.categoryURL
+                                                                                                        ))
+                                                                                                    )
+                                                                                                );
+                                                                                            } else {
+                                                                                                return item.eventCategory.some((itemSubcategory) =>
+                                                                                                    itemSubcategory.categoryURL === selectedCategory.categoryURL
+                                                                                                );
+                                                                                            }
+                                                                                        });
 
-                  const featureMatch =
-                    selectedFeatures.length === 0 ||
-                    item.features.some(feature => selectedFeatures.includes(feature));
+                                                                                    const featureMatch =
+                                                                                        selectedFeatures.length === 0 ||
+                                                                                        item.features.some(feature => selectedFeatures.includes(feature));
 
-                  const locationMatch =
-                    mapAddress.lat != null && mapAddress.lng != null ?
-                      item.location.coordinates.lat === mapAddress.lat &&
-                      item.location.coordinates.lng === mapAddress.lng :
-                      true;
+                                                                                    const locationMatch =
+                                                                                        mapAddress.lat != null && mapAddress.lng != null ?
+                                                                                            item.location.coordinates.lat === mapAddress.lat &&
+                                                                                            item.location.coordinates.lng === mapAddress.lng :
+                                                                                            true;
 
-                  if (selectedDistance.length > 0) {
-                    if (userCord != null) {
-                      const eventDistance = calculateDistance(
-                        userCord.latitude,
-                        userCord.longitude,
-                        item.location.coordinates.lat,
-                        item.location.coordinates.lng
-                      );
+                                                                                    if (selectedDistance.length > 0) {
+                                                                                        if (userCord != null) {
+                                                                                            const eventDistance = calculateDistance(
+                                                                                                userCord.latitude,
+                                                                                                userCord.longitude,
+                                                                                                item.location.coordinates.lat,
+                                                                                                item.location.coordinates.lng
+                                                                                            );
 
-                      const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
+                                                                                            const distanceFilterMatch = !selectedDistance || eventDistance <= selectedDistance;
 
-                      return distanceFilterMatch && searchResults && featureMatch && categoryMatch && locationMatch;
-                    }
-                  } else {
-                    return searchResults && featureMatch && categoryMatch && locationMatch;
-                  }
-                }).map((event) => (
-                  <BlurFade key={event._id}>
-                    <EventCard data={event} />
-                  </BlurFade>
-                ))
-        }
-      </>
-    )
-  }
-</div>
+                                                                                            return distanceFilterMatch && searchResults && featureMatch && categoryMatch && locationMatch;
+                                                                                        }
+                                                                                    } else {
+                                                                                        return searchResults && featureMatch && categoryMatch && locationMatch;
+                                                                                    }
+                                                                                }).map((event) => (
+                                                                                    <BlurFade key={event._id}>
+                                                                                        <EventCard data={event} />
+                                                                                    </BlurFade>
+                                                                                ))
+                                                                }
+                                                            </>
+                                                        )
+                                                    }
+                                                </div>
 
                                         }
                                     </>

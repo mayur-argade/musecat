@@ -19,7 +19,7 @@ exports.createEvent = async (req, res) => {
     let { showStartDate, showInEventCalender, featuredPhoto, title, description, showEndDate, shortDescription, location, venueInfo, custom, features, termsAndConditions, categories, eventCategory, displayPhoto, banner, date, additinalImages, video, seatingMap, facebook, instagram, email, whatsapp, website, phone, discountOnApp, verified
     } = req.body;
 
-    console.log('Request body:', req.body);
+    // console.log('Request body:', req.body);
 
     if (!featuredPhoto || !title || !displayPhoto || !shortDescription || !description || !location || !date || !eventCategory) {
         return res.status(statusCode.BAD_REQUEST.code).json({
@@ -132,7 +132,7 @@ exports.createEvent = async (req, res) => {
             });
         }
 
-        console.log(eventCategory);
+        // console.log(eventCategory);
 
         const data = {
             title: title,
@@ -320,7 +320,7 @@ exports.updateEvent = async (req, res) => {
             showInEventCalender: showInEventCalender,
         };
 
-        console.log(data.whatsapp)
+        // console.log(data.whatsapp)
         // Add uploaded URLs if they exist
         if (uploadedEventPhoto) data.displayPhoto = uploadedEventPhoto.secure_url;
         if (uploadedBanner) data.banner = uploadedBanner.secure_url;
@@ -1023,7 +1023,7 @@ module.exports.customQue = async (req, res) => {
 
 exports.changeTrendingStatus = async (req, res) => {
     const { eventid, status } = req.body
-    console.log(req.body)
+    // console.log(req.body)
 
 
     try {
@@ -1060,7 +1060,7 @@ exports.changeTrendingStatus = async (req, res) => {
 
 exports.changeArchiveStatus = async (req, res) => {
     const { eventid, status } = req.body
-    console.log(req.body)
+    // console.log(req.body)
 
 
     try {
@@ -1092,7 +1092,7 @@ exports.changeArchiveStatus = async (req, res) => {
 
 exports.changeVerifyStatus = async (req, res) => {
     const { eventid, status } = req.body
-    console.log(req.body)
+    // console.log(req.body)
 
 
     try {
@@ -1133,7 +1133,7 @@ module.exports.getUpcomingEvents = async (req, res) => {
         let eventsOnDate;
         // Check if a date is provided in the request query
         const customDate = req.query.date
-        console.log(customDate)
+        // console.log(customDate)
         let query = {
             verified: true,
             archived: false,
@@ -1193,7 +1193,7 @@ module.exports.getEventsActiveDates = async (req, res) => {
     try {
         // Check if a date is provided in the request query
         const customDate = req.query.date;
-        console.log(customDate);
+        // console.log(customDate);
 
         let query = {
             verified: true,
@@ -1277,7 +1277,7 @@ exports.getTrendingEvents = async (req, res) => {
 
     const today = new Date()
     // const today = moment().utc()
-    console.log(today)
+    // console.log(today)
 
     // const currentDay = "sunday"
     const query = {
@@ -1321,7 +1321,7 @@ exports.getTrendingEvents = async (req, res) => {
 
     }
 
-    console.log(trendingEvents.length)
+    // console.log(trendingEvents.length)
 
     for (let i = 0; i < trendingEvents.length; i++) {
         if (trendingEvents[i] == null) {
@@ -1338,14 +1338,29 @@ exports.getTrendingEvents = async (req, res) => {
 exports.getDateWiseEvents = async (req, res) => {
     try {
         const { date, trending, page = 1 } = req.body;
+
+        console.log(req.body)
+
+        // Today's date
         const today = moment().startOf('day');
+
+        // Use provided date if available, otherwise default to today
         const gotDate = date ? moment(date).startOf('day') : today;
+
+        // Day names
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+        // Formatted date
         const onlyDate = gotDate.format("YYYY-MM-DD");
+
+        // Dates used for start and end of the day
         const startDate = new Date(`${onlyDate}T00:00:00.000Z`);
         const endDate = new Date(`${onlyDate}T23:00:00.000Z`);
+
+        // Today's day of the week
         const currentDay = dayNames[gotDate.day()];
 
+        // Base query
         let query = {
             showInEventCalender: true,
             archived: false,
@@ -1353,16 +1368,21 @@ exports.getDateWiseEvents = async (req, res) => {
             type: 'event',
             $or: [
                 {
+                    // Events with date range starting before or on the target date
                     'date.dateRange.startDate': { $lte: startDate },
+                    // Events that either end after or on the target date, or have no end date
                     $or: [
                         { 'date.dateRange.endDate': { $gte: endDate } },
                         { 'date.dateRange.endDate': null }
                     ]
                 },
                 {
+                    // Events with recurring dates starting before or on the target date
                     $and: [
                         { 'date.recurring.startDate': { $lte: startDate } },
+                        // Events that either end after or on the target date, or have no end date
                         { $or: [{ 'date.recurring.endDate': { $gte: endDate } }, { 'date.recurring.endDate': null }] },
+                        // Events that occur on the target day of the week
                         { 'date.recurring.days': { $in: [currentDay] } }
                     ]
                 },
@@ -1373,35 +1393,23 @@ exports.getDateWiseEvents = async (req, res) => {
             query.trending = true;
         }
 
-        if (!date) {
-            const filterDate = today.format("YYYY-MM-DD");
-            const todayDate = new Date(`${filterDate}T23:00:00.000Z`);
-            query.$or = [
-                { 'date.dateRange.endDate': { $gte: todayDate } },
-                { 'date.dateRange.endDate': null },
-                {
-                    $and: [
-                        { 'date.recurring.endDate': { $gte: todayDate } },
-                        { 'date.recurring.days': { $in: [currentDay] } }
-                    ]
-                },
-            ];
-        }
-
+        // Fetch events based on the query
         const events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
 
+        // If a specific date is provided, filter and group events by that date
         if (date) {
             const filteredEvents = events.filter(event => {
                 if (event.date.type === 'dateRange') {
                     const eventStartDate = moment(event.date.dateRange.startDate).startOf('day');
                     const eventEndDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
                     return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate);
-                } else {
+                } else if (event.date.type === 'recurring') { // Check recurring events
                     const eventStartDate = moment(event.date.recurring.startDate).startOf('day');
                     const eventEndDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
                     const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
                     return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate) && recurringDays.includes(currentDay);
                 }
+                return false; // This should not be reached if event types are correctly handled above
             });
 
             const groupedEvents = filteredEvents.reduce((acc, event) => {
@@ -1415,6 +1423,7 @@ exports.getDateWiseEvents = async (req, res) => {
 
             return res.status(200).json(groupedEvents);
         } else {
+            // If no date is provided, group events by date starting from today
             const groupedEvents = events.reduce((acc, event) => {
                 if (event.date.type === 'dateRange') {
                     const startDate = moment(event.date.dateRange.startDate).startOf('day');
@@ -1429,7 +1438,7 @@ exports.getDateWiseEvents = async (req, res) => {
                             acc[eventDate].push(event);
                         }
                     }
-                } else {
+                } else if (event.date.type === 'recurring') {
                     const startDate = moment(event.date.recurring.startDate).startOf('day');
                     const endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
                     const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
@@ -1447,8 +1456,9 @@ exports.getDateWiseEvents = async (req, res) => {
                 return acc;
             }, {});
 
+            // Sort the grouped events by date and paginate the results
             const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key, index) => {
-                if (index >= (page - 1) * 10 && index < page * 10) { // Filter dates based on page
+                if (index >= (page - 1) * 10 && index < page * 10) {
                     sortedAcc[key] = groupedEvents[key];
                 }
                 return sortedAcc;
@@ -1465,7 +1475,6 @@ exports.getDateWiseEvents = async (req, res) => {
         });
     }
 };
-
 
 // --------------------offers -------------------
 
@@ -1525,13 +1534,13 @@ exports.getAllOffers = async (req, res) => {
 }
 
 exports.deleteOffer = async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const offerid = req.body.offerid
-    console.log(offerid)
+    // console.log(offerid)
     try {
 
         const offer = await offerService.deleteOffer(offerid)
-        console.log(offer)
+        // console.log(offer)
         if (offer) {
             return res.status(200).json({
                 success: true,
@@ -1583,7 +1592,7 @@ exports.getVendorAllEvents = async (req, res) => {
 
     const { vendorid } = req.params
 
-    console.log(vendorid)
+    // console.log(vendorid)
     try {
         const events = await eventService.findAllEvents({ vendorid: vendorid })
 
@@ -1731,11 +1740,11 @@ exports.getOffersForAdmin = async (req, res) => {
 exports.adminVerifyEvent = async (req, res) => {
 
     const { eventid } = req.body.data
-    console.log(req.body)
+    // console.log(req.body)
 
     try {
         let event = await eventService.findEvent({ _id: eventid })
-        console.log(event)
+        // console.log(event)
 
         if (!event) {
             return res.status(404).json({

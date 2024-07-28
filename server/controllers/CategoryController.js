@@ -468,7 +468,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
         // if (category != 'events') {
         let categoriesWithEvents;
         if (keyword) {
-            console.log("This code is running");
+            // console.log("This code is running");
 
             // Get today's date
             const filterDate = moment().format("YYYY-MM-DD");
@@ -648,7 +648,7 @@ exports.getCategoryAllEvents2 = async (req, res) => {
             }, []);
         }
 
-        console.log(categoriesWithEvents)
+        // console.log(categoriesWithEvents)
 
 
 

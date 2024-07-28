@@ -35,7 +35,7 @@ const AboutUs = () => {
                 imageSection.classList.remove('visible');
             }
 
-            
+
         };
 
         // Attach the scroll event listener to the window
@@ -58,7 +58,7 @@ const AboutUs = () => {
                 <header class="bg-[#FFF8E4] h-screen m-9 rounded-2xl flex align-middle items-center mx-aut">
                     <section class="space-y-10 text-section">
                         <h1 class="font-inter text-5xl font-bold leading-tight text-center pt-14">
-                            Revolutionizing Your Muscat Experience <br/> with Muscat Where To
+                            Revolutionizing Your Muscat Experience <br /> with Muscat Where To
                         </h1>
                         <p class="my-5 flex justify-center text-center w-9/12 mx-auto text-[#5E5D6D] leading-7">
                             Muscat Where To is a platform to discover the latest offers and events in Muscat. Browse through offers, find more info and directions. Find Muscat’s offers and events by type and filters like Eat & Drink, Kids Corner, Health and Beauty, Getaway Deals, Gym Memberships, Activities & Adventure and much more.
@@ -136,9 +136,8 @@ const AboutUs = () => {
                 </div>
             </section> */}
 
-            <BlurFade>
             <InstagramPost />
-            </BlurFade>
+
 
             {/* <div className=''>
                 < Footer />

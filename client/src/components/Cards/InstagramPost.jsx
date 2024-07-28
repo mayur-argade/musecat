@@ -1,7 +1,9 @@
 import React from 'react'
+import BlurFade from '../MagicUI/BlurFade'
 
 const instagramPost = () => {
     return (
+
         <section class="mt-96">
             <h2 class="text-center text-5xl font-bold">Follow us on our socials</h2>
             <div class="mt-5 mx-20 grid grid-cols-3 gap-10">
@@ -146,7 +148,6 @@ const instagramPost = () => {
             </div>
 
         </section>
-
     )
 }
 

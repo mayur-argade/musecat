@@ -27,9 +27,9 @@ const MyCalender = () => {
     }, []);
 
     const handleDateChange = (newDate) => {
-        setDate(date);
+        setDate(newDate);
         console.log(date)
-        navigate(`category/events?date=${moment(date).format('YYYY-MM-DD')}`)
+        navigate(`category/events?date=${moment(newDate).format('YYYY-MM-DD')}`)
     };
 
     console.log("Highlightes Dates ", highlightedDates)
