@@ -55,7 +55,7 @@ const ScrollToTop = () => {
                 </button>
             </div>
             {
-                !isStandalone && (
+                !isStandalone || window.isNative == false && (
                     <div className="App">
                         <TawkMessengerReact
                             propertyId="6615b2a71ec1082f04e09988"
