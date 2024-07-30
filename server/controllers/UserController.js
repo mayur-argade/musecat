@@ -14,6 +14,7 @@ const notificationService = require('../services/notification-service')
 const { transporter } = require('../services/mail-service')
 const { contactUsEmail } = require('../data/emailTemplates');
 const { db } = require('../config/firebase');
+const axios = require('axios')
 
 exports.updateVendorProfile = async (req, res) => {
     const { firstname, lastname, email, password, mobilenumber, address, accountType, companyname, companyDisplayName, crNo, logo, crImage } = req.body
@@ -767,5 +768,23 @@ exports.addUserEmailTofirebase = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send(error.message);
+    }
+}
+
+exports.getInstagramPosts = async (req, res) => {
+    const userId = 'wtfusernomore';
+    const accessToken = 'IGQWRNQ01mQ25oQWJTS3U3UTVidGR3SGltQzlUS0RRcERfalRvWE1KQktmOE9xbmtXRzEyZAno5bjBSek1ZAT3ExLVB4MTN1eUVmOVpYZAFdFWG1obGtmZAlhGSDBHeVVwekM4VXBQcWpYblpkMHNIZATBPS2FxVFRQWncZD';
+    try {
+        // https://www.loom.com/share/8265535a8bd7471cb2c8d03e6c356905?sid=864dd11a-edeb-4cd1-8380-b9edd971e08c const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
+        // const userId = process.env.INSTAGRAM_USER_ID;
+        // 18004769287697551
+        const url = `https://graph.instagram.com/18004769287697551?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`;
+        const response = await axios.get(url);
+
+        console.log(response.data);
+        res.status(200).json("ok")
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching Instagram media.');
     }
 }

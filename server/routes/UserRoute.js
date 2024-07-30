@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedin, isVerified, isUserLoggedin, requiredRole } = require('../middleware/authMiddleware')
 
 
-const { addUserEmailTofirebase, updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser, getVendorsProfile, getPaymentMethods } = require('../controllers/UserController')
+const {getInstagramPosts, addUserEmailTofirebase, updateVendorProfile, getVendorProfile, getAllNotifications, getUserProfile, updateUserProfile, writeContactMessage, getFavoriteEvents, getEventDetails, getPastPurchase, getVendorDetails, verifyVendor, deleteVendor, getAllUnverifiedVendors, getAllUsers, adminStats, getAllUsersList, getAllVendorsList, deleteUser, getVendorsProfile, getPaymentMethods } = require('../controllers/UserController')
 const { vendorHome } = require('../controllers/EventController')
 
 // vendor Homepage
@@ -48,5 +48,6 @@ router.route('/admin/get-vendor-profile/:vendorid').get(getVendorsProfile)
 
 router.route('/user/get-payment-methods').get(isUserLoggedin, getPaymentMethods)
 
+router.route('/user/get-insta-posts').get(getInstagramPosts)
 
 module.exports = router;

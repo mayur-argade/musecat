@@ -74,7 +74,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         }
     }
 
-    const [categoryName, setCategoryName] = useState(category)
+    const [categoryName, setCategoryName] = useState(`${category}`)
     const [showCustomCategory, setShowCustomCategory] = useState(false)
 
     useEffect(() => {
@@ -204,10 +204,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                                 <span className='capitalize md:hidden text-xl font-bold'>
                                     {
                                         queryParams.subcategory ?
-                                            <>{queryParams.subcategory}</>
+                                            <>{decodeURIComponent(queryParams.subcategory)}</>
                                             :
-                                            categoryName
-
+                                            decodeURIComponent(categoryName)
                                     }
                                 </span>
                                 <Link to="/" class="hidden flex md:flex items-center">

@@ -529,16 +529,18 @@ const Events = () => {
                                                             if (filteredEvents.length > 0) {
                                                                 return (
                                                                     <div className='mb-8' key={date}>
-                                                                        <h2 className='ml-2 text-md font-bold'>
-                                                                            {date !== 'undefined' ? moment(date).format('dddd, MMMM Do YYYY') : ''}
-                                                                        </h2>
-                                                                        <ul className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'>
-                                                                            {filteredEvents.map(event => (
-                                                                                <li className='' key={event._id}>
-                                                                                    <EventCard key={event._id} data={event} />
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
+                                                                        <BlurFade >
+                                                                            <h2 className='ml-2 text-md font-bold'>
+                                                                                {date !== 'undefined' ? moment(date).format('dddd, MMMM Do YYYY') : ''}
+                                                                            </h2>
+                                                                            <ul className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'>
+                                                                                {filteredEvents.map(event => (
+                                                                                    <li className='' key={event._id}>
+                                                                                        <EventCard key={event._id} data={event} />
+                                                                                    </li>
+                                                                                ))}
+                                                                            </ul>
+                                                                        </BlurFade>
                                                                     </div>
                                                                 );
                                                             }
@@ -546,7 +548,7 @@ const Events = () => {
                                                             // If no events match, return null to skip rendering this date
                                                             return null;
                                                         })}
-                                                        {hasMore && !loading && (
+                                                        {filterDate != null || hasMore && !loading && (
                                                             <div className="flex justify-center align-middle">
                                                                 <button onClick={loadMoreEvents} className="w-10/12 border border-[#C0A04C] border-1.5 text-[#C0A04C] hover:text-white bg-white hover:bg-[#C0A04C] focus:ring-4 focus:outline-[#C0A04C] focus:[#A48533] font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 ">
                                                                     Load More
