@@ -22,6 +22,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.5.0",
     "babel-preset-react-app": "^10.0.1",
+    "buffer": "^6.0.3",
     "caniuse-lite": "^1.0.30001625",
     "cloudinary": "^1.41.0",
     "clsx": "^2.1.1",
@@ -55,6 +56,7 @@
     "react-google-maps": "^9.4.5",
     "react-horizontal-scrolling-menu": "^7.1.1",
     "react-hot-toast": "^2.4.1",
+    "react-html-parser": "^2.0.2",
     "react-html-table-to-excel": "^2.0.0",
     "react-icalendar-link": "^3.0.2",
     "react-icons": "^4.12.0",
@@ -135,4 +137,5 @@
     "jest": "^29.7.0",
     "tailwindcss": "^3.4.6"
   }
+  
 }

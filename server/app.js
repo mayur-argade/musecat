@@ -38,9 +38,14 @@ const storage = multer.diskStorage({
 // Create the multer instance with the defined storage
 const upload = multer({ storage: storage });
 
+// app.use(cors({
+//     origin: ['https://182b8bfb-d8a1-45a2-ad30-35a794209f57-00-knxc0ql0ytnh.sisko.replit.dev:3000','*', 'https://www.omanwhereto.com', 'https://omanwhereto.com', "http://localhost:3000"],
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: ['https://www.omanwhereto.com', 'https://omanwhereto.com', "http://localhost:3000"],
-    credentials: true
+  origin: true,
+  credentials: true, // Enable if you need to send cookies or HTTP authentication
 }));
 
 // import all routes here
