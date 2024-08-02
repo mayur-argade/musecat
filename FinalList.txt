@@ -1,3 +1,8 @@
+1st - Check the expired events logic and also expired events page 
+2nd - Check events why they are not shown in calender 
+3rd - Archive events checkbox and filter 
+
+
 TODO: 
 1. Expired events page should not be load (done)
 2. Add filter to the admin side done

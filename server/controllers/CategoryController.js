@@ -636,12 +636,32 @@ exports.getCategoryAllEvents2 = async (req, res) => {
                 match: query,
             })
 
+            const filterDate = moment().utc().format("YYYY-MM-DD");
+            const todayDate = moment(`${filterDate}T00:00:00.000Z`);
+
             const uniqueEventIds = new Set();
+
             events = categoriesWithEvents.reduce((acc, category) => {
                 category.events.forEach(event => {
-                    if (!uniqueEventIds.has(event._id.toString())) {
-                        uniqueEventIds.add(event._id.toString());
-                        acc.push(event);
+                    const eventId = event._id.toString();
+                    const { type, dateRange, recurring } = event.date;
+
+                    // Check if the event is unique and not expired
+                    if (!uniqueEventIds.has(eventId)) {
+                        let isValid = false;
+
+                        if (event.date.type == 'dateRange') {
+                            // Check if dateRange endDate is null or not expired
+                            isValid = event.date.dateRange.endDate == null || moment(event.date.dateRange.endDate).isSameOrAfter(todayDate);
+                        } else {
+                            // Check if recurring endDate is null or not expired
+                            isValid = event.date.recurring.endDate === null || moment(event.date.recurring.endDate).isSameOrAfter(todayDate);
+                        }
+
+                        if (isValid) {
+                            uniqueEventIds.add(eventId);
+                            acc.push(event);
+                        }
                     }
                 });
                 return acc;

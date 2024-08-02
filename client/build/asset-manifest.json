@@ -1,16 +1,19 @@
 {
   "files": {
-    "main.css": "https://omanwhereto.com/static/css/main.3fea4ccf.css",
-    "main.js": "https://omanwhereto.com/static/js/main.f74b5539.js",
+    "main.css": "https://omanwhereto.com/static/css/main.7671bef0.css",
+    "main.js": "https://omanwhereto.com/static/js/main.2ed59235.js",
     "static/js/703.e87620f6.chunk.js": "https://omanwhereto.com/static/js/703.e87620f6.chunk.js",
     "static/js/513.baca3871.chunk.js": "https://omanwhereto.com/static/js/513.baca3871.chunk.js",
     "static/js/878.1b8d15c1.chunk.js": "https://omanwhereto.com/static/js/878.1b8d15c1.chunk.js",
     "static/js/208.a5ec6d26.chunk.js": "https://omanwhereto.com/static/js/208.a5ec6d26.chunk.js",
     "static/js/787.d5fa4d18.chunk.js": "https://omanwhereto.com/static/js/787.d5fa4d18.chunk.js",
     "service-worker.js": "https://omanwhereto.com/service-worker.js",
+    "static/media/revicons.eot": "https://omanwhereto.com/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "https://omanwhereto.com/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "https://omanwhereto.com/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "https://omanwhereto.com/index.html",
-    "main.3fea4ccf.css.map": "https://omanwhereto.com/static/css/main.3fea4ccf.css.map",
-    "main.f74b5539.js.map": "https://omanwhereto.com/static/js/main.f74b5539.js.map",
+    "main.7671bef0.css.map": "https://omanwhereto.com/static/css/main.7671bef0.css.map",
+    "main.2ed59235.js.map": "https://omanwhereto.com/static/js/main.2ed59235.js.map",
     "703.e87620f6.chunk.js.map": "https://omanwhereto.com/static/js/703.e87620f6.chunk.js.map",
     "513.baca3871.chunk.js.map": "https://omanwhereto.com/static/js/513.baca3871.chunk.js.map",
     "878.1b8d15c1.chunk.js.map": "https://omanwhereto.com/static/js/878.1b8d15c1.chunk.js.map",
@@ -18,7 +21,7 @@
     "787.d5fa4d18.chunk.js.map": "https://omanwhereto.com/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3fea4ccf.css",
-    "static/js/main.f74b5539.js"
+    "static/css/main.7671bef0.css",
+    "static/js/main.2ed59235.js"
   ]
 }

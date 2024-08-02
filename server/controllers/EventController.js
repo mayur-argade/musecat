@@ -177,6 +177,8 @@ exports.createEvent = async (req, res) => {
 
             categoryData = await categoryService.findCategory({ categoryURL: categoryURL });
             if (!categoryData) {
+                // finding subcategory
+                
                 categoryData = await categoryService.findSubcategory(categoryURL);
             }
 
