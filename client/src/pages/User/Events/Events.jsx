@@ -143,7 +143,7 @@ const Events = () => {
         const format = new Date(date);
         const datemoment = moment(format).format("YYYY-MM-DD");
         console.log("Date Moment changing via calender", datemoment);
-        setFilterDate(format);
+        setFilterDate(new Date(`${datemoment}T00:00:00.000Z`));
     };
     console.log("filter date which is setted by calender", filterDate);
 
@@ -282,6 +282,7 @@ const Events = () => {
 
     const [hasMore, setHasMore] = useState(true); // To track if more events are available
 
+    
     const fetchEvents = async (page) => {
         setLoading(true);
         const dateData = {
@@ -301,16 +302,18 @@ const Events = () => {
                     Object.entries(data).forEach(([date, events]) => {
                         // Ensure unique events for each date
                         const existingEvents = newEvents[date] || [];
-                        const uniqueEvents = [
-                            ...new Map(
-                                [...existingEvents, ...events].map((event) => [
-                                    event.id,
-                                    event,
-                                ]),
-                            ).values(),
-                        ];
 
-                        newEvents[date] = uniqueEvents;
+                        // Combine existing events with new events
+                        const combinedEvents = [...existingEvents, ...events];
+
+                        // Use a Map to ensure unique events
+                        const uniqueEventsMap = new Map();
+                        combinedEvents.forEach(event => {
+                            uniqueEventsMap.set(event._id, event);
+                        });
+
+                        // Convert the Map back to an array
+                        newEvents[date] = Array.from(uniqueEventsMap.values());
                     });
 
                     return newEvents;
@@ -321,8 +324,9 @@ const Events = () => {
         } finally {
             setLoading(false);
         }
-    };
 
+    };
+    console.log("line 325",groupedEvents)
     useEffect(() => {
         setPage(1);
         setHasMore(true);

@@ -68,8 +68,8 @@ const Footer = () => {
                                             <p class="max-w-xs mt-2 text-sm text-gray-600 dark:text-gray-400">
                                                 Follow us on social media
                                             </p>
-                                            <div href="https://wa.me/+96891738405" class="flex mt-3 space-x-3 text-gray-600">
-                                                <a class="hover:opacity-75 cursor-pointer" href target="_blank" rel="noreferrer">
+                                            <div  class="flex mt-3 space-x-3 text-gray-600">
+                                                <a  href="https://wa.me/+96891738405" class="hover:opacity-75 cursor-pointer" target="_blank" rel="noreferrer">
                                                     <span class="sr-only"> whatsapp </span>
                                                     <img className='h-8 dark:hidden' src="/images/icons/whatsapp.svg" alt="" />
                                                     <img className='h-8 hidden dark:flex' src="/images/icons/whatsapp-light.svg" alt="" />
