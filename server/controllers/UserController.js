@@ -773,18 +773,27 @@ exports.addUserEmailTofirebase = async (req, res) => {
 
 exports.getInstagramPosts = async (req, res) => {
     const userId = 'wtfusernomore';
-    const accessToken = 'IGQWRNQ01mQ25oQWJTS3U3UTVidGR3SGltQzlUS0RRcERfalRvWE1KQktmOE9xbmtXRzEyZAno5bjBSek1ZAT3ExLVB4MTN1eUVmOVpYZAFdFWG1obGtmZAlhGSDBHeVVwekM4VXBQcWpYblpkMHNIZATBPS2FxVFRQWncZD';
+    const accessToken = process.env.INSTAGRAM_TOKEN;
     try {
-        // https://www.loom.com/share/8265535a8bd7471cb2c8d03e6c356905?sid=864dd11a-edeb-4cd1-8380-b9edd971e08c const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
-        // const userId = process.env.INSTAGRAM_USER_ID;
-        // 18004769287697551
-        const url = `https://graph.instagram.com/18004769287697551?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`;
-        const response = await axios.get(url);
+        // Fetch all media posts' IDs
+        const mediaUrl = `https://graph.instagram.com/me/media?fields=id,caption&access_token=${accessToken}`;
+        const mediaResponse = await axios.get(mediaUrl);
+        const mediaIds = mediaResponse.data.data.map(media => media.id);
 
-        console.log(response.data);
-        res.status(200).json("ok")
+        // Get details for the first 6 media posts
+        const mediaDetailsPromises = mediaIds.slice(0, 6).map(id => {
+            const url = `https://graph.instagram.com/${id}?fields=id,caption,media_type,media_url,username,timestamp&access_token=${accessToken}`;
+            return axios.get(url);
+        });
+
+        const mediaDetailsResponses = await Promise.all(mediaDetailsPromises);
+        const mediaDetails = mediaDetailsResponses.map(response => response.data);
+
+
+        // Send media details to the frontend
+        res.status(200).json(mediaDetails);
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching Instagram media.');
     }
-}
+};

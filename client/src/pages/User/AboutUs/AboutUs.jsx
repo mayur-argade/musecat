@@ -28,7 +28,7 @@ const AboutUs = () => {
                     <section
                         className={`text-section transition-all duration-1000 ease-in-out ${
                             showSecondSection
-                                ? "translate-y-[-15rem] md:translate-y-[-10rem] translate-y-0 opacity-1"
+                                ? "translate-y-[-10rem] md:translate-y-[-10rem] translate-y-0 opacity-1"
                                 : "opacity-100 translate-y-0"
                         }`}
                     >
@@ -56,9 +56,9 @@ const AboutUs = () => {
                 </section>
 
                 <section
-                    className={`video-section image-section flex justify-center transition-transform duration-1000 ease-in-out ${
+                    className={`x-20 video-section image-section flex justify-center transition-transform duration-1000 ease-in-out ${
                         showSecondSection
-                            ? "opacity-100 -translate-y-96 md:-translate-y-96"
+                            ? "opacity-100 -translate-y-80 md:-translate-y-96"
                             : "opacity-1 translate-y-0"
                     }`}
                 >

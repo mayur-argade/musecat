@@ -81,6 +81,7 @@ export const WhereToEvents = (data) => api.get('/whereto/allevents', data)
 export const AllDateEvents = (data) => api.post('/events/alldates', data)
 export const sendIcsFile = (data) => api.post('/user/addtocalender', data)
 export const addToNewsLetter = (data) => api.post('/user/add-to-newsletter', data)
+export const GetInstagramPosts = (data) => api.get('/user/get-insta-posts', data)
 
 export const AdminGetVendorEvents = (data) => api.get(`admin/${data}/allevents`, data)
 export const getEventsForAdmin = (data) => api.get('admin/getAllEvents', data)
