@@ -178,7 +178,7 @@ exports.createEvent = async (req, res) => {
             categoryData = await categoryService.findCategory({ categoryURL: categoryURL });
             if (!categoryData) {
                 // finding subcategory
-                
+
                 categoryData = await categoryService.findSubcategory(categoryURL);
             }
 
@@ -1340,132 +1340,121 @@ exports.getTrendingEvents = async (req, res) => {
 exports.getDateWiseEvents = async (req, res) => {
     try {
         const { date, trending, page = 1 } = req.body;
-
-        console.log(req.body)
-
-        // Today's date
+        let query;
         const today = moment().startOf('day');
-
-        // Use provided date if available, otherwise default to today
-        const gotDate = date ? moment(date).startOf('day') : today;
-
-        // Day names
+        const gotDate = moment(date).startOf('day')
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-        // Formatted date
-        const onlyDate = gotDate.format("YYYY-MM-DD");
+        if (!date) {
+            const filterDate = today.format("YYYY-MM-DD");
+            const todayDate = new Date(`${filterDate}T23:00:00.000Z`);
+            const currentDay = dayNames[today.day()];
 
-        // Dates used for start and end of the day
-        const startDate = new Date(`${onlyDate}T00:00:00.000Z`);
-        const endDate = new Date(`${onlyDate}T23:00:00.000Z`);
+            query = {
+                showInEventCalender: true,
+                archived: false,
+                verified: true,
+                type: 'event',
+                $or: [
+                    { 'date.dateRange.endDate': { $gte: todayDate } },
+                    { 'date.dateRange.endDate': null },
+                    {
+                        $and: [
+                            { 'date.recurring.endDate': { $gte: todayDate } },
+                            { 'date.recurring.days': { $in: [currentDay] } }
+                        ]
+                    },
+                ],
+            };
+        } else {
+            const onlyDate = moment(date).format("YYYY-MM-DD");
+            const startDate = new Date(`${onlyDate}T00:00:00.000Z`);
+            const endDate = new Date(`${onlyDate}T23:00:00.000Z`);
+            const currentDay = dayNames[moment(startDate).day()];
 
-        // Today's day of the week
-        const currentDay = dayNames[gotDate.day()];
-
-        // Base query
-        let query = {
-            showInEventCalender: true,
-            archived: false,
-            verified: true,
-            type: 'event',
-            $or: [
-                {
-                    // Events with date range starting before or on the target date
-                    'date.dateRange.startDate': { $lte: startDate },
-                    // Events that either end after or on the target date, or have no end date
-                    $or: [
-                        { 'date.dateRange.endDate': { $gte: endDate } },
-                        { 'date.dateRange.endDate': null }
-                    ]
-                },
-                {
-                    // Events with recurring dates starting before or on the target date
-                    $and: [
-                        { 'date.recurring.startDate': { $lte: startDate } },
-                        // Events that either end after or on the target date, or have no end date
-                        { $or: [{ 'date.recurring.endDate': { $gte: endDate } }, { 'date.recurring.endDate': null }] },
-                        // Events that occur on the target day of the week
-                        { 'date.recurring.days': { $in: [currentDay] } }
-                    ]
-                },
-            ],
-        };
-
-        if (trending === true) {
-            query.trending = true;
+            query = {
+                archived: false,
+                showInEventCalender: true,
+                verified: true,
+                type: 'event',
+                $or: [
+                    {
+                        'date.dateRange.startDate': { $lte: startDate },
+                        'date.dateRange.endDate': { $gte: endDate }
+                    },
+                    {
+                        'date.dateRange.startDate': { $lte: startDate },
+                        'date.dateRange.endDate': null
+                    },
+                    {
+                        $and: [
+                            { 'date.recurring.startDate': { $lte: startDate } },
+                            { $or: [{ 'date.recurring.endDate': { $gte: endDate } }, { 'date.recurring.endDate': null }] },
+                            { 'date.recurring.days': { $in: [currentDay] } }
+                        ]
+                    },
+                ],
+            };
         }
 
-        // Fetch events based on the query
         const events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
 
-        // If a specific date is provided, filter and group events by that date
+        let groupedEvents;
+        // const today = moment().startOf('day');
+        groupedEvents = events.reduce((acc, event) => {
+            if (event.date.type === 'dateRange') {
+                const startDate = moment(event.date.dateRange.startDate).startOf('day');
+                const endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
+
+                for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+                    if (m.isSameOrAfter(gotDate)) {
+                        const eventDate = m.format('YYYY-MM-DD');
+                        if (!acc[eventDate]) {
+                            acc[eventDate] = [];
+                        }
+                        acc[eventDate].push(event);
+                    }
+                }
+            } else if (event.date.type != "dateRange") {
+                const startDate = moment(event.date.recurring.startDate).startOf('day');
+                const endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
+                const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
+
+                for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+                    if (m.isSameOrAfter(today) && recurringDays.includes(dayNames[m.day()])) {
+                        const eventDate = m.format('YYYY-MM-DD');
+                        if (!acc[eventDate]) {
+                            acc[eventDate] = [];
+                        }
+                        acc[eventDate].push(event);
+                    }
+                }
+            }
+            return acc;
+        }, {});
+
+        // Sort grouped events by date in ascending order
+        let sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key) => {
+            sortedAcc[key] = groupedEvents[key];
+            return sortedAcc;
+        }, {});
+
         if (date) {
-            const filteredEvents = events.filter(event => {
-                if (event.date.type === 'dateRange') {
-                    const eventStartDate = moment(event.date.dateRange.startDate).startOf('day');
-                    const eventEndDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
-                    return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate);
-                } else if (event.date.type === 'recurring') { // Check recurring events
-                    const eventStartDate = moment(event.date.recurring.startDate).startOf('day');
-                    const eventEndDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
-                    const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
-                    return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate) && recurringDays.includes(currentDay);
+            const result = sortedGroupedEvents[moment(date).format('YYYY-MM-DD')]
+            console.log(result)
+            return res.status(200).json(
+                {
+                    [moment(date).format('YYYY-MM-DD')]: result
                 }
-                return false; // This should not be reached if event types are correctly handled above
-            });
-
-            const groupedEvents = filteredEvents.reduce((acc, event) => {
-                const eventDate = gotDate.format('YYYY-MM-DD');
-                if (!acc[eventDate]) {
-                    acc[eventDate] = [];
-                }
-                acc[eventDate].push(event);
-                return acc;
-            }, {});
-
-            return res.status(200).json(groupedEvents);
+            )
         } else {
-            // If no date is provided, group events by date starting from today
-            const groupedEvents = events.reduce((acc, event) => {
-                if (event.date.type === 'dateRange') {
-                    const startDate = moment(event.date.dateRange.startDate).startOf('day');
-                    const endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
-
-                    for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
-                        if (m.isSameOrAfter(today)) {
-                            const eventDate = m.format('YYYY-MM-DD');
-                            if (!acc[eventDate]) {
-                                acc[eventDate] = [];
-                            }
-                            acc[eventDate].push(event);
-                        }
-                    }
-                } else if (event.date.type === 'recurring') {
-                    const startDate = moment(event.date.recurring.startDate).startOf('day');
-                    const endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
-                    const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
-
-                    for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
-                        if (m.isSameOrAfter(today) && recurringDays.includes(dayNames[m.day()])) {
-                            const eventDate = m.format('YYYY-MM-DD');
-                            if (!acc[eventDate]) {
-                                acc[eventDate] = [];
-                            }
-                            acc[eventDate].push(event);
-                        }
-                    }
-                }
-                return acc;
-            }, {});
-
             // Sort the grouped events by date and paginate the results
-            const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key, index) => {
+            sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key, index) => {
                 if (index >= (page - 1) * 10 && index < page * 10) {
                     sortedAcc[key] = groupedEvents[key];
                 }
                 return sortedAcc;
             }, {});
-
             return res.status(200).json(sortedGroupedEvents);
         }
 
@@ -1477,6 +1466,318 @@ exports.getDateWiseEvents = async (req, res) => {
         });
     }
 };
+
+// exports.getDateWiseEvents = async (req, res) => {
+//     try {
+
+//         const { date, trending, page = 1 } = req.body;
+
+//         const formattedDate = moment(date).format("YYYY-MM-DD")
+//         const today = moment().startOf('day')
+
+//         const startDate = new Date(`${formattedDate}T23:00:00.000Z`);
+//         const endDate = new Date(`${formattedDate}T00:00:00.000Z`);
+
+//         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+//         const currentDay = dayNames[moment(formattedDate).day()];
+
+//         let query;
+//         let events;
+//         if (!date || date == null || date == undefined) {
+//             query = {
+//                 showInEventCalender: true,
+//                 archived: false,
+//                 verified: true,
+//                 $or: [
+//                     {
+//                         $or: [
+//                             { 'date.dateRange.endDate': { $gte: endDate } },
+//                             { 'date.dateRange.endDate': null }
+//                         ]
+//                     },
+//                     {
+//                         // Events with recurring dates starting before or on the target date
+//                         $and: [
+//                             // Events that either end after or on the target date, or have no end date
+//                             { $or: [{ 'date.recurring.endDate': { $gte: endDate } }, { 'date.recurring.endDate': null }] },
+//                             // Events that occur on the target day of the week
+//                             // { 'date.recurring.days': { $in: [currentDay] } }
+//                         ]
+//                     },
+//                 ],
+//             };
+
+//         }
+//         else if (date) {
+//             query = {
+//                 showInEventCalender: true,
+//                 archived: false,
+//                 verified: true,
+//                 $or: [
+//                     {
+//                         $or: [
+//                             {
+//                                 'date.dateRange.startDate': { $lte: startDate },
+//                                 'date.dateRange.endDate': { $gte: endDate }
+//                             },
+//                             {
+//                                 'date.dateRange.startDate': { $lte: startDate },
+//                                 'date.dateRange.endDate': null
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         // Events with recurring dates starting before or on the target date
+//                         $and: [
+//                             // Events that either end after or on the target date, or have no end date
+//                             {
+//                                 $or: [
+//                                     {
+//                                         'date.recurring.startDate': { $lte: startDate },
+//                                         'date.recurring.endDate': { $gte: endDate }
+//                                     },
+//                                     {
+//                                         'date.recurring.startDate': { $lte: startDate },
+//                                         'date.recurring.endDate': null
+//                                     }
+//                                 ]
+//                             },
+//                             // Events that occur on the target day of the week
+//                             { 'date.recurring.days': { $in: [currentDay] } }
+//                         ]
+//                     },
+//                 ],
+//             };
+//         }
+
+//         if (trending === true) {
+//             query.trending = true;
+//         }
+
+//         events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
+
+//         // console.log(events)
+
+//         if (date) {
+//             console.log("this block is running which should not be running")
+//             const filteredEvents = events.filter(event => {
+//                 if (event.date.type === 'dateRange') {
+//                     const eventStartDate = moment(event.date.dateRange.startDate).startOf('day');
+//                     const eventEndDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
+//                     return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate);
+//                 } else if (event.date.type === 'recurring') { // Check recurring events
+//                     const eventStartDate = moment(event.date.recurring.startDate).startOf('day');
+//                     const eventEndDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
+//                     const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
+//                     return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate) && recurringDays.includes(currentDay);
+//                 }
+//                 return false; // This should not be reached if event types are correctly handled above
+//             });
+
+//             const groupedEvents = filteredEvents.reduce((acc, event) => {
+//                 const eventDate = gotDate.format('YYYY-MM-DD');
+//                 if (!acc[eventDate]) {
+//                     acc[eventDate] = [];
+//                 }
+//                 acc[eventDate].push(event);
+//                 return acc;
+//             }, {});
+
+//             return res.status(200).json(groupedEvents);
+//         } else {
+//             // If no date is provided, group events by date starting from today
+//             const groupedEvents = events.reduce((acc, event) => {
+//                 if (event.date.type == 'dateRange') {
+//                     const startDate = moment(event.date.dateRange.startDate).startOf('day');
+//                     const endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
+
+//                     for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+//                         if (m.isSameOrAfter(today)) {
+//                             const eventDate = m.format('YYYY-MM-DD');
+//                             if (!acc[eventDate]) {
+//                                 acc[eventDate] = [];
+//                             }
+//                             acc[eventDate].push(event);
+//                         }
+//                     }
+//                 } else if (event.date.type === 'recurring') {
+//                     const startDate = moment(event.date.recurring.startDate).startOf('day');
+//                     const endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
+//                     const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
+
+//                     for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+//                         if (m.isSameOrAfter(today) && recurringDays.includes(dayNames[m.day()])) {
+//                             const eventDate = m.format('YYYY-MM-DD');
+//                             if (!acc[eventDate]) {
+//                                 acc[eventDate] = [];
+//                             }
+//                             acc[eventDate].push(event);
+//                         }
+//                     }
+//                 }
+//                 return acc;
+//             }, {});
+
+//             // Sort the grouped events by date and paginate the results
+//             const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key, index) => {
+//                 if (index >= (page - 1) * 10 && index < page * 10) {
+//                     sortedAcc[key] = groupedEvents[key];
+//                 }
+//                 return sortedAcc;
+//             }, {});
+
+//             return res.status(200).json(sortedGroupedEvents);
+//         }
+
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+// exports.getDateWiseEvents = async (req, res) => {
+//     try {
+//         const { date, trending, page = 1 } = req.body;
+
+//         console.log(req.body)
+
+//         // Today's date
+//         const today = moment().startOf('day');
+
+//         // Use provided date if available, otherwise default to today
+//         const gotDate = date ? moment(date).startOf('day') : today;
+
+//         // Day names
+//         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+//         // Formatted date
+//         const onlyDate = gotDate.format("YYYY-MM-DD");
+
+//         // Dates used for start and end of the day
+//         const startDate = new Date(`${onlyDate}T00:00:00.000Z`);
+//         const endDate = new Date(`${onlyDate}T23:00:00.000Z`);
+
+//         // Today's day of the week
+//         const currentDay = dayNames[gotDate.day()];
+
+//         // Base query
+//         let query = {
+//             showInEventCalender: true,
+//             archived: false,
+//             verified: true,
+//             type: 'event',
+//             // $or: [
+//             //     {
+//             //         // Events with date range starting before or on the target date
+//             //         'date.dateRange.startDate': { $lte: startDate },
+//             //         // Events that either end after or on the target date, or have no end date
+//             //         $or: [
+//             //             { 'date.dateRange.endDate': { $gte: endDate } },
+//             //             { 'date.dateRange.endDate': null }
+//             //         ]
+//             //     },
+//             //     {
+//             //         // Events with recurring dates starting before or on the target date
+//             //         $and: [
+//             //             { 'date.recurring.startDate': { $lte: startDate } },
+//             //             // Events that either end after or on the target date, or have no end date
+//             //             { $or: [{ 'date.recurring.endDate': { $gte: endDate } }, { 'date.recurring.endDate': null }] },
+//             //             // Events that occur on the target day of the week
+//             //             { 'date.recurring.days': { $in: [currentDay] } }
+//             //         ]
+//             //     },
+//             // ],
+//         };
+
+//         if (trending === true) {
+//             query.trending = true;
+//         }
+
+//         // Fetch events based on the query
+//         const events = await EventModel.find(query).sort({ 'date.dateRange.startDate': 1 }).populate('location');
+
+
+//         console.log("events got from somewhere",events.length)
+
+//         // If a specific date is provided, filter and group events by that date
+//         if (date) {
+//             const filteredEvents = events.filter(event => {
+//                 if (event.date.type === 'dateRange') {
+//                     const eventStartDate = moment(event.date.dateRange.startDate).startOf('day');
+//                     const eventEndDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
+//                     return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate);
+//                 } else if (event.date.type === 'recurring') { // Check recurring events
+//                     const eventStartDate = moment(event.date.recurring.startDate).startOf('day');
+//                     const eventEndDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
+//                     const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
+//                     return gotDate.isSameOrAfter(eventStartDate) && gotDate.isSameOrBefore(eventEndDate) && recurringDays.includes(currentDay);
+//                 }
+//                 return false; // This should not be reached if event types are correctly handled above
+//             });
+
+//             const groupedEvents = filteredEvents.reduce((acc, event) => {
+//                 const eventDate = gotDate.format('YYYY-MM-DD');
+//                 if (!acc[eventDate]) {
+//                     acc[eventDate] = [];
+//                 }
+//                 acc[eventDate].push(event);
+//                 return acc;
+//             }, {});
+
+//             return res.status(200).json(groupedEvents);
+//         } else {
+//             // If no date is provided, group events by date starting from today
+//             const groupedEvents = events.reduce((acc, event) => {
+//                 if (event.date.type === 'dateRange') {
+//                     const startDate = moment(event.date.dateRange.startDate).startOf('day');
+//                     const endDate = event.date.dateRange.endDate ? moment(event.date.dateRange.endDate).startOf('day') : today.clone().add(1, 'year');
+
+//                     for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+//                         if (m.isSameOrAfter(today)) {
+//                             const eventDate = m.format('YYYY-MM-DD');
+//                             if (!acc[eventDate]) {
+//                                 acc[eventDate] = [];
+//                             }
+//                             acc[eventDate].push(event);
+//                         }
+//                     }
+//                 } else if (event.date.type === 'recurring') {
+//                     const startDate = moment(event.date.recurring.startDate).startOf('day');
+//                     const endDate = event.date.recurring.endDate ? moment(event.date.recurring.endDate).startOf('day') : today.clone().add(1, 'year');
+//                     const recurringDays = event.date.recurring.days.map(day => day.toLowerCase());
+
+//                     for (let m = startDate.clone(); m.isSameOrBefore(endDate); m.add(1, 'days')) {
+//                         if (m.isSameOrAfter(today) && recurringDays.includes(dayNames[m.day()])) {
+//                             const eventDate = m.format('YYYY-MM-DD');
+//                             if (!acc[eventDate]) {
+//                                 acc[eventDate] = [];
+//                             }
+//                             acc[eventDate].push(event);
+//                         }
+//                     }
+//                 }
+//                 return acc;
+//             }, {});
+
+//             // Sort the grouped events by date and paginate the results
+//             const sortedGroupedEvents = Object.keys(groupedEvents).sort().reduce((sortedAcc, key, index) => {
+//                 if (index >= (page - 1) * 10 && index < page * 10) {
+//                     sortedAcc[key] = groupedEvents[key];
+//                 }
+//                 return sortedAcc;
+//             }, {});
+
+//             return res.status(200).json(sortedGroupedEvents);
+//         }
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             success: false,
+//             data: "Internal server error"
+//         });
+//     }
+// };
 
 // --------------------offers -------------------
 
