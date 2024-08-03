@@ -1,5 +1,3 @@
-1st - Check the expired events logic and also expired events page 
-2nd - Check events why they are not shown in calender 
 3rd - Archive events checkbox and filter 
 
 

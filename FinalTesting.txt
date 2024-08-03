@@ -1,0 +1,18 @@
+Home 
+1. Navbar is loading slowly. Remove animation 
+2. For dark mode remove the white border or apply it all over 
+3. On the search bar ladies night is not a category it is subcategory 
+4. For what's on screen in mobile add a routing for the date which is shown of today's 
+5. Calling pop up make it more apealing and add space in between 
+6. For categories when i am hovering i want a slight change 
+7. for footer remove the suggestions 
+8. Add a proper links for the footer 
+9. Do you want to add a coming year date in the footer 
+
+Add SEO and links show on the google search engine
+
+Events 
+1. Handle like functionality 
+2. if you added it to like and then getting redirected to login and if you come back then it should add that think into a liked events 
+3. Add animation to the heading which is getting changed from one page to another 
+4. When hover on a card make the image moving or something 

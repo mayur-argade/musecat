@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import UpcomingEventsCard from "../../../../components/Cards/UpcomingEventsCard";
 import SkeletonCard from "../../../../components/shared/skeletons/SkeletonCard";
-import { ClientUpcomingEvents, CalenderDates } from "../../../../http";
+import { ClientUpcomingEvents, AllDateEvents, CalenderDates } from "../../../../http";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import MyCalender from "../../../../components/Calender/MyCalender";
@@ -35,7 +35,7 @@ const UpcomingEvents = () => {
     const [showCalender, setShowCalender] = useState(false);
     const [overflowing, setOverflowing] = useState(false);
 
-    const [upcomingEvents, setUpcomingEvents] = useState("");
+    const [upcomingEvents, setUpcomingEvents] = useState([]);
     const [upcomingEventsLoading, setUpcomingEventsLoading] = useState(false);
     const next7Days = [];
     const currentDate = moment();
@@ -60,10 +60,25 @@ const UpcomingEvents = () => {
 
     useEffect(() => {
         const fetchdata = async () => {
+            const dateData = {
+                date: moment().format('YYYY-MM-DD'),
+            };
             setUpcomingEventsLoading(true);
             try {
-                const { data } = await ClientUpcomingEvents();
-                setUpcomingEvents(data);
+                const { data } = await AllDateEvents(dateData);
+                console.log("upcoming events data new", data)
+                // Create an array to store all upcoming events
+                const allUpcomingEvents = [];
+
+                // Iterate over the date keys in the data
+                Object.keys(data).forEach(date => {
+                    // Concatenate the events of the current date to the allUpcomingEvents array
+                    allUpcomingEvents.push(...data[date]);
+                });
+
+                console.log("upcoming events",allUpcomingEvents)
+                // Set the state with the collected events
+                setUpcomingEvents(allUpcomingEvents);
                 setUpcomingEventsLoading(false);
             } catch (error) {
                 setUpcomingEventsLoading(false);
@@ -96,8 +111,8 @@ const UpcomingEvents = () => {
     }, []);
 
     let highlightedDates = []; // Dates to highlight
-    if (upcomingEvents.data != null) {
-        for (const event of upcomingEvents.data) {
+    if (upcomingEvents != null) {
+        for (const event of upcomingEvents) {
             if (
                 event.date &&
                 event.date.dateRange &&
@@ -158,10 +173,10 @@ const UpcomingEvents = () => {
     return (
         <section className="flex justify-center items-center align-middle mt-5">
             <section className="w-full md:w-full sm:mx-5 md:mx-5 lg:w-10/12 md:w-8.5/12 xl:w-8.5/12 2xl:w-7/12">
-                {upcomingEvents.data != null ||
-                upcomingEvents.data != undefined ? (
+                {upcomingEvents != null ||
+                    upcomingEvents != undefined ? (
                     <>
-                        {upcomingEvents.data.length == 0 ? (
+                        {upcomingEvents.length == 0 ? (
                             <></>
                         ) : (
                             <div className="flex justify-between items-center ">
@@ -220,12 +235,11 @@ const UpcomingEvents = () => {
                                                             `/category/events?date=${item.actualdate}`,
                                                         )
                                                     }
-                                                    className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${
-                                                        useFullDate ==
+                                                    className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate ==
                                                         item.actualdate
-                                                            ? "bg-black text-white"
-                                                            : ""
-                                                    }`}
+                                                        ? "bg-black text-white"
+                                                        : ""
+                                                        }`}
                                                 >
                                                     <div className="flex flex-col">
                                                         <p>{item.day}</p>
@@ -314,11 +328,10 @@ const UpcomingEvents = () => {
                                                     item.actualdate,
                                                 )
                                             }
-                                            className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${
-                                                useFullDate == item.actualdate
-                                                    ? "bg-black text-white"
-                                                    : ""
-                                            }`}
+                                            className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                                ? "bg-black text-white"
+                                                : ""
+                                                }`}
                                         >
                                             <div className="flex flex-col">
                                                 <p>{item.day}</p>
@@ -356,8 +369,8 @@ const UpcomingEvents = () => {
                         ref={containerRef}
                         className="pl-3 flex w-full overflow-x-auto"
                     >
-                        {upcomingEvents.data == null ||
-                        upcomingEvents.data == undefined ? (
+                        {upcomingEvents == null ||
+                            upcomingEvents == undefined ? (
                             <div className="h-30">
                                 <SkeletonCard />
                             </div>
@@ -367,14 +380,14 @@ const UpcomingEvents = () => {
                                     <SkeletonCard />
                                 </div>
                             </>
-                        ) : upcomingEvents.data.length === 0 ? (
+                        ) : upcomingEvents.length === 0 ? (
                             <div className="flex justify-center">
                                 {/* <img className='h-60' src="/images/assets/logo-main.png" alt="" /> */}
                             </div>
                         ) : (
                             <div className="w-full">
                                 <Carousel responsive={responsive}>
-                                    {upcomingEvents.data.map((event) => (
+                                    {upcomingEvents.map((event) => (
                                         <div className="">
                                             <UpcomingEventsCard
                                                 event={event}
@@ -415,8 +428,8 @@ const UpcomingEvents = () => {
                             )}
                         </div>
                     </div>
-                    {upcomingEvents.data != null &&
-                        upcomingEvents.data.length != 0 && (
+                    {upcomingEvents != null &&
+                        upcomingEvents.length != 0 && (
                             <div className="flex justify-end">
                                 <Link
                                     className="dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center"
