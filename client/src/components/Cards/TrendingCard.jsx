@@ -21,7 +21,7 @@ const TrendingCard = ({ data }) => {
                             {data.shortDescription}
                         </div>
                         <div className="text-xss font-light truncate">
-                            {[...new Set(data.eventCategory.split(0, 2).map(subcategory => subcategory.name))].join(', ')}
+                            {[...new Set(data.eventCategory.slice(0, 2).map(subcategory => subcategory.name))].join(', ')}
                         </div>
                     </div>
 
