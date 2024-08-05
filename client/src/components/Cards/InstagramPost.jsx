@@ -21,14 +21,14 @@ const InstagramPost = () => {
     }, []);
 
     return (
-        <section class="-mt-80">
-            <h2 class="text-center text-5xl font-bold">
+        <section class="">
+            <h2 class="text-center text-4xl font-bold">
                 Follow us on our socials
             </h2>
-            <div class="mt-5 mx-2 my-2 md:mx-20 grid grid-cols-2 md:grid-cols-3 md:gap-10">
+            <div class="mt-5 mx-2 my-2 md:mx-40 grid grid-cols-2 md:grid-cols-3 md:gap-10">
                 {posts.map((post) => (
-                    <BlurFade key={post.id}>
-                        <div className="bg-white border rounded-md max-w-md">
+                    <BlurFade duration={1} delay={0.2} inViewMargin="0px" blur="0px" key={post.id}>
+                        <div className="mt-5 bg-white dark:bg-[#454545] border rounded-md max-w-md">
                             <div className="flex items-center px-4 py-3">
                                 <img
                                     className="h-6 md:h-8 w-6 md:w-8 rounded-full"
@@ -39,30 +39,30 @@ const InstagramPost = () => {
                                     <span className="text-xs font-semibold antialiased block leading-tight">
                                         {post.username}
                                     </span>
-                                    {/* <span className="text-gray-600 text-xss block">
-                                        Asheville, North Carolina
-                                    </span> */}
                                 </div>
                             </div>
                             {post.media_type == 'VIDEO' ? (
-                                <video controls>
+                                <video className="w-full h-96" controls>
                                     <source src={post.media_url} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
                             ) : (
-                                <img src={post.media_url} alt={post.caption} />
+                                <img className="w-full h-96" src={post.media_url} alt={post.caption} />
                             )}
                             <div className="flex items-center justify-between mx-2 md:mx-4 mt-3 mb-2">
                                 <div className="flex gap-5">
-                                    <svg
-                                        className="h-4"
-                                        fill="#262626"
-                                        height="24"
-                                        viewBox="0 0 48 48"
-                                        width="24"
-                                    >
-                                        <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3 1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9 1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
-                                    </svg>
+                                    <div className="hidden dark:visible">
+                                        <svg
+                                            className="h-4"
+                                            fill="#262626"
+                                            height="24"
+                                            viewBox="0 0 48 48"
+                                            width="24"
+                                        >
+                                            <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3 1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9 1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
+                                        </svg>
+                                    </div>
+
                                     <svg
                                         className="h-4"
                                         fill="#262626"

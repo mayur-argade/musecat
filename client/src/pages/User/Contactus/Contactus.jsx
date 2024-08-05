@@ -66,12 +66,11 @@ const Contactus = () => {
 
                         <div className="space-y-5 ">
                             <div className="flex flex-col text-center justify-center items-center space-y-2">
-                                <span className='text-sm font-medium'>
-                                    If you have any questions or comments, please, fill out the form.
+                                <span className='text-base font-bold'>
+                                    Get in Touch with Muscat Where To!
                                 </span >
-                                <p className='text-sm font-medium mb-3'>
-                                    If you are a Business Owner or Venue or Event Manager, please contact us for details to feature your business, event or offer
-                                </p>
+                                <p className='text-base font-medium mb-3'>
+                                    Looking for the hottest offers and events in Muscat? Have an awesome promotion or event you want to feature on our site? Contact us using the form below and let's connect to make sure your offer gets the spotlight it deserves!                                </p>
                             </div>
 
 
@@ -171,7 +170,7 @@ const Contactus = () => {
                         </a>
                     </div>
 
-                   <ScrollToTop />
+                    <ScrollToTop />
                 </div>
             </section>
 
