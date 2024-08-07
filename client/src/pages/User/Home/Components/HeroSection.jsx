@@ -188,7 +188,7 @@ const HeroSection = () => {
                                                             <Link className='my-1' to='/category/fridaybrunch'>
                                                                 <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Friday Brunch</button>
                                                             </Link>
-                                                            <Link className='my-1' to='/category/ladiesnight'>
+                                                            <Link className='my-1' to='category/eat&drink?subcategory=Ladies%20Night'>
                                                                 <button className='rounded-full border border-black hover:border-[#A48533] hover:bg-[#A48533] dark:border-white pr-4 pl-4 h-6 text-sm font-normal hover:text-white'>Ladies Night</button>
                                                             </Link>
                                                             <Link className='my-1' to='/category/eat&drink?subcategory=Afternoon%20Tea'>

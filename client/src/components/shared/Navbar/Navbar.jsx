@@ -684,7 +684,7 @@ const CategoryLink = ({ category }) => {
                         <ul
                             onMouseEnter={() => openDropdown()}
                             onMouseLeave={() => closeDropdown()}
-                            className="absolute border border-1 inset-y-0 py-2 left-48 z-50 w-52 bg-white dark:bg-[#454545] dark:text-white">
+                            className="absolute inset-y-0 py-2 left-48 z-50 w-52 bg-white dark:bg-[#454545] dark:text-white">
                             {category.subCategories.map((subcategory, index) => (
                                 <li key={index}>
 
@@ -711,7 +711,7 @@ const CategoryLink = ({ category }) => {
                                             onMouseEnter={() => {
                                                 setShowDays(true)
                                             }}
-                                            className="w-52 border border-1 z-50 dropdown absolute inset-y-0 py-2 bg-white rounded-md dark:bg-[#454545] dark:text-white"
+                                            className="w-52  z-50 dropdown absolute inset-y-0 py-2 bg-white rounded-r-md dark:bg-[#454545] dark:text-white"
                                             style={{ left: '100%' }}>
                                             {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day, index) => (
                                                 <li

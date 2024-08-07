@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import UpcomingEventsCard from "../../../../components/Cards/UpcomingEventsCard";
 import SkeletonCard from "../../../../components/shared/skeletons/SkeletonCard";
-import { ClientUpcomingEvents, AllDateEvents, CalenderDates } from "../../../../http";
+import {
+    ClientUpcomingEvents,
+    AllDateEvents,
+    CalenderDates,
+} from "../../../../http";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import MyCalender from "../../../../components/Calender/MyCalender";
@@ -42,6 +46,31 @@ const UpcomingEvents = () => {
     const containerRef = useRef(null);
     const calendarRef = useRef(null);
 
+    const formatPhoneNumber = (number) => {
+        // Ensure the input is treated as a string
+        const strNumber = String(number);
+
+        // Check if the input has a country code
+        const hasCountryCode = strNumber.startsWith("968");
+
+        // Remove all non-digit characters
+        const cleaned = strNumber.replace(/\D/g, "");
+
+        // Extract the country code if present
+        const countryCode = hasCountryCode ? "+968 " : "";
+
+        // Remove country code from the number
+        const numberWithoutCode = hasCountryCode ? cleaned.slice(3) : cleaned;
+
+        // Match the remaining number
+        const match = numberWithoutCode.match(/^(\d{4})(\d{4})$/);
+
+        if (match) {
+            return `${countryCode}${match[1]} ${match[2]}`;
+        }
+
+        return `+${number}`;
+    };
     const handleCalenderClickOutside = (e) => {
         if (calendarRef.current && !calendarRef.current.contains(e.target)) {
             setShowCalender(false);
@@ -61,22 +90,22 @@ const UpcomingEvents = () => {
     useEffect(() => {
         const fetchdata = async () => {
             const dateData = {
-                date: moment().format('YYYY-MM-DD'),
+                date: moment().format("YYYY-MM-DD"),
             };
             setUpcomingEventsLoading(true);
             try {
                 const { data } = await AllDateEvents(dateData);
-                console.log("upcoming events data new", data)
+                console.log("upcoming events data new", data);
                 // Create an array to store all upcoming events
                 const allUpcomingEvents = [];
 
                 // Iterate over the date keys in the data
-                Object.keys(data).forEach(date => {
+                Object.keys(data).forEach((date) => {
                     // Concatenate the events of the current date to the allUpcomingEvents array
                     allUpcomingEvents.push(...data[date]);
                 });
 
-                console.log("upcoming events",allUpcomingEvents)
+                console.log("upcoming events", allUpcomingEvents);
                 // Set the state with the collected events
                 setUpcomingEvents(allUpcomingEvents);
                 setUpcomingEventsLoading(false);
@@ -173,8 +202,7 @@ const UpcomingEvents = () => {
     return (
         <section className="flex justify-center items-center align-middle mt-5">
             <section className="w-full md:w-full sm:mx-5 md:mx-5 lg:w-10/12 md:w-8.5/12 xl:w-8.5/12 2xl:w-7/12">
-                {upcomingEvents != null ||
-                    upcomingEvents != undefined ? (
+                {upcomingEvents != null || upcomingEvents != undefined ? (
                     <>
                         {upcomingEvents.length == 0 ? (
                             <></>
@@ -235,11 +263,12 @@ const UpcomingEvents = () => {
                                                             `/category/events?date=${item.actualdate}`,
                                                         )
                                                     }
-                                                    className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate ==
+                                                    className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${
+                                                        useFullDate ==
                                                         item.actualdate
-                                                        ? "bg-black text-white"
-                                                        : ""
-                                                        }`}
+                                                            ? "bg-black text-white"
+                                                            : ""
+                                                    }`}
                                                 >
                                                     <div className="flex flex-col">
                                                         <p>{item.day}</p>
@@ -256,8 +285,8 @@ const UpcomingEvents = () => {
                                         <button className="hover:bg-black hover:text-white rounded-sm border-black pl-1 pr-1 text-xs border mr-2">
                                             <div
                                                 onClick={() =>
-                                                    setnewfilterdate(
-                                                        next7Days[0].actualdate,
+                                                    navigate(
+                                                        `/category/events?date=${next7Days[0].actualdate}`,
                                                     )
                                                 }
                                                 className="flex flex-col"
@@ -328,10 +357,11 @@ const UpcomingEvents = () => {
                                                     item.actualdate,
                                                 )
                                             }
-                                            className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
-                                                ? "bg-black text-white"
-                                                : ""
-                                                }`}
+                                            className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${
+                                                useFullDate == item.actualdate
+                                                    ? "bg-black text-white"
+                                                    : ""
+                                            }`}
                                         >
                                             <div className="flex flex-col">
                                                 <p>{item.day}</p>
@@ -370,7 +400,7 @@ const UpcomingEvents = () => {
                         className="pl-3 flex w-full overflow-x-auto"
                     >
                         {upcomingEvents == null ||
-                            upcomingEvents == undefined ? (
+                        upcomingEvents == undefined ? (
                             <div className="h-30">
                                 <SkeletonCard />
                             </div>
@@ -428,19 +458,18 @@ const UpcomingEvents = () => {
                             )}
                         </div>
                     </div>
-                    {upcomingEvents != null &&
-                        upcomingEvents.length != 0 && (
-                            <div className="flex justify-end">
-                                <Link
-                                    className="dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center"
-                                    to="/category/events"
-                                >
-                                    <p className="font-medium underline underline-offset-1  pr-2 text-sm font-medium ">
-                                        view all
-                                    </p>
-                                </Link>
-                            </div>
-                        )}
+                    {upcomingEvents != null && upcomingEvents.length != 0 && (
+                        <div className="flex justify-end">
+                            <Link
+                                className="dark:hover:bg-gray-500 hover:bg-slate-100 rounded-md py-2 px-3 flex justify-center align-middle items-center"
+                                to="/category/events"
+                            >
+                                <p className="font-medium underline underline-offset-1  pr-2 text-sm font-medium ">
+                                    view all
+                                </p>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </section>
             {showNumberBox && (
@@ -472,7 +501,7 @@ const UpcomingEvents = () => {
                                 src="/images/icons/phone.png"
                                 alt=""
                             />
-                            <span>+{numberInput}</span>
+                            <span>{formatPhoneNumber(numberInput)}</span>
                         </div>
                         {/* <img className='pt-4' src={response.data.eventDetails.seatingMap} alt="Theater" /> */}
                     </div>
