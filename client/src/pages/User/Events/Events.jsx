@@ -24,6 +24,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import BottomNav from "../../../components/shared/BottomNav/BottomNav";
 import ScrollToTop from "../../../components/ScrollToTop/ScrollToTop";
 import BlurFade from "../../../components/MagicUI/BlurFade";
+import { FadeText } from "../../../components/MagicUI/FadeText";
 
 const Events = () => {
     const navigate = useNavigate();
@@ -445,7 +446,9 @@ const Events = () => {
                                 {queryParams.subcategory ? (
                                     <>{queryParams.subcategory}</>
                                 ) : (
-                                    categoryName
+                                    <div className="overflow-hidden relative h-10">
+                                    <FadeText className={'overflow-hidden'} text={categoryName}/>
+                                    </div>
                                 )}
                             </span>
                         </div>
@@ -676,7 +679,7 @@ const Events = () => {
                                                                     key={date}
                                                                 >
                                                                     <BlurFade>
-                                                                        <h2 className="ml-2 text-md font-bold">
+                                                                        <h2 className="mt-2 ml-2 text-md font-bold">
                                                                             {date !==
                                                                             "undefined"
                                                                                 ? moment(

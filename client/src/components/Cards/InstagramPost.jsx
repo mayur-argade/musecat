@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import BlurFade from "../../components/MagicUI/BlurFade";
 import { GetInstagramPosts } from '../../http/index'
 import moment from 'moment'
+import { Link } from "react-router-dom";
+
 const InstagramPost = () => {
 
     const [posts, setPosts] = useState([]);
@@ -28,6 +30,8 @@ const InstagramPost = () => {
             <div class=" mx-2 my-2 md:mx-40 grid grid-cols-2 md:grid-cols-3 md:gap-10">
                 {posts.map((post, index) => (
                     <BlurFade delay={0.5 + index * 0.1} blur={"0px"} yOffset={30} key={post.id}>
+                        <a target="blank" href={`https://www.instagram.com/muscat_whereto/`}>
+                        
                         <div className="mt-10 bg-white dark:bg-[#454545] border rounded-md max-w-md">
                             <div className="flex items-center px-4 py-3">
                                 <img
@@ -148,6 +152,8 @@ const InstagramPost = () => {
                                 {moment(post.timestamp).format('DD MMMM')}
                             </p>
                         </div>
+
+                        </a>
                     </BlurFade>
                 ))}
             </div>

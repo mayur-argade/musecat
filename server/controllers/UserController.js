@@ -791,7 +791,7 @@ exports.getInstagramPosts = async (req, res) => {
         const mediaDetailsResponses = await Promise.all(mediaDetailsPromises);
         const mediaDetails = mediaDetailsResponses.map(response => response.data);
 
-
+        console.log(mediaDetails)
         // Send media details to the frontend
         res.status(200).json(mediaDetails);
     } catch (error) {

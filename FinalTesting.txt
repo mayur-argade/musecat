@@ -14,17 +14,16 @@ Contact us form
 3. add a rate limiting. no one can bambard the api with simultaneous request.
 
 About us 
-1. link buttons 
-2. animations smoothness and post animation needs to be applied
+1. link buttons (done)
+2. animations smoothness and post animation needs to be applied (done)
 
 Sign in (vendor/client)
-1. add a redirectiono logic google sign in should be working facebook signin should be working.
+1. add a redirectiono logic google sign in should be working facebook signin should be working. (add this every where)
 
 Events 
-1. Handle like functionality 
-2. if you added it to like and then getting redirected to login and if you come back then it should add that think into a liked events 
-3. Add animation to the heading which is getting changed from one page to another 
-4. When hover on a card make the image moving or something 
+1. Handle like functionality (done)
+2. if you added it to like and then getting redirected to login and if you come back then it should add that think into a liked events (done)
+3. Add animation to the heading which is getting changed from one page to another (done)
 
 --------------------- remaining --------------------------------
 7. for footer remove the suggestions 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
 import { setAuth } from "../../../store/authSlice";
@@ -7,11 +7,14 @@ import { ClientLogin, ClientGoogleLogin, googleLogin, facebookLogin } from "../.
 import { hasGrantedAllScopesGoogle, useGoogleLogin, GoogleLogin } from '@react-oauth/google'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import ResendDialogueBox from '../../../components/ResendDialogueBox/ResendDialogueBox';
+import { processApiQueue } from '../../../utils/Apiqueue';
 
 const Login = () => {
 
     document.title = 'Login'
     const emailInputRef = useRef(null);
+    const location = useLocation();
+    const from = location.state?.from || '/';
 
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
 
@@ -30,7 +33,7 @@ const Login = () => {
             // console.log('this is logged in details', res.data)
             dispatch(setAuth(res.data));
             const prevLocation = '/';
-            navigate(prevLocation);
+             navigate(from, { replace: true });
         } catch (error) {
             console.error('Error during login:', error);
             setLoading(false);
@@ -91,8 +94,8 @@ const Login = () => {
             setLoading(false)
             // console.log("this is logged in details",res.data)
             dispatch(setAuth(res.data));
-            const prevLocation = sessionStorage.getItem('prevLocation') || '/';
-            navigate(prevLocation);
+            await processApiQueue()
+            navigate(from, { replace: true });
         } catch (error) {
             setLoading(false)
             console.log(error)

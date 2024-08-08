@@ -41,7 +41,7 @@ exports.isUserLoggedin = async (req, res, next) => {
         // console.log(accessToken)
         // console.log("this is logged in", req.cookies)
         if (!accessToken) {
-            return res.status(statusCode.NOT_FOUND.code).json({
+            return res.status(401).json({
                 success: false,
                 data: "Login to proceed further"
             });

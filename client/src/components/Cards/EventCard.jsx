@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { addToFavorites, ClientGetOffers, CategoryCount, ClientUpcomingEvents, getCategoryEvents } from '../../http/index'
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
+import { enqueueApiRequest } from '../../utils/Apiqueue';
 
 const EventCard = ({ data, width, showNumberBox }) => {
 
@@ -65,25 +66,28 @@ const EventCard = ({ data, width, showNumberBox }) => {
     const favoriteFeature = async (eventid) => {
         // console.log(eventid)
         setIsLiked(!isLiked)
+        const requestFn = async () => {
+            const eventdata = { eventid: eventid };
+            const { data } = await addToFavorites(eventdata);
+            toast.success(data.message);
+        };
+
         try {
-            const eventdata = {
-                eventid: eventid
-            }
-            const { data } = await addToFavorites(eventdata)
-            console.log(data)
-            toast.success(data.message)
+            await requestFn();
         } catch (error) {
             console.log(error)
             if (error.response.status == 401) {
                 toast.error("session expired Login again")
-                navigate('/login')
+                const currentPath = window.location.pathname;
+                enqueueApiRequest(requestFn);
+                navigate('/login', { state: { from: currentPath } });
             }
         }
     }
 
     return (
         <>
-            <div onClick={(() => navigate(`/events/${data._id}`))} className={`hover:shadow-xl cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] dark:text-white my-2`}>
+            <div onClick={(() => navigate(`/events/${data._id}`))} className={`mt-5 hover:shadow-xl cursor-pointer relative mx-1 ${width} rounded-md bg-[#F3F3F3] dark:bg-[#454545] dark:text-white my-2`}>
                 <div className='image'>
                     <img className="rounded-md w-full object-contain aspect-square" src={`${data.displayPhoto}`} alt="" />
                 </div>

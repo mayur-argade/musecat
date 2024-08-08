@@ -41,7 +41,8 @@ const UpcomingEventsCard = ({ event, showNumberBox, setNumber }) => {
             console.log(error);
             if (error.response.status === 401) {
                 toast.error('Session expired. Please login again');
-                navigate('/login');
+                const currentPath = window.location.pathname;
+                navigate('/login', { state: { from: currentPath } });
             }
         }
     };
@@ -71,7 +72,6 @@ const UpcomingEventsCard = ({ event, showNumberBox, setNumber }) => {
     return (
         <div className='dark:text-white mt-2 '>
             <div>
-                <Toaster />
                 <div onClick={() => navigate(`/events/${event._id}`)} className='cursor-pointer relative rounded-2xl mx-2 mb-2 bg-[#F3F3F3] dark:bg-[#454545] top-0 md:mt-5'>
                     <div className='top-0 rounded-2xl'>
                         <img className='rounded-2xl object-cover aspect-square' src={event.displayPhoto} alt='' />
