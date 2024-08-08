@@ -247,7 +247,7 @@ const EventDescription = () => {
                 // Event Details
                 if (data.data.eventDetails.description) {
                     newAccordions.push({
-                        title: "Event Details",
+                        title: "Details",
                         content: (
                             <div className="list-disc dark:bg-[#2c2c2c] dark:text-white">
                                 {ReactHtmlParser(

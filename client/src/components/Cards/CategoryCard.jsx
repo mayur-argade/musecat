@@ -12,8 +12,8 @@ const CategoryCard = ({ data }) => {
         <div className="absolute bottom-2 left-1 p-1 pl-2 pr-2">
           <p className="text-lg text-white font-medium">{data.categoryName}</p>
           <p className="w-28 dark:bg-[#2c2c2c] dark:text-white bg-white text-black rounded-md text-sm py-1 pl-1 pr-1 font-semibold text-center">
-            {data.validOfferCount}
-            {/* <NumberTicker value={data.validOfferCount}/> */}
+            {/* {data.validOfferCount} */}
+            <NumberTicker value={data.validOfferCount}/>
             {
             data.validOfferCount > 1 ? <span className='ml-1'>Offers</span > : <span className='ml-1'>Offer</span >
             }

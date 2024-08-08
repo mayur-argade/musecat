@@ -139,8 +139,21 @@ const UpcomingEvents = () => {
         };
     }, []);
 
+    // Function to shuffle an array
+    const shuffleArray = (array) => {
+        let shuffledArray = array.slice(); // Create a copy of the array
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap elements
+        }
+        return shuffledArray;
+    };
+
+    let selectedEvents;
+
     let highlightedDates = []; // Dates to highlight
     if (upcomingEvents != null) {
+        selectedEvents = shuffleArray(upcomingEvents).slice(0, 3);
         for (const event of upcomingEvents) {
             if (
                 event.date &&
@@ -198,6 +211,8 @@ const UpcomingEvents = () => {
     const scrollRight = () => {
         document.getElementById("upcomingContent").scrollLeft += 400;
     };
+
+
 
     return (
         <section className="flex justify-center items-center align-middle mt-5">
@@ -263,12 +278,11 @@ const UpcomingEvents = () => {
                                                             `/category/events?date=${item.actualdate}`,
                                                         )
                                                     }
-                                                    className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${
-                                                        useFullDate ==
+                                                    className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate ==
                                                         item.actualdate
-                                                            ? "bg-black text-white"
-                                                            : ""
-                                                    }`}
+                                                        ? "bg-black text-white"
+                                                        : ""
+                                                        }`}
                                                 >
                                                     <div className="flex flex-col">
                                                         <p>{item.day}</p>
@@ -357,11 +371,10 @@ const UpcomingEvents = () => {
                                                     item.actualdate,
                                                 )
                                             }
-                                            className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${
-                                                useFullDate == item.actualdate
-                                                    ? "bg-black text-white"
-                                                    : ""
-                                            }`}
+                                            className={`hover:bg-black hover:text-white rounded-sm border-black dark:border-white pl-1 pr-1 text-xs border ${useFullDate == item.actualdate
+                                                ? "bg-black text-white"
+                                                : ""
+                                                }`}
                                         >
                                             <div className="flex flex-col">
                                                 <p>{item.day}</p>
@@ -400,7 +413,7 @@ const UpcomingEvents = () => {
                         className="pl-3 flex w-full overflow-x-auto"
                     >
                         {upcomingEvents == null ||
-                        upcomingEvents == undefined ? (
+                            upcomingEvents == undefined ? (
                             <div className="h-30">
                                 <SkeletonCard />
                             </div>
@@ -417,7 +430,7 @@ const UpcomingEvents = () => {
                         ) : (
                             <div className="w-full">
                                 <Carousel responsive={responsive}>
-                                    {upcomingEvents.map((event) => (
+                                    {selectedEvents.map((event) => (
                                         <div className="">
                                             <UpcomingEventsCard
                                                 event={event}
