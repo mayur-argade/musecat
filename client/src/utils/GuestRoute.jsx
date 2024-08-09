@@ -16,7 +16,7 @@ const GuestRoute = (props) => {
             if (isAuth === true && user.isVerified == false) {
                 navigate("/vendor/activation")
             }
-            else if (isAuth == false) {
+            else if (isAuth == false || user.role != 'vendor') {
                 navigate("/vendor/login")
             }
         }

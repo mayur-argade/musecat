@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, BrowserRouter as Router, Routes, R
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 // pages
+import Demo from './pages/Demo'
 import Home from './pages/User/Home/Home'
 import Login from './pages/User/Login/Login'
 import Signup from './pages/User/Signup/Signup'
@@ -103,6 +104,7 @@ function App() {
                     <Route path="/user/termsandconditions" exact element={<TermsAndCondition />} />
                     <Route path="/user/helpcenter" exact element={<SemiProtected Component={UserHelpCenter} />} />
                     <Route path="/category" exact element={<Categories />} />
+                    <Route path="/demo" exact element={<Demo />} />
 
 
 

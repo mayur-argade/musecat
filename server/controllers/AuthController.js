@@ -132,53 +132,7 @@ exports.clientLogin = async (req, res) => {
             })
         }
         else {
-            if (user.isVerified == false) {
-                // // generate a new token 
-                // const randomToken = crypto.randomBytes(Math.floor(Math.random() * 6) + 10).toString('hex');
-
-                // // Calculate expiry time in milliseconds
-                // const expiryTime = Date.now() + (10 * 60 * 1000);
-
-                // // Encode expiry time in the token
-                // const tokenWithExpiry = `${randomToken}.${expiryTime}`;
-
-                // const updateToken = await userService.updateUser(
-                //     {
-                //         _id: user._id,
-                //         verificationToken: tokenWithExpiry
-                //     }
-                // )
-
-                // const mailOptions = {
-                //     from: 'argademayur2002@gmail.com',
-                //     to: email,
-                //     subject: 'Account Verification for Muscat',
-                //     html: userSignupEmail(user.username, tokenWithExpiry),
-                // };
-
-                // transporter.sendMail(mailOptions, (error, info) => {
-                //     if (error) {
-                //         console.log(error)
-                //         return res
-                //             .status(statusCode.INTERNAL_SERVER_ERROR.code).json({
-                //                 success: false,
-                //                 data: "failed to send a email, Please check your input email"
-                //             });
-                //     } else {
-                //         return res.status(statusCode.BAD_REQUEST.code).json({
-                //             success: false,
-                //             data: "Kindly verify your account for signing in"
-                //         }
-                //         )
-                //     }
-                // });
-
-                return res.status(statusCode.BAD_REQUEST.code).json({
-                    success: false,
-                    data: "Kindly verify your account for signing in"
-                }
-                )
-            } else {
+            if (user.isVerified != false){
                 const isPasswordMatch = await bcrypt.compare(password, user.password);
 
                 if (!isPasswordMatch) {

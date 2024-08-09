@@ -14,10 +14,13 @@ import moment from 'moment-timezone'
 import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Editor } from '@tinymce/tinymce-react';
 
 const AddEvent = ({ setIsLoading, verifiedValue }) => {
     const formRef = useRef(null);
-    const editorRef = useRef(null)
+    
+    const editorRef = useRef(null);
+
     const navigate = useNavigate()
     const venueEditorRef = useRef(null)
     const [loading, setLoading] = useState(false)
@@ -56,9 +59,10 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log(editorRef.current.getContent())
         const formData = new FormData(formRef.current);
-        formData.append('description', eventInformation);
+        setEventInformation(editorRef.current.getContent())
+        formData.append('description', editorRef.current.getContent());
         formData.append('venueInformation', venueInformation)
         formData.append('days', JSON.stringify(selectedDays))
         formData.append('location', location);
@@ -511,11 +515,29 @@ const AddEvent = ({ setIsLoading, verifiedValue }) => {
                                     <Tooltip data={"Explain in Brief what event is about all the features you can bold, can use heading etc.."} />
                                 </div>
                             </label>
-                            <ReactQuill
+                            {/* <ReactQuill
                                 theme="snow"
                                 value={eventInformation}
-                                onChange={setEventInformation} />
-
+                                onChange={setEventInformation} /> */}
+<Editor
+        apiKey='e82p1xdyraerji7c8dynzxcjnjja1mk4a8p025zv3yvpn86z'
+        onInit={(_evt, editor) => editorRef.current = editor}
+        initialValue="<p>This is the initial content of the editor.</p>"
+        init={{
+          height: 500,
+          menubar: false,
+          plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+          ],
+          toolbar: 'undo redo | blocks | ' +
+            'bold italic forecolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        }}
+      />
                             {/* <JoditEditor
                                 ref={editorRef}
                                 config={config}

@@ -77,7 +77,7 @@ const EventCard = ({ data, width, showNumberBox }) => {
         } catch (error) {
             console.log(error)
             if (error.response.status == 401) {
-                toast.error("session expired Login again")
+                // toast.error("session expired Login again")
                 const currentPath = window.location.pathname;
                 enqueueApiRequest(requestFn);
                 navigate('/login', { state: { from: currentPath } });

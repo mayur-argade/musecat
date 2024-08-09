@@ -12,6 +12,8 @@ import MapComponent from '../../../components/GoogleMap/Map'
 import { useSelector } from 'react-redux'
 import EditEventModal from '../../../components/EditEventModal/EditEventModal'
 import ScrollToTop from '../../../components/ScrollToTop/ScrollToTop'
+import ReactHtmlParser from 'react-html-parser'
+
 
 const VendorEventDescripton = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -159,7 +161,7 @@ const VendorEventDescripton = () => {
                 if (data.data.eventDetails.description) {
                     newAccordions.push({
                         title: 'Event Details',
-                        content: <div dangerouslySetInnerHTML={{ __html: data.data.eventDetails.description }} />,
+                        content: data.data.eventDetails.description,
                         isOpened: true,
                     });
                 }

@@ -251,7 +251,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                         <div class="hidden md:flex md:order-2 space-x-2">
                             {
-                                isAuth
+                                isAuth == true && user.role != 'vendor' && user.role != 'admin'
                                     ?
                                     <div className='space-x-2 flex align-middle items-center justify-center'>
                                         <div className='flex justify-center'>

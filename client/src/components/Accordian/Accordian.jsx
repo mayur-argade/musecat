@@ -1,8 +1,9 @@
 import React from 'react'
 import { useState, useRef } from 'react'
+import ReactHtmlParser from 'react-html-parser'
 
 const Accordian = ({ title, content, isOpened, onClick, color, textcol, contentfont }) => {
-
+    console.log(content)
     return (
         <div className='mb-6'>
             <div onClick={onClick} className={`cursor-pointer ${color}`}>
@@ -23,12 +24,7 @@ const Accordian = ({ title, content, isOpened, onClick, color, textcol, contentf
             </div>
             {isOpened && (
                 <div className={`overflow-hidden transition-all duration-200 pl-3`}>
-                    {/* <div className={`leading-relaxed ${contentfont}`}> */}
-                    {/* <div dangerouslySetInnerHTML={{ __html: content }} />
-                        {/* <HTMLviewer></HTMLviewer> */}
-                    {content}
-                    {/* */}
-                    {/* </div>  */}
+{ReactHtmlParser(content)}
                 </div>
             )}
             <hr className='border-slate-300' />

@@ -52,7 +52,7 @@ const Signup = () => {
     }
 
     return (
-        <section class="md:bg-gray-400 dark:md:bg-blend-multiply relative h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
+        <section class="overflow-hidden md:bg-gray-400 dark:md:bg-blend-multiply relative max-h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
             <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
                 <img src="/images/icons/login-back.svg" alt="" />
             </button>

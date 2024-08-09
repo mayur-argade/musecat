@@ -61,28 +61,28 @@ const VendorSignup = () => {
         //     return toast.error("CR Pdf is missing")
         // }
         if (!firstname) {
-            return toast.error("Firstname is missing")
+            return toast.error("Firstname is mandatory")
         }
         else if (!lastname) {
-            return toast.error("lastname is missing")
+            return toast.error("lastname is mandatory")
         }
         else if (!email) {
-            return toast.error("Email is missing")
+            return toast.error("Email is mandatory")
         }
         else if (!password) {
-            return toast.error("Password is missing")
+            return toast.error("Password is mandatory")
         }
         else if (!mobile) {
-            return toast.error("Mobile Number is missing")
+            return toast.error("Mobile Number is mandatory")
         }
         else if (!registerAddress) {
-            return toast.error("Register address is missing")
+            return toast.error("Register address is mandatory")
         }
         else if (!accountType) {
             return toast.error("Please select account type")
         }
         else if (!companyName) {
-            return toast.error("Company name is missing")
+            return toast.error("Company name is mandatory")
         }
         else if (!companyDisplayName) {
             return toast.error("Please provide Company display name")
@@ -148,7 +148,7 @@ const VendorSignup = () => {
     }
 
     return (
-        <section className="md:bg-gray-400 dark:md:bg-blend-multiply relative h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
+        <section className="overflow-hidden md:bg-gray-400 dark:md:bg-blend-multiply relative h-screen bg-cover bg-no-repeat bg-[url('https://res.cloudinary.com/mayurs-media/image/upload/v1692780548/mwt/signup_kwjykh.jpg')]  ">
             <button onClick={() => navigate(-1)} className='absolute top-10 left-10'>
                 <img src="/images/icons/login-back.svg" alt="" />
             </button>

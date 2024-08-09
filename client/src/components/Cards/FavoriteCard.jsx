@@ -35,7 +35,7 @@ const FavoriteCard = ({ data, width }) => {
         } catch (error) {
             console.log(error)
             if (error.response.status == 401) {
-                toast.error("session expired Login again")
+                // toast.error("session expired Login again")
                 navigate('/login')
             }
         }
